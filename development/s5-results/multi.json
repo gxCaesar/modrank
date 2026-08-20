@@ -1,0 +1,216 @@
+{
+ "artifact_type": "s5_multiencoder",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "n": 359,
+ "events": 113,
+ "blocks": {
+  "wsi_titan": 768,
+  "wsi_gigassl_ctranspath": 512,
+  "wsi_gigassl_gigapath": 512,
+  "wsi_gigassl_optimus": 512,
+  "wsi_gigassl_phikon": 512,
+  "wsi_provgigapath": 10752,
+  "wsi_uni_meanpool": 1024,
+  "omics_combine": 275,
+  "clinical": 23
+ },
+ "cases_covered_per_encoder": {
+  "wsi_titan": 359,
+  "wsi_gigassl_ctranspath": 359,
+  "wsi_gigassl_gigapath": 359,
+  "wsi_gigassl_optimus": 359,
+  "wsi_gigassl_phikon": 357,
+  "wsi_provgigapath": 359,
+  "wsi_uni_meanpool": 359
+ },
+ "single_arms": {
+  "wsi_titan": 0.6596,
+  "wsi_gigassl_ctranspath": 0.5807,
+  "wsi_gigassl_gigapath": 0.6004,
+  "wsi_gigassl_optimus": 0.5802,
+  "wsi_gigassl_phikon": 0.5328,
+  "wsi_provgigapath": 0.6051,
+  "wsi_uni_meanpool": 0.5224,
+  "omics_combine": 0.651,
+  "clinical": 0.6856,
+  "survpath_rerun": 0.6118
+ },
+ "image_arm_rank_correlations": {
+  "wsi_gigassl_ctranspath~wsi_gigassl_gigapath": 0.679,
+  "wsi_gigassl_ctranspath~wsi_gigassl_optimus": 0.64,
+  "wsi_gigassl_ctranspath~wsi_gigassl_phikon": 0.552,
+  "wsi_gigassl_ctranspath~wsi_provgigapath": 0.656,
+  "wsi_gigassl_ctranspath~wsi_titan": 0.548,
+  "wsi_gigassl_ctranspath~wsi_uni_meanpool": 0.15,
+  "wsi_gigassl_gigapath~wsi_gigassl_optimus": 0.694,
+  "wsi_gigassl_gigapath~wsi_gigassl_phikon": 0.59,
+  "wsi_gigassl_gigapath~wsi_provgigapath": 0.634,
+  "wsi_gigassl_gigapath~wsi_titan": 0.639,
+  "wsi_gigassl_gigapath~wsi_uni_meanpool": 0.101,
+  "wsi_gigassl_optimus~wsi_gigassl_phikon": 0.524,
+  "wsi_gigassl_optimus~wsi_provgigapath": 0.614,
+  "wsi_gigassl_optimus~wsi_titan": 0.537,
+  "wsi_gigassl_optimus~wsi_uni_meanpool": 0.135,
+  "wsi_gigassl_phikon~wsi_provgigapath": 0.541,
+  "wsi_gigassl_phikon~wsi_titan": 0.492,
+  "wsi_gigassl_phikon~wsi_uni_meanpool": 0.02,
+  "wsi_provgigapath~wsi_titan": 0.58,
+  "wsi_provgigapath~wsi_uni_meanpool": 0.172,
+  "wsi_titan~wsi_uni_meanpool": 0.039
+ },
+ "pools": {
+  "wsi_only": {
+   "skill": {
+    "cindex": 0.6236,
+    "weights_fold_0": {
+     "wsi_titan": 0.2664,
+     "wsi_gigassl_ctranspath": 0.1524,
+     "wsi_gigassl_gigapath": 0.1732,
+     "wsi_gigassl_optimus": 0.114,
+     "wsi_gigassl_phikon": 0.1291,
+     "wsi_provgigapath": 0.1127,
+     "wsi_uni_meanpool": 0.0522
+    }
+   },
+   "equal": {
+    "cindex": 0.6138
+   }
+  },
+  "wsi_plus_omics": {
+   "skill": {
+    "cindex": 0.6538,
+    "weights_fold_0": {
+     "wsi_titan": 0.2002,
+     "wsi_gigassl_ctranspath": 0.1145,
+     "wsi_gigassl_gigapath": 0.1301,
+     "wsi_gigassl_optimus": 0.0857,
+     "wsi_gigassl_phikon": 0.097,
+     "wsi_provgigapath": 0.0847,
+     "wsi_uni_meanpool": 0.0392,
+     "omics_combine": 0.2486
+    }
+   },
+   "equal": {
+    "cindex": 0.6368
+   }
+  },
+  "wsi_plus_omics_plus_clinical": {
+   "skill": {
+    "cindex": 0.6888,
+    "weights_fold_0": {
+     "wsi_titan": 0.1576,
+     "wsi_gigassl_ctranspath": 0.0901,
+     "wsi_gigassl_gigapath": 0.1024,
+     "wsi_gigassl_optimus": 0.0675,
+     "wsi_gigassl_phikon": 0.0764,
+     "wsi_provgigapath": 0.0667,
+     "wsi_uni_meanpool": 0.0309,
+     "omics_combine": 0.1957,
+     "clinical": 0.2128
+    }
+   },
+   "equal": {
+    "cindex": 0.6569
+   }
+  },
+  "titan_only_reference": {
+   "skill": {
+    "cindex": 0.7325,
+    "weights_fold_0": {
+     "wsi_titan": 0.2784,
+     "omics_combine": 0.3457,
+     "clinical": 0.376
+    }
+   },
+   "equal": {
+    "cindex": 0.7288
+   }
+  }
+ },
+ "comparison_C_THE_DECIDER": {
+  "ours_wsi_plus_omics_skill_weighted": 0.6538,
+  "ours_wsi_plus_omics_equal_weight": 0.6368,
+  "incumbent_DIMAF_same_folds": 0.679,
+  "gap_primary_rule": -0.0252,
+  "bar": 0.0145,
+  "passes": false,
+  "previously_failed_with_one_encoder": {
+   "flat_7_views": 0.677,
+   "skill_5_views": 0.6767,
+   "threshold_5_views": 0.6776,
+   "titan_plus_omics": 0.6841
+  }
+ },
+ "comparison_B_input_parity": {
+  "ours_full": 0.6888,
+  "survpath_plus_same_clinical": 0.6963,
+  "paired_bootstrap": {
+   "mean": -0.0075,
+   "se": 0.0223,
+   "ci95": [
+    -0.0519,
+    0.0355
+   ],
+   "p_two_sided": 0.7347
+  }
+ },
+ "comparison_A_vs_published": {
+  "ours_full": 0.6888,
+  "best_published_blca_any_protocol": {
+   "MOAD-FNet": 0.691,
+   "DIMAF": 0.679,
+   "APL": 0.677
+  },
+  "gap_vs_best": -0.0022
+ },
+ "vs_single_encoder_baseline": {
+  "titan_only_arm": 0.7325,
+  "six_encoder_arm": 0.6888,
+  "paired_bootstrap": {
+   "mean": -0.044,
+   "se": 0.0172,
+   "ci95": [
+    -0.0781,
+    -0.0108
+   ],
+   "p_two_sided": 0.008
+  }
+ },
+ "per_fold": {
+  "fold_0": {
+   "n": 70,
+   "events": 25,
+   "ours": 0.6798,
+   "ours_no_clinical": 0.65
+  },
+  "fold_1": {
+   "n": 72,
+   "events": 24,
+   "ours": 0.7783,
+   "ours_no_clinical": 0.7483
+  },
+  "fold_2": {
+   "n": 75,
+   "events": 23,
+   "ours": 0.7262,
+   "ours_no_clinical": 0.7036
+  },
+  "fold_3": {
+   "n": 71,
+   "events": 25,
+   "ours": 0.5609,
+   "ours_no_clinical": 0.5297
+  },
+  "fold_4": {
+   "n": 71,
+   "events": 16,
+   "ours": 0.682,
+   "ours_no_clinical": 0.636
+  }
+ },
+ "ours_fold_mean_sd": [
+  0.6854,
+  0.0804
+ ]
+}

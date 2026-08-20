@@ -1,0 +1,110 @@
+{
+ "artifact_type": "s5_c1prime_zeroshot_arm",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "n": 359,
+ "events": 113,
+ "donor_bootstraps": 40,
+ "cosine_zeroshot_to_permuted_control": 0.0551,
+ "falsifier": "titan + zeroshot must beat titan alone by more than 0.0145, and the permuted-donor control must not move",
+ "single_arms": {
+  "titan_bladder_trained": {
+   "cindex": 0.6596,
+   "within_site": 0.6334,
+   "clinically_tied_q10": 0.6246
+  },
+  "clinical": {
+   "cindex": 0.6856,
+   "within_site": 0.6652,
+   "clinically_tied_q10": 0.5167
+  },
+  "pancancer_zeroshot": {
+   "cindex": 0.6259,
+   "within_site": 0.6045,
+   "clinically_tied_q10": 0.5551
+  },
+  "pancancer_zeroshot_PERMUTED_CONTROL": {
+   "cindex": 0.5531,
+   "within_site": 0.5535,
+   "clinically_tied_q10": 0.5394
+  },
+  "omics_pathways": {
+   "cindex": 0.651,
+   "within_site": 0.6533,
+   "clinically_tied_q10": 0.6286
+  },
+  "survpath_rerun": {
+   "cindex": 0.6118,
+   "within_site": 0.6028,
+   "clinically_tied_q10": 0.5803
+  }
+ },
+ "all_rank_average_combinations": {
+  "clinical + omics_pathways + titan_bladder_trained": {
+   "cindex": 0.7281,
+   "within_site": 0.6992,
+   "clinically_tied_q10": 0.6508
+  },
+  "clinical + omics_pathways + pancancer_zeroshot + titan_bladder_trained": {
+   "cindex": 0.7245,
+   "within_site": 0.6929,
+   "clinically_tied_q10": 0.643
+  },
+  "clinical + titan_bladder_trained": {
+   "cindex": 0.7191,
+   "within_site": 0.6907,
+   "clinically_tied_q10": 0.6189
+  },
+  "clinical + omics_pathways + pancancer_zeroshot": {
+   "cindex": 0.7153,
+   "within_site": 0.6963,
+   "clinically_tied_q10": 0.6248
+  },
+  "clinical + omics_pathways": {
+   "cindex": 0.7128,
+   "within_site": 0.7054,
+   "clinically_tied_q10": 0.6116
+  },
+  "clinical + pancancer_zeroshot + titan_bladder_trained": {
+   "cindex": 0.7046,
+   "within_site": 0.6737,
+   "clinically_tied_q10": 0.6075
+  },
+  "omics_pathways + pancancer_zeroshot + titan_bladder_trained": {
+   "cindex": 0.698,
+   "within_site": 0.6714,
+   "clinically_tied_q10": 0.6457
+  },
+  "clinical + pancancer_zeroshot": {
+   "cindex": 0.6842,
+   "within_site": 0.6629,
+   "clinically_tied_q10": 0.5609
+  },
+  "omics_pathways + titan_bladder_trained": {
+   "cindex": 0.6841,
+   "within_site": 0.6618,
+   "clinically_tied_q10": 0.6498
+  },
+  "omics_pathways + pancancer_zeroshot": {
+   "cindex": 0.6778,
+   "within_site": 0.6793,
+   "clinically_tied_q10": 0.6224
+  },
+  "pancancer_zeroshot + titan_bladder_trained": {
+   "cindex": 0.6629,
+   "within_site": 0.6283,
+   "clinically_tied_q10": 0.6131
+  }
+ },
+ "n_combinations_scored": 11,
+ "selection_warning": "11 combinations were scored on the pooled outcome; picking the best of them carries a selection term of about sd*sqrt(2*ln N). Any arm taken forward must reselect INSIDE the training fold before it means anything.",
+ "verdict": {
+  "titan_alone": 0.6596,
+  "titan_plus_zeroshot": 0.6629,
+  "gain": 0.0033,
+  "titan_plus_PERMUTED_control": 0.6286,
+  "control_gain": -0.0311,
+  "bar": 0.0145,
+  "read_the_control_first": "if control_gain is comparable to gain, this run is VOID"
+ }
+}

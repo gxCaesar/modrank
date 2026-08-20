@@ -1,0 +1,169 @@
+{
+ "artifact_type": "s5_c1_pancancer_prior",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "n": 359,
+ "events": 113,
+ "donor_directions": {
+  "real": 80,
+  "permuted": 80
+ },
+ "grid": {
+  "k": [
+   2,
+   4,
+   8,
+   16,
+   32
+  ],
+  "s": [
+   1.0,
+   3.0,
+   10.0,
+   30.0
+  ]
+ },
+ "falsifier": "the pancancer_prior arm must beat plain_ridge_baseline by more than 0.0145, the 2-SD paired reseed bar measured on this code today",
+ "within_site_pairs": 1765,
+ "all_pairs": 24219,
+ "arms": {
+  "plain_ridge_baseline": {
+   "cindex": 0.6596,
+   "cindex_within_site_pairs": 0.6334,
+   "selected_k_s_per_fold": [
+    [
+     0,
+     1.0
+    ],
+    [
+     0,
+     1.0
+    ],
+    [
+     0,
+     1.0
+    ],
+    [
+     0,
+     1.0
+    ],
+    [
+     0,
+     1.0
+    ]
+   ]
+  },
+  "pancancer_prior": {
+   "cindex": 0.6554,
+   "cindex_within_site_pairs": 0.6147,
+   "selected_k_s_per_fold": [
+    [
+     16,
+     3.0
+    ],
+    [
+     2,
+     3.0
+    ],
+    [
+     2,
+     30.0
+    ],
+    [
+     2,
+     1.0
+    ],
+    [
+     8,
+     10.0
+    ]
+   ]
+  },
+  "permuted_donor_subspace_CONTROL": {
+   "cindex": 0.6455,
+   "cindex_within_site_pairs": 0.6142,
+   "selected_k_s_per_fold": [
+    [
+     32,
+     10.0
+    ],
+    [
+     16,
+     3.0
+    ],
+    [
+     2,
+     1.0
+    ],
+    [
+     2,
+     1.0
+    ],
+    [
+     2,
+     10.0
+    ]
+   ]
+  },
+  "unsupervised_subspace_ABLATION": {
+   "cindex": 0.6638,
+   "cindex_within_site_pairs": 0.6215,
+   "selected_k_s_per_fold": [
+    [
+     32,
+     30.0
+    ],
+    [
+     2,
+     3.0
+    ],
+    [
+     32,
+     10.0
+    ],
+    [
+     4,
+     3.0
+    ],
+    [
+     8,
+     3.0
+    ]
+   ]
+  },
+  "own_cohort_subspace_ABLATION": {
+   "cindex": 0.6548,
+   "cindex_within_site_pairs": 0.6181,
+   "selected_k_s_per_fold": [
+    [
+     2,
+     1.0
+    ],
+    [
+     16,
+     3.0
+    ],
+    [
+     2,
+     1.0
+    ],
+    [
+     2,
+     1.0
+    ],
+    [
+     2,
+     1.0
+    ]
+   ]
+  }
+ },
+ "verdict": {
+  "prior_minus_baseline": -0.0042,
+  "control_minus_baseline": -0.0141,
+  "unsupervised_minus_baseline": 0.0042,
+  "own_cohort_minus_baseline": -0.0048,
+  "bar": 0.0145,
+  "read_the_control_first": "if permuted_donor_subspace_CONTROL moved as much as pancancer_prior did, this run is VOID and nothing else in it is reportable"
+ }
+}

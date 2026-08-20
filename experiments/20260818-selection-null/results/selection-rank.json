@@ -1,0 +1,81 @@
+{
+ "artifact_type": "s15_selection_rank",
+ "phase_of_origin": "frozen_post_hoc",
+ "why": "a maximum-of-N correction assumes the maximum was taken; this records whether it was, from the ledger rather than from memory",
+ "frozen_arm_dev_value": 0.7291,
+ "candidates_scored": 269,
+ "strata": {
+  "subgroup_slice": 26,
+  "full_cohort_out_of_fold": 206,
+  "permuted_or_null_control": 14,
+  "in_sample_oracle": 18,
+  "cross_cohort_transfer_probe": 5
+ },
+ "stratum_rule": "a rank is only meaningful among values comparable to it: full cohort, scored out of fold. Subgroup slices, in-sample oracles, permuted and null controls and cross-cohort transfer probes are excluded and counted.",
+ "full_cohort_out_of_fold_candidates": 206,
+ "candidates_strictly_above": 8,
+ "ledger_rows_at_the_frozen_value": 3,
+ "rank_of_the_frozen_arm": 11,
+ "rank_optimistic": 9,
+ "tie_rule": "the frozen construction is recorded 3 times, by 3 sub-experiments that arrived at it independently. The reported rank counts every tied row as though it were above, which is the worst position the ledger supports.",
+ "candidates_scoring_above_it": [
+  {
+   "dev_value": 0.7493,
+   "candidate": "C5 gated_on_clinical_tertile",
+   "why_it_is_not_the_frozen_arm": "rejected: its permuted-tertile control beat it, reported as void"
+  },
+  {
+   "dev_value": 0.7447,
+   "candidate": "C5 flat_rank_average",
+   "why_it_is_not_the_frozen_arm": "the same C5 comparison's reference arm, not a separate candidate"
+  },
+  {
+   "dev_value": 0.7442,
+   "candidate": "pan-cohort brca / titan_only",
+   "why_it_is_not_the_frozen_arm": "a different cohort (BRCA), not a bladder candidate"
+  },
+  {
+   "dev_value": 0.7442,
+   "candidate": "five-cohort brca / titan",
+   "why_it_is_not_the_frozen_arm": "a different cohort (BRCA), not a bladder candidate"
+  },
+  {
+   "dev_value": 0.7396,
+   "candidate": "all-views combination: clinical + omics_xena + wsi_titan",
+   "why_it_is_not_the_frozen_arm": "the declared xena sensitivity"
+  },
+  {
+   "dev_value": 0.739,
+   "candidate": "headline arm: SENSITIVITY_xena_instead_of_combine",
+   "why_it_is_not_the_frozen_arm": "the declared xena sensitivity"
+  },
+  {
+   "dev_value": 0.7325,
+   "candidate": "C6 three_view_titan_combine_clinical / skill",
+   "why_it_is_not_the_frozen_arm": "rejected: skill weighting failed its control"
+  },
+  {
+   "dev_value": 0.7325,
+   "candidate": "multi-encoder titan_only_reference / skill",
+   "why_it_is_not_the_frozen_arm": "rejected: skill weighting failed its control"
+  }
+ ],
+ "ledger_rows_recording_the_frozen_construction": [
+  {
+   "id": 96,
+   "candidate": "C7 full arm / marginal",
+   "source": "c7.json"
+  },
+  {
+   "id": 134,
+   "candidate": "headline arm: OURS",
+   "source": "headline.json"
+  },
+  {
+   "id": 175,
+   "candidate": "rank-average: titan + omics + clinical",
+   "source": "omics_arm.json"
+  }
+ ],
+ "reading": "the frozen configuration is rank 11 of 206 comparable candidates, and 8 distinct configurations score strictly above it: two belong to a different cohort, three are components this paper rejects on their own pre-registered controls, and the rest are the declared transcriptomic sensitivity. The remaining places are the frozen construction's own tied rows. The arm was chosen by a stated principle rather than by taking the maximum, which is what a max-of-N correction assumes."
+}

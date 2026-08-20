@@ -1,0 +1,136 @@
+{
+ "artifact_type": "s7_reviewer_gaps",
+ "phase_of_origin": "frozen_post_hoc",
+ "l_seed_matched_competitor_metrics": {
+  "survpath_alone_seed_averaged": {
+   "cindex": 0.6294,
+   "td_auc_8m": 0.7079,
+   "td_auc_14m": 0.6998,
+   "td_auc_22m": 0.6556,
+   "ibs": 0.2126,
+   "logrank_p": 0.00725
+  },
+  "survpath_plus_clinical_seed_averaged": {
+   "cindex": 0.6891,
+   "td_auc_8m": 0.7572,
+   "td_auc_14m": 0.7449,
+   "td_auc_22m": 0.7129,
+   "ibs": 0.1987,
+   "logrank_p": 1.48e-07
+  },
+  "OURS": {
+   "cindex": 0.7225,
+   "td_auc_8m": 0.8006,
+   "td_auc_14m": 0.7832,
+   "td_auc_22m": 0.7549,
+   "ibs": 0.1888,
+   "logrank_p": 2.76e-14
+  },
+  "note": "recomputed on the seed-AVERAGED competitor so no table mixes a five-seed arm with a one-seed one"
+ },
+ "k_clinicians_model": {
+  "variants": {
+   "age+sex+stage (the frozen arm)": {
+    "clinical_alone": 0.6638,
+    "full_arm_with_it": 0.7225
+   },
+   "age+sex+grade": {
+    "clinical_alone": 0.5666,
+    "full_arm_with_it": 0.6856
+   },
+   "age+sex+stage+grade (a pathology report)": {
+    "clinical_alone": 0.6635,
+    "full_arm_with_it": 0.7225
+   },
+   "stage alone": {
+    "clinical_alone": 0.6695,
+    "full_arm_with_it": 0.7216
+   }
+  },
+  "reading": "if adding grade to stage does not help, the finding is cleaner: it is stage that was missing, not 'more clinical variables'."
+ },
+ "h_missing_stage": {
+  "cases_without_a_stage_value": 2,
+  "of_total": 359,
+  "encoding_in_the_frozen_arm": "all-zero stage block, i.e. an implicit 'no stage information'",
+  "full_cohort": 0.7225,
+  "complete_cases_only": {
+   "n": 357,
+   "events": 113,
+   "OURS": 0.7084,
+   "clinical": 0.6636
+  }
+ },
+ "g_slide_pooling": {
+  "cases_with_more_than_one_slide": 25,
+  "of_total": 359,
+  "mean_pool_image_arm": 0.6596,
+  "max_pool_image_arm": 0.6558,
+  "mean_pool_full_arm": 0.7225,
+  "max_pool_full_arm": 0.7224
+ },
+ "d_multiplicity": {
+  "family": "the five prespecified comparisons in the frozen protocol",
+  "method": "Holm-Bonferroni, step-down, as the protocol declares",
+  "comparisons": {
+   "ours vs clinical alone": {
+    "delta": 0.0587,
+    "ci95": [
+     0.0085,
+     0.1076
+    ],
+    "p_raw": 0.021,
+    "p_holm": 0.045,
+    "survives_holm_at_0.05": true
+   },
+   "ours vs image alone": {
+    "delta": 0.0629,
+    "ci95": [
+     0.0205,
+     0.1056
+    ],
+    "p_raw": 0.0043,
+    "p_holm": 0.0172,
+    "survives_holm_at_0.05": true
+   },
+   "ours vs omics alone": {
+    "delta": 0.0714,
+    "ci95": [
+     0.0286,
+     0.1153
+    ],
+    "p_raw": 0.0013,
+    "p_holm": 0.0065,
+    "survives_holm_at_0.05": true
+   },
+   "ours vs SurvPath+clinical (seed-matched)": {
+    "delta": 0.0334,
+    "ci95": [
+     -0.0064,
+     0.0735
+    ],
+    "p_raw": 0.1027,
+    "p_holm": 0.1027,
+    "survives_holm_at_0.05": false
+   },
+   "ours vs ours-without-clinical": {
+    "delta": 0.0383,
+    "ci95": [
+     0.0074,
+     0.0699
+    ],
+    "p_raw": 0.015,
+    "p_holm": 0.045,
+    "survives_holm_at_0.05": true
+   }
+  }
+ },
+ "m_detectable_margin": {
+  "case_level_bootstrap_se": 0.021,
+  "detectable_at_80pc_power_two_sided_0.05": 0.0589,
+  "power_of_the_observed_input_parity_margin": 0.355,
+  "n": 359,
+  "events": 113,
+  "reading": "a two-sided test at this cohort's SE detects a margin of about 0.059 at 80% power. The nine published entries on this benchmark span 0.596 to 0.691 and consecutive entries differ by 0.002 to 0.012, so almost none of the published ORDERING is resolvable at this n -- a statement about the benchmark, not about any one method."
+ }
+}

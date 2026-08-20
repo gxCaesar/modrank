@@ -1,0 +1,81 @@
+{
+ "artifact_type": "s7_survpath_multiseed",
+ "phase_of_origin": "frozen_post_hoc",
+ "n": 359,
+ "events": 113,
+ "what_varied": "SurvPath's --seed only; every other argument identical to the rerun that reproduced 0.6147 against a published 0.625",
+ "per_seed": {
+  "1": {
+   "survpath_alone": 0.6118,
+   "survpath_plus_clinical": 0.681
+  },
+  "2": {
+   "survpath_alone": 0.6112,
+   "survpath_plus_clinical": 0.6806
+  },
+  "3": {
+   "survpath_alone": 0.6195,
+   "survpath_plus_clinical": 0.6851
+  },
+  "4": {
+   "survpath_alone": 0.6119,
+   "survpath_plus_clinical": 0.683
+  },
+  "5": {
+   "survpath_alone": 0.6331,
+   "survpath_plus_clinical": 0.6843
+  }
+ },
+ "survpath_alone": {
+  "mean": 0.6175,
+  "sd_over_seeds": 0.0094,
+  "min": 0.6112,
+  "max": 0.6331,
+  "published": 0.625,
+  "published_sd_over_folds": 0.056,
+  "seeds": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ]
+ },
+ "survpath_plus_clinical": {
+  "mean": 0.6828,
+  "sd_over_seeds": 0.002,
+  "min": 0.6806,
+  "max": 0.6851
+ },
+ "seed_averaged_competitor": {
+  "survpath_alone": 0.6294,
+  "survpath_plus_clinical": 0.6891
+ },
+ "headline_like_for_like": {
+  "ours_seed0": 0.7225,
+  "survpath_plus_clinical_seed_averaged": 0.6891,
+  "paired": {
+   "mean": 0.0334,
+   "se": 0.0204,
+   "ci95": [
+    -0.0064,
+    0.0735
+   ],
+   "p_two_sided": 0.1027
+  },
+  "note": "our arm at seed 0 against the competitor averaged over its five seeds -- the conservative direction, since averaging can only reduce the competitor's noise"
+ },
+ "vs_single_seed_for_comparison": {
+  "survpath_plus_clinical_seed1_only": 0.681,
+  "paired": {
+   "mean": 0.0417,
+   "se": 0.0201,
+   "ci95": [
+    0.0027,
+    0.0817
+   ],
+   "p_two_sided": 0.037
+  }
+ },
+ "reading": "SurvPath's spread across seeds is a number this benchmark has never reported. If it is comparable to the margins the literature publishes, then those margins are not resolvable by a single run, and every published value here -- including the one this paper is measured against -- is a draw from a distribution nobody has characterised."
+}

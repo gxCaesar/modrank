@@ -1,0 +1,141 @@
+{
+ "artifact_type": "s5_method_infold",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "n": 359,
+ "events": 113,
+ "blocks": {
+  "wsi_titan": 768,
+  "omics_pathways": 275,
+  "clinical": 23
+ },
+ "estimator_library": [
+  "bagged_ridge",
+  "ridge_coarse",
+  "ridge_dense"
+ ],
+ "single_arms": {
+  "wsi_titan": {
+   "cindex": 0.6568,
+   "clinically_tied_q10": 0.6137,
+   "within_site": 0.6164,
+   "estimators_picked_in_fold": [
+    "ridge_dense",
+    "ridge_dense",
+    "ridge_dense",
+    "bagged_ridge",
+    "ridge_dense"
+   ]
+  },
+  "omics_pathways": {
+   "cindex": 0.6543,
+   "clinically_tied_q10": 0.644,
+   "within_site": 0.6584,
+   "estimators_picked_in_fold": [
+    "ridge_dense",
+    "bagged_ridge",
+    "ridge_coarse",
+    "bagged_ridge",
+    "bagged_ridge"
+   ]
+  },
+  "clinical": {
+   "cindex": 0.6743,
+   "clinically_tied_q10": 0.5183,
+   "within_site": 0.6527,
+   "estimators_picked_in_fold": [
+    "bagged_ridge",
+    "bagged_ridge",
+    "ridge_coarse",
+    "ridge_dense",
+    "ridge_coarse"
+   ]
+  },
+  "survpath_rerun": {
+   "cindex": 0.6118,
+   "clinically_tied_q10": 0.5808,
+   "within_site": 0.6028,
+   "estimators_picked_in_fold": [
+    "official implementation, rerun"
+   ]
+  }
+ },
+ "all_combinations": {
+  "clinical + omics_pathways + wsi_titan": 0.7234,
+  "clinical + wsi_titan": 0.7094,
+  "clinical + omics_pathways": 0.708,
+  "omics_pathways + wsi_titan": 0.686
+ },
+ "n_combinations": 4,
+ "comparison_A_vs_published": {
+  "ours_wsi_omics_clinical": 0.7234,
+  "published_on_same_released_folds": {
+   "DIMAF (MICCAI 2025, verified folds)": 0.679,
+   "MOAD-Net (arXiv, folds unverified)": 0.691,
+   "APL (arXiv/workshop)": 0.677,
+   "PIBD (ICLR 2024)": 0.667,
+   "ProtoPathway (arXiv 2026)": 0.646,
+   "DSCASurv (BiB 2025)": 0.646,
+   "OTSurv (MICCAI 2025)": 0.637,
+   "MMP (ICML 2024)": 0.635,
+   "SurvPath (CVPR 2024)": 0.625
+  },
+  "caveat": "unpaired, and the competitors had no clinical variables"
+ },
+ "comparison_B_input_parity_paired": {
+  "ours": 0.7234,
+  "survpath_plus_same_clinical": 0.6869,
+  "paired_bootstrap": {
+   "mean": 0.0366,
+   "se": 0.0207,
+   "ci95": [
+    -0.0046,
+    0.0774
+   ],
+   "p_two_sided": 0.0785,
+   "resampled": "cases, not comparable pairs"
+  },
+  "note": "the only competitor whose per-case predictions exist here, hence the only input-parity comparison that can be made"
+ },
+ "comparison_C_no_clinical": {
+  "ours_wsi_plus_omics_only": 0.686,
+  "incumbent_DIMAF": 0.679,
+  "gap": 0.007,
+  "bar": 0.0145,
+  "decides": "whether this is a method result or an information result"
+ },
+ "per_fold": {
+  "fold_0": {
+   "n": 70,
+   "events": 25,
+   "ours": 0.6904,
+   "survpath_plus_clinical": 0.6567
+  },
+  "fold_1": {
+   "n": 72,
+   "events": 24,
+   "ours": 0.7899,
+   "survpath_plus_clinical": 0.8093
+  },
+  "fold_2": {
+   "n": 75,
+   "events": 23,
+   "ours": 0.7744,
+   "survpath_plus_clinical": 0.6656
+  },
+  "fold_3": {
+   "n": 71,
+   "events": 25,
+   "ours": 0.6213,
+   "survpath_plus_clinical": 0.5713
+  },
+  "fold_4": {
+   "n": 71,
+   "events": 16,
+   "ours": 0.7381,
+   "survpath_plus_clinical": 0.7439
+  }
+ },
+ "mean_over_folds": 0.7228,
+ "sd_over_folds": 0.0685
+}

@@ -1,0 +1,75 @@
+{
+ "artifact_type": "s5_pancohort",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "arm": "identical to the bladder arm: ridge Cox per view, alphas by 3-fold inner CV in-fold, percentile within fold, equal weight",
+ "clinical_block": "age + sex ONLY -- T/N/M/stage were fetched from GDC for bladder only, so the cross-cohort clinical arm is NOT the bladder one",
+ "cohorts": {
+  "blca": {
+   "n_cases": 359,
+   "events": 113,
+   "comparable_pairs": 24219,
+   "omics_pathways_dim": 275,
+   "titan_only": 0.6596,
+   "omics_only": 0.651,
+   "age_sex_only": 0.5636,
+   "WSI_plus_OMICS": 0.6841,
+   "WSI_plus_OMICS_plus_age_sex": 0.6899,
+   "WSI_plus_OMICS_fold_mean": 0.6849,
+   "WSI_plus_OMICS_fold_sd": 0.0791
+  },
+  "brca": {
+   "n_cases": 871,
+   "events": 60,
+   "comparable_pairs": 24073,
+   "omics_pathways_dim": 275,
+   "titan_only": 0.7442,
+   "omics_only": 0.5829,
+   "age_sex_only": 0.4828,
+   "WSI_plus_OMICS": 0.7101,
+   "WSI_plus_OMICS_plus_age_sex": 0.6614,
+   "WSI_plus_OMICS_fold_mean": 0.7198,
+   "WSI_plus_OMICS_fold_sd": 0.0318
+  },
+  "coadread": {
+   "n_cases": 298,
+   "events": 37,
+   "comparable_pairs": 6711,
+   "omics_pathways_dim": 275,
+   "titan_only": 0.6542,
+   "omics_only": 0.6116,
+   "age_sex_only": 0.469,
+   "WSI_plus_OMICS": 0.6819,
+   "WSI_plus_OMICS_plus_age_sex": 0.6231,
+   "WSI_plus_OMICS_fold_mean": 0.6937,
+   "WSI_plus_OMICS_fold_sd": 0.0551
+  },
+  "hnsc": {
+   "n_cases": 394,
+   "events": 117,
+   "comparable_pairs": 29731,
+   "omics_pathways_dim": 275,
+   "titan_only": 0.6135,
+   "omics_only": 0.5852,
+   "age_sex_only": 0.485,
+   "WSI_plus_OMICS": 0.6169,
+   "WSI_plus_OMICS_plus_age_sex": 0.5911,
+   "WSI_plus_OMICS_fold_mean": 0.6314,
+   "WSI_plus_OMICS_fold_sd": 0.0322
+  },
+  "stad": {
+   "n_cases": 319,
+   "events": 84,
+   "comparable_pairs": 16158,
+   "omics_pathways_dim": 275,
+   "titan_only": 0.5858,
+   "omics_only": 0.5887,
+   "age_sex_only": 0.515,
+   "WSI_plus_OMICS": 0.6108,
+   "WSI_plus_OMICS_plus_age_sex": 0.6021,
+   "WSI_plus_OMICS_fold_mean": 0.6404,
+   "WSI_plus_OMICS_fold_sd": 0.0625
+  }
+ },
+ "mean_across_cohorts_WSI_plus_OMICS": 0.6608
+}

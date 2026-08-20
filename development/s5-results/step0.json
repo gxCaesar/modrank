@@ -1,0 +1,119 @@
+{
+ "artifact_type": "s5_step0_headroom",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "n": 359,
+ "events": 113,
+ "comparable_pairs": 24219,
+ "cheap_baselines": {
+  "constant (every patient the same risk)": 0.5,
+  "age alone": 0.5756,
+  "sex alone": 0.4697,
+  "stage block alone (T,N,M,stage, no age/sex)": 0.678,
+  "clinical Cox (age+sex+T+N+M+stage)": 0.6856,
+  "TITAN slide embedding Cox": 0.6596
+ },
+ "noise_floor_measured_on_this_code": {
+  "reseeds": 24,
+  "what_was_varied": "the 5-fold assignment of the SAME 359 patients; arms, estimator, alpha grid and inner-CV seed all held fixed",
+  "per_arm_pooled_cindex": {
+   "titan": {
+    "mean": 0.6424,
+    "sd": 0.0115
+   },
+   "clinical": {
+    "mean": 0.6823,
+    "sd": 0.0093
+   },
+   "rank_avg": {
+    "mean": 0.7093,
+    "sd": 0.0092
+   }
+  },
+  "delta_rank_avg_minus_clinical": {
+   "mean": 0.027,
+   "sd": 0.0073,
+   "bar_2sd": 0.0145
+  },
+  "released_fold_values": {
+   "titan": 0.6596,
+   "clinical": 0.6856,
+   "rank_avg": 0.7191
+  }
+ },
+ "oracle": {
+  "titan_d2": {
+   "oracle_in_sample": 0.573,
+   "control_permuted_outcome": 0.4975,
+   "control_sd": 0.0616,
+   "control_draws": 100,
+   "out_of_fold": 0.5515,
+   "recoverable_above_control": 0.0755,
+   "estimation_loss": 0.0216
+  },
+  "titan_d4": {
+   "oracle_in_sample": 0.645,
+   "control_permuted_outcome": 0.4886,
+   "control_sd": 0.0808,
+   "control_draws": 100,
+   "out_of_fold": 0.6056,
+   "recoverable_above_control": 0.1564,
+   "estimation_loss": 0.0394
+  },
+  "titan_d8": {
+   "oracle_in_sample": 0.7067,
+   "control_permuted_outcome": 0.5064,
+   "control_sd": 0.0799,
+   "control_draws": 100,
+   "out_of_fold": 0.6094,
+   "recoverable_above_control": 0.2003,
+   "estimation_loss": 0.0973
+  },
+  "titan_d16": {
+   "oracle_in_sample": 0.7666,
+   "control_permuted_outcome": 0.498,
+   "control_sd": 0.0824,
+   "control_draws": 100,
+   "out_of_fold": 0.6496,
+   "recoverable_above_control": 0.2686,
+   "estimation_loss": 0.117
+  },
+  "clinical_d2": {
+   "oracle_in_sample": 0.6882,
+   "control_permuted_outcome": 0.4856,
+   "control_sd": 0.1456,
+   "control_draws": 100,
+   "out_of_fold": 0.693,
+   "recoverable_above_control": 0.2027,
+   "estimation_loss": -0.0048
+  },
+  "clinical_d4": {
+   "oracle_in_sample": 0.7063,
+   "control_permuted_outcome": 0.5135,
+   "control_sd": 0.1191,
+   "control_draws": 100,
+   "out_of_fold": 0.6934,
+   "recoverable_above_control": 0.1929,
+   "estimation_loss": 0.013
+  },
+  "clinical_d8": {
+   "oracle_in_sample": 0.734,
+   "control_permuted_outcome": 0.4802,
+   "control_sd": 0.093,
+   "control_draws": 100,
+   "out_of_fold": 0.677,
+   "recoverable_above_control": 0.2538,
+   "estimation_loss": 0.057
+  },
+  "clinical_d16": {
+   "oracle_in_sample": 0.756,
+   "control_permuted_outcome": 0.4862,
+   "control_sd": 0.0934,
+   "control_draws": 100,
+   "out_of_fold": 0.6741,
+   "recoverable_above_control": 0.2697,
+   "estimation_loss": 0.0819
+  }
+ },
+ "oracle_reading": "recoverable_above_control is how much of the outcome this representation expresses once pure overfitting at the same capacity is subtracted. estimation_loss is what the estimator gives up going from in-sample to out-of-fold. If the first is small the representation is exhausted and the next component must change the inputs; if the second is large the information is present and unreached."
+}

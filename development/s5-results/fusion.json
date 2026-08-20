@@ -1,0 +1,78 @@
+{
+ "artifact_type": "s5_fusion_probe",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "arms_out_of_fold": {
+  "titan": 0.6596,
+  "clinical": 0.6856,
+  "rank_average": 0.7191
+ },
+ "A_weight_sweep": {
+  "grid": {
+   "0.00": 0.6856,
+   "0.05": 0.6892,
+   "0.10": 0.6931,
+   "0.15": 0.7026,
+   "0.20": 0.7051,
+   "0.25": 0.7071,
+   "0.30": 0.7138,
+   "0.35": 0.7165,
+   "0.40": 0.7187,
+   "0.45": 0.7178,
+   "0.50": 0.7191,
+   "0.55": 0.7175,
+   "0.60": 0.715,
+   "0.65": 0.7103,
+   "0.70": 0.7038,
+   "0.75": 0.6999,
+   "0.80": 0.6946,
+   "0.85": 0.6861,
+   "0.90": 0.6726,
+   "0.95": 0.666,
+   "1.00": 0.6596
+  },
+  "best_w_on_image": "0.50",
+  "best_value": 0.7191,
+  "value_at_equal_weight": 0.7191,
+  "note": "this sweep is chosen on the pooled outcome and is therefore itself an oracle over one parameter; it is a reference for the SHAPE of the objective, not a reportable arm"
+ },
+ "B_linear_fusion_oracle": {
+  "oracle_in_sample": 0.7268,
+  "control_permuted_outcome": 0.5006,
+  "control_sd": 0.1644,
+  "control_draws": 1000,
+  "params": 2,
+  "above_control": 0.2262
+ },
+ "C_gated_fusion_oracle": {
+  "oracle_in_sample": 0.7492,
+  "control_permuted_outcome": 0.4977,
+  "control_sd": 0.1364,
+  "control_draws": 1000,
+  "params": 4,
+  "above_control": 0.2515
+ },
+ "C_minus_B": 0.0224,
+ "C_minus_B_control": -0.0029,
+ "C_reading": "C_minus_B is the ceiling of what gating the image weight on clinical risk could buy; C_minus_B_control is how much of that the extra parameters buy with no signal at all. Only the excess of the first over the second is a reason to build the component.",
+ "D_independence_reference": {
+  "sum_of_the_two_rank_averaged": 0.7421,
+  "sd": 0.0238,
+  "calibration_target": {
+   "arm_a": 0.6596,
+   "arm_b": 0.6856
+  },
+  "calibration_achieved": {
+   "arm_a": 0.6586,
+   "arm_b": 0.6884,
+   "sigma_a": 0.896,
+   "sigma_b": 0.523
+  },
+  "correlation_check": {
+   "simulated_spearman": -0.0033,
+   "observed_spearman": 0.213,
+   "note": "the model puts the two arms on independent components, so its induced correlation should be near zero; the observed 0.21 is above that and the reference is correspondingly slightly optimistic"
+  }
+ },
+ "D_reading": "if the measured rank-average sits at the simulated value, +0.0335 is simply what two signals of these strengths are worth and the fusion rule is not the deficit; if it sits well below, the rule is losing information these two arms already contain"
+}

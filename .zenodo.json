@@ -1,0 +1,27 @@
+{
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "mit",
+  "language": "eng",
+  "title": "ModRank: parameter-free fusion of histology, transcriptome and pathologic stage for bladder cancer survival",
+  "version": "1.0.0",
+  "creators": [
+    {
+      "name": "Chen, Guanxing",
+      "orcid": "0000-0002-4435-0884",
+      "affiliation": "City University of Hong Kong (Dongguan), China"
+    }
+  ],
+  "keywords": [
+    "bladder cancer",
+    "urothelial carcinoma",
+    "survival analysis",
+    "computational pathology",
+    "multimodal fusion",
+    "benchmark",
+    "TCGA",
+    "Cox regression",
+    "whole-slide imaging"
+  ],
+  "description": "<p>Code, frozen protocol and results for the paper <em>ModRank: parameter-free fusion of histology, transcriptome and pathologic stage for bladder cancer survival</em>.</p><p>ModRank fits one ridge Cox model per modality on the released five-fold splits of the TCGA-BLCA whole-slide survival benchmark and averages their within-fold ranks with equal weight, spending no parameters at all on the combination. It reaches a concordance index of 0.7212 with 1,049 coefficients on 359 cases and 113 events.</p><p>The archive also carries the study's own negative finding: the pre-registered selection correction was mis-specified, and under an outcome-permuted null the reported value does not clear a correctly constructed bar. The 200 permutations behind that measurement are included, and the bundled check script recomputes both corrected bars and asserts the failure rather than leaving it to be taken on trust.</p><p>No input data are redistributed here. Every input is another group's public release and the code takes their location through an environment variable.</p><p>Funding: Guangdong Basic and Applied Basic Research Foundation, No. 2025A1515110446.</p>"
+}

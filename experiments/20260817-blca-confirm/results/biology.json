@@ -1,0 +1,795 @@
+{
+ "artifact_type": "s8_biology",
+ "phase_of_origin": "frozen_post_hoc",
+ "n": 359,
+ "events": 113,
+ "status": "DESCRIPTIVE. Associations in 359 patients. Nothing here feeds back into the method and nothing here is a discovery claim.",
+ "B1_signatures": {
+  "panels": {
+   "basal": {
+    "available": 7,
+    "of": 12,
+    "genes_used": [
+     "KRT5",
+     "KRT1",
+     "CD44",
+     "COL17A1",
+     "DSC3",
+     "SDC1",
+     "MSN"
+    ],
+    "inverted": []
+   },
+   "luminal": {
+    "available": 6,
+    "of": 13,
+    "genes_used": [
+     "GATA3",
+     "PPARG",
+     "XBP1",
+     "ERBB2",
+     "ERBB3",
+     "CYP2J2"
+    ],
+    "inverted": []
+   },
+   "EMT": {
+    "available": 7,
+    "of": 10,
+    "genes_used": [
+     "ZEB1",
+     "VIM",
+     "SNAI2",
+     "CDH2",
+     "CLDN3",
+     "CLDN4",
+     "CLDN7"
+    ],
+    "inverted": [
+     "CLDN3",
+     "CLDN4",
+     "CLDN7"
+    ]
+   },
+   "immune": {
+    "available": 12,
+    "of": 13,
+    "genes_used": [
+     "CD8A",
+     "CD3D",
+     "CD3E",
+     "GZMB",
+     "PRF1",
+     "IFNG",
+     "CXCL9",
+     "CXCL10",
+     "PDCD1",
+     "CD274",
+     "CTLA4",
+     "ITGAE"
+    ],
+    "inverted": []
+   },
+   "proliferation": {
+    "available": 7,
+    "of": 8,
+    "genes_used": [
+     "MKI67",
+     "TOP2A",
+     "BIRC5",
+     "AURKA",
+     "RRM2",
+     "TYMS",
+     "MCM2"
+    ],
+    "inverted": []
+   },
+   "p53_cell_cycle": {
+    "available": 6,
+    "of": 6,
+    "genes_used": [
+     "TP53",
+     "RB1",
+     "CDKN2A",
+     "E2F3",
+     "CCND1",
+     "MDM2"
+    ],
+    "inverted": []
+   },
+   "FGFR3_axis": {
+    "available": 4,
+    "of": 4,
+    "genes_used": [
+     "FGFR3",
+     "CCND1",
+     "SHH",
+     "TP63"
+    ],
+    "inverted": []
+   },
+   "stroma": {
+    "available": 7,
+    "of": 7,
+    "genes_used": [
+     "FAP",
+     "PDGFRB",
+     "ACTA2",
+     "COL1A1",
+     "COL3A1",
+     "THBS2",
+     "POSTN"
+    ],
+    "inverted": []
+   }
+  },
+  "construction": "z-scored mean over available member genes; the tight-junction genes in the EMT panel are sign-flipped because they fall rather than rise with EMT"
+ },
+ "B2_survival_association": {
+  "axes": {
+   "basal": {
+    "cox_score_statistic": 2.251,
+    "p": 0.0244,
+    "cindex_as_a_raw_score": 0.5619,
+    "bh_q": 0.0488
+   },
+   "luminal": {
+    "cox_score_statistic": 2.808,
+    "p": 0.00498,
+    "cindex_as_a_raw_score": 0.4052,
+    "bh_q": 0.0178
+   },
+   "EMT": {
+    "cox_score_statistic": 3.317,
+    "p": 0.00091,
+    "cindex_as_a_raw_score": 0.575,
+    "bh_q": 0.0073
+   },
+   "immune": {
+    "cox_score_statistic": 1.895,
+    "p": 0.0581,
+    "cindex_as_a_raw_score": 0.4498,
+    "bh_q": 0.093
+   },
+   "proliferation": {
+    "cox_score_statistic": 1.56,
+    "p": 0.119,
+    "cindex_as_a_raw_score": 0.5394,
+    "bh_q": 0.1587
+   },
+   "p53_cell_cycle": {
+    "cox_score_statistic": 0.469,
+    "p": 0.639,
+    "cindex_as_a_raw_score": 0.4852,
+    "bh_q": 0.7303
+   },
+   "FGFR3_axis": {
+    "cox_score_statistic": 0.118,
+    "p": 0.906,
+    "cindex_as_a_raw_score": 0.4753,
+    "bh_q": 0.906
+   },
+   "stroma": {
+    "cox_score_statistic": 2.713,
+    "p": 0.00667,
+    "cindex_as_a_raw_score": 0.5736,
+    "bh_q": 0.0178
+   }
+  },
+  "pathways_tested": 275,
+  "pathways_with_BH_q_below_0.10": 0,
+  "top_15_pathways": [
+   {
+    "pathway": "Epidermal_Growth_Factor_Receptor_(EGFR)_signaling",
+    "p": 0.000694,
+    "q_BH": 0.1102
+   },
+   {
+    "pathway": "Axonal_growth_stimulation",
+    "p": 0.000802,
+    "q_BH": 0.1102
+   },
+   {
+    "pathway": "EGFR_interacts_with_phospholipase_C-gamma",
+    "p": 0.00228,
+    "q_BH": 0.2043
+   },
+   {
+    "pathway": "Ceramide_signalling",
+    "p": 0.00297,
+    "q_BH": 0.2043
+   },
+   {
+    "pathway": "HALLMARK_EPITHELIAL_MESENCHYMAL_TRANSITION",
+    "p": 0.00399,
+    "q_BH": 0.2194
+   },
+   {
+    "pathway": "PLCG1_events_in_ERBB2_signaling",
+    "p": 0.00539,
+    "q_BH": 0.2457
+   },
+   {
+    "pathway": "Cam-PDE_1_activation",
+    "p": 0.00652,
+    "q_BH": 0.2457
+   },
+   {
+    "pathway": "Transferrin_endocytosis_and_recycling",
+    "p": 0.00735,
+    "q_BH": 0.2457
+   },
+   {
+    "pathway": "Sulfide_oxidation_to_sulfate",
+    "p": 0.00842,
+    "q_BH": 0.2457
+   },
+   {
+    "pathway": "Signalling_to_p38_via_RIT_and_RIN",
+    "p": 0.00894,
+    "q_BH": 0.2457
+   },
+   {
+    "pathway": "HALLMARK_HEDGEHOG_SIGNALING",
+    "p": 0.0115,
+    "q_BH": 0.247
+   },
+   {
+    "pathway": "PDGF_receptor_signaling_network",
+    "p": 0.0116,
+    "q_BH": 0.247
+   },
+   {
+    "pathway": "PLC-gamma1_signalling",
+    "p": 0.0118,
+    "q_BH": 0.247
+   },
+   {
+    "pathway": "Pentose_phosphate_pathway_(hexose_monophosphate_shunt)",
+    "p": 0.0145,
+    "q_BH": 0.247
+   },
+   {
+    "pathway": "CREB_phosphorylation_through_the_activation_of_Adenylate_Cyclase",
+    "p": 0.015,
+    "q_BH": 0.247
+   }
+  ],
+  "note": "computed on the whole cohort, which is correct for an ASSOCIATION and would be leakage if it selected anything. It selects nothing -- the frozen arm uses all 275.",
+  "bh_note": "Benjamini-Hochberg over the 8 axes in this block. Added 2026-08-18 so the figures load q rather than recomputing it, and so the four significant axes the manuscript names can be checked against the file."
+ },
+ "B3_what_the_image_arm_tracks": {
+  "axes": {
+   "basal": {
+    "spearman": 0.0438,
+    "p": 0.408,
+    "bh_q": 0.544
+   },
+   "luminal": {
+    "spearman": -0.1871,
+    "p": 0.000364,
+    "bh_q": 0.001
+   },
+   "EMT": {
+    "spearman": 0.1463,
+    "p": 0.00547,
+    "bh_q": 0.0109
+   },
+   "immune": {
+    "spearman": -0.0149,
+    "p": 0.778,
+    "bh_q": 0.8891
+   },
+   "proliferation": {
+    "spearman": 0.0757,
+    "p": 0.152,
+    "bh_q": 0.2432
+   },
+   "p53_cell_cycle": {
+    "spearman": 0.0071,
+    "p": 0.894,
+    "bh_q": 0.894
+   },
+   "FGFR3_axis": {
+    "spearman": -0.2245,
+    "p": 1.76e-05,
+    "bh_q": 0.0001
+   },
+   "stroma": {
+    "spearman": 0.1917,
+    "p": 0.000259,
+    "bh_q": 0.001
+   }
+  },
+  "pathways_with_BH_q_below_0.05": 59,
+  "top_12_pathways_by_absolute_correlation": [
+   {
+    "pathway": "Fatty_acids",
+    "spearman": -0.287,
+    "q_BH": 0.0
+   },
+   {
+    "pathway": "Arachidonate_production_from_DAG",
+    "spearman": 0.278,
+    "q_BH": 0.0
+   },
+   {
+    "pathway": "L1CAM_interactions",
+    "spearman": 0.228,
+    "q_BH": 0.0011
+   },
+   {
+    "pathway": "Utilization_of_Ketone_Bodies",
+    "spearman": 0.224,
+    "q_BH": 0.0012
+   },
+   {
+    "pathway": "Glutathione_synthesis_and_recycling",
+    "spearman": -0.219,
+    "q_BH": 0.0015
+   },
+   {
+    "pathway": "Cross-presentation_of_particulate_exogenous_antigens_(phagosomes)",
+    "spearman": 0.217,
+    "q_BH": 0.0015
+   },
+   {
+    "pathway": "Interconversion_of_2-oxoglutarate_and_2-hydroxyglutarate",
+    "spearman": -0.214,
+    "q_BH": 0.0015
+   },
+   {
+    "pathway": "G-protein_activation",
+    "spearman": 0.214,
+    "q_BH": 0.0015
+   },
+   {
+    "pathway": "HALLMARK_PANCREAS_BETA_CELLS",
+    "spearman": 0.211,
+    "q_BH": 0.0017
+   },
+   {
+    "pathway": "Synthesis__Secretion__and_Inactivation_of_Glucose-dependent_Insulinotropic_Polypeptide_(GIP)",
+    "spearman": 0.208,
+    "q_BH": 0.0018
+   },
+   {
+    "pathway": "Axonal_growth_stimulation",
+    "spearman": 0.208,
+    "q_BH": 0.0018
+   },
+   {
+    "pathway": "PLC-gamma1_signalling",
+    "spearman": 0.205,
+    "q_BH": 0.0021
+   }
+  ],
+  "label": "TITAN slide-embedding arm, out-of-fold score",
+  "bh_note": "Benjamini-Hochberg over the 8 axes in this block. Added 2026-08-18 so the figures load q rather than recomputing it, and so the four significant axes the manuscript names can be checked against the file."
+ },
+ "B4_what_the_omics_arm_tracks": {
+  "axes": {
+   "basal": {
+    "spearman": 0.3595,
+    "p": 2.16e-12,
+    "bh_q": 0.0
+   },
+   "luminal": {
+    "spearman": -0.372,
+    "p": 3.19e-13,
+    "bh_q": 0.0
+   },
+   "EMT": {
+    "spearman": 0.3672,
+    "p": 6.73e-13,
+    "bh_q": 0.0
+   },
+   "immune": {
+    "spearman": -0.0684,
+    "p": 0.196,
+    "bh_q": 0.224
+   },
+   "proliferation": {
+    "spearman": 0.158,
+    "p": 0.00269,
+    "bh_q": 0.0043
+   },
+   "p53_cell_cycle": {
+    "spearman": 0.0596,
+    "p": 0.26,
+    "bh_q": 0.26
+   },
+   "FGFR3_axis": {
+    "spearman": -0.0929,
+    "p": 0.0787,
+    "bh_q": 0.1049
+   },
+   "stroma": {
+    "spearman": 0.3227,
+    "p": 3.83e-10,
+    "bh_q": 0.0
+   }
+  },
+  "pathways_with_BH_q_below_0.05": 179,
+  "top_12_pathways_by_absolute_correlation": [
+   {
+    "pathway": "Axonal_growth_stimulation",
+    "spearman": 0.42,
+    "q_BH": 0.0
+   },
+   {
+    "pathway": "Ceramide_signalling",
+    "spearman": 0.398,
+    "q_BH": 0.0
+   },
+   {
+    "pathway": "HALLMARK_EPITHELIAL_MESENCHYMAL_TRANSITION",
+    "spearman": 0.361,
+    "q_BH": 0.0
+   },
+   {
+    "pathway": "Epidermal_Growth_Factor_Receptor_(EGFR)_signaling",
+    "spearman": 0.345,
+    "q_BH": 0.0
+   },
+   {
+    "pathway": "EGFR_interacts_with_phospholipase_C-gamma",
+    "spearman": 0.344,
+    "q_BH": 0.0
+   },
+   {
+    "pathway": "Fatty_acids",
+    "spearman": -0.335,
+    "q_BH": 0.0
+   },
+   {
+    "pathway": "PLC-gamma1_signalling",
+    "spearman": 0.322,
+    "q_BH": 0.0
+   },
+   {
+    "pathway": "Synthesis_of_Ketone_Bodies",
+    "spearman": -0.308,
+    "q_BH": 0.0
+   },
+   {
+    "pathway": "HALLMARK_APICAL_JUNCTION",
+    "spearman": 0.306,
+    "q_BH": 0.0
+   },
+   {
+    "pathway": "Cam-PDE_1_activation",
+    "spearman": 0.306,
+    "q_BH": 0.0
+   },
+   {
+    "pathway": "Beta_oxidation_of_butanoyl-CoA_to_acetyl-CoA",
+    "spearman": -0.304,
+    "q_BH": 0.0
+   },
+   {
+    "pathway": "HALLMARK_HEDGEHOG_SIGNALING",
+    "spearman": 0.304,
+    "q_BH": 0.0
+   }
+  ],
+  "label": "pathway-expression arm, out-of-fold score",
+  "bh_note": "Benjamini-Hochberg over the 8 axes in this block. Added 2026-08-18 so the figures load q rather than recomputing it, and so the four significant axes the manuscript names can be checked against the file."
+ },
+ "B4b_contrast": {
+  "spearman_image_vs_omics_arm": 0.2713,
+  "axes_side_by_side": {
+   "basal": {
+    "image": 0.0438,
+    "omics": 0.3595
+   },
+   "luminal": {
+    "image": -0.1871,
+    "omics": -0.372
+   },
+   "EMT": {
+    "image": 0.1463,
+    "omics": 0.3672
+   },
+   "immune": {
+    "image": -0.0149,
+    "omics": -0.0684
+   },
+   "proliferation": {
+    "image": 0.0757,
+    "omics": 0.158
+   },
+   "p53_cell_cycle": {
+    "image": 0.0071,
+    "omics": 0.0596
+   },
+   "FGFR3_axis": {
+    "image": -0.2245,
+    "omics": -0.0929
+   },
+   "stroma": {
+    "image": 0.1917,
+    "omics": 0.3227
+   }
+  },
+  "reading": "the two arms are only weakly correlated with each other; this says whether that is because they read DIFFERENT biology or because one of them reads none"
+ },
+ "B5_within_molecular_subtype": {
+  "axis": "basal-minus-luminal signature difference, split at its median. A continuous split, not a published classifier: the released files carry no subtype call and we do not have the training data to reproduce one.",
+  "subtype_axis_itself": {
+   "n_luminal_leaning": 180,
+   "n_basal_leaning": 179,
+   "events": [
+    42,
+    71
+   ],
+   "logrank_p": 0.00122,
+   "cindex_of_the_axis_as_a_risk_score": 0.6027
+  },
+  "luminal_leaning": {
+   "n": 180,
+   "events": 42,
+   "pairs": 4157,
+   "OURS": 0.6997,
+   "image": 0.6197,
+   "omics": 0.6218,
+   "clinical": 0.7005
+  },
+  "basal_leaning": {
+   "n": 179,
+   "events": 71,
+   "pairs": 7831,
+   "OURS": 0.7109,
+   "image": 0.6693,
+   "omics": 0.6226,
+   "clinical": 0.6472
+  }
+ },
+ "B6_case_studies": {
+  "selection_rule": "FIXED IN THE FILE BEFORE THE RUN: within the middle tertile of the clinical arm's out-of-fold risk, the 4 highest and 4 lowest full-method scores, plus the 2 largest image-over-omics and 2 largest omics-over-image disagreements. All are reported.",
+  "band_size": 119,
+  "cases": [
+   {
+    "case_id": "TCGA-BT-A0S7",
+    "selected_as": "highest full-method score in the band",
+    "ours": 0.973,
+    "image": 0.959,
+    "omics": 0.973,
+    "clinical": 0.635,
+    "stage": "Stage III",
+    "sig_basal": 0.28,
+    "sig_luminal": -0.75,
+    "sig_EMT": 0.35,
+    "sig_immune": -0.64,
+    "sig_proliferation": 0.42,
+    "sig_p53_cell_cycle": 0.28,
+    "sig_FGFR3_axis": 0.28,
+    "sig_stroma": 0.07,
+    "observed_months": 6.7,
+    "event": true
+   },
+   {
+    "case_id": "TCGA-DK-A1AE",
+    "selected_as": "highest full-method score in the band",
+    "ours": 0.971,
+    "image": 1.0,
+    "omics": 1.0,
+    "clinical": 0.657,
+    "stage": "Stage III",
+    "sig_basal": 0.59,
+    "sig_luminal": -0.71,
+    "sig_EMT": 0.49,
+    "sig_immune": -0.15,
+    "sig_proliferation": 0.42,
+    "sig_p53_cell_cycle": 0.13,
+    "sig_FGFR3_axis": 0.51,
+    "sig_stroma": -0.3,
+    "observed_months": 16.4,
+    "event": false
+   },
+   {
+    "case_id": "TCGA-XF-AAN7",
+    "selected_as": "highest full-method score in the band",
+    "ours": 0.957,
+    "image": 0.757,
+    "omics": 1.0,
+    "clinical": 0.643,
+    "stage": "Stage IV",
+    "sig_basal": -0.97,
+    "sig_luminal": -1.44,
+    "sig_EMT": 2.29,
+    "sig_immune": -0.18,
+    "sig_proliferation": 1.58,
+    "sig_p53_cell_cycle": 0.63,
+    "sig_FGFR3_axis": -1.49,
+    "sig_stroma": 0.63,
+    "observed_months": 18.8,
+    "event": true
+   },
+   {
+    "case_id": "TCGA-CU-A3KJ",
+    "selected_as": "highest full-method score in the band",
+    "ours": 0.957,
+    "image": 0.826,
+    "omics": 0.913,
+    "clinical": 0.58,
+    "stage": "Stage III",
+    "sig_basal": 0.61,
+    "sig_luminal": -0.86,
+    "sig_EMT": 1.0,
+    "sig_immune": 0.12,
+    "sig_proliferation": 0.65,
+    "sig_p53_cell_cycle": -0.11,
+    "sig_FGFR3_axis": -0.11,
+    "sig_stroma": -0.04,
+    "observed_months": 18.7,
+    "event": false
+   },
+   {
+    "case_id": "TCGA-G2-AA3B",
+    "selected_as": "lowest full-method score in the band",
+    "ours": 0.068,
+    "image": 0.257,
+    "omics": 0.0,
+    "clinical": 0.459,
+    "stage": "Stage II",
+    "sig_basal": -1.15,
+    "sig_luminal": 0.88,
+    "sig_EMT": -1.03,
+    "sig_immune": 0.32,
+    "sig_proliferation": -0.22,
+    "sig_p53_cell_cycle": -0.66,
+    "sig_FGFR3_axis": -0.0,
+    "sig_stroma": -1.13,
+    "observed_months": 66.9,
+    "event": false
+   },
+   {
+    "case_id": "TCGA-XF-AAN1",
+    "selected_as": "lowest full-method score in the band",
+    "ours": 0.086,
+    "image": 0.014,
+    "omics": 0.143,
+    "clinical": 0.486,
+    "stage": "Stage III",
+    "sig_basal": -0.11,
+    "sig_luminal": 0.41,
+    "sig_EMT": -0.4,
+    "sig_immune": -0.73,
+    "sig_proliferation": -0.43,
+    "sig_p53_cell_cycle": -0.08,
+    "sig_FGFR3_axis": 0.82,
+    "sig_stroma": -1.02,
+    "observed_months": 31.4,
+    "event": true
+   },
+   {
+    "case_id": "TCGA-ZF-A9R7",
+    "selected_as": "lowest full-method score in the band",
+    "ours": 0.087,
+    "image": 0.304,
+    "omics": 0.014,
+    "clinical": 0.391,
+    "stage": "Stage II",
+    "sig_basal": -0.06,
+    "sig_luminal": 0.4,
+    "sig_EMT": -0.43,
+    "sig_immune": 1.43,
+    "sig_proliferation": -0.77,
+    "sig_p53_cell_cycle": -0.21,
+    "sig_FGFR3_axis": 0.24,
+    "sig_stroma": -0.81,
+    "observed_months": 22.2,
+    "event": false
+   },
+   {
+    "case_id": "TCGA-E7-A7XN",
+    "selected_as": "lowest full-method score in the band",
+    "ours": 0.1,
+    "image": 0.086,
+    "omics": 0.1,
+    "clinical": 0.443,
+    "stage": "Stage III",
+    "sig_basal": 1.1,
+    "sig_luminal": -0.55,
+    "sig_EMT": -0.5,
+    "sig_immune": 1.73,
+    "sig_proliferation": 0.45,
+    "sig_p53_cell_cycle": 0.6,
+    "sig_FGFR3_axis": 0.22,
+    "sig_stroma": -0.79,
+    "observed_months": 14.3,
+    "event": false
+   },
+   {
+    "case_id": "TCGA-GD-A6C6",
+    "selected_as": "image arm far ABOVE omics arm",
+    "ours": 0.4,
+    "image": 1.0,
+    "omics": 0.0,
+    "clinical": 0.357,
+    "stage": "Stage III",
+    "sig_basal": -0.89,
+    "sig_luminal": -0.19,
+    "sig_EMT": -1.06,
+    "sig_immune": -0.89,
+    "sig_proliferation": -0.31,
+    "sig_p53_cell_cycle": -1.25,
+    "sig_FGFR3_axis": 0.19,
+    "sig_stroma": -1.06,
+    "observed_months": 2.2,
+    "event": false
+   },
+   {
+    "case_id": "TCGA-YC-A89H",
+    "selected_as": "image arm far ABOVE omics arm",
+    "ours": 0.446,
+    "image": 0.824,
+    "omics": 0.041,
+    "clinical": 0.486,
+    "stage": "Stage II",
+    "sig_basal": 0.03,
+    "sig_luminal": 0.14,
+    "sig_EMT": -0.23,
+    "sig_immune": 0.19,
+    "sig_proliferation": 0.12,
+    "sig_p53_cell_cycle": 0.12,
+    "sig_FGFR3_axis": 0.22,
+    "sig_stroma": 0.21,
+    "observed_months": 19.1,
+    "event": false
+   },
+   {
+    "case_id": "TCGA-BT-A20O",
+    "selected_as": "omics arm far ABOVE image arm",
+    "ours": 0.581,
+    "image": 0.041,
+    "omics": 0.878,
+    "clinical": 0.649,
+    "stage": "Stage III",
+    "sig_basal": -0.33,
+    "sig_luminal": -1.29,
+    "sig_EMT": 2.2,
+    "sig_immune": 1.87,
+    "sig_proliferation": 0.67,
+    "sig_p53_cell_cycle": 0.23,
+    "sig_FGFR3_axis": -1.39,
+    "sig_stroma": 0.58,
+    "observed_months": 12.3,
+    "event": true
+   },
+   {
+    "case_id": "TCGA-GD-A2C5",
+    "selected_as": "omics arm far ABOVE image arm",
+    "ours": 0.371,
+    "image": 0.029,
+    "omics": 0.7,
+    "clinical": 0.614,
+    "stage": "Stage IV",
+    "sig_basal": -0.68,
+    "sig_luminal": 0.6,
+    "sig_EMT": -0.06,
+    "sig_immune": -0.86,
+    "sig_proliferation": -0.01,
+    "sig_p53_cell_cycle": -0.33,
+    "sig_FGFR3_axis": 0.15,
+    "sig_stroma": 0.54,
+    "observed_months": 27.1,
+    "event": false
+   }
+  ],
+  "summary": {
+   "high": {
+    "n": 4,
+    "events": 2,
+    "median_months": 17.5
+   },
+   "low": {
+    "n": 4,
+    "events": 1,
+    "median_months": 26.8
+   }
+  },
+  "caution": "eight-to-twelve patients cannot support an inference. These are illustrations of what the model reads, chosen by a rule fixed in advance, and the ones that contradict it are in the table."
+ }
+}

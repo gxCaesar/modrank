@@ -1,0 +1,140 @@
+{
+ "artifact_type": "s7_why_grade_fails",
+ "phase_of_origin": "frozen_post_hoc",
+ "claim": "a covariate concentrated in one category cannot separate patients, whatever the model. Muscle-invasive bladder cancer is almost uniformly high grade; stage is not.",
+ "cohorts": {
+  "blca": {
+   "n": 359,
+   "grade": {
+    "n_with_a_value": 357,
+    "n_levels": 2,
+    "modal_share": 0.944,
+    "normalised_entropy": 0.311,
+    "levels": {
+     "G2": 337,
+     "G1": 20
+    }
+   },
+   "stage": {
+    "n_with_a_value": 334,
+    "n_levels": 5,
+    "modal_share": 0.506,
+    "normalised_entropy": 0.665,
+    "levels": {
+     "III": 169,
+     "II": 109,
+     "IV": 51,
+     "I": 3,
+     "0": 2
+    }
+   },
+   "c_age_sex_grade": 0.5658,
+   "c_age_sex_stage": 0.6218,
+   "stage_minus_grade": 0.056
+  },
+  "brca": {
+   "n": 871,
+   "grade": null,
+   "stage": {
+    "n_with_a_value": 871,
+    "n_levels": 5,
+    "modal_share": 0.603,
+    "normalised_entropy": 0.631,
+    "levels": {
+     "II": 525,
+     "I": 226,
+     "III": 89,
+     "IV": 29,
+     "0": 2
+    }
+   },
+   "c_age_sex_grade": 0.4828,
+   "c_age_sex_stage": 0.5686,
+   "stage_minus_grade": 0.0858
+  },
+  "coadread": {
+   "n": 298,
+   "grade": null,
+   "stage": {
+    "n_with_a_value": 297,
+    "n_levels": 5,
+    "modal_share": 0.687,
+    "normalised_entropy": 0.572,
+    "levels": {
+     "III": 204,
+     "II": 46,
+     "IV": 39,
+     "I": 7,
+     "0": 1
+    }
+   },
+   "c_age_sex_grade": 0.469,
+   "c_age_sex_stage": 0.6898,
+   "stage_minus_grade": 0.2208
+  },
+  "hnsc": {
+   "n": 394,
+   "grade": {
+    "n_with_a_value": 392,
+    "n_levels": 5,
+    "modal_share": 0.597,
+    "normalised_entropy": 0.643,
+    "levels": {
+     "G2": 234,
+     "G3": 97,
+     "G1": 50,
+     "GX": 7,
+     "G4": 4
+    }
+   },
+   "stage": {
+    "n_with_a_value": 381,
+    "n_levels": 5,
+    "modal_share": 0.375,
+    "normalised_entropy": 0.884,
+    "levels": {
+     "IV": 143,
+     "II": 106,
+     "III": 77,
+     "I": 34,
+     "0": 21
+    }
+   },
+   "c_age_sex_grade": 0.5027,
+   "c_age_sex_stage": 0.545,
+   "stage_minus_grade": 0.0423
+  },
+  "stad": {
+   "n": 319,
+   "grade": {
+    "n_with_a_value": 319,
+    "n_levels": 4,
+    "modal_share": 0.589,
+    "normalised_entropy": 0.623,
+    "levels": {
+     "G3": 188,
+     "G2": 115,
+     "GX": 9,
+     "G1": 7
+    }
+   },
+   "stage": {
+    "n_with_a_value": 319,
+    "n_levels": 4,
+    "modal_share": 0.473,
+    "normalised_entropy": 0.835,
+    "levels": {
+     "III": 151,
+     "IV": 93,
+     "II": 63,
+     "I": 12
+    }
+   },
+   "c_age_sex_grade": 0.5358,
+   "c_age_sex_stage": 0.5819,
+   "stage_minus_grade": 0.0461
+  }
+ },
+ "gain_vs_grade_entropy_pearson": -0.976,
+ "gain_vs_grade_entropy_reading": "negative means the swap helps MOST where grade is least informative, which is the mechanism this analysis proposes. n=5 cohorts, so it is a consistency check and not an estimate."
+}

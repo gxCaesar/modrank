@@ -1,0 +1,91 @@
+{
+ "clinical_age_sex_stage": {
+  "cindex": 0.6638,
+  "tied_q10": 0.5107,
+  "tied_q20": 0.5319,
+  "within_site": 0.6561
+ },
+ "clinical_age_sex_grade": {
+  "cindex": 0.5666,
+  "tied_q10": 0.48,
+  "tied_q20": 0.4902,
+  "within_site": 0.5535
+ },
+ "wsi_titan": {
+  "cindex": 0.6596,
+  "tied_q10": 0.6271,
+  "tied_q20": 0.6361,
+  "within_site": 0.6334
+ },
+ "omics_combine": {
+  "cindex": 0.651,
+  "tied_q10": 0.6422,
+  "tied_q20": 0.6322,
+  "within_site": 0.6533
+ },
+ "survpath_rerun": {
+  "cindex": 0.6118,
+  "tied_q10": 0.5999,
+  "tied_q20": 0.5969,
+  "within_site": 0.6028
+ },
+ "survpath_plus_clinical": {
+  "cindex": 0.681,
+  "tied_q10": 0.604,
+  "tied_q20": 0.6045,
+  "within_site": 0.6708
+ },
+ "OURS_wsi_omics": {
+  "cindex": 0.6841,
+  "tied_q10": 0.6581,
+  "tied_q20": 0.6596,
+  "within_site": 0.6618
+ },
+ "OURS": {
+  "cindex": 0.7225,
+  "tied_q10": 0.6634,
+  "tied_q20": 0.6658,
+  "within_site": 0.7093
+ },
+ "_paired_all": {
+  "mean": 0.0417,
+  "se": 0.0201,
+  "ci95": [
+   0.0027,
+   0.0817
+  ],
+  "p_two_sided": 0.037
+ },
+ "_per_fold": {
+  "fold_0": {
+   "n": 70,
+   "events": 25,
+   "OURS": 0.6808,
+   "spc": 0.6154
+  },
+  "fold_1": {
+   "n": 72,
+   "events": 24,
+   "OURS": 0.7938,
+   "spc": 0.7986
+  },
+  "fold_2": {
+   "n": 75,
+   "events": 23,
+   "OURS": 0.7733,
+   "spc": 0.6677
+  },
+  "fold_3": {
+   "n": 71,
+   "events": 25,
+   "OURS": 0.6799,
+   "spc": 0.6572
+  },
+  "fold_4": {
+   "n": 71,
+   "events": 16,
+   "OURS": 0.6964,
+   "spc": 0.6748
+  }
+ }
+}

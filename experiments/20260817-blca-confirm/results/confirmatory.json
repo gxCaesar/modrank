@@ -1,0 +1,179 @@
+{
+ "artifact_type": "s6_confirmatory_run",
+ "protocol": {
+  "path": "development/benchmark-protocol.json",
+  "frozen_at": "2026-08-17"
+ },
+ "executed_at_utc": "2026-08-17T08:19:54Z",
+ "phase_of_origin": "frozen",
+ "n": 359,
+ "events": 113,
+ "comparable_pairs": 24219,
+ "per_seed": [
+  {
+   "seed": 0,
+   "OURS": 0.7291,
+   "wsi_titan": 0.6596,
+   "omics_combine": 0.651,
+   "clinical": 0.6856
+  },
+  {
+   "seed": 1,
+   "OURS": 0.7264,
+   "wsi_titan": 0.6515,
+   "omics_combine": 0.6733,
+   "clinical": 0.6751
+  },
+  {
+   "seed": 2,
+   "OURS": 0.7186,
+   "wsi_titan": 0.655,
+   "omics_combine": 0.647,
+   "clinical": 0.6871
+  },
+  {
+   "seed": 3,
+   "OURS": 0.729,
+   "wsi_titan": 0.6553,
+   "omics_combine": 0.6664,
+   "clinical": 0.6803
+  },
+  {
+   "seed": 4,
+   "OURS": 0.7268,
+   "wsi_titan": 0.6472,
+   "omics_combine": 0.6681,
+   "clinical": 0.6748
+  }
+ ],
+ "primary": {
+  "metric": "harrell_c_index",
+  "value": 0.726,
+  "sd_over_seeds": 0.0043,
+  "seeds": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "aggregation": "mean over seeds of the pooled out-of-fold C-index",
+  "note": "seeds 1-4 had never been executed before this run"
+ },
+ "component_arms_seed0": {
+  "wsi_titan": 0.6596,
+  "omics_combine": 0.651,
+  "clinical": 0.6856
+ },
+ "secondary": {
+  "OURS_clinically_tied_q10": 0.6513,
+  "survpath_plus_clinical_clinically_tied_q10": 0.5852,
+  "OURS_within_site": 0.6992,
+  "within_site_pairs": 1765,
+  "within_site_caveat": "1,765 of 24,219 pairs share a site; differences of ~0.006 in that column are not readable"
+ },
+ "comparisons": {
+  "vs_clinical_cheap_baseline": {
+   "ours_seed0": 0.7291,
+   "baseline": 0.6856,
+   "paired": {
+    "mean": 0.0435,
+    "se": 0.0231,
+    "ci95": [
+     -0.0022,
+     0.0883
+    ],
+    "p_two_sided": 0.0627,
+    "reps": 6000,
+    "resampled": "cases, not comparable pairs"
+   }
+  },
+  "vs_titan_alone": {
+   "ours_seed0": 0.7291,
+   "baseline": 0.6596,
+   "paired": {
+    "mean": 0.0696,
+    "se": 0.0206,
+    "ci95": [
+     0.0286,
+     0.1103
+    ],
+    "p_two_sided": 0.001,
+    "reps": 6000,
+    "resampled": "cases, not comparable pairs"
+   }
+  },
+  "vs_survpath_plus_same_clinical_INPUT_PARITY": {
+   "ours_seed0": 0.7291,
+   "baseline": 0.6963,
+   "paired": {
+    "mean": 0.0331,
+    "se": 0.02,
+    "ci95": [
+     -0.0061,
+     0.0721
+    ],
+    "p_two_sided": 0.0967,
+    "reps": 6000,
+    "resampled": "cases, not comparable pairs"
+   }
+  },
+  "vs_DIMAF_published": {
+   "ours_primary": 0.726,
+   "incumbent": 0.679,
+   "incumbent_sd": 0.043,
+   "gap": 0.047,
+   "paired": "NOT POSSIBLE -- no per-case predictions released",
+   "fold_identity": "CONTESTED between two independent literature passes"
+  },
+  "ours_without_clinical_vs_DIMAF": {
+   "ours_seed0": 0.6841,
+   "incumbent": 0.679,
+   "gap": 0.0051,
+   "declared_in_advance_as_not_claimed": true
+  }
+ },
+ "per_fold_seed0": {
+  "fold_0": {
+   "n": 70,
+   "events": 25,
+   "OURS": 0.6923,
+   "survpath_plus_clinical": 0.6625
+  },
+  "fold_1": {
+   "n": 72,
+   "events": 24,
+   "OURS": 0.788,
+   "survpath_plus_clinical": 0.8122
+  },
+  "fold_2": {
+   "n": 75,
+   "events": 23,
+   "OURS": 0.7815,
+   "survpath_plus_clinical": 0.6656
+  },
+  "fold_3": {
+   "n": 71,
+   "events": 25,
+   "OURS": 0.6355,
+   "survpath_plus_clinical": 0.611
+  },
+  "fold_4": {
+   "n": 71,
+   "events": 16,
+   "OURS": 0.7453,
+   "survpath_plus_clinical": 0.7439
+  }
+ },
+ "folds_won_vs_survpath_plus_clinical": 4,
+ "decision": {
+  "rule": "primary > 0.679 + 0.0239 = 0.7029 AND sd over seeds <= 0.0145",
+  "target": 0.7029,
+  "primary": 0.726,
+  "primary_clears_target": true,
+  "seed_sd": 0.0043,
+  "seed_sd_within_bar": true,
+  "VERDICT": "PASS",
+  "if_miss": "return to S5 Step 1 as a NEW exploratory cycle with a NEW freeze; do not edit this protocol"
+ }
+}

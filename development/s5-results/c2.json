@@ -1,0 +1,58 @@
+{
+ "artifact_type": "s5_c2_c5_estimator_slate",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "n": 359,
+ "events": 113,
+ "bar": 0.0145,
+ "bag_size": 40,
+ "mechanism_prediction": "gains must scale with block dimension: titan(768) > omics(275) > clinical(23). A uniform gain falsifies the estimation-variance mechanism.",
+ "per_block": {
+  "titan_768d": {
+   "baseline_ridge_coarse5_inner3": 0.6596,
+   "C2_bagged_ridge": 0.6035,
+   "C3_elastic_net": 0.548,
+   "C4_dense25_inner5": 0.6554,
+   "_gains_vs_baseline": {
+    "C2_bagged_ridge": -0.0561,
+    "C3_elastic_net": -0.1116,
+    "C4_dense25_inner5": -0.0042
+   }
+  },
+  "omics_275d": {
+   "baseline_ridge_coarse5_inner3": 0.651,
+   "C2_bagged_ridge": 0.675,
+   "C3_elastic_net": 0.5821,
+   "C4_dense25_inner5": 0.6676,
+   "_gains_vs_baseline": {
+    "C2_bagged_ridge": 0.024,
+    "C3_elastic_net": -0.0689,
+    "C4_dense25_inner5": 0.0166
+   }
+  },
+  "clinical_23d": {
+   "baseline_ridge_coarse5_inner3": 0.6856,
+   "C2_bagged_ridge": 0.683,
+   "C3_elastic_net": 0.3417,
+   "C4_dense25_inner5": 0.6745,
+   "_gains_vs_baseline": {
+    "C2_bagged_ridge": -0.0026,
+    "C3_elastic_net": -0.3439,
+    "C4_dense25_inner5": -0.0111
+   }
+  }
+ },
+ "estimator_picked_per_block_on_pooled_outcome": {
+  "titan_768d": "baseline_ridge_coarse5_inner3",
+  "omics_275d": "C2_bagged_ridge",
+  "clinical_23d": "baseline_ridge_coarse5_inner3"
+ },
+ "pick_caveat": "four estimators were scored per block on the pooled outcome; taking the best carries a selection term of about sd*sqrt(2*ln 4). The gated arm below inherits it and is a reference, not a reportable number.",
+ "C5_gated_fusion": {
+  "flat_rank_average": 0.7447,
+  "gated_on_clinical_tertile": 0.7493,
+  "gated_on_PERMUTED_tertile_CONTROL": 0.7502,
+  "note": "the gating weights here are read off the SAME pooled outcome they are scored on, so this is an oracle-flavoured reference for whether gating is worth building in-fold, not an arm. Its control says how much the structure alone buys."
+ },
+ "best_flat_combination": 0.7447
+}

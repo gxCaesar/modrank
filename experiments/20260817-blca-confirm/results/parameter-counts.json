@@ -1,0 +1,26 @@
+{
+ "artifact_type": "parameter_counts",
+ "phase_of_origin": "frozen_post_hoc",
+ "provenance": "each competitor's count was written by ITS OWN trainer, not reconstructed by us. SurvPath's core_utils calls _print_network into model_<tag>.txt; PIBD's writes model_parameters.txt. Both files were produced by the runs reported in this paper, on sysu, and the line quoted is verbatim.",
+ "ours": {
+  "parameters": 1049,
+  "how": "768 TITAN dimensions + 275 SurvPath pathway means + 6 clinical columns = 1049 Cox coefficients. The combination adds ZERO: it is an equal-weight rank average.",
+  "fitted_in_the_combination": 0
+ },
+ "survpath": {
+  "parameters": 24702532,
+  "trainable": 24702532,
+  "verbatim": "Total number of parameters: 24702532",
+  "file": "experiments/20260816-survpath-blca-repro/results/tcga_blca__nll_surv_a0.5_lr5e-04_l2Weight_0.0001_5foldcv_b1_survival_months_dss_dim1_768_patches_4096_wsiDim_256_epochs_5_fusion_None_modality_survpath_pathT_combine/model_<same-tag>.txt",
+  "ratio_to_ours": 23549
+ },
+ "pibd": {
+  "parameters": 26930702,
+  "trainable": 26930702,
+  "verbatim": "Total number of parameters: 26930702",
+  "file": "experiments/20260817-pibd-blca-repro/results/tcga_blca_b32_survival_months_dss_wsiDim_256_epochs_30_omics_pathways_pathT_combine_s1/model_parameters.txt",
+  "ratio_to_ours": 25673
+ },
+ "the_other_eight_entrants": "NOT REPORTED. No published entry on this benchmark states a parameter count, and we did not run their code, so we do not assign them one.",
+ "reading": "the two entrants we could rerun carry 23,549x and 25,673x our parameter count, on a cohort with 113 events. This is a statement about the sample size, not about deep learning."
+}

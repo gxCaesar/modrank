@@ -1,0 +1,387 @@
+{
+ "schema_version": "1.0",
+ "protocol_status": "frozen",
+ "frozen_at": "2026-08-17",
+ "freeze_blockers": [],
+ "task": {
+  "name": "TCGA-BLCA whole-slide multimodal survival",
+  "endpoint": "disease-specific survival (DSS)",
+  "label_columns": [
+   "survival_months_dss",
+   "censorship_dss"
+  ],
+  "label_source": "mahmoodlab/SurvPath datasets_csv/metadata/tcga_blca.csv",
+  "n_cases": 359,
+  "n_events": 113,
+  "n_comparable_pairs": 24219,
+  "cohort_note": "the cohort is the intersection of cases holding a TITAN slide embedding and a DSS label, which is exactly the 359 cases the released folds partition"
+ },
+ "splits": {
+  "axes": [
+   {
+    "name": "released_5fold_case_id",
+    "rule": "the five fold files mahmoodlab/SurvPath released for tcga_blca, used verbatim; a case is a unit and never split across train and val"
+   }
+  ],
+  "forbidden": [
+   "regenerating or reseeding the folds -- every comparator on this benchmark is scored on these exact files",
+   "any slide-level split (a case may hold several slides and they must move together)",
+   "standardisation moments, ridge alpha, feature screening or combination weights fitted on any validation row",
+   "selecting the omics representation, the slide encoder, the estimator or the combination rule after seeing a validation outcome"
+  ]
+ },
+ "locked_inputs": {
+  "partition_manifest": {
+   "path": "development/split-manifest.json",
+   "gate": "required_before_execution",
+   "binding": "the released membership listed in this manifest is the exact partition used by every run"
+  },
+  "features": [
+   {
+    "name": "wsi_titan",
+    "what": "TITAN slide embedding, 768-d, mean-pooled over a case's slides",
+    "source": "precomputed pan-TCGA TITAN feature file, 11,658 slides"
+   },
+   {
+    "name": "omics_combine",
+    "what": "SurvPath's 4,999 genes averaged into its own 275 `combine` pathway groups",
+    "source": "mahmoodlab/SurvPath datasets_csv/raw_rna_data/combine/blca/rna_clean.csv + datasets_csv/metadata/combine_signatures.csv"
+   },
+   {
+    "name": "clinical",
+    "what": "age, sex, pathologic T, N, M and AJCC stage, one-hot for the categoricals",
+    "source": "GDC clinical record for the 359 cases (tnm.json)"
+   }
+  ],
+  "feature_note": "no feature is derived from an outcome at any point. The clinical block uses the GDC T/N/M record; a benchmark-internal variant using SurvPath's own single `stage` column is declared as a secondary arm below and requires no data outside the benchmark's release."
+ },
+ "method": {
+  "name": "per-modality estimation-controlled survival ensemble",
+  "arms_per_modality": "one ridge Cox per view, fitted on the training fold only",
+  "estimator": {
+   "model": "Cox proportional hazards, Breslow ties, ridge penalty, L-BFGS on the exact partial likelihood and its analytic gradient",
+   "alpha_grid": [
+    1.0,
+    8.0,
+    64.0,
+    512.0,
+    4096.0
+   ],
+   "alpha_selection": "3-fold inner cross-validation inside each training fold, criterion = Harrell C-index of the out-of-inner-fold predictions",
+   "standardisation": "training-fold mean and standard deviation only",
+   "identical_for_every_view": true,
+   "no_block_level_estimator_selection": "measured 2026-08-17: choosing the estimator per block by inner CV COST performance on two blocks of three (0.6568/0.6543/0.6743 against 0.6596/0.6510/0.6856), because at 287 patients the inner criterion cannot separate estimators that differ by 0.02"
+  },
+  "combination": {
+   "normalisation": "predictions percentile-normalised to [0,1] WITHIN each fold, identically for every arm, before pooling",
+   "rule": "equal-weight rank average over the three views",
+   "why_equal": "a 21-point weight sweep peaks at exactly w=0.50; a two-parameter fusion fitted IN-SAMPLE on the held-out fold reaches 0.7268 against the equal weight's 0.7191, so even oracle-fitted weights are worth +0.008; and gating the image weight on clinical risk scored 0.7493 against a permuted-stratum control at 0.7502, so that component is void",
+   "no_weight_fitting": true,
+   "no_gating": true
+  },
+  "seeds": {
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ],
+   "what_the_seed_controls": "the inner-CV partition used for alpha selection, and nothing else",
+   "status_at_freeze": "seed 0 has been run during exploration; seeds 1-4 HAVE NEVER BEEN RUN",
+   "why_this_matters": "this benchmark has no unopened held-out split, so seeds 1-4 are the only axis of this protocol that is genuinely unseen. If the arm is unstable across the inner-CV partition, the confirmatory run will show it and there is no way to discover that afterwards."
+  }
+ },
+ "metrics": {
+  "primary": {
+   "name": "harrell_c_index",
+   "higher_is_better": true,
+   "computation": "pooled over all out-of-fold predictions after within-fold percentile normalisation, over the 24,219 comparable pairs",
+   "aggregation": "mean over seeds 0-4, reported with the standard deviation over seeds"
+  },
+  "secondary": [
+   "per-fold C-index and its standard deviation over the five folds",
+   "C-index restricted to the decile of comparable pairs the clinical arm separates least ('clinically tied')",
+   "C-index restricted to pairs whose two cases share a TCGA collection site"
+  ],
+  "uncertainty": {
+   "paired_split_reseed_sd": 0.0073,
+   "reseed_bar_2sd": 0.0145,
+   "reseed_measured_by": "24 reseeds of the 5-fold assignment over the same 359 cases, identical estimator, alpha grid, inner-CV seed and code path",
+   "selection_inflation": 0.0239,
+   "selection_inflation_basis": "sigma * sqrt(2 ln N) with sigma = 0.0073 and N = 211, the number of candidates scored on this cohort during S5 (development/iteration-ledger.md)",
+   "case_level_bootstrap": "6,000 replicates resampling CASES, never comparable pairs, because pairs sharing a patient are not independent"
+  },
+  "multiplicity_policy": "Holm within the prespecified comparator family below",
+  "missing_output_policy": "an absent or non-finite prediction is a recorded system failure, never imputed"
+ },
+ "baselines": [
+  {
+   "name": "constant_risk",
+   "purpose": "trivial floor",
+   "observed_s5": 0.5,
+   "status": "not_run_confirmatory"
+  },
+  {
+   "name": "age_alone",
+   "purpose": "trivial",
+   "observed_s5": 0.5756,
+   "status": "not_run_confirmatory"
+  },
+  {
+   "name": "clinical_cox_age_sex_TNM_stage",
+   "purpose": "THE cheap baseline this method must beat",
+   "observed_s5": 0.6856,
+   "status": "not_run_confirmatory"
+  },
+  {
+   "name": "wsi_titan_alone",
+   "purpose": "single-modality comparator",
+   "observed_s5": 0.6596,
+   "status": "not_run_confirmatory"
+  },
+  {
+   "name": "omics_combine_alone",
+   "purpose": "single-modality comparator",
+   "observed_s5": 0.651,
+   "status": "not_run_confirmatory"
+  },
+  {
+   "name": "survpath_rerun_official",
+   "repo": "https://github.com/mahmoodlab/SurvPath",
+   "purpose": "the only competitor whose per-case predictions we hold, hence the only PAIRED comparison possible",
+   "observed_s5": 0.6118,
+   "published": 0.625,
+   "status": "run_in_S5"
+  },
+  {
+   "name": "survpath_rerun_plus_same_clinical",
+   "purpose": "INPUT PARITY -- the competitor given the same clinical variables our arm uses",
+   "observed_s5": 0.6963,
+   "status": "not_run_confirmatory"
+  },
+  {
+   "name": "DIMAF",
+   "doi": "10.1007/978-3-032-05185-1_12",
+   "purpose": "the incumbent, published value on the released folds",
+   "published": 0.679,
+   "published_sd": 0.043,
+   "status": "quoted_not_rerun"
+  },
+  {
+   "name": "MOAD-FNet",
+   "doi": "arXiv:2411.17418",
+   "purpose": "highest published BLCA value on this endpoint and n",
+   "published": 0.691,
+   "published_sd": 0.069,
+   "status": "quoted_not_rerun"
+  },
+  {
+   "name": "APL",
+   "doi": "arXiv:2503.04643",
+   "published": 0.677,
+   "status": "quoted_not_rerun"
+  },
+  {
+   "name": "PIBD",
+   "doi": "arXiv:2401.01646",
+   "published": 0.667,
+   "published_sd": 0.061,
+   "status": "partially_rerun_crashed_after_fold_0"
+  },
+  {
+   "name": "DSCASurv",
+   "doi": "10.1093/bib/bbaf103",
+   "published": 0.646,
+   "status": "quoted_not_rerun"
+  },
+  {
+   "name": "ProtoPathway",
+   "doi": "arXiv:2605.21454",
+   "published": 0.646,
+   "status": "quoted_not_rerun"
+  },
+  {
+   "name": "OTSurv",
+   "doi": "arXiv:2506.20741",
+   "published": 0.637,
+   "status": "quoted_not_rerun"
+  },
+  {
+   "name": "MMP",
+   "doi": "arXiv:2407.00224",
+   "published": 0.635,
+   "published_sd": 0.051,
+   "status": "quoted_not_rerun"
+  },
+  {
+   "name": "MCAT",
+   "published": 0.598,
+   "status": "quoted_not_rerun"
+  },
+  {
+   "name": "MOTCat",
+   "published": 0.596,
+   "status": "quoted_not_rerun"
+  }
+ ],
+ "comparator_caveats": {
+  "fold_identity": {
+   "verified_here": [
+    "SurvPath (released, definitional)",
+    "PIBD (cmp, all five files byte-identical)",
+    "DIMAF (SETTLED 2026-08-17: its src/data/data_files/tcga_blca/splits/{0..4}/ collapse to the released case-ID folds -- 5 of 5 validation folds identical, 359-case universe identical, zero cases in one but not the other. The earlier CONFLICTED status is resolved in DIMAF's favour.)"
+   ],
+   "contested": [],
+   "unverified": [
+    "APL -- repository holds only README and LICENSE (2 tree entries), so nothing to diff",
+    "MOAD-FNet",
+    "DSCASurv",
+    "MMP (states its own site-stratified protocol)",
+    "OTSurv (follows MMP)"
+   ]
+  },
+  "input_parity": "every quoted competitor uses WSI and transcriptomics and NO clinical variables. None of their per-case predictions is released, so only SurvPath can be placed at input parity. This is a limitation of the comparison and is reported as one, not averaged over.",
+  "clinical_baseline_gap": "a full-text pass over eleven primary papers in this family found no clinical baseline anywhere using pathologic stage or T/N/M; the published ones use age, sex and grade and run 0.519-0.655. Stage is nevertheless shipped in the benchmark's own datasets_csv/clinical_data/."
+ },
+ "prespecified_decision_rule": {
+  "primary_claim": "the frozen arm's primary metric exceeds the incumbent DIMAF's published 0.679 by more than max(reseed_bar, selection_inflation) = 0.0239",
+  "secondary_claim_input_parity": "the frozen arm exceeds survpath_rerun_plus_same_clinical by more than 0.0239, paired, with the case-level bootstrap interval reported whichever way it falls",
+  "secondary_claim_cheap_baseline": "the frozen arm exceeds clinical_cox_age_sex_TNM_stage by more than 0.0239",
+  "declared_in_advance_as_NOT_claimed": "the arm restricted to WSI and omics does NOT beat the incumbent -- measured at 0.6841 against 0.679 in S5, and it failed under three further combination rules and a seven-encoder ensemble. The paper states this rather than omitting it.",
+  "if_the_frozen_run_misses": "it is a result. Return to S5 Step 1 as a NEW exploratory cycle with a NEW freeze, or take one of the five accepted answers on record. Editing this protocol after the numbers are in is an unblinding event and G-M4 will catch it by mtime.",
+  "seed_instability_rule": "if the standard deviation over seeds 0-4 exceeds the reseed bar of 0.0145, the arm is declared unstable and the primary claim is withdrawn regardless of its mean"
+ },
+ "test_access_policy": {
+  "development_visibility": "FULL. This is the honest statement and it is unusual: this benchmark has NO unopened held-out split. It is five-fold cross-validation over 359 patients, every one of whom was visible during S5, and every published comparator is in the same position. There is no test manifest to keep closed and none is claimed.",
+  "what_the_freeze_buys_instead": [
+   "the arm, every hyperparameter, the combination rule and the comparator set are fixed before the run",
+   "seeds 1-4 have never been executed and are the one genuinely unseen axis",
+   "the selection-inflation term over the campaign's 211 scored candidates, 0.0239, is applied as the bar rather than the reseed bar alone"
+  ],
+  "candidate_access_budget": 1,
+  "benchmark_submission_budget": 0,
+  "test_custodian": "not applicable -- no custodial split exists",
+  "access_log": "development/test-access-log.md",
+  "failure_policy": "a miss is recorded as a pivot or a stop and is never fed back as development signal"
+ },
+ "leakage_falsifiers": [
+  {
+   "id": "L1_fold_integrity",
+   "status": "ran_and_passed",
+   "command": "s6_leakage_falsifiers.py --root <scratch> --titan <titan.pkl> --sp-dir <survpath_preds> --omics-dir <omics>",
+   "observed": "train and val disjoint in all five folds; all 359 cases in exactly one validation fold; fold assignment asserted identical to SurvPath's rerun"
+  },
+  {
+   "id": "L2_no_fitting_across_boundary",
+   "status": "ran_and_passed",
+   "command": "same, L2",
+   "observed": "MUTATION test: refitting with whole-cohort standardisation moments moved the score from 0.6596 to 0.6542, so the test is sensitive to a moment leak and is not blind"
+  },
+  {
+   "id": "L3_planted_label",
+   "status": "ran_and_rejected",
+   "command": "same, L3",
+   "observed": "a column rebuilt per fold -- noise on every training row, the outcome ordering on every validation row -- moved the score by -0.0006 (0.6591 vs 0.6596)",
+   "note": "a first version of this falsifier was WRONG and reported a 0.8715 'leak'. It built one column for the whole cohort, and since every case is in exactly one validation fold that column encoded the outcome everywhere including in training. The pipeline was learning from real information, correctly. Recorded because the corrected construction is what the verdict rests on."
+  },
+  {
+   "id": "L4_case_alignment",
+   "status": "ran_and_rejected",
+   "command": "same, L4",
+   "observed": "permuting which feature row belongs to which case, outcome fixed, over 30 draws: 0.5127 +/- 0.0369, inside 3 standard errors of 0.5"
+  },
+  {
+   "id": "L5_outcome_provenance",
+   "status": "ran_and_passed",
+   "command": "same, L5",
+   "observed": "0 label mismatches between our (time, event) per case and SurvPath's rerun, so the paired comparison is on one endpoint"
+  }
+ ],
+ "secondary_arms_declared_in_advance": [
+  {
+   "name": "benchmark_internal_clinical",
+   "what": "the identical arm with the clinical block built from SurvPath's own single `stage` column instead of the GDC T/N/M record",
+   "why": "it uses nothing outside the benchmark's own release, so it answers the parity objection at its strongest",
+   "observed_s5": 0.6992
+  },
+  {
+   "name": "five_cohort_replication",
+   "what": "the identical estimator and combination on BRCA, COADREAD, HNSC and STAD, released folds, with age+sex+stage as the clinical block",
+   "why": "replication of the stage finding outside bladder; every published method on this benchmark reports all five",
+   "observed_s5": {
+    "blca": 0.6992,
+    "brca": 0.6892,
+    "coadread": 0.7141,
+    "hnsc": 0.6179,
+    "stad": 0.6311
+   }
+  },
+  {
+   "name": "stage_versus_grade_ablation",
+   "what": "age+sex+grade against age+sex+stage, same pipeline, same cases, one column swapped, all five cohorts",
+   "observed_s5": {
+    "blca": 0.056,
+    "brca": 0.0858,
+    "coadread": 0.2208,
+    "hnsc": 0.0423,
+    "stad": 0.0461
+   }
+  }
+ ],
+ "amendments": [
+  {
+   "id": "A1",
+   "at": "2026-08-17",
+   "after_results_exist": true,
+   "what": "the clinical block's provenance. The frozen run took stage and T/N/M from a cached GDC query (tnm.json) that selected the FIRST diagnosis record per case. 217 of 359 cases carry more than one diagnosis, and 61 had their T or stage change once the right one was chosen.",
+   "why": "a defect, not a refinement. It was found while diffing DIMAF's released folds against ours to settle whether DIMAF is a valid comparator -- it is, 5 of 5 validation folds identical at case level, 359-case universe identical, zero cases in one but not the other. DIMAF ships ajcc_pathologic_tumor_stage in those same files and it disagreed with ours on 26 of 357 cases with 35 more missing. Querying GDC for four of them showed why: e.g. TCGA-SY-A9G0 carries 'Stage IIB / T2 N0 M0 / Adenocarcinoma, NOS' AND 'Stage IV / T4 N1 M0 / Transitional cell carcinoma'; the cached file took the first. The tell was present and unread beforehand: Stage IIA/IIB/IIC appear in our record and are not AJCC bladder stages at all.",
+   "how_the_replacement_is_chosen": "mechanical, not a judgement about diagnosis text: take the diagnosis whose ajcc_pathologic_stage equals the canonical stage DIMAF's released file carries for that case, so T, N and M come from the SAME record as the stage every comparator uses. 2 of 359 had no matching diagnosis and fell back to the most complete TNM, recorded rather than silently resolved.",
+   "arms_measured": {
+    "A_frozen_defective_GDC_23d": {
+     "clinical": 0.6863,
+     "full": 0.7285
+    },
+    "B_amended_DIMAF_file_only_6d": {
+     "clinical": 0.6638,
+     "full": 0.7225
+    },
+    "C_corrected_GDC_right_diagnosis_17d": {
+     "clinical": 0.6992,
+     "full": 0.7335
+    },
+    "D_corrected_block_with_GRADE_instead_of_stage_4d": {
+     "clinical": 0.5666,
+     "full": 0.6856
+    }
+   },
+   "decomposition": {
+    "defect_alone_A_to_C": {
+     "clinical": 0.0129,
+     "full": 0.005
+    },
+    "TNM_alone_B_to_C": {
+     "clinical": 0.0354,
+     "full": 0.011
+    },
+    "reading": "fixing the defect IMPROVES the number, so the frozen 0.7260 was not inflated by it. The frozen-to-corrected difference is +0.0050, SE 0.0085, 95% CI [-0.0117, +0.0219], p = 0.56 -- not a significant change to the headline."
+   },
+   "effect_on_the_frozen_primary": {
+    "frozen_primary": 0.726,
+    "frozen_sd_over_seeds": 0.0043,
+    "amended_primary_arm_B": 0.7212,
+    "amended_sd_over_seeds": 0.0048,
+    "moved": -0.0048,
+    "target": 0.7029,
+    "both_clear_the_target": true,
+    "verdict_unchanged": "PASS"
+   },
+   "which_arm_is_primary_going_forward": {
+    "choice": "B -- every clinical variable from DIMAF's own released split files",
+    "why": "it is the conservative one. C scores higher (0.7335) but uses a GDC query under a selection rule we designed; B has no provenance question at all, because the columns are in the file the incumbent itself reads to build the folds it is scored on. C is reported beside it as the with-full-TNM arm, and both clear the pre-registered target.",
+    "consequence_for_the_stage_finding": "it gets STRONGER, not weaker: from the incumbent's own file, age+sex+stage reaches 0.6638 against age+sex+grade at 0.5666, a gap of +0.0972, and the full method 0.7225 against 0.6856, a gap of +0.0369. DIMAF's published clinical baseline used grade."
+   },
+   "results_file": "experiments/20260817-blca-confirm/results/amendment-A1-clinical-provenance.json"
+  }
+ ]
+}

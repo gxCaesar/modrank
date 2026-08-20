@@ -1,0 +1,180 @@
+{
+ "artifact_type": "s7_pibd_input_parity",
+ "phase_of_origin": "frozen_post_hoc",
+ "n": 359,
+ "events": 113,
+ "reproduction": {
+  "published": {
+   "value": 0.667,
+   "sd_over_folds": 0.061
+  },
+  "logged_best_val_per_fold": [
+   0.6038,
+   0.6983,
+   0.625,
+   0.6147,
+   0.7626
+  ],
+  "logged_mean": 0.6609,
+  "conventions": {
+   "best_epoch": {
+    "status": "ok",
+    "files": 5,
+    "cases_recovered": 359,
+    "pooled_cindex": 0.6514,
+    "per_fold_from_recovered_risks": [
+     0.6038,
+     0.698,
+     0.6256,
+     0.6147,
+     0.7626
+    ],
+    "per_fold_mean": 0.6609,
+    "per_fold_sd": 0.0677
+   },
+   "final_epoch": {
+    "status": "ok",
+    "files": 5,
+    "cases_recovered": 359,
+    "pooled_cindex": 0.5849,
+    "per_fold_from_recovered_risks": [
+     0.551,
+     0.6709,
+     0.5692,
+     0.6034,
+     0.5554
+    ],
+    "per_fold_mean": 0.59,
+    "per_fold_sd": 0.0497
+   }
+  },
+  "convention_used": "best_epoch, because PIBD's own logged metric is 'Best Val c-index' and that is what corresponds to its published value"
+ },
+ "arms": {
+  "PIBD rerun": {
+   "cindex": 0.6514,
+   "tied_q10": 0.6279,
+   "td_auc_8m": 0.76,
+   "td_auc_14m": 0.7273,
+   "td_auc_22m": 0.6996,
+   "ibs": 0.2029,
+   "logrank_p": 5.82e-05
+  },
+  "PIBD + the same clinical": {
+   "cindex": 0.6982,
+   "tied_q10": 0.6228,
+   "td_auc_8m": 0.7793,
+   "td_auc_14m": 0.7525,
+   "td_auc_22m": 0.7373,
+   "ibs": 0.1951,
+   "logrank_p": 3.52e-09
+  },
+  "SurvPath rerun, seed-averaged": {
+   "cindex": 0.6294,
+   "tied_q10": 0.6102,
+   "td_auc_8m": 0.7079,
+   "td_auc_14m": 0.6998,
+   "td_auc_22m": 0.6556,
+   "ibs": 0.2126,
+   "logrank_p": 0.00725
+  },
+  "SurvPath + the same clinical, seed-averaged": {
+   "cindex": 0.6891,
+   "tied_q10": 0.617,
+   "td_auc_8m": 0.7572,
+   "td_auc_14m": 0.7449,
+   "td_auc_22m": 0.7129,
+   "ibs": 0.1987,
+   "logrank_p": 1.48e-07
+  },
+  "OURS": {
+   "cindex": 0.7225,
+   "tied_q10": 0.6634,
+   "td_auc_8m": 0.8006,
+   "td_auc_14m": 0.7832,
+   "td_auc_22m": 0.7549,
+   "ibs": 0.1888,
+   "logrank_p": 2.76e-14
+  }
+ },
+ "input_parity_comparisons": {
+  "family": "the paired comparisons the benchmark permits -- both competitors whose implementations could be rerun end to end, each given the same clinical block",
+  "multiplicity": "Holm, as the frozen protocol declares",
+  "comparisons": {
+   "ours vs PIBD + same clinical": {
+    "delta": 0.0243,
+    "se": 0.0218,
+    "ci95": [
+     -0.019,
+     0.0676
+    ],
+    "p_raw": 0.2633,
+    "p_holm": 0.2633,
+    "survives_holm_at_0.05": false
+   },
+   "ours vs SurvPath + same clinical (seed-averaged)": {
+    "delta": 0.0334,
+    "se": 0.0204,
+    "ci95": [
+     -0.0064,
+     0.0735
+    ],
+    "p_raw": 0.1027,
+    "p_holm": 0.2054,
+    "survives_holm_at_0.05": false
+   },
+   "ours vs PIBD alone": {
+    "delta": 0.0712,
+    "se": 0.0291,
+    "ci95": [
+     0.0138,
+     0.1283
+    ],
+    "p_raw": 0.0143,
+    "p_holm": 0.0429,
+    "survives_holm_at_0.05": true
+   }
+  }
+ },
+ "per_fold": {
+  "fold_0": {
+   "n": 70,
+   "events": 25,
+   "OURS": 0.6808,
+   "PIBD+clinical": 0.6192,
+   "SurvPath+clinical": 0.6212
+  },
+  "fold_1": {
+   "n": 72,
+   "events": 24,
+   "OURS": 0.7938,
+   "PIBD+clinical": 0.7444,
+   "SurvPath+clinical": 0.7967
+  },
+  "fold_2": {
+   "n": 75,
+   "events": 23,
+   "OURS": 0.7733,
+   "PIBD+clinical": 0.7097,
+   "SurvPath+clinical": 0.679
+  },
+  "fold_3": {
+   "n": 71,
+   "events": 25,
+   "OURS": 0.6799,
+   "PIBD+clinical": 0.7092,
+   "SurvPath+clinical": 0.6714
+  },
+  "fold_4": {
+   "n": 71,
+   "events": 16,
+   "OURS": 0.6964,
+   "PIBD+clinical": 0.7367,
+   "SurvPath+clinical": 0.6849
+  }
+ },
+ "folds_won": {
+  "vs PIBD+clinical": 3,
+  "vs SurvPath+clinical": 4
+ }
+}

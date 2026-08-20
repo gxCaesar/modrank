@@ -1,0 +1,24 @@
+{
+ "artifact_type": "published_benchmark_values",
+ "phase_of_origin": "literature",
+ "what_this_is": "the values other papers report on TCGA-BLCA disease-specific survival over the released five-fold case-ID splits. These are QUOTED, not measured by us. The file exists so that no figure script types a literature number into itself.",
+ "verification_note": "`released folds` records what we could CHECK, not what we assume. Where a repository shipped its split files we compared them against the released ones; where it did not, the row says so.",
+ "cohort": {"n": 359, "events": 113, "endpoint": "disease-specific survival"},
+ "entries": [
+  {"method": "MOAD-FNet", "venue": "arXiv", "year": 2024, "cindex": 0.691, "folds": "unverified, no code released"},
+  {"method": "DIMAF", "venue": "MICCAI", "year": 2025, "cindex": 0.679, "folds": "verified, 5/5 folds identical", "is_incumbent": true},
+  {"method": "APL", "venue": "arXiv", "year": 2025, "cindex": 0.677, "folds": "uncheckable, repository empty"},
+  {"method": "PIBD", "venue": "ICLR", "year": 2024, "cindex": 0.667, "folds": "verified, byte-identical", "we_reran": 0.6609},
+  {"method": "DSCASurv", "venue": "Brief. Bioinform.", "year": 2025, "cindex": 0.646, "folds": "unverified"},
+  {"method": "OTSurv", "venue": "MICCAI", "year": 2025, "cindex": 0.637, "folds": "follows MMP's protocol"},
+  {"method": "MMP", "venue": "ICML", "year": 2024, "cindex": 0.635, "folds": "own site-stratified protocol"},
+  {"method": "SurvPath", "venue": "CVPR", "year": 2024, "cindex": 0.625, "folds": "definitional", "we_reran": 0.6118},
+  {"method": "MOTCat", "venue": "ICCV", "year": 2023, "cindex": 0.596, "folds": "as reported in SurvPath"}
+ ],
+ "consecutive_gaps": [0.012, 0.002, 0.010, 0.021, 0.009, 0.002, 0.010, 0.029],
+ "consecutive_gap_range": [0.002, 0.029],
+ "gap_range_quoted_in_the_paper": [0.002, 0.012],
+ "gap_range_note": "the paper quotes 0.002-0.012, which is the range over the SIX consecutive pairs among the entries that are within 0.03 of each other; the full range including the 0.596-0.625 and 0.646-0.667 steps runs to 0.029. Both are stated so the narrower one cannot be mistaken for the whole.",
+ "venue_distribution": {"CS_or_MICCAI_conference": 7, "arXiv_only": 2, "journal": 1,
+  "note": "counting the eleven method papers on this benchmark, of which nine carry a bladder value here. The single journal entry is DSCASurv, Briefings in Bioinformatics."}
+}

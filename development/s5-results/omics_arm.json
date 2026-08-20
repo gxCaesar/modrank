@@ -1,0 +1,85 @@
+{
+ "artifact_type": "s5_omics_arm",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "n_cases": 359,
+ "events": 113,
+ "cases_with_rna": 359,
+ "cases_without_rna_get_the_training_fold_mean": 0,
+ "n_genes": 4999,
+ "n_pathways": 275,
+ "arms": {
+  "genes_all": {
+   "cindex": 0.6332,
+   "cindex_on_clinically_tied_pairs_q10": 0.5995,
+   "spearman_vs_clinical": 0.2066,
+   "spearman_vs_titan": 0.3699
+  },
+  "pathways": {
+   "cindex": 0.651,
+   "cindex_on_clinically_tied_pairs_q10": 0.6286,
+   "spearman_vs_clinical": 0.182,
+   "spearman_vs_titan": 0.2713
+  },
+  "screened_top32": {
+   "cindex": 0.5867,
+   "cindex_on_clinically_tied_pairs_q10": 0.551,
+   "spearman_vs_clinical": 0.2068,
+   "spearman_vs_titan": 0.3648
+  },
+  "screened_top128": {
+   "cindex": 0.623,
+   "cindex_on_clinically_tied_pairs_q10": 0.5885,
+   "spearman_vs_clinical": 0.222,
+   "spearman_vs_titan": 0.3957
+  },
+  "screened_top512": {
+   "cindex": 0.6271,
+   "cindex_on_clinically_tied_pairs_q10": 0.5858,
+   "spearman_vs_clinical": 0.2234,
+   "spearman_vs_titan": 0.3588
+  },
+  "titan": {
+   "cindex": 0.6596,
+   "cindex_on_clinically_tied_pairs_q10": 0.6246,
+   "spearman_vs_clinical": 0.213,
+   "spearman_vs_titan": 1.0
+  },
+  "clinical": {
+   "cindex": 0.6856,
+   "cindex_on_clinically_tied_pairs_q10": 0.5167,
+   "spearman_vs_clinical": 1.0,
+   "spearman_vs_titan": 0.213
+  },
+  "survpath_rerun": {
+   "cindex": 0.6118,
+   "cindex_on_clinically_tied_pairs_q10": 0.5803,
+   "spearman_vs_clinical": 0.1656,
+   "spearman_vs_titan": 0.4836
+  }
+ },
+ "best_omics_representation": {
+  "name": "pathways",
+  "cindex": 0.651,
+  "caveat": "chosen by looking at the pooled outcome across five representations, so it carries a selection term of roughly sd*sqrt(2*ln 5); any arm built on it must reselect inside the training fold before it is comparable"
+ },
+ "rank_average_combinations": {
+  "titan + clinical": {
+   "cindex": 0.7191,
+   "on_clinically_tied_pairs_q10": 0.6189
+  },
+  "omics + clinical": {
+   "cindex": 0.7128,
+   "on_clinically_tied_pairs_q10": 0.6116
+  },
+  "titan + omics": {
+   "cindex": 0.6841,
+   "on_clinically_tied_pairs_q10": 0.6498
+  },
+  "titan + omics + clinical": {
+   "cindex": 0.7291,
+   "on_clinically_tied_pairs_q10": 0.6513
+  }
+ },
+ "three_way_minus_two_way": 0.01
+}

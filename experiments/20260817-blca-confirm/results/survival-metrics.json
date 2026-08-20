@@ -1,0 +1,295 @@
+{
+ "artifact_type": "s7_survival_metrics",
+ "phase_of_origin": "frozen_post_hoc",
+ "n": 359,
+ "events": 113,
+ "horizons_months": [
+  8.2,
+  13.8,
+  21.7
+ ],
+ "ibs_grid_months": [
+  0.7,
+  3.4,
+  6.2,
+  9.0,
+  11.7,
+  14.5,
+  17.3,
+  20.0,
+  22.8,
+  25.6,
+  28.4,
+  31.1
+ ],
+ "note": "additional metrics are computed for our arms and for SurvPath only -- no other entrant releases per-case predictions, and the published values on this benchmark are concordance alone, so these have no published comparator",
+ "arms": {
+  "clinical": {
+   "cindex": 0.6638,
+   "td_auc_8m": 0.6916,
+   "td_auc_14m": 0.6728,
+   "td_auc_22m": 0.6832,
+   "ibs": 0.2033,
+   "logrank_chi2": 46.45,
+   "logrank_df": 2,
+   "logrank_p": 8.18e-11,
+   "group_sizes": [
+    120,
+    119,
+    120
+   ],
+   "group_events": [
+    26,
+    23,
+    64
+   ],
+   "group_median_survival_months": [
+    94.3,
+    null,
+    22.2
+   ]
+  },
+  "wsi_titan": {
+   "cindex": 0.6596,
+   "td_auc_8m": 0.7492,
+   "td_auc_14m": 0.6925,
+   "td_auc_22m": 0.6777,
+   "ibs": 0.2057,
+   "logrank_chi2": 24.2,
+   "logrank_df": 2,
+   "logrank_p": 5.57e-06,
+   "group_sizes": [
+    120,
+    119,
+    120
+   ],
+   "group_events": [
+    20,
+    43,
+    50
+   ],
+   "group_median_survival_months": [
+    null,
+    65.7,
+    24.0
+   ]
+  },
+  "omics": {
+   "cindex": 0.651,
+   "td_auc_8m": 0.7032,
+   "td_auc_14m": 0.7184,
+   "td_auc_22m": 0.6848,
+   "ibs": 0.2056,
+   "logrank_chi2": 19.57,
+   "logrank_df": 2,
+   "logrank_p": 5.63e-05,
+   "group_sizes": [
+    120,
+    119,
+    120
+   ],
+   "group_events": [
+    28,
+    32,
+    53
+   ],
+   "group_median_survival_months": [
+    null,
+    88.0,
+    28.6
+   ]
+  },
+  "survpath_rerun": {
+   "cindex": 0.6118,
+   "td_auc_8m": 0.7169,
+   "td_auc_14m": 0.6879,
+   "td_auc_22m": 0.6121,
+   "ibs": 0.2196,
+   "logrank_chi2": 7.73,
+   "logrank_df": 2,
+   "logrank_p": 0.021,
+   "group_sizes": [
+    120,
+    119,
+    120
+   ],
+   "group_events": [
+    31,
+    39,
+    43
+   ],
+   "group_median_survival_months": [
+    106.1,
+    65.7,
+    88.0
+   ]
+  },
+  "survpath_plus_clinical": {
+   "cindex": 0.681,
+   "td_auc_8m": 0.7752,
+   "td_auc_14m": 0.7406,
+   "td_auc_22m": 0.688,
+   "ibs": 0.2025,
+   "logrank_chi2": 25.47,
+   "logrank_df": 2,
+   "logrank_p": 2.94e-06,
+   "group_sizes": [
+    120,
+    119,
+    120
+   ],
+   "group_events": [
+    20,
+    43,
+    50
+   ],
+   "group_median_survival_months": [
+    106.1,
+    51.9,
+    27.8
+   ]
+  },
+  "OURS_wsi_omics": {
+   "cindex": 0.6841,
+   "td_auc_8m": 0.7626,
+   "td_auc_14m": 0.7466,
+   "td_auc_22m": 0.7176,
+   "ibs": 0.1971,
+   "logrank_chi2": 22.02,
+   "logrank_df": 2,
+   "logrank_p": 1.65e-05,
+   "group_sizes": [
+    120,
+    119,
+    120
+   ],
+   "group_events": [
+    23,
+    39,
+    51
+   ],
+   "group_median_survival_months": [
+    null,
+    106.1,
+    23.7
+   ]
+  },
+  "OURS": {
+   "cindex": 0.7225,
+   "td_auc_8m": 0.8006,
+   "td_auc_14m": 0.7832,
+   "td_auc_22m": 0.7549,
+   "ibs": 0.1888,
+   "logrank_chi2": 62.44,
+   "logrank_df": 2,
+   "logrank_p": 2.76e-14,
+   "group_sizes": [
+    120,
+    119,
+    120
+   ],
+   "group_events": [
+    18,
+    34,
+    61
+   ],
+   "group_median_survival_months": [
+    null,
+    null,
+    18.3
+   ]
+  }
+ },
+ "tied_pair_curve": {
+  "q005": {
+   "pairs": 1213,
+   "clinical": 0.4959,
+   "wsi_titan": 0.622,
+   "omics": 0.6455,
+   "survpath_rerun": 0.5952,
+   "survpath_plus_clinical": 0.5981,
+   "OURS_wsi_omics": 0.6599,
+   "OURS": 0.6583
+  },
+  "q010": {
+   "pairs": 2423,
+   "clinical": 0.5107,
+   "wsi_titan": 0.6271,
+   "omics": 0.6422,
+   "survpath_rerun": 0.5999,
+   "survpath_plus_clinical": 0.604,
+   "OURS_wsi_omics": 0.6581,
+   "OURS": 0.6634
+  },
+  "q015": {
+   "pairs": 3633,
+   "clinical": 0.5226,
+   "wsi_titan": 0.6301,
+   "omics": 0.6325,
+   "survpath_rerun": 0.5959,
+   "survpath_plus_clinical": 0.6043,
+   "OURS_wsi_omics": 0.6513,
+   "OURS": 0.658
+  },
+  "q020": {
+   "pairs": 4844,
+   "clinical": 0.5319,
+   "wsi_titan": 0.6361,
+   "omics": 0.6322,
+   "survpath_rerun": 0.5969,
+   "survpath_plus_clinical": 0.6045,
+   "OURS_wsi_omics": 0.6596,
+   "OURS": 0.6658
+  },
+  "q030": {
+   "pairs": 7271,
+   "clinical": 0.5443,
+   "wsi_titan": 0.6383,
+   "omics": 0.6373,
+   "survpath_rerun": 0.5937,
+   "survpath_plus_clinical": 0.6077,
+   "OURS_wsi_omics": 0.662,
+   "OURS": 0.6725
+  },
+  "q040": {
+   "pairs": 9695,
+   "clinical": 0.5661,
+   "wsi_titan": 0.6368,
+   "omics": 0.6399,
+   "survpath_rerun": 0.5873,
+   "survpath_plus_clinical": 0.6086,
+   "OURS_wsi_omics": 0.6648,
+   "OURS": 0.6788
+  },
+  "q060": {
+   "pairs": 14534,
+   "clinical": 0.5998,
+   "wsi_titan": 0.6392,
+   "omics": 0.6481,
+   "survpath_rerun": 0.5873,
+   "survpath_plus_clinical": 0.6243,
+   "OURS_wsi_omics": 0.6703,
+   "OURS": 0.6873
+  },
+  "q080": {
+   "pairs": 19375,
+   "clinical": 0.6269,
+   "wsi_titan": 0.6467,
+   "omics": 0.653,
+   "survpath_rerun": 0.596,
+   "survpath_plus_clinical": 0.6477,
+   "OURS_wsi_omics": 0.6781,
+   "OURS": 0.7001
+  },
+  "q100": {
+   "pairs": 24219,
+   "clinical": 0.6638,
+   "wsi_titan": 0.6596,
+   "omics": 0.651,
+   "survpath_rerun": 0.6118,
+   "survpath_plus_clinical": 0.681,
+   "OURS_wsi_omics": 0.6841,
+   "OURS": 0.7225
+  }
+ }
+}

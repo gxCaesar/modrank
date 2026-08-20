@@ -1,0 +1,192 @@
+{
+ "artifact_type": "s9_pibd_input_parity",
+ "arms_averaged_over_seeds": [
+  0,
+  1,
+  2,
+  3,
+  4
+ ],
+ "phase_of_origin": "frozen_post_hoc",
+ "n": 359,
+ "events": 113,
+ "integrity": {
+  "best_validation_epoch": {
+   "cases_covered": 359,
+   "labels_identical": true,
+   "events_identical": true,
+   "fold_assignment_identical": true
+  },
+  "final_epoch": {
+   "cases_covered": 359,
+   "labels_identical": true,
+   "events_identical": true,
+   "fold_assignment_identical": true
+  }
+ },
+ "pibd": {
+  "best_validation_epoch": {
+   "pibd_alone": {
+    "cindex": 0.6514,
+    "td_auc_8m": 0.76,
+    "td_auc_14m": 0.7273,
+    "td_auc_22m": 0.6996,
+    "ibs": 0.2029,
+    "logrank_p": 5.82e-05
+   },
+   "pibd_plus_same_clinical": {
+    "cindex": 0.6989,
+    "td_auc_8m": 0.781,
+    "td_auc_14m": 0.7516,
+    "td_auc_22m": 0.7385,
+    "ibs": 0.195,
+    "logrank_p": 4.3e-09
+   },
+   "per_fold_cindex": [
+    0.6038,
+    0.698,
+    0.6256,
+    0.6147,
+    0.7626
+   ],
+   "fold_mean": 0.6609,
+   "fold_sd": 0.0677
+  },
+  "final_epoch": {
+   "pibd_alone": {
+    "cindex": 0.5849,
+    "td_auc_8m": 0.6299,
+    "td_auc_14m": 0.6365,
+    "td_auc_22m": 0.6179,
+    "ibs": 0.2141,
+    "logrank_p": 0.0441
+   },
+   "pibd_plus_same_clinical": {
+    "cindex": 0.6639,
+    "td_auc_8m": 0.7039,
+    "td_auc_14m": 0.6988,
+    "td_auc_22m": 0.7027,
+    "ibs": 0.1996,
+    "logrank_p": 9.38e-08
+   },
+   "per_fold_cindex": [
+    0.551,
+    0.6709,
+    0.5692,
+    0.6034,
+    0.5554
+   ],
+   "fold_mean": 0.59,
+   "fold_sd": 0.0497
+  }
+ },
+ "published": {
+  "value": 0.667,
+  "sd_over_folds": 0.061,
+  "reported_as": "Best Val c-index, i.e. the checkpoint is chosen on the fold it is scored on",
+  "our_best_val_epoch_fold_mean": 0.6609,
+  "our_final_epoch_fold_mean": 0.59,
+  "checkpoint_selection_is_worth": 0.0709
+ },
+ "comparison_ours_vs_pibd_plus_clinical": {
+  "ours": 0.7237,
+  "pibd_plus_clinical_best_val_checkpoint": 0.6989,
+  "pibd_plus_clinical_final_epoch": 0.6639,
+  "paired_vs_best_val": {
+   "mean": 0.0249,
+   "se": 0.0215,
+   "ci95": [
+    -0.0181,
+    0.0675
+   ],
+   "p_two_sided": 0.2413
+  },
+  "paired_vs_final": {
+   "mean": 0.0595,
+   "se": 0.0229,
+   "ci95": [
+    0.0145,
+    0.1051
+   ],
+   "p_two_sided": 0.0103
+  },
+  "note": "the best-validation-checkpoint variant is the harder comparison for us, because that checkpoint was chosen on the fold it is scored on. It is the one to quote."
+ },
+ "canonical_arms_seed_averaged_scores": {
+  "construction": "per seed 0-4: fit, score out-of-fold, percentile-normalise within fold. Then average the five score vectors and re-normalise within fold. Both sides of every comparison get this identical treatment.",
+  "ours": 0.7237,
+  "slide_alone": 0.6535,
+  "omics_alone": 0.6648,
+  "clinical_alone": 0.6644,
+  "ours_without_clinical": 0.6897,
+  "survpath_plus_clinical": 0.6897,
+  "pibd_plus_clinical_best_val": 0.6989,
+  "pibd_plus_clinical_final_epoch": 0.6639,
+  "not_the_primary_metric": "the pre-registered primary is 0.7212, the MEAN OF FIVE PER-SEED CONCORDANCES. This table's 'ours' is the concordance of the AVERAGED SCORE, which is a different and slightly higher quantity. Averaging favours the competitor if anything: its seeds are full retrainings, ours are inner-CV partitions."
+ },
+ "holm_family_of_six": {
+  "note": "the family grew from five to six when PIBD became scoreable; Holm is recomputed over the whole family rather than the five it was first applied to, because adding a comparison and keeping the old adjustment would be the cheapest possible way to keep a result",
+  "comparisons": {
+   "ours vs omics alone": {
+    "delta": 0.0588,
+    "ci95": [
+     0.0172,
+     0.1009
+    ],
+    "p_raw": 0.0053,
+    "p_holm": 0.0265,
+    "survives_at_0.05": true
+   },
+   "ours vs slide alone": {
+    "delta": 0.0704,
+    "ci95": [
+     0.0288,
+     0.1138
+    ],
+    "p_raw": 0.0007,
+    "p_holm": 0.0042,
+    "survives_at_0.05": true
+   },
+   "ours vs clinical alone": {
+    "delta": 0.0594,
+    "ci95": [
+     0.0111,
+     0.107
+    ],
+    "p_raw": 0.0163,
+    "p_holm": 0.0652,
+    "survives_at_0.05": false
+   },
+   "ours vs ours-without-clinical": {
+    "delta": 0.034,
+    "ci95": [
+     0.005,
+     0.0635
+    ],
+    "p_raw": 0.0187,
+    "p_holm": 0.0652,
+    "survives_at_0.05": false
+   },
+   "ours vs SurvPath+clinical (seed-matched)": {
+    "delta": 0.034,
+    "ci95": [
+     -0.0056,
+     0.0731
+    ],
+    "p_raw": 0.0843,
+    "p_holm": 0.1686,
+    "survives_at_0.05": false
+   },
+   "ours vs PIBD+clinical (best-val checkpoint)": {
+    "delta": 0.0249,
+    "ci95": [
+     -0.0181,
+     0.0675
+    ],
+    "p_raw": 0.2413,
+    "p_holm": 0.2413,
+    "survives_at_0.05": false
+   }
+  }
+ }
+}

@@ -1,0 +1,11 @@
+# nothing generated belongs in the repository
+__pycache__/
+*.pyc
+.DS_Store
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+# inputs are public releases, pointed at rather than redistributed
+data/

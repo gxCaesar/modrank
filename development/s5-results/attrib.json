@@ -1,0 +1,25 @@
+{
+ "artifact_type": "attribution_clinical_vs_representation",
+ "reportable": false,
+ "phase_of_origin": "pre_h1",
+ "n": 359,
+ "events": 113,
+ "arms": {
+  "clinical alone (the floor any multimodal claim must clear)": 0.6754,
+  "TITAN alone": 0.6511,
+  "SurvPath alone (WSI + transcriptomics)": 0.6118,
+  "OURS = TITAN + clinical, rank-averaged": 0.7068,
+  "SURVPATH + clinical, same rank-average": 0.6875,
+  "SurvPath + TITAN (no clinical)": 0.6491,
+  "all three": 0.6995
+ },
+ "ours_minus_survpath_plus_clinical": {
+  "mean": 0.0196,
+  "se": 0.0176,
+  "ci95": [
+   -0.0153,
+   0.0526
+  ],
+  "reading": "if this interval contains zero, the advantage over SurvPath is explained by the clinical variables rather than by the TITAN representation, and the claim must be rewritten accordingly"
+ }
+}

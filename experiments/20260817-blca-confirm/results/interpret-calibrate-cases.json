@@ -1,0 +1,338 @@
+{
+ "artifact_type": "s7_interpret_calibrate_cases",
+ "phase_of_origin": "frozen_post_hoc",
+ "n": 359,
+ "events": 113,
+ "H1_clinical_coefficients": {
+  "note": "standardised ridge Cox coefficients at alpha=64, averaged over the five training folds, with the spread across folds. Positive is higher risk.",
+  "coefficients": [
+   {
+    "name": "stage=Stage IV",
+    "coef": 0.2605,
+    "sd_over_folds": 0.0257
+   },
+   {
+    "name": "stage=Stage II",
+    "coef": -0.1551,
+    "sd_over_folds": 0.0146
+   },
+   {
+    "name": "age",
+    "coef": 0.112,
+    "sd_over_folds": 0.0416
+   },
+   {
+    "name": "stage=Stage III",
+    "coef": -0.0804,
+    "sd_over_folds": 0.0273
+   },
+   {
+    "name": "stage=Stage I",
+    "coef": -0.0522,
+    "sd_over_folds": 0.0165
+   },
+   {
+    "name": "female",
+    "coef": 0.0234,
+    "sd_over_folds": 0.0225
+   }
+  ]
+ },
+ "H2_omics_top_pathways": {
+  "note": "a ridge coefficient inside a correlated 275-dimensional block is not a claim about a pathway in isolation; neighbouring pathways share genes and the penalty spreads weight across them. Reported as what the model leans on, not as a discovery.",
+  "n_pathways": 275,
+  "top_15_by_absolute_coefficient": [
+   {
+    "name": "Transport_of_fatty_acids",
+    "coef": 0.133,
+    "sd_over_folds": 0.0329
+   },
+   {
+    "name": "AlphaE_beta7_integrin_cell_surface_interactions",
+    "coef": -0.1319,
+    "sd_over_folds": 0.0292
+   },
+   {
+    "name": "Transferrin_endocytosis_and_recycling",
+    "coef": 0.1271,
+    "sd_over_folds": 0.021
+   },
+   {
+    "name": "Glucocorticoid_biosynthesis",
+    "coef": -0.1252,
+    "sd_over_folds": 0.0101
+   },
+   {
+    "name": "Methylation",
+    "coef": -0.1177,
+    "sd_over_folds": 0.0321
+   },
+   {
+    "name": "Conjugation_of_benzoate_with_glycine",
+    "coef": -0.117,
+    "sd_over_folds": 0.0309
+   },
+   {
+    "name": "Epidermal_Growth_Factor_Receptor_(EGFR)_signaling",
+    "coef": 0.11,
+    "sd_over_folds": 0.0214
+   },
+   {
+    "name": "Transport_of_gamma-carboxylated_protein_precursors_from_the_endoplasmic_reticulum_to_the_Golgi_apparatus",
+    "coef": -0.107,
+    "sd_over_folds": 0.009
+   },
+   {
+    "name": "Galactose_catabolism",
+    "coef": 0.1022,
+    "sd_over_folds": 0.0283
+   },
+   {
+    "name": "Serotonin_receptors",
+    "coef": -0.0998,
+    "sd_over_folds": 0.0261
+   },
+   {
+    "name": "Gamma-carboxylation_of_protein_precursors",
+    "coef": -0.0995,
+    "sd_over_folds": 0.0099
+   },
+   {
+    "name": "Iron_uptake_and_transport",
+    "coef": 0.0994,
+    "sd_over_folds": 0.0193
+   },
+   {
+    "name": "CREB_phosphorylation_through_the_activation_of_Adenylate_Cyclase",
+    "coef": 0.0991,
+    "sd_over_folds": 0.029
+   },
+   {
+    "name": "Serine_biosynthesis",
+    "coef": 0.0978,
+    "sd_over_folds": 0.0289
+   },
+   {
+    "name": "Insulin_receptor_recycling",
+    "coef": 0.0974,
+    "sd_over_folds": 0.0275
+   }
+  ]
+ },
+ "H3_what_the_image_arm_is": {
+  "spearman_with_stage": 0.2155,
+  "spearman_with_grade": -0.0311,
+  "spearman_with_age": 0.0485,
+  "spearman_with_sex": 0.0112,
+  "spearman_with_the_clinical_arm": 0.2445,
+  "spearman_with_the_omics_arm": 0.2713,
+  "reading": "a slide score that were merely a stage detector would correlate strongly with stage and with the clinical arm. Its concordance restricted to pairs the clinical arm cannot separate is the direct version of the same question."
+ },
+ "F_calibration": {
+  "horizons_months": [
+   8.2,
+   13.8,
+   21.7
+  ],
+  "by_risk_tertile": [
+   {
+    "group": "low",
+    "n": 120,
+    "events": 18,
+    "h8m": {
+     "observed_KM": 1.0,
+     "predicted": 0.955,
+     "difference": -0.045
+    },
+    "h14m": {
+     "observed_KM": 0.981,
+     "predicted": 0.905,
+     "difference": -0.076
+    },
+    "h22m": {
+     "observed_KM": 0.897,
+     "predicted": 0.835,
+     "difference": -0.063
+    }
+   },
+   {
+    "group": "mid",
+    "n": 119,
+    "events": 34,
+    "h8m": {
+     "observed_KM": 0.938,
+     "predicted": 0.915,
+     "difference": -0.024
+    },
+    "h14m": {
+     "observed_KM": 0.864,
+     "predicted": 0.823,
+     "difference": -0.041
+    },
+    "h22m": {
+     "observed_KM": 0.762,
+     "predicted": 0.702,
+     "difference": -0.06
+    }
+   },
+   {
+    "group": "high",
+    "n": 120,
+    "events": 61,
+    "h8m": {
+     "observed_KM": 0.802,
+     "predicted": 0.839,
+     "difference": 0.037
+    },
+    "h14m": {
+     "observed_KM": 0.617,
+     "predicted": 0.682,
+     "difference": 0.065
+    },
+    "h22m": {
+     "observed_KM": 0.439,
+     "predicted": 0.501,
+     "difference": 0.063
+    }
+   }
+  ],
+  "limit": "the method emits a RANK, not a hazard. The predicted column turns that rank into a survival probability through the cohort baseline, so this shows whether the GROUP ORDERING is calibrated; it is not a claim about absolute calibration of a model never fitted to produce one."
+ },
+ "I_case_studies": {
+  "selection_rule": "FIXED BEFORE THE RUN, in the file's docstring: within the MIDDLE tertile of the clinical arm's out-of-fold risk, the 5 highest and 5 lowest scores from the full method. All ten are reported.",
+  "band_size": 119,
+  "cases": [
+   {
+    "case_id": "TCGA-BT-A0S7",
+    "selected_as": "high",
+    "our_score_percentile": 0.973,
+    "image": 0.959,
+    "omics": 0.973,
+    "clinical": 0.635,
+    "stage": "Stage III",
+    "age": 75.4,
+    "observed_months": 6.7,
+    "event": true
+   },
+   {
+    "case_id": "TCGA-DK-A1AE",
+    "selected_as": "high",
+    "our_score_percentile": 0.971,
+    "image": 1.0,
+    "omics": 1.0,
+    "clinical": 0.657,
+    "stage": "Stage III",
+    "age": 84.1,
+    "observed_months": 16.4,
+    "event": false
+   },
+   {
+    "case_id": "TCGA-XF-AAN7",
+    "selected_as": "high",
+    "our_score_percentile": 0.957,
+    "image": 0.757,
+    "omics": 1.0,
+    "clinical": 0.643,
+    "stage": "Stage IV",
+    "age": 60.1,
+    "observed_months": 18.8,
+    "event": true
+   },
+   {
+    "case_id": "TCGA-CU-A3KJ",
+    "selected_as": "high",
+    "our_score_percentile": 0.957,
+    "image": 0.826,
+    "omics": 0.913,
+    "clinical": 0.58,
+    "stage": "Stage III",
+    "age": 75.8,
+    "observed_months": 18.7,
+    "event": false
+   },
+   {
+    "case_id": "TCGA-2F-A9KT",
+    "selected_as": "high",
+    "our_score_percentile": 0.928,
+    "image": 0.725,
+    "omics": 0.87,
+    "clinical": 0.667,
+    "stage": "Stage II",
+    "age": 83.6,
+    "observed_months": 110.5,
+    "event": false
+   },
+   {
+    "case_id": "TCGA-G2-AA3B",
+    "selected_as": "low",
+    "our_score_percentile": 0.068,
+    "image": 0.257,
+    "omics": 0.0,
+    "clinical": 0.459,
+    "stage": "Stage II",
+    "age": 75.7,
+    "observed_months": 66.9,
+    "event": false
+   },
+   {
+    "case_id": "TCGA-XF-AAN1",
+    "selected_as": "low",
+    "our_score_percentile": 0.086,
+    "image": 0.014,
+    "omics": 0.143,
+    "clinical": 0.486,
+    "stage": "Stage III",
+    "age": 75.8,
+    "observed_months": 31.4,
+    "event": true
+   },
+   {
+    "case_id": "TCGA-ZF-A9R7",
+    "selected_as": "low",
+    "our_score_percentile": 0.087,
+    "image": 0.304,
+    "omics": 0.014,
+    "clinical": 0.391,
+    "stage": "Stage II",
+    "age": 76.8,
+    "observed_months": 22.2,
+    "event": false
+   },
+   {
+    "case_id": "TCGA-E7-A7XN",
+    "selected_as": "low",
+    "our_score_percentile": 0.1,
+    "image": 0.086,
+    "omics": 0.1,
+    "clinical": 0.443,
+    "stage": "Stage III",
+    "age": 67.0,
+    "observed_months": 14.3,
+    "event": false
+   },
+   {
+    "case_id": "TCGA-ZF-A9R4",
+    "selected_as": "low",
+    "our_score_percentile": 0.101,
+    "image": 0.13,
+    "omics": 0.058,
+    "clinical": 0.623,
+    "stage": "Stage II",
+    "age": 83.2,
+    "observed_months": 30.7,
+    "event": false
+   }
+  ],
+  "summary": {
+   "high_group": {
+    "events": 2,
+    "median_observed_months": 18.7
+   },
+   "low_group": {
+    "events": 1,
+    "median_observed_months": 30.7
+   }
+  },
+  "read_as": "if the rule works the high group should carry more events and shorter observed times. Reported whichever way it lands."
+ }
+}

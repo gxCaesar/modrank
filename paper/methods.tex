@@ -1,0 +1,249 @@
+% Methods. Kept in its own file because the target venue class places Methods after references,
+% and because main.tex should be trimmable to a length limit without disturbing this.
+%
+% Written to be reproducible from the text alone: anyone with the released folds and the public
+% feature files should be able to rebuild every number in the paper from this section.
+
+\section*{Methods}
+
+\subsection*{Cohort and endpoint}
+
+TCGA-BLCA, disease-specific survival, as defined by the metadata SurvPath
+releases~\citep{jaume2024survpath}: the columns the disease-specific survival time and
+the censoring indicator in the released benchmark files, which derive from the
+TCGA Pan-Cancer Clinical Data Resource~\citep{liu2018tcgacdr}. An event is
+the censoring indicator is zero.
+
+The analysis cohort is the intersection of cases holding a slide embedding and a disease-specific
+survival label: 359 cases, 113 events, 24{,}219 comparable pairs. That is exactly the set
+the released folds partition, so no case is dropped by our pipeline that the benchmark includes.
+A case may hold several slides. Slide-level features are mean-pooled to the case before anything
+else, and a case is the unit throughout.
+
+\subsection*{Splits}
+
+The five fold files SurvPath released for bladder, used verbatim and never regenerated.
+Fold sizes (train/validation, cases): 289/70, 287/72, 284/75, 288/71, 288/71. We obtained them from
+the PIBD repository~\citep{zhang2024pibd} and confirmed byte by byte that all five files are
+byte-identical to SurvPath's.
+
+A canonical membership manifest records the exact train and validation case identifiers used in
+every fold so that a later run cannot silently use a different partition.
+
+\paragraph{Verifying the comparators' folds.} Fold identity is the axis on which these results are
+or are not comparable, and it is not uniform across the field, so we checked it rather than assuming
+it. PIBD ships the released files unchanged. DIMAF~\citep{eijpe2025dimaf} ships
+its own five-fold split files at \emph{slide}
+granularity. Collapsing them to the case identifier reproduces the released partition exactly: five of five validation folds identical, the 359-case universe identical, and no case in one but
+not the other.
+
+The rest cannot be checked. APL's repository contains two files. MMP states its own site-stratified
+protocol and OTSurv follows MMP, so neither uses the released partition. MOAD-FNet and DSCASurv
+release no split files at all. Values from that group are quoted rather than placed in the same
+column, and are excluded from the comparison the paper's claim rests on.
+
+\subsection*{Representations}
+
+\paragraph{Morphology.} A 768-dimensional TITAN slide embedding~\citep{ding2025titan} per whole-slide
+image, taken from a public precomputed release covering 11{,}658 TCGA diagnostic slides, mean-pooled
+over a case's slides. No slide-level model is trained here.
+
+\emph{On the encoder's provenance}, because a frozen embedding is the one place a linear model could
+inherit information it did not earn: TITAN was pretrained on 335{,}645 whole-slide images collected
+internally at Mass General Brigham, by visual self-supervised learning and vision-language alignment
+against pathology reports and synthetic captions. No patient outcome or survival label
+enters its pretraining, and its authors state that it did not use TCGA, PAIP, CPTAC or PANDA, the
+public collections benchmarks are built from. So the embedding cannot have seen this cohort's
+slides, and could not have seen its endpoint even if it had. The within-site column of
+Table~\ref{tab:main} is the residual check on the weaker version of the same worry, that a
+site-level signature correlated with outcome survives pooling.
+
+\paragraph{Transcriptome.} SurvPath's own 4{,}999-gene matrix for bladder
+(the released benchmark files), averaged into the 275 pathway
+groups its own signature definitions specify that carry at least three of those genes.
+This is close to what SurvPath's omics branch itself consumes, and using the benchmark's own
+grouping avoids a representation chosen by us in a place where a choice would be hard to justify.
+
+\paragraph{Clinical.} Age, sex and pathologic stage, one-hot for the categorical, taken from
+\emph{DIMAF's own released split files}: age at diagnosis, sex and
+AJCC pathologic tumour stage. The grade contrast uses the histological grade field from
+the same files. Taking the clinical block from the incumbent's own repository removes any question
+of whether ModRank sees information the comparators did not.
+
+Three cases carry an incomplete record and are handled without being dropped, because dropping them
+would change the cohort the comparison is made on. One case has no birth date and is given the
+cohort's rounded median age of 65 years. Two cases carry no stage and two carry no grade. A level
+recorded as unavailable, unknown or not evaluated produces an all-zero indicator row rather than a
+level of its own, so those cases sit at the encoding's reference point and contribute no stage or
+grade information. All 359 cases are scored.
+
+\paragraph{Representations that were evaluated and not used.} Six further public precomputed
+slide-level feature releases were scored as additional views: the native Prov-GigaPath slide
+encoder~\citep{xu2024provgigapath} at all fourteen layers, four GigaSSL aggregations (over Phikon,
+H-Optimus-0, Prov-GigaPath and CTransPath~\citep{wang2022ctranspath} tile features), and mean-pooled
+UNI~\citep{chen2024uni} patch features. None beat TITAN (0.6051, 0.6004, 0.5807, 0.5802, 0.5328 and
+0.5224 against 0.6596), their pairwise rank correlations run 0.63--0.69 so they are not independent
+views, and an ensemble of all seven is \emph{significantly worse} than TITAN alone ($-0.0440$, 95\%
+CI $[-0.0781,-0.0108]$, $p=0.008$). The UNI release carries roughly 21 patches per slide, a far
+coarser tiling than the prototype aggregation MMP and DIMAF use, which is the visible reason its
+mean pool is weak.
+
+\subsection*{Estimator}
+
+One ridge-penalised Cox proportional-hazards model~\citep{cox1972regression,simon2011regularization}
+per view, maximising the Breslow-tie partial likelihood by L-BFGS on the exact objective and its
+analytic gradient. The penalty $\alpha$ is chosen from $\{1, 8, 64, 512, 4096\}$ by three-fold
+inner cross-validation \emph{inside} the training fold, with the concordance of the
+out-of-inner-fold predictions as the criterion. Standardisation uses training-fold means and
+standard deviations only. The estimator is identical for every view.
+
+\paragraph{Why the estimator is not selected per view.} It could be, and we measured what that
+costs. Choosing among $\{$plain ridge, dense-grid ridge, bagged ridge$\}$ per view by inner
+cross-validation gives 0.6568, 0.6543 and 0.6743 for the morphology, transcriptome and clinical
+views against 0.6596, 0.6510 and 0.6856 for plain ridge everywhere: selection \emph{cost}
+performance on two views of three. At 287 training patients the inner criterion cannot reliably
+separate estimators that differ by 0.02, so adaptive selection buys noise at full price.
+
+\subsection*{Combination}
+
+Out-of-fold predictions are percentile-normalised to $[0,1]$ \emph{within each fold}, identically
+for every arm, and then averaged with equal weights. We call the resulting method ModRank,
+for modality-wise rank averaging, and the name is meant to carry the constraint rather than an
+architecture: beyond fitting one penalised Cox model per modality, ModRank only puts the three scores on a common rank scale and takes their mean, so the combination has no
+parameter to fit and none to overfit. The normalisation is not cosmetic: without it
+a Cox log-hazard on one fold's scale is pooled against another's, and the pooled concordance
+measures scale rather than skill.
+
+\paragraph{The transform, stated exactly, and the inductive variant of it.} For fold $k$ with
+validation set $V_k$, arm $m$'s normalised score for case $i \in V_k$ is
+$z^{m}_{i} = \mathrm{rank}\big(s^{m}_{i};\, \{s^{m}_{j}\}_{j \in V_k}\big) / (|V_k| - 1)$, where
+$s^{m}$ is the fitted arm's linear predictor. The reference set is the validation fold
+itself, which makes the transform transductive: a case's normalised score depends on the other
+cases being scored beside it. No outcome enters it, and it cannot change any single arm's
+concordance, a within-fold monotone map leaves that arm's own ranking untouched, but it can
+move the combination, because the rank average depends on how the three arms are scaled relative to
+one another.
+
+So we ran the deployable alternative and report it. In the \emph{inductive} variant the reference
+set is the training fold's own predicted scores, $z^{m}_{i} = \hat{F}^{m}_{\text{train}}(s^{m}_{i})$,
+which a single new patient could be scored against with nothing else present. It reaches
+0.7247 against the transductive 0.7212. The deployable version is if anything slightly
+\emph{better} (paired difference $+0.0019$, 95\% CI $[-0.0075,\,+0.0112]$, $p=0.69$). We report the
+transductive figure as the primary because it is what the frozen protocol specified, and record
+here that nothing rests on the choice.
+
+The equal weighting is a measured choice~\citep{bates1969combination}. A 21-point sweep of
+$w\,z_{\text{image}} + (1-w)\,z_{\text{clinical}}$ peaks at exactly $w=0.50$. A two-parameter Cox
+fusion \emph{fitted in-sample on the held-out fold} reaches 0.7268 against equal weighting's 0.7191,
+so even oracle-fitted weights are worth $+0.008$. A fusion whose image weight is gated on
+clinical-risk tertile reaches 0.7493 against a permuted-stratum control at 0.7502. The control
+wins, and the pre-registered consequence is that the component is void. No parameter in the
+combination is fitted.
+
+\subsection*{Evaluation and uncertainty}
+
+Harrell's concordance index~\citep{harrell1982cindex}, pooled over all out-of-fold predictions after
+within-fold percentile normalisation. The primary metric is the mean over inner-cross-validation
+seeds $0$--$4$, reported with the standard deviation across seeds. Three uncertainties are computed
+and they answer different questions:
+
+\begin{enumerate}
+  \item Split-reseed floor. The same 359 cases re-split 24 times under an identical
+    estimator, alpha grid, inner-CV seed and code path. The paired between-arm delta has
+    $\mathrm{SD}=0.0073$. Twice that, $0.0145$, is what a claim must clear to survive a reader
+    re-running the study.
+  \item Selection inflation. $\sigma\sqrt{2\ln N}$ with $\sigma=0.0073$ and $N=211$, the
+    number of candidates the iteration ledger held when the protocol was frozen (that ledger is
+    generated from the runs' own output rather than hand-kept). This is $0.0239$, and
+    $0.679+0.0239=0.7029$ is the pre-registered target. The campaign finished at 269 candidates,
+    all of them scored before the confirmatory run, and the same term over 269 is $0.0244$ for a
+    bar of $0.7034$. Both are reported, because the frozen figure is the smaller of the two.
+  \item Case-level bootstrap. 6{,}000 replicates resampling \emph{cases}, never comparable
+    pairs, because pairs sharing a patient are not independent. Where a restricted pair set is used, the ``clinically tied'' decile, the threshold is recomputed inside each replicate, so it
+    is a property of the resampled cohort rather than of the original one.
+\end{enumerate}
+
+\paragraph{The clinically-tied restriction.} Comparable pairs are ranked by the absolute difference
+in the clinical arm's own out-of-fold risk, and the smallest decile (2{,}423 of 24{,}219) is
+retained. This isolates pairs of patients whom stage cannot separate, which is the clinically
+substantive question and which no paper on this benchmark reports.
+
+\paragraph{The within-site restriction.} Pairs whose two cases share a TCGA tissue source site.
+Only 1{,}765 of 24{,}219 pairs qualify, so differences of $\approx0.006$ between arms in that column
+are not readable. It is reported as a coarse batch check, not as a comparison.
+
+\subsection*{Leakage falsifiers}
+
+Five, executed \emph{before} the protocol was frozen. Two are designed to reject and did.
+
+\begin{description}
+  \item[L1, fold integrity.] Train and validation disjoint in all five folds, and all 359 cases sit in
+    exactly one validation fold. The fold assignment asserted identical to the one the SurvPath
+    rerun used, so the paired comparison is paired. Passed.
+  \item[L2, no fitting across the boundary.] A \emph{mutation} test: refitting the same arm with
+    standardisation moments taken from the whole cohort moved the score from 0.6596 to 0.6542. The
+    point is that it moved. A test that cannot detect the leak it guards against has not passed.
+    Passed.
+  \item[L3, planted label.] A column rebuilt per fold: standard normal on every training row, the
+    outcome ordering on every validation row. It moved the score by $-0.0006$. Rejected, as
+    designed.
+  \item[L4, case alignment.] Permuting which feature row belongs to which case, outcome held fixed,
+    over 30 draws: $0.5127 \pm 0.0369$, within three standard errors of chance.
+    Rejected, as designed.
+  \item[L5, outcome provenance.] Zero mismatches between our per-case $(\text{time}, \text{event})$
+    and the SurvPath rerun's, so the paired comparison is on one endpoint. Passed.
+\end{description}
+
+\paragraph{A falsifier that was wrong first.} L3's first version built \emph{one} planted column for
+the whole cohort, writing the outcome ordering into each case's row while that case sat in its
+validation fold. Because every case is in exactly one validation fold, which L1 had just established, the column ended up encoding the outcome everywhere, including in the four folds
+where each case is a training row. The pipeline then learned from real information and scored
+0.8715, which the test reported as a leak. It was not one. A planted column that is noise in
+training and outcome in validation cannot be a single column. It has to be rebuilt inside each fold,
+which is what the version above does.
+
+\subsection*{Protocol freeze, and its one amendment}
+
+The frozen protocol fixes the arm, the estimator, the alpha
+grid, the combination rule, the comparator set, the seeds and the decision rule, and it was written
+after the falsifiers ran and before the confirmatory run. Seeds 1--4 had never been executed at the
+time of the freeze. On a benchmark with no held-out split they are the only genuinely unseen axis,
+and they were included to catch an arm that works under one inner-cross-validation partition only.
+The decision rule as frozen was: primary $> 0.679 + 0.0239$, \emph{and} standard deviation across
+seeds $\leq 0.0145$.
+
+\paragraph{Amendment A1.} While verifying DIMAF's fold identity we found a defect in our own
+clinical block. It had taken stage and T/N/M from a cached clinical query that selected the
+\emph{first} diagnosis record per case. Of the 359 cases, 217 carry more than one diagnosis, and 61 had
+their T or stage change once the correct record was chosen. For example, TCGA-SY-A9G0 carries both
+``Stage IIB / T2 N0 M0 / Adenocarcinoma, NOS'' and ``Stage IV / T4 N1 M0 / Transitional cell
+carcinoma''. The cached file took the first. The tell was present and unread beforehand: Stage IIA,
+IIB and IIC appear in that record and are not AJCC bladder stages at all, and the errors were
+systematic, understating stage, because the first-listed diagnosis tends to be the earlier or the
+other tumour.
+
+The block was rebuilt from DIMAF's own released files, as described above. Two changes landed at once and they pull in opposite directions, so both are given. Fixing the defect alone is worth
+$+0.0129$ on the clinical arm and $+0.0050$ on ModRank (95\% CI $[-0.0117,+0.0219]$,
+$p=0.56$), so the pre-amendment result was \emph{not} inflated by the defect. But the rebuilt
+block takes every clinical column from the incumbent's own files, which \emph{drops} the T, N and M
+our cached query had supplied, and that is worth $-0.0110$.
+
+Net, the reported primary fell from 0.7260 to 0.7212, a move of $-0.0048$ and the same size
+as the seed-to-seed SD. We report the lower, more conservative arm, and both figures clear the
+pre-registered target so the verdict is unchanged. The amendment is recorded in the protocol with
+all four blocks measured. The conservative arm, every clinical column from the incumbent's own
+files, is the one reported, not the higher-scoring variant that adds T, N and M from an external
+clinical query under a selection rule of our own design.
+
+\subsection*{Software and reproducibility}
+
+Python 3.8.20, NumPy 1.24.4, SciPy 1.10.1, single host, CPU only. The method trains no network and
+the confirmatory run takes minutes. The library versions are pinned because the same code on the
+same split under a different numerical stack has been shown elsewhere to move a baseline by more
+than the margins this area publishes.
+
+\paragraph{Availability.} \TODO{repository URL and archived DOI -- create at submission. The target
+venue requires a repository issuing DOIs.} The frozen protocol, the split manifest,
+the iteration ledger covering all 269 scored candidates, the error atlas, the component
+pre-registrations with their controls, and the confirmatory run with its logs and environment record
+are all included.

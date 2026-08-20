@@ -1,0 +1,224 @@
+{
+ "artifact_type": "s7_ablation_and_generalisation",
+ "phase_of_origin": "frozen_post_hoc",
+ "note": "the frozen arm, unchanged; nothing here re-tunes anything",
+ "B_ablation_bladder": {
+  "arms": {
+   "wsi": 0.6596,
+   "omics": 0.651,
+   "clin": 0.6638,
+   "wsi + omics": 0.6841,
+   "wsi + clin": 0.7,
+   "omics + clin": 0.7005,
+   "wsi + omics + clin": 0.7225
+  },
+  "leave_one_out": {
+   "drop wsi   (omics + clin)": -0.022,
+   "drop omics (wsi + clin)": -0.0225,
+   "drop clin  (wsi + omics)": -0.0384
+  },
+  "paired_vs_full": {
+   "omics + clin": {
+    "mean": -0.0218,
+    "se": 0.0136,
+    "ci95": [
+     -0.0481,
+     0.0038
+    ],
+    "p_two_sided": 0.1047
+   },
+   "wsi + clin": {
+    "mean": -0.0222,
+    "se": 0.0141,
+    "ci95": [
+     -0.0489,
+     0.006
+    ],
+    "p_two_sided": 0.11
+   },
+   "wsi + omics": {
+    "mean": -0.0385,
+    "se": 0.0154,
+    "ci95": [
+     -0.0687,
+     -0.0084
+    ],
+    "p_two_sided": 0.01
+   }
+  }
+ },
+ "E_cost": {
+  "free_parameters_total": 1049,
+  "per_view": {
+   "wsi_titan": 768,
+   "omics_combine": 275,
+   "clinical": 6
+  },
+  "parameters_in_the_combination": 0,
+  "fit_seconds_all_three_views_five_folds": 7.8,
+  "peak_rss_mb": 208.8,
+  "hardware": "one CPU core-set on a laptop; no GPU is used by any arm of this method",
+  "contrast": "the published entrants are attention and prototype networks trained end to end; this is three penalised Cox models and the combination has no parameters"
+ },
+ "J_omics_sensitivity": {
+  "groupings": {
+   "combine": {
+    "omics_alone": 0.651,
+    "full_arm_with_this_grouping": 0.7225,
+    "n_pathways": 275
+   },
+   "hallmarks": {
+    "omics_alone": 0.6061,
+    "full_arm_with_this_grouping": 0.6964,
+    "n_pathways": 50
+   },
+   "xena": {
+    "omics_alone": 0.6749,
+    "full_arm_with_this_grouping": 0.7314,
+    "n_pathways": 225
+   }
+  },
+  "frozen_choice": "combine",
+  "why_not_the_best": "xena scores higher and is NOT used. It was found by scoring three groupings against the pooled outcome, a selection worth about sigma*sqrt(2 ln 3) = 0.011 at this task's sigma, and promoting it afterwards would be the move this campaign measures in others' work. `combine` is the benchmark's own default."
+ },
+ "A_generalisation": {
+  "cohorts": {
+   "blca": {
+    "n_cases": 359,
+    "events": 113,
+    "clinical_stage_source": "SurvPath datasets_csv/clinical_data (the DIMAF-file variant used for the headline is bladder-only)",
+    "per_seed": [
+     0.6992,
+     0.7075,
+     0.6944,
+     0.7088,
+     0.704
+    ],
+    "primary_mean_over_seeds": 0.7028,
+    "sd_over_seeds": 0.006,
+    "published": {
+     "MOAD-FNet": 0.691,
+     "DIMAF": 0.679,
+     "APL": 0.677,
+     "PIBD": 0.667,
+     "DSCASurv": 0.646,
+     "OTSurv": 0.637,
+     "MMP": 0.635,
+     "SurvPath": 0.625
+    },
+    "best_published_any_protocol": 0.691,
+    "best_published_verified_folds": 0.679,
+    "beats_best_any": true,
+    "beats_best_verified": true
+   },
+   "brca": {
+    "n_cases": 871,
+    "events": 60,
+    "clinical_stage_source": "SurvPath datasets_csv/clinical_data",
+    "per_seed": [
+     0.6892,
+     0.693,
+     0.7001,
+     0.7048,
+     0.7018
+    ],
+    "primary_mean_over_seeds": 0.6978,
+    "sd_over_seeds": 0.0065,
+    "published": {
+     "APL": 0.794,
+     "DSCASurv": 0.765,
+     "DIMAF": 0.759,
+     "MMP": 0.738,
+     "PIBD": 0.736,
+     "SurvPath": 0.655
+    },
+    "best_published_any_protocol": 0.794,
+    "best_published_verified_folds": 0.759,
+    "beats_best_any": false,
+    "beats_best_verified": false
+   },
+   "coadread": {
+    "n_cases": 298,
+    "events": 37,
+    "clinical_stage_source": "SurvPath datasets_csv/clinical_data",
+    "per_seed": [
+     0.7141,
+     0.7352,
+     0.7328,
+     0.7285,
+     0.7272
+    ],
+    "primary_mean_over_seeds": 0.7276,
+    "sd_over_seeds": 0.0082,
+    "published": {
+     "DSCASurv": 0.832,
+     "APL": 0.812,
+     "PIBD": 0.768,
+     "SurvPath": 0.673,
+     "OTSurv": 0.667,
+     "MMP": 0.63
+    },
+    "best_published_any_protocol": 0.832,
+    "best_published_verified_folds": 0.768,
+    "beats_best_any": false,
+    "beats_best_verified": false
+   },
+   "hnsc": {
+    "n_cases": 394,
+    "events": 117,
+    "clinical_stage_source": "SurvPath datasets_csv/clinical_data",
+    "per_seed": [
+     0.6179,
+     0.6222,
+     0.6025,
+     0.6071,
+     0.6209
+    ],
+    "primary_mean_over_seeds": 0.6141,
+    "sd_over_seeds": 0.0088,
+    "published": {
+     "DSCASurv": 0.666,
+     "APL": 0.653,
+     "PIBD": 0.64,
+     "SurvPath": 0.6
+    },
+    "best_published_any_protocol": 0.666,
+    "best_published_verified_folds": 0.64,
+    "beats_best_any": false,
+    "beats_best_verified": false
+   },
+   "stad": {
+    "n_cases": 319,
+    "events": 84,
+    "clinical_stage_source": "SurvPath datasets_csv/clinical_data",
+    "per_seed": [
+     0.6311,
+     0.643,
+     0.6395,
+     0.6551,
+     0.6482
+    ],
+    "primary_mean_over_seeds": 0.6434,
+    "sd_over_seeds": 0.009,
+    "published": {
+     "DSCASurv": 0.698,
+     "APL": 0.686,
+     "PIBD": 0.684,
+     "MMP": 0.598,
+     "SurvPath": 0.592
+    },
+    "best_published_any_protocol": 0.698,
+    "best_published_verified_folds": 0.684,
+    "beats_best_any": false,
+    "beats_best_verified": false
+   }
+  },
+  "beats_best_verified_in": [
+   "blca"
+  ],
+  "beats_best_any_in": [
+   "blca"
+  ],
+  "caveat": "the four non-bladder cohorts use SurvPath's own single `stage` column, because DIMAF publishes split files for bladder only. They are a generalisation arm for the METHOD, not external validation of the bladder number -- there is no held-out bladder cohort anywhere in this benchmark."
+ }
+}

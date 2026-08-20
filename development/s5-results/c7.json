@@ -1,0 +1,93 @@
+{
+ "artifact_type": "s5_c7_stratified_training",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "n_strata": 4,
+ "bar": 0.0145,
+ "falsifier": "stratified must beat marginal ON TIED PAIRS by >0.0145; overall may fall",
+ "read_the_control_first": "if stratified_PERMUTED_CONTROL moves like stratified, VOID",
+ "per_view": {
+  "titan": {
+   "marginal": {
+    "cindex": 0.6596,
+    "tied_q10": 0.6246,
+    "tied_q20": 0.6251
+   },
+   "stratified": {
+    "cindex": 0.6113,
+    "tied_q10": 0.5929,
+    "tied_q20": 0.5982
+   },
+   "stratified_PERMUTED_CONTROL": {
+    "cindex": 0.6529,
+    "tied_q10": 0.6131,
+    "tied_q20": 0.6139
+   },
+   "_verdict": {
+    "tied_q10_stratified_minus_marginal": -0.0317,
+    "tied_q10_CONTROL_minus_marginal": -0.0115,
+    "overall_stratified_minus_marginal": -0.0483
+   }
+  },
+  "omics_combine": {
+   "marginal": {
+    "cindex": 0.651,
+    "tied_q10": 0.6286,
+    "tied_q20": 0.628
+   },
+   "stratified": {
+    "cindex": 0.6229,
+    "tied_q10": 0.6176,
+    "tied_q20": 0.6151
+   },
+   "stratified_PERMUTED_CONTROL": {
+    "cindex": 0.6606,
+    "tied_q10": 0.637,
+    "tied_q20": 0.6324
+   },
+   "_verdict": {
+    "tied_q10_stratified_minus_marginal": -0.011,
+    "tied_q10_CONTROL_minus_marginal": 0.0084,
+    "overall_stratified_minus_marginal": -0.0281
+   }
+  }
+ },
+ "full_arm": {
+  "marginal": {
+   "cindex": 0.7291,
+   "tied_q10": 0.6513,
+   "tied_q20": 0.6542
+  },
+  "stratified": {
+   "cindex": 0.7006,
+   "tied_q10": 0.6314,
+   "tied_q20": 0.6338
+  },
+  "stratified_PERMUTED_CONTROL": {
+   "cindex": 0.7257,
+   "tied_q10": 0.6418,
+   "tied_q20": 0.6442
+  },
+  "_verdict": {
+   "tied_q10_stratified_minus_marginal": -0.0199,
+   "tied_q10_CONTROL_minus_marginal": -0.0095,
+   "overall_stratified_minus_marginal": -0.0285
+  }
+ },
+ "tied_pair_head_to_head_vs_survpath_plus_clinical": {
+  "arm_used": "marginal",
+  "ours_tied_q10": 0.6513,
+  "survpath_plus_clinical_tied_q10": 0.5852,
+  "paired_bootstrap": {
+   "mean": 0.0659,
+   "se": 0.0363,
+   "ci95": [
+    -0.0033,
+    0.1367
+   ],
+   "p_two_sided": 0.0647,
+   "reps": 6000,
+   "note": "the tie threshold is recomputed inside each bootstrap replicate, so it is a property of the resampled cohort rather than of the original one"
+  }
+ }
+}

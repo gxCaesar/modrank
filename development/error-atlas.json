@@ -1,0 +1,456 @@
+{
+ "independent_unit": "one TCGA case",
+ "metric": "image_gain",
+ "higher_is_better": true,
+ "metric_definition": "C(image + clinical) - C(clinical) on the same slice. The arms' own C-indices are carried alongside; this is the quantity the method has to make bigger, and an atlas over raw C-index would rank slices by how predictable they happen to be.",
+ "task": "TCGA-BLCA disease-specific survival, released SurvPath 5-fold case-ID splits",
+ "n": 359,
+ "events": 113,
+ "overall_image_gain": 0.0335,
+ "min_pairs_to_rank": 100,
+ "min_events_to_rank": 8,
+ "slices": [
+  {
+   "name": "collection_site=DK",
+   "image_gain": 0.0314,
+   "n_units": 35,
+   "events": 8,
+   "comparable_pairs": 191,
+   "rankable": true,
+   "sds_from_overall": -0.04,
+   "clinical_only": 0.6335,
+   "image_plus_clinical": 0.6649
+  },
+  {
+   "name": "collection_site=FD",
+   "image_gain": 0.0891,
+   "n_units": 47,
+   "events": 18,
+   "comparable_pairs": 460,
+   "rankable": true,
+   "sds_from_overall": 1.03,
+   "clinical_only": 0.6457,
+   "image_plus_clinical": 0.7348
+  },
+  {
+   "name": "collection_site=XF",
+   "image_gain": -0.0568,
+   "n_units": 44,
+   "events": 21,
+   "comparable_pairs": 581,
+   "rankable": true,
+   "sds_from_overall": -1.67,
+   "clinical_only": 0.6678,
+   "image_plus_clinical": 0.611
+  },
+  {
+   "name": "collection_site=ZF",
+   "image_gain": 0.1288,
+   "n_units": 27,
+   "events": 10,
+   "comparable_pairs": 194,
+   "rankable": true,
+   "sds_from_overall": 1.76,
+   "clinical_only": 0.6753,
+   "image_plus_clinical": 0.8041
+  },
+  {
+   "name": "collection_site=other",
+   "image_gain": 0.0496,
+   "n_units": 164,
+   "events": 51,
+   "comparable_pairs": 5181,
+   "rankable": true,
+   "sds_from_overall": 0.3,
+   "clinical_only": 0.6731,
+   "image_plus_clinical": 0.7227
+  },
+  {
+   "name": "T_stage=T0-T2",
+   "image_gain": 0.0176,
+   "n_units": 153,
+   "events": 32,
+   "comparable_pairs": 2754,
+   "rankable": true,
+   "sds_from_overall": -0.29,
+   "clinical_only": 0.6696,
+   "image_plus_clinical": 0.6872
+  },
+  {
+   "name": "T_stage=T3",
+   "image_gain": 0.0534,
+   "n_units": 140,
+   "events": 54,
+   "comparable_pairs": 4438,
+   "rankable": true,
+   "sds_from_overall": 0.37,
+   "clinical_only": 0.5789,
+   "image_plus_clinical": 0.6323
+  },
+  {
+   "name": "T_stage=T4",
+   "image_gain": 0.0143,
+   "n_units": 41,
+   "events": 18,
+   "comparable_pairs": 385,
+   "rankable": true,
+   "sds_from_overall": -0.35,
+   "clinical_only": 0.6597,
+   "image_plus_clinical": 0.674
+  },
+  {
+   "name": "node_status=N+",
+   "image_gain": 0.0568,
+   "n_units": 95,
+   "events": 51,
+   "comparable_pairs": 2665,
+   "rankable": true,
+   "sds_from_overall": 0.43,
+   "clinical_only": 0.564,
+   "image_plus_clinical": 0.6208
+  },
+  {
+   "name": "node_status=N0",
+   "image_gain": 0.0129,
+   "n_units": 198,
+   "events": 38,
+   "comparable_pairs": 4409,
+   "rankable": true,
+   "sds_from_overall": -0.38,
+   "clinical_only": 0.6719,
+   "image_plus_clinical": 0.6848
+  },
+  {
+   "name": "metastasis=M0",
+   "image_gain": 0.0441,
+   "n_units": 155,
+   "events": 39,
+   "comparable_pairs": 3230,
+   "rankable": true,
+   "sds_from_overall": 0.2,
+   "clinical_only": 0.6712,
+   "image_plus_clinical": 0.7153
+  },
+  {
+   "name": "sex=female",
+   "image_gain": 0.024,
+   "n_units": 90,
+   "events": 31,
+   "comparable_pairs": 1603,
+   "rankable": true,
+   "sds_from_overall": -0.18,
+   "clinical_only": 0.6369,
+   "image_plus_clinical": 0.6609
+  },
+  {
+   "name": "sex=male",
+   "image_gain": 0.0392,
+   "n_units": 269,
+   "events": 82,
+   "comparable_pairs": 13326,
+   "rankable": true,
+   "sds_from_overall": 0.11,
+   "clinical_only": 0.6939,
+   "image_plus_clinical": 0.7331
+  },
+  {
+   "name": "age_tertile=age_high",
+   "image_gain": 0.0285,
+   "n_units": 115,
+   "events": 39,
+   "comparable_pairs": 2638,
+   "rankable": true,
+   "sds_from_overall": -0.09,
+   "clinical_only": 0.6205,
+   "image_plus_clinical": 0.649
+  },
+  {
+   "name": "age_tertile=age_low",
+   "image_gain": 0.0702,
+   "n_units": 122,
+   "events": 34,
+   "comparable_pairs": 2462,
+   "rankable": true,
+   "sds_from_overall": 0.68,
+   "clinical_only": 0.6682,
+   "image_plus_clinical": 0.7384
+  },
+  {
+   "name": "age_tertile=age_mid",
+   "image_gain": 0.0177,
+   "n_units": 122,
+   "events": 40,
+   "comparable_pairs": 2853,
+   "rankable": true,
+   "sds_from_overall": -0.29,
+   "clinical_only": 0.752,
+   "image_plus_clinical": 0.7697
+  },
+  {
+   "name": "slides_per_case=multi_slide",
+   "image_gain": 0.0514,
+   "n_units": 25,
+   "events": 13,
+   "comparable_pairs": 214,
+   "rankable": true,
+   "sds_from_overall": 0.33,
+   "clinical_only": 0.6729,
+   "image_plus_clinical": 0.7243
+  },
+  {
+   "name": "slides_per_case=one_slide",
+   "image_gain": 0.0295,
+   "n_units": 334,
+   "events": 100,
+   "comparable_pairs": 19578,
+   "rankable": true,
+   "sds_from_overall": -0.07,
+   "clinical_only": 0.682,
+   "image_plus_clinical": 0.7115
+  },
+  {
+   "name": "clinical_risk_tertile=clin_high",
+   "image_gain": 0.0661,
+   "n_units": 120,
+   "events": 60,
+   "comparable_pairs": 4018,
+   "rankable": true,
+   "sds_from_overall": 0.6,
+   "clinical_only": 0.5628,
+   "image_plus_clinical": 0.6289
+  },
+  {
+   "name": "clinical_risk_tertile=clin_low",
+   "image_gain": -0.0452,
+   "n_units": 120,
+   "events": 20,
+   "comparable_pairs": 1260,
+   "rankable": true,
+   "sds_from_overall": -1.45,
+   "clinical_only": 0.6329,
+   "image_plus_clinical": 0.5877
+  },
+  {
+   "name": "clinical_risk_tertile=clin_mid",
+   "image_gain": 0.112,
+   "n_units": 119,
+   "events": 33,
+   "comparable_pairs": 2500,
+   "rankable": true,
+   "sds_from_overall": 1.45,
+   "clinical_only": 0.5932,
+   "image_plus_clinical": 0.7052
+  },
+  {
+   "name": "fold=fold_0",
+   "image_gain": 0.1153,
+   "n_units": 70,
+   "events": 25,
+   "comparable_pairs": 1040,
+   "rankable": true,
+   "sds_from_overall": 1.51,
+   "clinical_only": 0.601,
+   "image_plus_clinical": 0.7163
+  },
+  {
+   "name": "fold=fold_1",
+   "image_gain": 0.0455,
+   "n_units": 72,
+   "events": 24,
+   "comparable_pairs": 1033,
+   "rankable": true,
+   "sds_from_overall": 0.22,
+   "clinical_only": 0.7038,
+   "image_plus_clinical": 0.7493
+  },
+  {
+   "name": "fold=fold_2",
+   "image_gain": 0.0051,
+   "n_units": 75,
+   "events": 23,
+   "comparable_pairs": 975,
+   "rankable": true,
+   "sds_from_overall": -0.52,
+   "clinical_only": 0.7364,
+   "image_plus_clinical": 0.7415
+  },
+  {
+   "name": "fold=fold_3",
+   "image_gain": -0.0028,
+   "n_units": 71,
+   "events": 25,
+   "comparable_pairs": 1059,
+   "rankable": true,
+   "sds_from_overall": -0.67,
+   "clinical_only": 0.644,
+   "image_plus_clinical": 0.6412
+  },
+  {
+   "name": "fold=fold_4",
+   "image_gain": -0.0202,
+   "n_units": 71,
+   "events": 16,
+   "comparable_pairs": 695,
+   "rankable": true,
+   "sds_from_overall": -0.99,
+   "clinical_only": 0.7583,
+   "image_plus_clinical": 0.7381
+  }
+ ],
+ "bottleneck": {
+  "slice": "collection_site=XF",
+  "claim": "the image adds least here -- -0.0568 against an overall +0.0335. But the honest reading of this atlas is that THE DEFICIT IS UNIFORM and this slice is not a mechanism: only six of the ranked slice levels move more than one fold-to-fold SD (0.0542) from the overall gain, three of those are collection sites at n=27-47, and one is a fold. The two that are neither -- the middle and lowest clinical-risk tertiles -- WERE built into a component (C5, gated fusion) and it came back VOID against its own control: 0.7493 gated against 0.7502 with the strata permuted. A uniform deficit rules out, in one measurement, every component that special-cases a subpopulation.",
+  "image_gain": -0.0568,
+  "n_units": 44,
+  "rests_on_more_than_one_unit": true,
+  "selected_by": "minimum image_gain among slices clearing the declared ranking floor"
+ },
+ "variation_before_belief": {
+  "per_fold_image_gain": [
+   0.1154,
+   0.0455,
+   0.0051,
+   -0.0028,
+   -0.0201
+  ],
+  "fold_to_fold_sd": 0.0542,
+  "rule": "a slice whose gain_minus_overall is under one fold-to-fold SD is not a bottleneck; it is where the noise happened to land this time"
+ },
+ "redundancy": {
+  "spearman_titan_vs_clinical": 0.213,
+  "spearman_survpath_vs_clinical": 0.1656,
+  "spearman_titan_vs_survpath": 0.4836,
+  "reading": "a high correlation between the image score and the clinical score is the mechanism behind a small image gain; a low one means the two are orthogonal and the fusion rule, not the representation, is what is failing"
+ },
+ "conditional_probe": {
+  "clinically_tied_q05": {
+   "pairs": 1281,
+   "pairs_total": 24219,
+   "clinical_gap_threshold": 0.0286,
+   "arms": {
+    "clinical": 0.5012,
+    "titan": 0.612,
+    "survpath": 0.5785,
+    "titan+clinical": 0.6038
+   }
+  },
+  "clinically_tied_q10": {
+   "pairs": 2423,
+   "pairs_total": 24219,
+   "clinical_gap_threshold": 0.0563,
+   "arms": {
+    "clinical": 0.5167,
+    "titan": 0.6246,
+    "survpath": 0.5803,
+    "titan+clinical": 0.6189
+   }
+  },
+  "clinically_tied_q20": {
+   "pairs": 4844,
+   "pairs_total": 24219,
+   "clinical_gap_threshold": 0.1136,
+   "arms": {
+    "clinical": 0.5343,
+    "titan": 0.6251,
+    "survpath": 0.5841,
+    "titan+clinical": 0.6254
+   }
+  },
+  "clinically_tied_q40": {
+   "pairs": 9697,
+   "pairs_total": 24219,
+   "clinical_gap_threshold": 0.2394,
+   "arms": {
+    "clinical": 0.5687,
+    "titan": 0.6344,
+    "survpath": 0.5956,
+    "titan+clinical": 0.6407
+   }
+  },
+  "all_pairs": {
+   "pairs": 24219,
+   "pairs_total": 24219,
+   "clinical_gap_threshold": null,
+   "arms": {
+    "clinical": 0.6856,
+    "titan": 0.6596,
+    "survpath": 0.6118,
+    "titan+clinical": 0.7191
+   }
+  }
+ },
+ "the_one_slice_that_does_separate": {
+  "name": "clinically tied pairs",
+  "definition": "the decile of comparable pairs with the smallest gap in the clinical arm's own out-of-fold risk -- 2,423 of 24,219",
+  "why_it_matters": "two patients with the same stage and different outcomes is the question a pathologist is asking, and no paper on this benchmark reports it",
+  "measured": {
+   "clinical_alone": 0.5167,
+   "survpath_rerun": 0.5803,
+   "survpath_plus_clinical": 0.5852,
+   "titan": 0.6246,
+   "omics_combine": 0.6286,
+   "omics_xena": 0.6529,
+   "OURS": 0.6513
+  },
+  "head_to_head_vs_survpath_plus_clinical": {
+   "delta": 0.0659,
+   "se": 0.0363,
+   "ci95": [
+    -0.0033,
+    0.1367
+   ],
+   "p_two_sided": 0.0647,
+   "note": "the tie threshold is recomputed inside every bootstrap replicate"
+  }
+ },
+ "caveat_within_site": {
+  "within_site_pairs": 1765,
+  "all_pairs": 24219,
+  "note": "only 7% of comparable pairs share a collection site, so differences of ~0.006 between arms in that column are not readable. An earlier reading of it over-claimed and is withdrawn."
+ },
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "slices_below_ranking_floor": {
+  "floor": {
+   "min_comparable_pairs": 100,
+   "min_events": 8
+  },
+  "why": "a slice that cannot be ranked cannot be a bottleneck -- the template's own rule -- and leaving it in `slices` would let a 21-case collection site out-score every actionable slice in the file. They are listed here rather than dropped, because a silently shorter list is the failure this atlas exists to prevent.",
+  "n_excluded": 3,
+  "excluded": [
+   {
+    "name": "collection_site=CF",
+    "image_gain": 0.1667,
+    "n_units": 21,
+    "events": 2,
+    "comparable_pairs": 6,
+    "rankable": false,
+    "sds_from_overall": 2.46,
+    "clinical_only": 0.5,
+    "image_plus_clinical": 0.6667
+   },
+   {
+    "name": "collection_site=E7",
+    "image_gain": -0.1053,
+    "n_units": 21,
+    "events": 3,
+    "comparable_pairs": 19,
+    "rankable": false,
+    "sds_from_overall": -2.56,
+    "clinical_only": 0.7895,
+    "image_plus_clinical": 0.6842
+   },
+   {
+    "name": "metastasis=M1",
+    "image_gain": 0.1428,
+    "n_units": 8,
+    "events": 6,
+    "comparable_pairs": 21,
+    "rankable": false,
+    "sds_from_overall": 2.02,
+    "clinical_only": 0.4048,
+    "image_plus_clinical": 0.5476
+   }
+  ]
+ }
+}

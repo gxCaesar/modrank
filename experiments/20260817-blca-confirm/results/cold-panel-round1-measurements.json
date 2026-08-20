@@ -1,0 +1,69 @@
+{
+ "artifact_type": "s11_cold_panel_round1_measurements",
+ "phase_of_origin": "frozen_post_hoc",
+ "why": "two findings from cold panel round 1, answered with measurements rather than argument",
+ "n": 359,
+ "events": 113,
+ "transductive_vs_inductive": {
+  "question": "does ranking a validation fold against ITSELF, rather than against the training fold's own score distribution, change the combined arm?",
+  "per_seed": [
+   {
+    "seed": 0,
+    "transductive": 0.7225,
+    "inductive": 0.7234,
+    "difference": 0.0008
+   },
+   {
+    "seed": 1,
+    "transductive": 0.7248,
+    "inductive": 0.7272,
+    "difference": 0.0024
+   },
+   {
+    "seed": 2,
+    "transductive": 0.7129,
+    "inductive": 0.721,
+    "difference": 0.0081
+   },
+   {
+    "seed": 3,
+    "transductive": 0.7243,
+    "inductive": 0.7258,
+    "difference": 0.0015
+   },
+   {
+    "seed": 4,
+    "transductive": 0.7216,
+    "inductive": 0.7262,
+    "difference": 0.0046
+   }
+  ],
+  "primary_transductive": 0.7212,
+  "primary_inductive": 0.7247,
+  "mean_difference": 0.0035,
+  "paired_case_bootstrap_inductive_minus_transductive": {
+   "mean": 0.0019,
+   "se": 0.0048,
+   "ci95": [
+    -0.0075,
+    0.0112
+   ],
+   "p_two_sided": 0.6943
+  },
+  "note": "no outcome enters either transform. A within-fold monotone map cannot change a SINGLE arm's concordance at all; only the combination can move, because the rank average depends on the relative scaling of the three arms."
+ },
+ "stage_vs_grade_inference": {
+  "clinical_with_stage": 0.6638,
+  "clinical_with_grade": 0.5666,
+  "paired_case_bootstrap": {
+   "mean": 0.0976,
+   "se": 0.0262,
+   "ci95": [
+    0.0469,
+    0.1493
+   ],
+   "p_two_sided": 0.0
+  },
+  "note": "the two arms are scored on the SAME cases through the SAME pipeline and differ in one column, so the paired case-level bootstrap used elsewhere applies directly. The paper reported this difference without an interval while six secondary comparisons carried one."
+ }
+}

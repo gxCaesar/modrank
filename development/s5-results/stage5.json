@@ -1,0 +1,213 @@
+{
+ "artifact_type": "s5_stage_five_cohorts",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "data_provenance": "every column comes from mahmoodlab/SurvPath's own release: datasets_csv/metadata/tcga_<c>.csv for labels, age and sex; datasets_csv/clinical_data/tcga_<c>_clinical.csv for stage and grade; datasets_csv/raw_rna_data/combine/<c>/rna_clean.csv for genes; PIBD's copy of the released 5-fold case-ID splits",
+ "cohorts": {
+  "blca": {
+   "n_cases": 359,
+   "events": 113,
+   "cases_with_clinical_row": 359,
+   "stage_levels": [
+    "0",
+    "I",
+    "II",
+    "III",
+    "IV"
+   ],
+   "grade_levels": [
+    "G1",
+    "G2"
+   ],
+   "arms": {
+    "age_sex": 0.5636,
+    "age_sex_grade": 0.5658,
+    "age_sex_stage": 0.6218,
+    "titan": 0.6596,
+    "omics": 0.651
+   },
+   "WSI_plus_OMICS": 0.6841,
+   "OURS_wsi_omics_age_sex_stage": 0.6992,
+   "control_same_arm_with_GRADE_instead": 0.6861,
+   "published_age_sex_grade": 0.57,
+   "published_best_any_protocol": [
+    "DIMAF",
+    0.679
+   ],
+   "published_best_verified_released_folds": [
+    "SurvPath",
+    0.625
+   ],
+   "our_age_sex_grade_minus_published": -0.0042,
+   "stage_minus_grade_same_pipeline": 0.056
+  },
+  "brca": {
+   "n_cases": 871,
+   "events": 60,
+   "cases_with_clinical_row": 871,
+   "stage_levels": [
+    "0",
+    "I",
+    "II",
+    "III",
+    "IV"
+   ],
+   "grade_levels": [],
+   "arms": {
+    "age_sex": 0.4828,
+    "age_sex_grade": 0.4828,
+    "age_sex_stage": 0.5686,
+    "titan": 0.7442,
+    "omics": 0.5829
+   },
+   "WSI_plus_OMICS": 0.7101,
+   "OURS_wsi_omics_age_sex_stage": 0.6892,
+   "control_same_arm_with_GRADE_instead": 0.6614,
+   "published_age_sex_grade": 0.563,
+   "published_best_any_protocol": [
+    "APL",
+    0.794
+   ],
+   "published_best_verified_released_folds": [
+    "SurvPath",
+    0.655
+   ],
+   "our_age_sex_grade_minus_published": -0.0802,
+   "stage_minus_grade_same_pipeline": 0.0858
+  },
+  "coadread": {
+   "n_cases": 298,
+   "events": 37,
+   "cases_with_clinical_row": 298,
+   "stage_levels": [
+    "0",
+    "I",
+    "II",
+    "III",
+    "IV"
+   ],
+   "grade_levels": [],
+   "arms": {
+    "age_sex": 0.469,
+    "age_sex_grade": 0.469,
+    "age_sex_stage": 0.6898,
+    "titan": 0.6542,
+    "omics": 0.6116
+   },
+   "WSI_plus_OMICS": 0.6819,
+   "OURS_wsi_omics_age_sex_stage": 0.7141,
+   "control_same_arm_with_GRADE_instead": 0.6231,
+   "published_age_sex_grade": 0.655,
+   "published_best_any_protocol": [
+    "DSCASurv",
+    0.832
+   ],
+   "published_best_verified_released_folds": [
+    "SurvPath",
+    0.673
+   ],
+   "our_age_sex_grade_minus_published": -0.186,
+   "stage_minus_grade_same_pipeline": 0.2208
+  },
+  "hnsc": {
+   "n_cases": 394,
+   "events": 117,
+   "cases_with_clinical_row": 394,
+   "stage_levels": [
+    "0",
+    "I",
+    "II",
+    "III",
+    "IV"
+   ],
+   "grade_levels": [
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "GX"
+   ],
+   "arms": {
+    "age_sex": 0.485,
+    "age_sex_grade": 0.5027,
+    "age_sex_stage": 0.545,
+    "titan": 0.6135,
+    "omics": 0.5852
+   },
+   "WSI_plus_OMICS": 0.6169,
+   "OURS_wsi_omics_age_sex_stage": 0.6179,
+   "control_same_arm_with_GRADE_instead": 0.6015,
+   "published_age_sex_grade": 0.512,
+   "published_best_any_protocol": [
+    "DSCASurv",
+    0.666
+   ],
+   "published_best_verified_released_folds": [
+    "SurvPath",
+    0.6
+   ],
+   "our_age_sex_grade_minus_published": -0.0093,
+   "stage_minus_grade_same_pipeline": 0.0423
+  },
+  "stad": {
+   "n_cases": 319,
+   "events": 84,
+   "cases_with_clinical_row": 319,
+   "stage_levels": [
+    "I",
+    "II",
+    "III",
+    "IV"
+   ],
+   "grade_levels": [
+    "G1",
+    "G2",
+    "G3",
+    "GX"
+   ],
+   "arms": {
+    "age_sex": 0.515,
+    "age_sex_grade": 0.5358,
+    "age_sex_stage": 0.5819,
+    "titan": 0.5858,
+    "omics": 0.5887
+   },
+   "WSI_plus_OMICS": 0.6108,
+   "OURS_wsi_omics_age_sex_stage": 0.6311,
+   "control_same_arm_with_GRADE_instead": 0.6125,
+   "published_age_sex_grade": 0.592,
+   "published_best_any_protocol": [
+    "DSCASurv",
+    0.698
+   ],
+   "published_best_verified_released_folds": [
+    "SurvPath",
+    0.592
+   ],
+   "our_age_sex_grade_minus_published": -0.0562,
+   "stage_minus_grade_same_pipeline": 0.0461
+  }
+ },
+ "summary": {
+  "cohorts_scored": 5,
+  "mean_OURS": 0.6703,
+  "mean_WSI_plus_OMICS": 0.6608,
+  "cohorts_where_OURS_beats_best_published_any_protocol": [
+   "blca"
+  ],
+  "cohorts_where_OURS_beats_best_verified_released_fold_method": [
+   "blca",
+   "brca",
+   "coadread",
+   "hnsc",
+   "stad"
+  ],
+  "cohorts_where_stage_beats_grade": [
+   "blca",
+   "brca",
+   "coadread",
+   "hnsc",
+   "stad"
+  ]
+ }
+}

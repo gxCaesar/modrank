@@ -1,0 +1,261 @@
+{
+ "artifact_type": "clinical_baseline_census",
+ "phase_of_origin": "frozen_post_hoc",
+ "started": "2026-08-18",
+ "why": "The manuscript claims every method paper on this benchmark builds its clinical baseline from tumour grade. A cold-panel reviewer pointed out that the claim is about eleven papers while the supplement showed a nine-row PERFORMANCE table and no covariate extraction. This file is the extraction. A row is only 'verified' when a covariate sentence was read in the paper itself and is quoted here; everything else says what it is.",
+ "rule": "verified = the covariate list was read in the primary source and quoted verbatim, with its location. asserted = we believe it but have not read it. not_applicable = the paper reports no clinical-variable baseline at all.",
+ "papers": [
+  {
+   "id": "porpoise",
+   "name": "PORPOISE / MMF",
+   "authors": "Chen et al.",
+   "venue": "Cancer Cell 2022 (arXiv 2108.02278)",
+   "status": "verified",
+   "covariates": [
+    "age",
+    "gender",
+    "tumour grade"
+   ],
+   "uses_stage": false,
+   "quote": "we also assessed Cox proportional hazard models using age, gender, and tumor grade covariates as baselines, which were still outperformed by MMF (Table S4)",
+   "location": "main text, referring to Table S4, 'Cox Baselines on Survival Prediction across 14 Cancer Types'",
+   "table_variants": [
+    "grade alone",
+    "age+gender",
+    "age+gender+grade"
+   ],
+   "blca_included": true,
+   "fetched": "2026-08-18 via ar5iv full text",
+   "reports_clinical_baseline": true
+  },
+  {
+   "id": "survpath",
+   "name": "SurvPath",
+   "authors": "Jaume et al.",
+   "venue": "CVPR 2024 (arXiv 2304.06819)",
+   "status": "verified",
+   "covariates": [
+    "age",
+    "sex",
+    "grade"
+   ],
+   "uses_stage": false,
+   "quote": "Survival prediction results of SurvPath compared with clinical covariates. ... Predictions using clinical covariates are done using Cox proportional hazards model on the same 5-fold cross-validation splits as SurvPath.",
+   "covariate_list_verbatim": "Age, Sex, Grade",
+   "location": "Supplementary Table 3",
+   "blca_included": true,
+   "blca_values": {
+    "age": 0.578,
+    "age_sex_grade": 0.57
+   },
+   "note": "THE 0.578 AND 0.570 THE MANUSCRIPT ATTRIBUTES TO MMP ARE SURVPATH'S. Caught here; the attribution must be corrected or MMP must be shown to report the same numbers independently.",
+   "fetched": "2026-08-18 via ar5iv full text",
+   "reports_clinical_baseline": true
+  },
+  {
+   "id": "pibd",
+   "name": "PIBD",
+   "authors": "Zhang et al.",
+   "venue": "ICLR 2024 (arXiv 2401.01646)",
+   "status": "verified",
+   "reports_clinical_baseline": false,
+   "covariates": [],
+   "uses_stage": false,
+   "quote": "NOT PRESENT -- all baselines are machine-learning methods on pathology or genomic data",
+   "baselines_verbatim": [
+    "MLP",
+    "SNN",
+    "SNNTrans",
+    "ABMIL",
+    "AMISL",
+    "TransMIL",
+    "CLAM-SB",
+    "CLAM-MB",
+    "SNNTrans+CLAM-MB",
+    "Porpoise(Cat)",
+    "Porpoise(KP)",
+    "MCAT(Cat)",
+    "MCAT(KP)",
+    "MOTCat",
+    "SurvPath",
+    "CLAM-SB-FT",
+    "MIB",
+    "DeepIMV",
+    "L-MIB"
+   ],
+   "location": "results tables; no clinical-covariate row anywhere",
+   "blca_included": true,
+   "note": "FALSIFIES the manuscript's claim that EVERY method paper on this benchmark reports a clinical-variable baseline. PIBD reports none.",
+   "fetched": "2026-08-18 via ar5iv full text"
+  },
+  {
+   "id": "motcat",
+   "name": "MOTCat",
+   "authors": "Xu and Chen",
+   "venue": "ICCV 2023 (arXiv 2306.08330)",
+   "status": "verified",
+   "reports_clinical_baseline": false,
+   "covariates": [],
+   "uses_stage": false,
+   "quote": "NOT PRESENT -- no clinical-covariate baseline anywhere in the paper",
+   "location": "Table 1 lists only ML baselines: SNN, SNNTrans, AttnMIL, DeepAttnMISL, CLAM-SB, CLAM-MB, TransMIL, DTFD-MIL, Pathomic, PONET, Porpoise, MCAT",
+   "blca_included": true,
+   "blca_n": 373,
+   "note": "AND IT IS NOT ON THE SAME BENCHMARK. Its cohorts are BLCA/BRCA/UCEC/GBMLGG/LUAD with BLCA at n=373, not the SurvPath five at n=359. The 0.596 in our table is SurvPath's rerun of MOTCat, not MOTCat's own number, which the table already says.",
+   "fetched": "2026-08-18 via ar5iv full text"
+  },
+  {
+   "id": "mmp",
+   "name": "MMP",
+   "authors": "Song et al.",
+   "venue": "ICML 2024 (arXiv 2407.00224)",
+   "status": "verified",
+   "reports_clinical_baseline": true,
+   "covariates": [
+    "age",
+    "sex",
+    "cancer grade"
+   ],
+   "uses_stage": false,
+   "quote": "The clinical baseline includes age, sex, and cancer grade as reported in the TCGA cohort.",
+   "location": "Table 1 caption",
+   "blca_included": true,
+   "blca_values": {
+    "age_sex_grade": 0.57
+   },
+   "cohorts": [
+    "BRCA",
+    "BLCA",
+    "LUAD",
+    "STAD",
+    "CRC",
+    "KIRC"
+   ],
+   "note": "0.570 IS MMP's. The 0.578 the manuscript also attributes to MMP is SurvPath's age-only value.",
+   "fetched": "2026-08-18 via ar5iv full text"
+  },
+  {
+   "id": "dimaf",
+   "name": "DIMAF",
+   "authors": "Eijpe et al.",
+   "venue": "MICCAI 2025 (arXiv 2503.16069)",
+   "status": "verified",
+   "reports_clinical_baseline": true,
+   "covariates": [
+    "grade",
+    "age",
+    "sex"
+   ],
+   "uses_stage": false,
+   "quote": "multivariate linear Cox regression as a clinical baseline using grade, age, and sex",
+   "location": "Table 1, 'Clinical' row",
+   "blca_included": true,
+   "blca_n": 359,
+   "blca_values": {
+    "clinical": 0.519
+   },
+   "cohorts": [
+    "BRCA",
+    "BLCA",
+    "LUAD",
+    "KIRC"
+   ],
+   "note": "This is the incumbent, and its own released split files carry ajcc_pathologic_tumor_stage beside histological_grade -- the column its baseline does not use.",
+   "fetched": "2026-08-18 via ar5iv full text"
+  },
+  {
+   "id": "otsurv",
+   "name": "OTSurv",
+   "authors": "Ren et al.",
+   "venue": "MICCAI 2025 (arXiv 2506.20741)",
+   "status": "verified",
+   "reports_clinical_baseline": false,
+   "covariates": [],
+   "uses_stage": false,
+   "quote": "NOT PRESENT -- no clinical-covariate baseline, and neither 'grade' nor 'stage' appears as a covariate anywhere",
+   "location": "Table 1 lists only ML baselines: Mean-Pooling, CLAM, HIPT, ABMIL, TransMIL, AttnMISL, IB-MIL, ILRA, PANTHER",
+   "blca_included": true,
+   "blca_n": 359,
+   "fetched": "2026-08-18 via arxiv html"
+  },
+  {
+   "id": "dscasurv",
+   "name": "DSCASurv",
+   "authors": "Song et al.",
+   "venue": "Briefings in Bioinformatics 26(2) 2025, bbaf103",
+   "status": "verified",
+   "reports_clinical_baseline": false,
+   "covariates": [],
+   "uses_stage": false,
+   "quote": "NOT PRESENT -- all baselines are deep-learning methods on genomics, pathology or both",
+   "location": "Table 2: MLP, SNN, SNNTrans, ABMIL, TransMIL, MCAT(Cat/KP), Porpoise(Cat/KP), MOTCAT(Cat/KP), CMTA(Cat/KP), SurvPath, PIBD",
+   "blca_included": true,
+   "blca_n": 359,
+   "note": "This is the single JOURNAL paper among the benchmark's method papers, and it is in the venue this manuscript targets.",
+   "fetched": "2026-08-18 via the publisher's own page"
+  },
+  {
+   "id": "mcat",
+   "name": "MCAT",
+   "authors": "Chen et al.",
+   "venue": "ICCV 2021",
+   "status": "NOT VERIFIED",
+   "reports_clinical_baseline": null,
+   "covariates": null,
+   "uses_stage": null,
+   "why_not": "No arXiv preprint located; the CVF open-access PDF returns HTTP 403 to this fetcher. Not read, so not claimed. MCAT is named in our Introduction as one of the papers carrying this benchmark but is not an entry in our published-values table.",
+   "attempted": [
+    "ar5iv 2108.02278 -> that identifier is PORPOISE, not MCAT",
+    "ar5iv 2109.01988 -> an unrelated physics paper",
+    "openaccess.thecvf.com PDF -> HTTP 403"
+   ]
+  },
+  {
+   "id": "moadfnet",
+   "name": "MOAD-FNet",
+   "venue": "arXiv 2024",
+   "status": "NOT VERIFIED",
+   "reports_clinical_baseline": null,
+   "covariates": null,
+   "uses_stage": null,
+   "why_not": "Not fetched in this pass. Our own published-values table already records it as 'unverified, no code released', so its fold identity was never checkable either."
+  },
+  {
+   "id": "apl",
+   "name": "APL",
+   "venue": "arXiv 2025",
+   "status": "NOT VERIFIED",
+   "reports_clinical_baseline": null,
+   "covariates": null,
+   "uses_stage": null,
+   "why_not": "Not fetched in this pass. Our own table records its repository as empty, so nothing about it was checkable."
+  }
+ ],
+ "summary": {
+  "papers_examined": 11,
+  "verified_report_a_clinical_baseline": 4,
+  "verified_report_none": 4,
+  "not_verified": 3,
+  "of_those_with_a_baseline_using_grade": 4,
+  "of_those_with_a_baseline_using_stage": 0,
+  "with_a_baseline": [
+   "porpoise",
+   "survpath",
+   "mmp",
+   "dimaf"
+  ],
+  "with_none": [
+   "pibd",
+   "motcat",
+   "otsurv",
+   "dscasurv"
+  ],
+  "not_verified_ids": [
+   "mcat",
+   "moadfnet",
+   "apl"
+  ],
+  "reading": "Of the papers whose text we read, EVERY ONE that reports a clinical-variable baseline builds it from grade and NOT ONE uses pathologic stage -- and half of them report no clinical baseline at all, which is the sharper half of the finding: on this benchmark the comparison against the clinic is either made against the wrong covariate or never made.",
+  "what_this_does_to_the_manuscript_claim": "The manuscript said 'every one of the eleven method papers builds its clinical baseline from tumour grade'. That is wrong twice: the paper names ten at most, and four of the eight we read report no clinical baseline. The claim must be restated to what was read."
+ }
+}

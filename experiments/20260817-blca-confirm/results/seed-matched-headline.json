@@ -1,0 +1,44 @@
+{
+ "artifact_type": "s7_seed_matched_headline",
+ "phase_of_origin": "frozen_post_hoc",
+ "arms": {
+  "ours, seed 0 only": 0.7225,
+  "ours, 5-seed averaged": 0.7215,
+  "SurvPath+clinical, seed 1 only": 0.6814,
+  "SurvPath+clinical, 5-seed averaged": 0.6897
+ },
+ "comparisons": {
+  "ours s0        vs  competitor s1  (the original, ASYMMETRIC)": {
+   "mean": 0.0413,
+   "se": 0.0201,
+   "ci95": [
+    0.002,
+    0.0812
+   ],
+   "p_two_sided": 0.039
+  },
+  "ours s0        vs  competitor avg (competitor favoured)": {
+   "mean": 0.0328,
+   "se": 0.0204,
+   "ci95": [
+    -0.0073,
+    0.0725
+   ],
+   "p_two_sided": 0.1063
+  },
+  "ours avg       vs  competitor avg (LIKE FOR LIKE)": {
+   "mean": 0.0318,
+   "se": 0.0201,
+   "ci95": [
+    -0.0076,
+    0.0713
+   ],
+   "p_two_sided": 0.1163
+  }
+ },
+ "competitor_seed_spread": {
+  "survpath_alone_sd_over_seeds": 0.0094,
+  "published_margins_in_this_literature": "0.596 -> 0.691 across nine entries; consecutive gaps run 0.002 to 0.012",
+  "reading": "the competitor's spread across seeds, 0.0094, is the size of the gaps BETWEEN consecutive published entries on this benchmark. A single-run value is therefore a draw from a distribution nobody reports, and the ordering of the middle of that table is not established by the numbers in it."
+ }
+}

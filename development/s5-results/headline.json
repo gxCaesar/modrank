@@ -1,0 +1,175 @@
+{
+ "artifact_type": "s5_headline_prespecified_arm",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "n": 359,
+ "events": 113,
+ "comparable_pairs": 24219,
+ "bar_paired_2sd": 0.0145,
+ "arm_specification": {
+  "views": [
+   "TITAN slide embedding (768-d)",
+   "SurvPath `combine` pathway means (275-d)",
+   "clinical age/sex/T/N/M/stage (23-d)"
+  ],
+  "estimator": "ridge Cox, alphas (1,8,64,512,4096), 3-fold inner CV in-fold",
+  "combination": "percentile within fold, equal weight",
+  "selection_performed": "none -- one view per modality, the omics grouping taken from the benchmark's own reference implementation"
+ },
+ "components": {
+  "titan": {
+   "cindex": 0.6596,
+   "clinically_tied_q10": 0.6246,
+   "within_site": 0.6334
+  },
+  "omics_combine": {
+   "cindex": 0.651,
+   "clinically_tied_q10": 0.6286,
+   "within_site": 0.6533
+  },
+  "clinical": {
+   "cindex": 0.6856,
+   "clinically_tied_q10": 0.5167,
+   "within_site": 0.6652
+  },
+  "survpath_rerun": {
+   "cindex": 0.6118,
+   "clinically_tied_q10": 0.5803,
+   "within_site": 0.6028
+  },
+  "omics_xena_NOT_IN_ARM": {
+   "cindex": 0.6749,
+   "clinically_tied_q10": 0.6529,
+   "within_site": 0.7008
+  }
+ },
+ "arms": {
+  "OURS": {
+   "cindex": 0.7291,
+   "clinically_tied_q10": 0.6513,
+   "within_site": 0.6992
+  },
+  "OURS_no_clinical": {
+   "cindex": 0.6841,
+   "clinically_tied_q10": 0.6498,
+   "within_site": 0.6618
+  },
+  "survpath_plus_clinical": {
+   "cindex": 0.6963,
+   "clinically_tied_q10": 0.5852,
+   "within_site": 0.6827
+  },
+  "SENSITIVITY_xena_instead_of_combine": {
+   "cindex": 0.739,
+   "clinically_tied_q10": 0.6655,
+   "within_site": 0.719
+  }
+ },
+ "comparisons": {
+  "1_vs_cheap_clinical_cox": {
+   "ours": 0.7291,
+   "baseline": 0.6856,
+   "paired": {
+    "mean": 0.0435,
+    "se": 0.0231,
+    "ci95": [
+     -0.0022,
+     0.0883
+    ],
+    "p_two_sided": 0.0627,
+    "reps": 6000,
+    "resampled": "cases, not comparable pairs"
+   }
+  },
+  "2_vs_titan_alone": {
+   "ours": 0.7291,
+   "baseline": 0.6596,
+   "paired": {
+    "mean": 0.0696,
+    "se": 0.0206,
+    "ci95": [
+     0.0286,
+     0.1103
+    ],
+    "p_two_sided": 0.001,
+    "reps": 6000,
+    "resampled": "cases, not comparable pairs"
+   }
+  },
+  "3_vs_survpath_plus_same_clinical_INPUT_PARITY": {
+   "ours": 0.7291,
+   "baseline": 0.6963,
+   "paired": {
+    "mean": 0.0331,
+    "se": 0.02,
+    "ci95": [
+     -0.0061,
+     0.0721
+    ],
+    "p_two_sided": 0.0967,
+    "reps": 6000,
+    "resampled": "cases, not comparable pairs"
+   }
+  },
+  "4_vs_DIMAF_published_same_folds": {
+   "ours": 0.7291,
+   "incumbent": 0.679,
+   "incumbent_sd": 0.043,
+   "gap": 0.0501,
+   "paired": "NOT POSSIBLE -- DIMAF's per-case predictions are not released"
+  },
+  "5_ours_without_clinical_vs_DIMAF": {
+   "ours_wsi_plus_omics": 0.6841,
+   "incumbent": 0.679,
+   "gap": 0.0051,
+   "passes": false,
+   "already_failed_under": {
+    "flat_equal_weight_7_views": 0.677,
+    "inner_skill_weighted_5_views": 0.6767,
+    "threshold_0.55_5_views": 0.6776
+   }
+  }
+ },
+ "per_fold": {
+  "fold_0": {
+   "n": 70,
+   "events": 25,
+   "ours": 0.6923,
+   "survpath_plus_clinical": 0.6625,
+   "clinical": 0.601
+  },
+  "fold_1": {
+   "n": 72,
+   "events": 24,
+   "ours": 0.788,
+   "survpath_plus_clinical": 0.8122,
+   "clinical": 0.7038
+  },
+  "fold_2": {
+   "n": 75,
+   "events": 23,
+   "ours": 0.7815,
+   "survpath_plus_clinical": 0.6656,
+   "clinical": 0.7364
+  },
+  "fold_3": {
+   "n": 71,
+   "events": 25,
+   "ours": 0.6355,
+   "survpath_plus_clinical": 0.611,
+   "clinical": 0.644
+  },
+  "fold_4": {
+   "n": 71,
+   "events": 16,
+   "ours": 0.7453,
+   "survpath_plus_clinical": 0.7439,
+   "clinical": 0.7583
+  }
+ },
+ "ours_fold_mean_sd": [
+  0.7285,
+  0.0644
+ ],
+ "folds_won_vs_survpath_plus_clinical": 4
+}

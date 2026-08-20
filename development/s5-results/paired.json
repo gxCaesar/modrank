@@ -1,0 +1,64 @@
+{
+ "artifact_type": "paired_head_to_head",
+ "reportable": false,
+ "phase_of_origin": "pre_h1",
+ "n_cases": 359,
+ "n_events": 113,
+ "fold_assignment_identical": true,
+ "rules_chosen_in_fold": {
+  "rank_avg": 5
+ },
+ "pooled": {
+  "ours": 0.715,
+  "survpath_rerun": 0.6118,
+  "difference": 0.1032
+ },
+ "per_fold": {
+  "fold_0": {
+   "n": 70,
+   "events": 25,
+   "ours": 0.7202,
+   "survpath": 0.5875,
+   "diff": 0.1327
+  },
+  "fold_1": {
+   "n": 72,
+   "events": 24,
+   "ours": 0.7483,
+   "survpath": 0.7832,
+   "diff": -0.0348
+  },
+  "fold_2": {
+   "n": 75,
+   "events": 23,
+   "ours": 0.7395,
+   "survpath": 0.5323,
+   "diff": 0.2072
+  },
+  "fold_3": {
+   "n": 71,
+   "events": 25,
+   "ours": 0.6138,
+   "survpath": 0.5222,
+   "diff": 0.0916
+  },
+  "fold_4": {
+   "n": 71,
+   "events": 16,
+   "ours": 0.7367,
+   "survpath": 0.6475,
+   "diff": 0.0892
+  }
+ },
+ "folds_we_win": 4,
+ "paired_bootstrap": {
+  "mean_difference": 0.104,
+  "se": 0.0289,
+  "ci95": [
+   0.0448,
+   0.1612
+  ],
+  "p_two_sided_bootstrap": 0.0,
+  "resampled": "cases, not comparable pairs"
+ }
+}

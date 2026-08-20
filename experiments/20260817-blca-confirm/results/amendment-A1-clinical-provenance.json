@@ -1,0 +1,134 @@
+{
+ "artifact_type": "s6_amendment_A1_clinical_provenance",
+ "amends": "development/benchmark-protocol.json",
+ "executed_at_utc": "2026-08-17T08:42:07Z",
+ "phase_of_origin": "frozen_amended",
+ "defect": {
+  "what": "the frozen run's clinical block took stage and T/N/M from a cached GDC query that selected the FIRST diagnosis record; cases with several diagnoses got the wrong tumour",
+  "cases_disagreeing_with_the_incumbents_own_file": 26,
+  "cases_missing_a_stage_in_our_record": 35,
+  "of_total": 359,
+  "direction": "systematic understatement of stage (III->I, IV->I)",
+  "tell_that_was_present_and_unread": "Stage IIA/IIB/IIC appear in our record and are not AJCC bladder stages"
+ },
+ "fix": "every clinical variable now comes from DIMAF's own released split files: birth_days_to, sex, ajcc_pathologic_tumor_stage, histological_grade",
+ "cases_matched_in_dimaf_files": 359,
+ "stage_levels": [
+  "Stage I",
+  "Stage II",
+  "Stage III",
+  "Stage IV"
+ ],
+ "grade_levels": [
+  "High Grade",
+  "Low Grade"
+ ],
+ "per_seed": [
+  {
+   "seed": 0,
+   "OURS": 0.7225,
+   "wsi_titan": 0.6596,
+   "omics_combine": 0.651,
+   "clinical": 0.6638
+  },
+  {
+   "seed": 1,
+   "OURS": 0.7248,
+   "wsi_titan": 0.6515,
+   "omics_combine": 0.6733,
+   "clinical": 0.6657
+  },
+  {
+   "seed": 2,
+   "OURS": 0.7129,
+   "wsi_titan": 0.655,
+   "omics_combine": 0.647,
+   "clinical": 0.6638
+  },
+  {
+   "seed": 3,
+   "OURS": 0.7243,
+   "wsi_titan": 0.6553,
+   "omics_combine": 0.6664,
+   "clinical": 0.6644
+  },
+  {
+   "seed": 4,
+   "OURS": 0.7216,
+   "wsi_titan": 0.6472,
+   "omics_combine": 0.6681,
+   "clinical": 0.6666
+  }
+ ],
+ "primary": {
+  "value": 0.7212,
+  "sd_over_seeds": 0.0048,
+  "seeds": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ]
+ },
+ "frozen_run_for_comparison": {
+  "primary": 0.726,
+  "sd_over_seeds": 0.0043,
+  "clinical_arm": 0.6856
+ },
+ "arms_seed0": {
+  "clinical_age_sex_stage_from_DIMAF_file": 0.6638,
+  "clinical_age_sex_GRADE_from_DIMAF_file": 0.5666,
+  "stage_minus_grade": 0.0972,
+  "wsi_titan": 0.6596,
+  "omics_combine": 0.651,
+  "OURS": 0.7225,
+  "OURS_with_grade_instead_of_stage": 0.6856,
+  "survpath_plus_same_clinical": 0.681
+ },
+ "comparisons": {
+  "vs_clinical_alone": {
+   "mean": 0.0587,
+   "se": 0.0252,
+   "ci95": [
+    0.0085,
+    0.1076
+   ],
+   "p_two_sided": 0.021
+  },
+  "vs_titan_alone": {
+   "mean": 0.0629,
+   "se": 0.0216,
+   "ci95": [
+    0.0205,
+    0.1056
+   ],
+   "p_two_sided": 0.0043
+  },
+  "vs_survpath_plus_same_clinical": {
+   "mean": 0.0417,
+   "se": 0.0201,
+   "ci95": [
+    0.0027,
+    0.0817
+   ],
+   "p_two_sided": 0.037
+  },
+  "vs_DIMAF_published": {
+   "ours_primary": 0.7212,
+   "incumbent": 0.679,
+   "gap": 0.0422,
+   "fold_identity": "SETTLED -- 5 of 5 validation folds identical at case level, 359-case universe identical"
+  }
+ },
+ "decision": {
+  "rule": "primary > 0.7029 AND sd over seeds <= 0.0145",
+  "target": 0.7029,
+  "primary": 0.7212,
+  "primary_clears_target": true,
+  "seed_sd": 0.0048,
+  "seed_sd_within_bar": true,
+  "VERDICT": "PASS",
+  "moved_from_frozen_run": -0.0048
+ }
+}

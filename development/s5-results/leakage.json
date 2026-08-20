@@ -1,0 +1,50 @@
+{
+ "artifact_type": "s6_leakage_falsifiers",
+ "n": 359,
+ "events": 113,
+ "falsifiers": {
+  "L1_fold_integrity": {
+   "status": "ran_and_passed",
+   "train_val_disjoint_every_fold": true,
+   "each_case_in_exactly_one_val_fold": true,
+   "cases_covered": 359,
+   "fold_assignment_identical_to_survpath_rerun": true,
+   "command": "s6_leakage_falsifiers.py (L1)"
+  },
+  "L2_no_fitting_across_boundary": {
+   "status": "ran_and_passed",
+   "honest_cindex": 0.6596,
+   "whole_cohort_moments_cindex": 0.6542,
+   "difference": -0.0055,
+   "reading": "the mutation must MOVE the score. If it does not, the test cannot detect a leak of this kind and passing it would mean nothing.",
+   "command": "s6_leakage_falsifiers.py (L2)"
+  },
+  "L3_planted_label": {
+   "status": "ran_and_rejected",
+   "baseline_cindex": 0.6596,
+   "with_planted_column": 0.6591,
+   "difference": -0.0006,
+   "construction": "the planted column is rebuilt per fold: standard normal on every training row, the outcome ordering on every validation row. Fitting sees only noise in that column.",
+   "reading": "a fold-respecting pipeline fits the planted coefficient on noise and cannot exploit the validation values; a leaking one would jump.",
+   "tolerance": 0.05,
+   "command": "s6_leakage_falsifiers.py (L3)"
+  },
+  "L4_case_alignment": {
+   "status": "ran_and_rejected",
+   "shuffled_alignment_cindex_mean": 0.5127,
+   "sd_over_draws": 0.0369,
+   "draws": 30,
+   "expected": 0.5,
+   "test": "|mean - 0.5| < 3 * SE of the mean",
+   "reading": "permuting which feature row belongs to which case, outcome held fixed, must collapse the arm to chance.",
+   "command": "s6_leakage_falsifiers.py (L4)"
+  },
+  "L5_outcome_provenance": {
+   "status": "ran_and_passed",
+   "label_mismatches_against_survpath_rerun": 0,
+   "reading": "our arm and SurvPath's rerun must be scored on identical (time, event) per case, or the paired comparison compares two endpoints.",
+   "command": "s6_leakage_falsifiers.py (L5)"
+  }
+ },
+ "all_passed": true
+}

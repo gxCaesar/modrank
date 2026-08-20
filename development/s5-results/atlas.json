@@ -1,0 +1,564 @@
+{
+ "artifact_type": "s5_step1_error_atlas",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "independent_unit": "one TCGA case",
+ "metric": "Harrell C-index",
+ "direction": "higher is better",
+ "n": 359,
+ "events": 113,
+ "min_pairs_to_rank": 100,
+ "min_events_to_rank": 8,
+ "redundancy": {
+  "spearman_titan_vs_clinical": 0.213,
+  "spearman_survpath_vs_clinical": 0.1656,
+  "spearman_titan_vs_survpath": 0.4836,
+  "reading": "a high correlation between the image score and the clinical score is the mechanism behind a small image gain; a low one means the two are orthogonal and the fusion rule, not the representation, is what is failing"
+ },
+ "conditional_probe": {
+  "clinically_tied_q05": {
+   "pairs": 1281,
+   "pairs_total": 24219,
+   "clinical_gap_threshold": 0.0286,
+   "arms": {
+    "clinical": 0.5012,
+    "titan": 0.612,
+    "survpath": 0.5785,
+    "titan+clinical": 0.6038
+   }
+  },
+  "clinically_tied_q10": {
+   "pairs": 2423,
+   "pairs_total": 24219,
+   "clinical_gap_threshold": 0.0563,
+   "arms": {
+    "clinical": 0.5167,
+    "titan": 0.6246,
+    "survpath": 0.5803,
+    "titan+clinical": 0.6189
+   }
+  },
+  "clinically_tied_q20": {
+   "pairs": 4844,
+   "pairs_total": 24219,
+   "clinical_gap_threshold": 0.1136,
+   "arms": {
+    "clinical": 0.5343,
+    "titan": 0.6251,
+    "survpath": 0.5841,
+    "titan+clinical": 0.6254
+   }
+  },
+  "clinically_tied_q40": {
+   "pairs": 9697,
+   "pairs_total": 24219,
+   "clinical_gap_threshold": 0.2394,
+   "arms": {
+    "clinical": 0.5687,
+    "titan": 0.6344,
+    "survpath": 0.5956,
+    "titan+clinical": 0.6407
+   }
+  },
+  "all_pairs": {
+   "pairs": 24219,
+   "pairs_total": 24219,
+   "clinical_gap_threshold": null,
+   "arms": {
+    "clinical": 0.6856,
+    "titan": 0.6596,
+    "survpath": 0.6118,
+    "titan+clinical": 0.7191
+   }
+  }
+ },
+ "overall": {
+  "clinical": 0.6856,
+  "titan": 0.6596,
+  "survpath": 0.6118,
+  "titan+clinical": 0.7191
+ },
+ "overall_image_gain": 0.0335,
+ "slices": {
+  "collection_site": {
+   "CF": {
+    "n": 21,
+    "events": 2,
+    "pairs": 6,
+    "rankable": false,
+    "clinical": 0.5,
+    "titan": 0.8333,
+    "survpath": 0.8333,
+    "titan+clinical": 0.6667,
+    "image_gain": 0.1667,
+    "gain_minus_overall": 0.1332
+   },
+   "DK": {
+    "n": 35,
+    "events": 8,
+    "pairs": 191,
+    "rankable": true,
+    "clinical": 0.6335,
+    "titan": 0.5812,
+    "survpath": 0.6859,
+    "titan+clinical": 0.6649,
+    "image_gain": 0.0314,
+    "gain_minus_overall": -0.0021
+   },
+   "E7": {
+    "n": 21,
+    "events": 3,
+    "pairs": 19,
+    "rankable": false,
+    "clinical": 0.7895,
+    "titan": 0.7368,
+    "survpath": 0.5789,
+    "titan+clinical": 0.6842,
+    "image_gain": -0.1053,
+    "gain_minus_overall": -0.1388
+   },
+   "FD": {
+    "n": 47,
+    "events": 18,
+    "pairs": 460,
+    "rankable": true,
+    "clinical": 0.6457,
+    "titan": 0.7196,
+    "survpath": 0.7348,
+    "titan+clinical": 0.7348,
+    "image_gain": 0.0891,
+    "gain_minus_overall": 0.0556
+   },
+   "XF": {
+    "n": 44,
+    "events": 21,
+    "pairs": 581,
+    "rankable": true,
+    "clinical": 0.6678,
+    "titan": 0.5181,
+    "survpath": 0.5301,
+    "titan+clinical": 0.611,
+    "image_gain": -0.0568,
+    "gain_minus_overall": -0.0903
+   },
+   "ZF": {
+    "n": 27,
+    "events": 10,
+    "pairs": 194,
+    "rankable": true,
+    "clinical": 0.6753,
+    "titan": 0.7165,
+    "survpath": 0.4691,
+    "titan+clinical": 0.8041,
+    "image_gain": 0.1288,
+    "gain_minus_overall": 0.0953
+   },
+   "other": {
+    "n": 164,
+    "events": 51,
+    "pairs": 5181,
+    "rankable": true,
+    "clinical": 0.6731,
+    "titan": 0.6807,
+    "survpath": 0.6036,
+    "titan+clinical": 0.7227,
+    "image_gain": 0.0496,
+    "gain_minus_overall": 0.0161
+   }
+  },
+  "T_stage": {
+   "T0-T2": {
+    "n": 153,
+    "events": 32,
+    "pairs": 2754,
+    "rankable": true,
+    "clinical": 0.6696,
+    "titan": 0.6451,
+    "survpath": 0.6127,
+    "titan+clinical": 0.6872,
+    "image_gain": 0.0176,
+    "gain_minus_overall": -0.0159
+   },
+   "T3": {
+    "n": 140,
+    "events": 54,
+    "pairs": 4438,
+    "rankable": true,
+    "clinical": 0.5789,
+    "titan": 0.6367,
+    "survpath": 0.5799,
+    "titan+clinical": 0.6323,
+    "image_gain": 0.0534,
+    "gain_minus_overall": 0.0199
+   },
+   "T4": {
+    "n": 41,
+    "events": 18,
+    "pairs": 385,
+    "rankable": true,
+    "clinical": 0.6597,
+    "titan": 0.6286,
+    "survpath": 0.5662,
+    "titan+clinical": 0.674,
+    "image_gain": 0.0143,
+    "gain_minus_overall": -0.0192
+   }
+  },
+  "node_status": {
+   "N+": {
+    "n": 95,
+    "events": 51,
+    "pairs": 2665,
+    "rankable": true,
+    "clinical": 0.564,
+    "titan": 0.6144,
+    "survpath": 0.5565,
+    "titan+clinical": 0.6208,
+    "image_gain": 0.0568,
+    "gain_minus_overall": 0.0233
+   },
+   "N0": {
+    "n": 198,
+    "events": 38,
+    "pairs": 4409,
+    "rankable": true,
+    "clinical": 0.6719,
+    "titan": 0.6315,
+    "survpath": 0.6205,
+    "titan+clinical": 0.6848,
+    "image_gain": 0.0129,
+    "gain_minus_overall": -0.0206
+   }
+  },
+  "metastasis": {
+   "M0": {
+    "n": 155,
+    "events": 39,
+    "pairs": 3230,
+    "rankable": true,
+    "clinical": 0.6712,
+    "titan": 0.6785,
+    "survpath": 0.6276,
+    "titan+clinical": 0.7153,
+    "image_gain": 0.0441,
+    "gain_minus_overall": 0.0106
+   },
+   "M1": {
+    "n": 8,
+    "events": 6,
+    "pairs": 21,
+    "rankable": false,
+    "clinical": 0.4048,
+    "titan": 0.619,
+    "survpath": 0.619,
+    "titan+clinical": 0.5476,
+    "image_gain": 0.1428,
+    "gain_minus_overall": 0.1093
+   }
+  },
+  "sex": {
+   "female": {
+    "n": 90,
+    "events": 31,
+    "pairs": 1603,
+    "rankable": true,
+    "clinical": 0.6369,
+    "titan": 0.6382,
+    "survpath": 0.5842,
+    "titan+clinical": 0.6609,
+    "image_gain": 0.024,
+    "gain_minus_overall": -0.0095
+   },
+   "male": {
+    "n": 269,
+    "events": 82,
+    "pairs": 13326,
+    "rankable": true,
+    "clinical": 0.6939,
+    "titan": 0.6664,
+    "survpath": 0.6197,
+    "titan+clinical": 0.7331,
+    "image_gain": 0.0392,
+    "gain_minus_overall": 0.0057
+   }
+  },
+  "age_tertile": {
+   "age_high": {
+    "n": 115,
+    "events": 39,
+    "pairs": 2638,
+    "rankable": true,
+    "clinical": 0.6205,
+    "titan": 0.6204,
+    "survpath": 0.5478,
+    "titan+clinical": 0.649,
+    "image_gain": 0.0285,
+    "gain_minus_overall": -0.005
+   },
+   "age_low": {
+    "n": 122,
+    "events": 34,
+    "pairs": 2462,
+    "rankable": true,
+    "clinical": 0.6682,
+    "titan": 0.7035,
+    "survpath": 0.6346,
+    "titan+clinical": 0.7384,
+    "image_gain": 0.0702,
+    "gain_minus_overall": 0.0367
+   },
+   "age_mid": {
+    "n": 122,
+    "events": 40,
+    "pairs": 2853,
+    "rankable": true,
+    "clinical": 0.752,
+    "titan": 0.6742,
+    "survpath": 0.656,
+    "titan+clinical": 0.7697,
+    "image_gain": 0.0177,
+    "gain_minus_overall": -0.0158
+   }
+  },
+  "slides_per_case": {
+   "multi_slide": {
+    "n": 25,
+    "events": 13,
+    "pairs": 214,
+    "rankable": true,
+    "clinical": 0.6729,
+    "titan": 0.715,
+    "survpath": 0.6098,
+    "titan+clinical": 0.7243,
+    "image_gain": 0.0514,
+    "gain_minus_overall": 0.0179
+   },
+   "one_slide": {
+    "n": 334,
+    "events": 100,
+    "pairs": 19578,
+    "rankable": true,
+    "clinical": 0.682,
+    "titan": 0.648,
+    "survpath": 0.6087,
+    "titan+clinical": 0.7115,
+    "image_gain": 0.0295,
+    "gain_minus_overall": -0.004
+   }
+  },
+  "clinical_risk_tertile": {
+   "clin_high": {
+    "n": 120,
+    "events": 60,
+    "pairs": 4018,
+    "rankable": true,
+    "clinical": 0.5628,
+    "titan": 0.6192,
+    "survpath": 0.5676,
+    "titan+clinical": 0.6289,
+    "image_gain": 0.0661,
+    "gain_minus_overall": 0.0326
+   },
+   "clin_low": {
+    "n": 120,
+    "events": 20,
+    "pairs": 1260,
+    "rankable": true,
+    "clinical": 0.6329,
+    "titan": 0.5687,
+    "survpath": 0.6063,
+    "titan+clinical": 0.5877,
+    "image_gain": -0.0452,
+    "gain_minus_overall": -0.0787
+   },
+   "clin_mid": {
+    "n": 119,
+    "events": 33,
+    "pairs": 2500,
+    "rankable": true,
+    "clinical": 0.5932,
+    "titan": 0.6932,
+    "survpath": 0.6386,
+    "titan+clinical": 0.7052,
+    "image_gain": 0.112,
+    "gain_minus_overall": 0.0785
+   }
+  },
+  "fold": {
+   "fold_0": {
+    "n": 70,
+    "events": 25,
+    "pairs": 1040,
+    "rankable": true,
+    "clinical": 0.601,
+    "titan": 0.6788,
+    "survpath": 0.5875,
+    "titan+clinical": 0.7163,
+    "image_gain": 0.1153,
+    "gain_minus_overall": 0.0818
+   },
+   "fold_1": {
+    "n": 72,
+    "events": 24,
+    "pairs": 1033,
+    "rankable": true,
+    "clinical": 0.7038,
+    "titan": 0.7115,
+    "survpath": 0.7832,
+    "titan+clinical": 0.7493,
+    "image_gain": 0.0455,
+    "gain_minus_overall": 0.012
+   },
+   "fold_2": {
+    "n": 75,
+    "events": 23,
+    "pairs": 975,
+    "rankable": true,
+    "clinical": 0.7364,
+    "titan": 0.6841,
+    "survpath": 0.5323,
+    "titan+clinical": 0.7415,
+    "image_gain": 0.0051,
+    "gain_minus_overall": -0.0284
+   },
+   "fold_3": {
+    "n": 71,
+    "events": 25,
+    "pairs": 1059,
+    "rankable": true,
+    "clinical": 0.644,
+    "titan": 0.5675,
+    "survpath": 0.5222,
+    "titan+clinical": 0.6412,
+    "image_gain": -0.0028,
+    "gain_minus_overall": -0.0363
+   },
+   "fold_4": {
+    "n": 71,
+    "events": 16,
+    "pairs": 695,
+    "rankable": true,
+    "clinical": 0.7583,
+    "titan": 0.6432,
+    "survpath": 0.6475,
+    "titan+clinical": 0.7381,
+    "image_gain": -0.0202,
+    "gain_minus_overall": -0.0537
+   }
+  }
+ },
+ "gain_variation": {
+  "per_fold_image_gain": [
+   0.1154,
+   0.0455,
+   0.0051,
+   -0.0028,
+   -0.0201
+  ],
+  "fold_to_fold_sd": 0.0542,
+  "rule": "a slice whose gain_minus_overall is under one fold-to-fold SD is not a bottleneck; it is where the noise happened to land this time"
+ },
+ "worst_slices_by_image_gain": [
+  {
+   "slice": "collection_site=XF",
+   "n": 44,
+   "image_gain": -0.0568,
+   "gain_minus_overall": -0.0903,
+   "sds_from_overall": -1.67
+  },
+  {
+   "slice": "clinical_risk_tertile=clin_low",
+   "n": 120,
+   "image_gain": -0.0452,
+   "gain_minus_overall": -0.0787,
+   "sds_from_overall": -1.45
+  },
+  {
+   "slice": "fold=fold_4",
+   "n": 71,
+   "image_gain": -0.0202,
+   "gain_minus_overall": -0.0537,
+   "sds_from_overall": -0.99
+  },
+  {
+   "slice": "fold=fold_3",
+   "n": 71,
+   "image_gain": -0.0028,
+   "gain_minus_overall": -0.0363,
+   "sds_from_overall": -0.67
+  },
+  {
+   "slice": "fold=fold_2",
+   "n": 75,
+   "image_gain": 0.0051,
+   "gain_minus_overall": -0.0284,
+   "sds_from_overall": -0.52
+  },
+  {
+   "slice": "node_status=N0",
+   "n": 198,
+   "image_gain": 0.0129,
+   "gain_minus_overall": -0.0206,
+   "sds_from_overall": -0.38
+  },
+  {
+   "slice": "T_stage=T4",
+   "n": 41,
+   "image_gain": 0.0143,
+   "gain_minus_overall": -0.0192,
+   "sds_from_overall": -0.35
+  },
+  {
+   "slice": "T_stage=T0-T2",
+   "n": 153,
+   "image_gain": 0.0176,
+   "gain_minus_overall": -0.0159,
+   "sds_from_overall": -0.29
+  }
+ ],
+ "best_slices_by_image_gain": [
+  {
+   "slice": "collection_site=ZF",
+   "n": 27,
+   "image_gain": 0.1288,
+   "gain_minus_overall": 0.0953,
+   "sds_from_overall": 1.76
+  },
+  {
+   "slice": "fold=fold_0",
+   "n": 70,
+   "image_gain": 0.1153,
+   "gain_minus_overall": 0.0818,
+   "sds_from_overall": 1.51
+  },
+  {
+   "slice": "clinical_risk_tertile=clin_mid",
+   "n": 119,
+   "image_gain": 0.112,
+   "gain_minus_overall": 0.0785,
+   "sds_from_overall": 1.45
+  },
+  {
+   "slice": "collection_site=FD",
+   "n": 47,
+   "image_gain": 0.0891,
+   "gain_minus_overall": 0.0556,
+   "sds_from_overall": 1.03
+  },
+  {
+   "slice": "age_tertile=age_low",
+   "n": 122,
+   "image_gain": 0.0702,
+   "gain_minus_overall": 0.0367,
+   "sds_from_overall": 0.68
+  }
+ ],
+ "any_slice_beyond_one_sd": [
+  "collection_site=XF",
+  "clinical_risk_tertile=clin_low",
+  "collection_site=FD",
+  "clinical_risk_tertile=clin_mid",
+  "fold=fold_0",
+  "collection_site=ZF"
+ ]
+}

@@ -1,0 +1,90 @@
+{
+ "artifact_type": "s7_tied_pair_input_parity",
+ "phase_of_origin": "frozen_post_hoc",
+ "why": "within the tied set the clinical variables carry no information by construction, so a margin there cannot be explained by input asymmetry",
+ "arms_by_threshold": {
+  "q005": {
+   "OURS": 0.6583,
+   "OURS_no_clinical": 0.6599,
+   "PIBD_plus_clinical": 0.622,
+   "SurvPath_plus_clinical": 0.6146,
+   "clinical_alone": 0.4959,
+   "PIBD_alone": 0.6249,
+   "pairs": 1213
+  },
+  "q010": {
+   "OURS": 0.6634,
+   "OURS_no_clinical": 0.6581,
+   "PIBD_plus_clinical": 0.6228,
+   "SurvPath_plus_clinical": 0.617,
+   "clinical_alone": 0.5107,
+   "PIBD_alone": 0.6279,
+   "pairs": 2423
+  },
+  "q020": {
+   "OURS": 0.6658,
+   "OURS_no_clinical": 0.6596,
+   "PIBD_plus_clinical": 0.624,
+   "SurvPath_plus_clinical": 0.6157,
+   "clinical_alone": 0.5319,
+   "PIBD_alone": 0.6239,
+   "pairs": 4844
+  },
+  "q040": {
+   "OURS": 0.6788,
+   "OURS_no_clinical": 0.6648,
+   "PIBD_plus_clinical": 0.6357,
+   "SurvPath_plus_clinical": 0.6192,
+   "clinical_alone": 0.5661,
+   "PIBD_alone": 0.6246,
+   "pairs": 9695
+  },
+  "q100": {
+   "OURS": 0.7225,
+   "OURS_no_clinical": 0.6841,
+   "PIBD_plus_clinical": 0.6982,
+   "SurvPath_plus_clinical": 0.6891,
+   "clinical_alone": 0.6638,
+   "PIBD_alone": 0.6514,
+   "pairs": 24219
+  }
+ },
+ "tied_pair_comparisons": {
+  "ours vs PIBD+clinical, tied q10": {
+   "mean": 0.0398,
+   "se": 0.0368,
+   "ci95": [
+    -0.0308,
+    0.1137
+   ],
+   "p_two_sided": 0.2867,
+   "reps": 6000,
+   "p_holm": 0.6969,
+   "survives": false
+  },
+  "ours vs SurvPath+clinical, tied q10": {
+   "mean": 0.0446,
+   "se": 0.0372,
+   "ci95": [
+    -0.0279,
+    0.1156
+   ],
+   "p_two_sided": 0.2323,
+   "reps": 6000,
+   "p_holm": 0.6969,
+   "survives": false
+  },
+  "ours-WITHOUT-clinical vs PIBD+clinical, tied q10": {
+   "mean": 0.0347,
+   "se": 0.0366,
+   "ci95": [
+    -0.0353,
+    0.107
+   ],
+   "p_two_sided": 0.3383,
+   "reps": 6000,
+   "p_holm": 0.6969,
+   "survives": false
+  }
+ }
+}

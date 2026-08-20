@@ -1,0 +1,73 @@
+{
+ "artifact_type": "component_slate",
+ "phase_of_origin": "exploratory",
+ "bar": 0.0145,
+ "bar_definition": "twice the measured split-reseed SD",
+ "n_formal_components": 7,
+ "note": "the SEVEN components are those with a pre-registered mechanism, predicted slice, falsifier, removal ablation and matched control. Elastic-net Cox appears in the manuscript's table for completeness -- it was part of the estimator slate -- but it is NOT one of the seven: it never reached a falsifiable comparison, because it did not converge. A reader counting rows in that table gets eight, so the table now carries the component ids and elastic-net visibly has none.",
+ "components": [
+  {
+   "id": "C1",
+   "key": "C1_pancancer_subspace_prior",
+   "label": "pan-cancer survival subspace prior",
+   "status": "void",
+   "predicted": 0.03,
+   "observed": -0.0042,
+   "control": -0.0141
+  },
+  {
+   "id": "C1$'$",
+   "key": "C1p_pancancer_zeroshot_arm",
+   "label": "the same direction, zero-shot",
+   "status": "void",
+   "predicted": 0.025,
+   "observed": 0.0033,
+   "control": -0.0311
+  },
+  {
+   "id": "C2",
+   "key": "C2_bagged_ridge",
+   "label": "bagged ridge",
+   "status": "graded",
+   "predicted": 0.04,
+   "observed": -0.0561,
+   "control": null
+  },
+  {
+   "id": "C4",
+   "key": "C4_dense_regularisation_path",
+   "label": "dense regularisation path",
+   "status": "void",
+   "predicted": 0.02,
+   "observed": -0.0042,
+   "control": null
+  },
+  {
+   "id": "C5",
+   "key": "C5_gated_fusion_on_clinical_risk",
+   "label": "gated fusion on clinical risk",
+   "status": "void",
+   "predicted": 0.02,
+   "observed": 0.0046,
+   "control": 0.0055
+  },
+  {
+   "id": "C6",
+   "key": "C6_inner_cv_skill_weighting",
+   "label": "inner-CV skill weighting",
+   "status": "void",
+   "predicted": 0.02,
+   "observed": 0.0105,
+   "control": null
+  },
+  {
+   "id": "C7",
+   "key": "C7_stratified_partial_likelihood",
+   "label": "stratified partial likelihood",
+   "status": "graded",
+   "predicted": 0.03,
+   "observed": -0.0199,
+   "control": -0.0095
+  }
+ ]
+}

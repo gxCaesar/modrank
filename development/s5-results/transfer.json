@@ -1,0 +1,80 @@
+{
+ "artifact_type": "s5_transfer_falsifier",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "alpha": 64.0,
+ "perms_per_donor": 20,
+ "blca_n": 359,
+ "blca_events": 113,
+ "per_donor": {
+  "brca": {
+   "donor_cases": 871,
+   "donor_events": 60,
+   "cases_also_in_blca": 0,
+   "transfer_cindex_on_blca": 0.592,
+   "control_permuted_labels_mean": 0.524,
+   "control_sd": 0.0555,
+   "control_max": 0.6197,
+   "excess_over_control": 0.068
+  },
+  "coadread": {
+   "donor_cases": 298,
+   "donor_events": 37,
+   "cases_also_in_blca": 0,
+   "transfer_cindex_on_blca": 0.6492,
+   "control_permuted_labels_mean": 0.4727,
+   "control_sd": 0.032,
+   "control_max": 0.5235,
+   "excess_over_control": 0.1765
+  },
+  "hnsc": {
+   "donor_cases": 394,
+   "donor_events": 117,
+   "cases_also_in_blca": 0,
+   "transfer_cindex_on_blca": 0.5036,
+   "control_permuted_labels_mean": 0.5117,
+   "control_sd": 0.037,
+   "control_max": 0.5712,
+   "excess_over_control": -0.0081
+  },
+  "stad": {
+   "donor_cases": 319,
+   "donor_events": 84,
+   "cases_also_in_blca": 0,
+   "transfer_cindex_on_blca": 0.544,
+   "control_permuted_labels_mean": 0.5071,
+   "control_sd": 0.0446,
+   "control_max": 0.6063,
+   "excess_over_control": 0.0369
+  }
+ },
+ "pooled_direction": {
+  "donors": [
+   "brca",
+   "coadread",
+   "hnsc",
+   "stad"
+  ],
+  "transfer_cindex_on_blca": 0.6211,
+  "control_permuted_labels_mean": 0.4923,
+  "control_sd": 0.05,
+  "excess_over_control": 0.1287
+ },
+ "donor_direction_cosines": {
+  "brca~coadread": 0.0651,
+  "brca~hnsc": -0.0344,
+  "brca~stad": 0.0785,
+  "coadread~hnsc": 0.0788,
+  "coadread~stad": 0.085,
+  "hnsc~stad": -0.1476
+ },
+ "cosine_to_bladder_own_direction": {
+  "brca": 0.0814,
+  "coadread": 0.11,
+  "hnsc": 0.031,
+  "stad": 0.1381
+ },
+ "cosine_pooled_to_bladder": 0.1748,
+ "cosine_note": "the bladder direction here is fitted on ALL bladder cases and is a reference quantity only; it never enters any scored arm",
+ "reading": "a donor whose transfer_cindex_on_blca exceeds its permuted control by more than the control's own spread is evidence that survival-relevant directions are shared across cancer types. If every donor sits inside its control, every cross-cancer candidate in the slate is dead and nothing else is."
+}

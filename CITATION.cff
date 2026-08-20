@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this code or these results, please cite the paper."
+title: "ModRank: parameter-free fusion of histology, transcriptome and pathologic stage for bladder cancer survival"
+authors:
+  - family-names: Chen
+    given-names: Guanxing
+    orcid: "https://orcid.org/0000-0002-4435-0884"
+    affiliation: "City University of Hong Kong (Dongguan)"
+license: MIT
+version: 1.0.0
+repository-code: "TO BE FILLED AT SUBMISSION"

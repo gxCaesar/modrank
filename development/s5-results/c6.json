@@ -1,0 +1,321 @@
+{
+ "artifact_type": "s5_c6_skill_weight",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "n": 359,
+ "events": 113,
+ "single_arms": {
+  "wsi_titan": 0.6596,
+  "wsi_chief_mean": 0.5836,
+  "wsi_chief_dispersion": 0.5554,
+  "omics_combine": 0.651,
+  "omics_hallmarks": 0.6061,
+  "omics_xena": 0.6749,
+  "clinical": 0.6856
+ },
+ "bar": 0.0145,
+ "falsifier": "beat the uniform rule on the SAME pool by >0.0145, on the seven-view pool AND without losing on the three-view pool where uniform is at its best",
+ "pools": {
+  "all_seven_views": {
+   "uniform": {
+    "cindex": 0.6942
+   },
+   "skill": {
+    "cindex": 0.7047,
+    "weights_per_fold": {
+     "fold_0": {
+      "clinical": 0.1859,
+      "omics_combine": 0.1709,
+      "omics_hallmarks": 0.1359,
+      "omics_xena": 0.1886,
+      "wsi_chief_dispersion": 0.1048,
+      "wsi_chief_mean": 0.0763,
+      "wsi_titan": 0.1376
+     },
+     "fold_1": {
+      "clinical": 0.2635,
+      "omics_combine": 0.2774,
+      "omics_hallmarks": 0.1755,
+      "omics_xena": 0.1249,
+      "wsi_chief_dispersion": 0.0259,
+      "wsi_chief_mean": 0.0,
+      "wsi_titan": 0.1328
+     },
+     "fold_2": {
+      "clinical": 0.2788,
+      "omics_combine": 0.1289,
+      "omics_hallmarks": 0.0678,
+      "omics_xena": 0.1422,
+      "wsi_chief_dispersion": 0.1403,
+      "wsi_chief_mean": 0.0504,
+      "wsi_titan": 0.1917
+     },
+     "fold_3": {
+      "clinical": 0.2303,
+      "omics_combine": 0.1821,
+      "omics_hallmarks": 0.1338,
+      "omics_xena": 0.154,
+      "wsi_chief_dispersion": 0.0508,
+      "wsi_chief_mean": 0.1466,
+      "wsi_titan": 0.1024
+     },
+     "fold_4": {
+      "clinical": 0.2205,
+      "omics_combine": 0.1156,
+      "omics_hallmarks": 0.101,
+      "omics_xena": 0.1309,
+      "wsi_chief_dispersion": 0.1161,
+      "wsi_chief_mean": 0.1251,
+      "wsi_titan": 0.1909
+     }
+    }
+   },
+   "skill_permuted": {
+    "cindex": 0.6243,
+    "weights_per_fold": {
+     "fold_0": {
+      "clinical": 0.0409,
+      "omics_combine": 0.2236,
+      "omics_hallmarks": 0.2674,
+      "omics_xena": 0.2258,
+      "wsi_chief_dispersion": 0.0863,
+      "wsi_chief_mean": 0.0,
+      "wsi_titan": 0.156
+     },
+     "fold_1": {
+      "clinical": 0.0,
+      "omics_combine": 0.0755,
+      "omics_hallmarks": 0.2525,
+      "omics_xena": 0.0582,
+      "wsi_chief_dispersion": 0.2875,
+      "wsi_chief_mean": 0.1912,
+      "wsi_titan": 0.1352
+     },
+     "fold_2": {
+      "clinical": 0.0,
+      "omics_combine": 0.0,
+      "omics_hallmarks": 0.0,
+      "omics_xena": 0.0279,
+      "wsi_chief_dispersion": 0.7287,
+      "wsi_chief_mean": 0.2433,
+      "wsi_titan": 0.0
+     },
+     "fold_3": {
+      "clinical": 0.3462,
+      "omics_combine": 0.0,
+      "omics_hallmarks": 0.4863,
+      "omics_xena": 0.0,
+      "wsi_chief_dispersion": 0.0,
+      "wsi_chief_mean": 0.1675,
+      "wsi_titan": 0.0
+     },
+     "fold_4": {
+      "clinical": 0.2895,
+      "omics_combine": 0.1764,
+      "omics_hallmarks": 0.0,
+      "omics_xena": 0.2158,
+      "wsi_chief_dispersion": 0.1857,
+      "wsi_chief_mean": 0.0,
+      "wsi_titan": 0.1326
+     }
+    }
+   },
+   "threshold55": {
+    "cindex": 0.6976
+   },
+   "_verdict": {
+    "skill_minus_uniform": 0.0105,
+    "CONTROL_permuted_minus_uniform": -0.0699,
+    "threshold55_minus_uniform": 0.0034
+   }
+  },
+  "three_view_titan_combine_clinical": {
+   "uniform": {
+    "cindex": 0.7288
+   },
+   "skill": {
+    "cindex": 0.7325,
+    "weights_per_fold": {
+     "fold_0": {
+      "wsi_titan": 0.2784,
+      "omics_combine": 0.3457,
+      "clinical": 0.376
+     },
+     "fold_1": {
+      "wsi_titan": 0.1971,
+      "omics_combine": 0.4117,
+      "clinical": 0.3911
+     },
+     "fold_2": {
+      "wsi_titan": 0.3198,
+      "omics_combine": 0.215,
+      "clinical": 0.4652
+     },
+     "fold_3": {
+      "wsi_titan": 0.199,
+      "omics_combine": 0.3536,
+      "clinical": 0.4474
+     },
+     "fold_4": {
+      "wsi_titan": 0.3622,
+      "omics_combine": 0.2194,
+      "clinical": 0.4184
+     }
+    }
+   },
+   "skill_permuted": {
+    "cindex": 0.7155,
+    "weights_per_fold": {
+     "fold_0": {
+      "wsi_titan": 0.3711,
+      "omics_combine": 0.5317,
+      "clinical": 0.0972
+     },
+     "fold_1": {
+      "wsi_titan": 0.6417,
+      "omics_combine": 0.3583,
+      "clinical": 0.0
+     },
+     "fold_2": {
+      "wsi_titan": 0.3333,
+      "omics_combine": 0.3333,
+      "clinical": 0.3333
+     },
+     "fold_3": {
+      "wsi_titan": 0.0,
+      "omics_combine": 0.0,
+      "clinical": 1.0
+     },
+     "fold_4": {
+      "wsi_titan": 0.2216,
+      "omics_combine": 0.2947,
+      "clinical": 0.4837
+     }
+    }
+   },
+   "threshold55": {
+    "cindex": 0.7288
+   },
+   "_verdict": {
+    "skill_minus_uniform": 0.0037,
+    "CONTROL_permuted_minus_uniform": -0.0133,
+    "threshold55_minus_uniform": 0.0
+   }
+  },
+  "wsi_plus_omics_only_five": {
+   "uniform": {
+    "cindex": 0.6764
+   },
+   "skill": {
+    "cindex": 0.6767,
+    "weights_per_fold": {
+     "fold_0": {
+      "omics_combine": 0.2099,
+      "omics_hallmarks": 0.167,
+      "omics_xena": 0.2316,
+      "wsi_chief_dispersion": 0.1288,
+      "wsi_chief_mean": 0.0937,
+      "wsi_titan": 0.169
+     },
+     "fold_1": {
+      "omics_combine": 0.3766,
+      "omics_hallmarks": 0.2383,
+      "omics_xena": 0.1695,
+      "wsi_chief_dispersion": 0.0352,
+      "wsi_chief_mean": 0.0,
+      "wsi_titan": 0.1803
+     },
+     "fold_2": {
+      "omics_combine": 0.1787,
+      "omics_hallmarks": 0.0941,
+      "omics_xena": 0.1972,
+      "wsi_chief_dispersion": 0.1945,
+      "wsi_chief_mean": 0.0699,
+      "wsi_titan": 0.2657
+     },
+     "fold_3": {
+      "omics_combine": 0.2365,
+      "omics_hallmarks": 0.1738,
+      "omics_xena": 0.2001,
+      "wsi_chief_dispersion": 0.066,
+      "wsi_chief_mean": 0.1905,
+      "wsi_titan": 0.1331
+     },
+     "fold_4": {
+      "omics_combine": 0.1483,
+      "omics_hallmarks": 0.1296,
+      "omics_xena": 0.1679,
+      "wsi_chief_dispersion": 0.1489,
+      "wsi_chief_mean": 0.1604,
+      "wsi_titan": 0.2448
+     }
+    }
+   },
+   "skill_permuted": {
+    "cindex": 0.5999,
+    "weights_per_fold": {
+     "fold_0": {
+      "omics_combine": 0.2331,
+      "omics_hallmarks": 0.2788,
+      "omics_xena": 0.2354,
+      "wsi_chief_dispersion": 0.0899,
+      "wsi_chief_mean": 0.0,
+      "wsi_titan": 0.1627
+     },
+     "fold_1": {
+      "omics_combine": 0.0755,
+      "omics_hallmarks": 0.2525,
+      "omics_xena": 0.0582,
+      "wsi_chief_dispersion": 0.2875,
+      "wsi_chief_mean": 0.1912,
+      "wsi_titan": 0.1352
+     },
+     "fold_2": {
+      "omics_combine": 0.0,
+      "omics_hallmarks": 0.0,
+      "omics_xena": 0.0279,
+      "wsi_chief_dispersion": 0.7287,
+      "wsi_chief_mean": 0.2433,
+      "wsi_titan": 0.0
+     },
+     "fold_3": {
+      "omics_combine": 0.0,
+      "omics_hallmarks": 0.7438,
+      "omics_xena": 0.0,
+      "wsi_chief_dispersion": 0.0,
+      "wsi_chief_mean": 0.2562,
+      "wsi_titan": 0.0
+     },
+     "fold_4": {
+      "omics_combine": 0.2483,
+      "omics_hallmarks": 0.0,
+      "omics_xena": 0.3037,
+      "wsi_chief_dispersion": 0.2613,
+      "wsi_chief_mean": 0.0,
+      "wsi_titan": 0.1867
+     }
+    }
+   },
+   "threshold55": {
+    "cindex": 0.6776
+   },
+   "_verdict": {
+    "skill_minus_uniform": 0.0003,
+    "CONTROL_permuted_minus_uniform": -0.0765,
+    "threshold55_minus_uniform": 0.0012
+   }
+  }
+ },
+ "read_the_control_first": "if CONTROL_permuted_minus_uniform is comparable to skill_minus_uniform on a pool, that pool's result is VOID",
+ "comparison_C_THE_DECIDER": {
+  "ours_wsi_plus_omics_skill_weighted": 0.6767,
+  "incumbent_DIMAF": 0.679,
+  "gap": -0.0023,
+  "passes": false
+ },
+ "comparison_B_input_parity": {
+  "ours_full_skill_weighted": 0.7047,
+  "survpath_plus_same_clinical": 0.6963,
+  "gap": 0.0084
+ }
+}

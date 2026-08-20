@@ -1,0 +1,218 @@
+{
+ "artifact_type": "s5_final_all_views",
+ "reportable": false,
+ "phase_of_origin": "exploratory",
+ "n": 359,
+ "events": 113,
+ "cases_missing_chief_get_the_cohort_mean": 0,
+ "blocks": {
+  "wsi_titan": 768,
+  "wsi_chief_mean": 768,
+  "wsi_chief_dispersion": 1536,
+  "omics_combine": 275,
+  "omics_hallmarks": 50,
+  "omics_xena": 225,
+  "clinical": 23
+ },
+ "estimator": "ridge Cox, alphas (1,8,64,512,4096) by 3-fold inner CV inside each training fold; identical for every block; no block-level selection",
+ "combination": "equal-weight rank average, percentile-normalised within fold",
+ "single_arms": {
+  "wsi_titan": {
+   "cindex": 0.6596,
+   "clinically_tied_q10": 0.6246,
+   "within_site": 0.6334
+  },
+  "wsi_chief_mean": {
+   "cindex": 0.5836,
+   "clinically_tied_q10": 0.5638,
+   "within_site": 0.5751
+  },
+  "wsi_chief_dispersion": {
+   "cindex": 0.5554,
+   "clinically_tied_q10": 0.531,
+   "within_site": 0.5632
+  },
+  "omics_combine": {
+   "cindex": 0.651,
+   "clinically_tied_q10": 0.6286,
+   "within_site": 0.6533
+  },
+  "omics_hallmarks": {
+   "cindex": 0.6061,
+   "clinically_tied_q10": 0.5679,
+   "within_site": 0.579
+  },
+  "omics_xena": {
+   "cindex": 0.6749,
+   "clinically_tied_q10": 0.6529,
+   "within_site": 0.7008
+  },
+  "clinical": {
+   "cindex": 0.6856,
+   "clinically_tied_q10": 0.5167,
+   "within_site": 0.6652
+  },
+  "survpath_rerun": {
+   "cindex": 0.6118,
+   "clinically_tied_q10": 0.5803,
+   "within_site": 0.6028
+  }
+ },
+ "prespecified_groups": {
+  "PRESPECIFIED_wsi_only": {
+   "members": [
+    "wsi_titan",
+    "wsi_chief_mean",
+    "wsi_chief_dispersion"
+   ],
+   "cindex": 0.6214,
+   "clinically_tied_q10": 0.5891,
+   "within_site": 0.6079
+  },
+  "PRESPECIFIED_wsi_plus_omics": {
+   "members": [
+    "wsi_titan",
+    "wsi_chief_mean",
+    "wsi_chief_dispersion",
+    "omics_combine",
+    "omics_hallmarks",
+    "omics_xena"
+   ],
+   "cindex": 0.677,
+   "clinically_tied_q10": 0.6405,
+   "within_site": 0.6663
+  },
+  "PRESPECIFIED_full": {
+   "members": [
+    "wsi_titan",
+    "wsi_chief_mean",
+    "wsi_chief_dispersion",
+    "omics_combine",
+    "omics_hallmarks",
+    "omics_xena",
+    "clinical"
+   ],
+   "cindex": 0.6941,
+   "clinically_tied_q10": 0.6335,
+   "within_site": 0.6748
+  },
+  "reference_titan_only_plus_omics_plus_clinical": {
+   "members": [
+    "wsi_titan",
+    "omics_combine",
+    "omics_hallmarks",
+    "omics_xena",
+    "clinical"
+   ],
+   "cindex": 0.7078,
+   "clinically_tied_q10": 0.6395,
+   "within_site": 0.6935
+  },
+  "reference_clinical_only": {
+   "members": [
+    "clinical"
+   ],
+   "cindex": 0.6856,
+   "clinically_tied_q10": 0.5167,
+   "within_site": 0.6652
+  }
+ },
+ "all_combinations_scored": 127,
+ "top_12_combinations_FOR_TRANSPARENCY_NOT_ARMS": {
+  "clinical + omics_xena + wsi_titan": 0.7396,
+  "clinical + omics_combine + wsi_titan": 0.7281,
+  "clinical + omics_xena": 0.7262,
+  "clinical + omics_combine + omics_xena + wsi_titan": 0.7208,
+  "clinical + omics_hallmarks + omics_xena + wsi_titan": 0.72,
+  "clinical + omics_xena + wsi_chief_mean + wsi_titan": 0.7197,
+  "clinical + wsi_titan": 0.7191,
+  "clinical + omics_xena + wsi_chief_mean": 0.717,
+  "clinical + omics_combine + omics_xena + wsi_chief_mean + wsi_titan": 0.7142,
+  "clinical + omics_combine": 0.7128,
+  "clinical + omics_hallmarks + wsi_titan": 0.7118,
+  "clinical + omics_combine + wsi_chief_mean + wsi_titan": 0.7112
+ },
+ "selection_note": "127 combinations are scored here. None of them is the arm: the arms are the PRESPECIFIED_ groups above, fixed before the run as 'use every view in the group, equal weight'. The full list exists so that the best-of-127 number is visible next to the pre-specified one rather than quietly replacing it.",
+ "comparison_A_vs_published": {
+  "ours_full": 0.6941,
+  "published_same_released_folds": {
+   "MOAD-Net (folds unverified)": 0.691,
+   "DIMAF (verified)": 0.679,
+   "APL": 0.677,
+   "PIBD": 0.667,
+   "ProtoPathway": 0.646,
+   "DSCASurv (BiB 2025)": 0.646,
+   "OTSurv": 0.637,
+   "MMP": 0.635,
+   "SurvPath": 0.625
+  },
+  "caveat": "unpaired; the competitors had no clinical variables"
+ },
+ "comparison_B_input_parity_paired": {
+  "ours_full": 0.6941,
+  "survpath_plus_same_clinical": 0.6963,
+  "paired_bootstrap": {
+   "mean": -0.0022,
+   "se": 0.023,
+   "ci95": [
+    -0.0488,
+    0.042
+   ],
+   "p_two_sided": 0.9465,
+   "resampled": "cases, not comparable pairs"
+  }
+ },
+ "comparison_C_THE_DECIDER": {
+  "ours_wsi_plus_omics_only": 0.677,
+  "incumbent_DIMAF_same_folds": 0.679,
+  "gap": -0.002,
+  "bar": 0.0145,
+  "passes": false,
+  "means": "if this passes, the method wins on the competitors' own input set; if it fails, the lead in comparison A is information the competitors did not use"
+ },
+ "per_fold": {
+  "fold_0": {
+   "n": 70,
+   "events": 25,
+   "ours_full": 0.649,
+   "ours_wsi_omics": 0.6365,
+   "survpath_plus_clinical": 0.6625
+  },
+  "fold_1": {
+   "n": 72,
+   "events": 24,
+   "ours_full": 0.7851,
+   "ours_wsi_omics": 0.7783,
+   "survpath_plus_clinical": 0.8122
+  },
+  "fold_2": {
+   "n": 75,
+   "events": 23,
+   "ours_full": 0.7292,
+   "ours_wsi_omics": 0.7159,
+   "survpath_plus_clinical": 0.6656
+  },
+  "fold_3": {
+   "n": 71,
+   "events": 25,
+   "ours_full": 0.6081,
+   "ours_wsi_omics": 0.5807,
+   "survpath_plus_clinical": 0.611
+  },
+  "fold_4": {
+   "n": 71,
+   "events": 16,
+   "ours_full": 0.7022,
+   "ours_wsi_omics": 0.6849,
+   "survpath_plus_clinical": 0.7439
+  }
+ },
+ "ours_full_fold_mean_sd": [
+  0.6947,
+  0.0689
+ ],
+ "ours_wsi_omics_fold_mean_sd": [
+  0.6793,
+  0.0754
+ ]
+}

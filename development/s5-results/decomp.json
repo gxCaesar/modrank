@@ -1,0 +1,18 @@
+{
+ "A frozen: GDC TNM+stage, FIRST-diagnosis defect": [
+  0.6863,
+  0.7285
+ ],
+ "B amended: DIMAF file, age+sex+stage only": [
+  0.6638,
+  0.7225
+ ],
+ "C corrected: GDC TNM+stage, right diagnosis": [
+  0.6992,
+  0.7335
+ ],
+ "D corrected, grade instead of stage": [
+  0.5666,
+  0.6856
+ ]
+}
