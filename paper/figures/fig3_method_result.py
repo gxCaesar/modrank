@@ -47,7 +47,7 @@ FSD = json.load(open(os.path.join(HERE, "figure-source-data.json")))
 style.apply()
 C, INK, RISK = style.ROLE, style.INK, style.RISK
 
-FIGW, FIGH = 6.785, 6.45
+FIGW, FIGH = style.width(6.785), 6.45
 fig = plt.figure(figsize=(FIGW, FIGH))
 axa = fig.add_axes([0.300, 0.828, 0.395, 0.140])
 axb = fig.add_axes([0.100, 0.632, 0.355, 0.122])
@@ -187,15 +187,19 @@ ye = np.arange(len(rows))
 for yi, (k, v) in zip(ye, rows):
     parts = NICE[k][1]
     full = len(parts) == 3
-    axe.barh([yi], [v], color=C["ours"] if full else "#C9CFD8", height=0.66, edgecolor="none")
-    # a bar of one colour per subset would need seven colours for an unordered variable; instead
+    # A DOT, not a bar: this axis starts at 0.548, and a bar encodes its value from zero, so a bar
+    # here overstated every difference on the panel (found 2026-09-11 in the 180 mm rebuild).
+    axe.plot([0.593, v], [yi, yi], color="#E3E6EB", lw=0.6, zorder=1)
+    axe.scatter([v], [yi], s=24 if full else 16, zorder=5, edgecolor="none",
+                color=C["ours"] if full else "#8C93A1")
+    # a mark of one colour per subset would need seven colours for an unordered variable; instead
     # the modalities present are shown as dots, which is what the panel is actually about
     for j, role in enumerate(("slide", "omics", "clinical")):
         axe.scatter([0.5595 + j * 0.0095], [yi], s=9, zorder=4,
                     color=C[role] if role in parts else "#FFFFFF",
                     edgecolor=C[role] if role in parts else "#C9CFD8", linewidth=0.7)
-    axe.text(v - 0.003, yi, "%.4f" % v, va="center", ha="right", fontsize=5.8,
-             color="#FFFFFF" if full else INK, fontweight="bold" if full else "normal")
+    axe.text(v + 0.0035, yi, "%.4f" % v, va="center", ha="left", fontsize=5.8,
+             color=INK, fontweight="bold" if full else "normal")
     if k in PV:
         axe.text(0.7315, yi, "$-$%.3f  ($p$=%.2f)" % (abs(PV[k]["mean"]), PV[k]["p_two_sided"]),
                  va="center", ha="left", fontsize=5.2, color="#5A6273")
@@ -272,7 +276,7 @@ for tag, xx, yy in (("a", 0.012, 0.995), ("b", 0.012, 0.760), ("c", 0.525, 0.760
                     ("d", 0.012, 0.508), ("e", 0.560, 0.508), ("f", 0.012, 0.290)):
     fig.text(xx, yy, tag, fontsize=7.5, fontweight="bold", color=INK, ha="left", va="top")
 
-style.save(fig, os.path.join(HERE, "fig3_method_result.pdf"))
+style.save(fig, style.out(HERE, "fig3_method_result.pdf"))
 print("wrote fig3_method_result.pdf   %.2f x %.2f in" % (FIGW, FIGH))
 print("  a: %d of %d comparisons survive Holm" % (n_surv, len(items)))
 print("  f: %d measured points, %d on the not-reported strip" % (len(MEASURED), len(others)))

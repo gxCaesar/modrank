@@ -59,6 +59,11 @@ PUBLISHED = {
              "SurvPath": 0.592},
 }
 VERIFIED_FOLDS = {"SurvPath", "PIBD", "DIMAF"}      # checked here; the rest are quoted
+# DIMAF ships split files for BLADDER ONLY, so its value counts as verified on bladder and nowhere
+# else. Applying one set to all five studies labelled DIMAF's BRCA 0.759 "verified" (found
+# 2026-09-11). PIBD's split files were byte-identical on all five studies; SurvPath defines them.
+def verified_in(study):
+    return VERIFIED_FOLDS if study == "blca" else VERIFIED_FOLDS - {"DIMAF"}
 
 
 def onehot(vals, drop=("", None, "N/A", "[Not Available]", "[Unknown]", "nan", "None")):
@@ -206,7 +211,7 @@ def main():
             per_seed.append(round(cidx(z, i2, j2), 4))
         pub = PUBLISHED.get(c, {})
         best_any = max(pub.values()) if pub else None
-        best_ver = max((v for k, v in pub.items() if k in VERIFIED_FOLDS), default=None)
+        best_ver = max((v for k, v in pub.items() if k in verified_in(c)), default=None)
         gen[c] = {
             "n_cases": len(cc["keep"]), "events": int(cc["e"].sum()),
             "clinical_stage_source": ("SurvPath datasets_csv/clinical_data" if c != "blca"

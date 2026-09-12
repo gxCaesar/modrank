@@ -50,7 +50,7 @@ FUS = load(S5, "fusion.json")
 style.apply()
 C, INK, LAD = style.ROLE, style.INK, style.LADDER
 
-FIGW, FIGH = 6.785, 6.45
+FIGW, FIGH = style.width(6.785), 6.45
 fig = plt.figure(figsize=(FIGW, FIGH))
 axa = fig.add_axes([0.100, 0.690, 0.360, 0.280])
 axb = fig.add_axes([0.610, 0.690, 0.355, 0.280])
@@ -228,6 +228,6 @@ for tag, ax, dx in (("c", axc, -0.235), ("d", axd, -0.255), ("e", axe, -0.390)):
     ax.text(dx, 1.22, tag, transform=ax.transAxes, fontsize=7.5, fontweight="bold", color=INK,
             ha="left", va="top")
 
-style.save(fig, os.path.join(HERE, "fig4_regime.pdf"))
+style.save(fig, style.out(HERE, "fig4_regime.pdf"))
 print("wrote fig4_regime.pdf   %.2f x %.2f in" % (FIGW, FIGH))
 print("  checkpoint effect %.4f = %.1f x the median published gap %.3f" % (worth, worth / med, med))

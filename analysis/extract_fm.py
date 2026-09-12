@@ -8,10 +8,11 @@ outcome; it is a format conversion.
 import glob, io, json, os, sys
 import numpy as np
 
-SRC = os.environ.get("BLCA_FM_DIR")
-META = os.environ.get("BLCA_META_DIR")
-if not SRC or not META:
-    raise SystemExit("Set BLCA_FM_DIR and BLCA_META_DIR to the downloaded public releases")
+import os
+# default is the path this ran at on the compute host; override with $BLCA_FM_DIR
+SRC = os.environ.get("BLCA_FM_DIR", "/data1/guanxing/bladder_cancer/data/fm-slide-features")
+META = os.environ.get("BLCA_META_DIR",
+                      "/data1/guanxing/bladder_cancer/SurvPath/datasets_csv/metadata")
 OUT = os.path.join(SRC, "extracted")
 os.makedirs(OUT, exist_ok=True)
 

@@ -5,7 +5,8 @@ Figure 1 asserted the defect and drew its mechanism. This figure is where it is 
 three panels answer three different objections a referee will raise in order:
 
   a  "so what" -- the corrected clinical baseline is not merely better than the grade one, it sits
-     above five of the nine published entries. The bar chart is ordered, so the reader counts.
+     above two of the four published entries on verified folds and five of all nine. The dot plot
+     is ordered and the unverifiable entries are open, so the reader counts both.
   b  "bladder is a special case" -- the same one-column swap in all five studies the benchmark
      covers, each on its own cases.
   c  "then why does it help so much more in some" -- because the swap buys most where grade is
@@ -48,7 +49,7 @@ DECOMP = json.load(open(os.path.abspath(os.path.join(HERE, "..", "..", "developm
 STRATA = load("per-stage-subgroup.json")["strata"]
 CPM = load("cold-panel-round1-measurements.json")
 
-fig = plt.figure(figsize=(6.785, 6.45))
+fig = plt.figure(figsize=(style.width(6.785), 6.45))
 # THREE ROWS OF TWO rather than four rows of one-and-two. Panels a and d are both eleven-row
 # lists and both were full width, which is what made this figure tall; side by side they cost one
 # row instead of two. The venue column that used to sit beside d moves into the caption, since at
@@ -61,40 +62,62 @@ axe = fig.add_axes([0.150, 0.088, 0.300, 0.138])
 axf = fig.add_axes([0.660, 0.088, 0.290, 0.138])
 
 # =========================================================================== a  the ranking
-rows = [(e["method"], e["cindex"], "published") for e in PUB["entries"]]
+# A DOT PLOT, not bars. The axis cannot start at zero without flattening every difference the panel
+# exists to show, and a bar drawn from 0.50 overstates each gap by its truncated length -- the defect
+# this lab's figure rules name explicitly. Entries whose folds could not be verified are drawn OPEN,
+# so the count the caption states ("two of the four on verified folds, five of all nine") can be read
+# off the panel rather than taken on trust.
+def _verified(e):
+    return e["folds"].startswith("verified") or e["folds"] in ("definitional",
+                                                                "as reported in SurvPath")
+
+
+rows = [(e["method"], e["cindex"], "published", _verified(e)) for e in PUB["entries"]]
 rows.append(("clinical, age+sex+stage", A1["arms_seed0"]["clinical_age_sex_stage_from_DIMAF_file"],
-             "clinical"))
+             "clinical", True))
 rows.append(("clinical, age+sex+grade", A1["arms_seed0"]["clinical_age_sex_GRADE_from_DIMAF_file"],
-             "competitor"))
-rows.append(("ours", A1["primary"]["value"], "ours"))
+             "competitor", True))
+rows.append(("ours", A1["primary"]["value"], "ours", True))
 rows.sort(key=lambda r: r[1])
 
 y = np.arange(len(rows))
-cols = [C[r[2]] for r in rows]
-axa.barh(y, [r[1] for r in rows], color=cols, height=0.68, edgecolor="none")
+for yi, r in zip(y, rows):
+    axa.plot([0.50, r[1]], [yi, yi], color="#E3E6EC", lw=0.8, zorder=1)
+    col = C[r[2]]
+    axa.scatter([r[1]], [yi], s=30, zorder=3, linewidths=1.1,
+                facecolor=col if r[3] else "white", edgecolor=col)
 axa.set_yticks(y)
 axa.set_yticklabels([r[0] for r in rows], fontsize=6.4)
-for t, r in zip(axa.get_yticklabels(), rows):
+for t_, r in zip(axa.get_yticklabels(), rows):
     if r[2] != "published":
-        t.set_fontweight("bold")
+        t_.set_fontweight("bold")
+    elif not r[3]:
+        t_.set_color("#6B7280")
 axa.set_xlim(0.50, 0.76)
 axa.set_xlabel("concordance on TCGA-BLCA disease-specific survival, $n=%d$" % PUB["cohort"]["n"],
                fontsize=6.4)
 for yi, r in zip(y, rows):
-    axa.text(r[1] + 0.0035, yi, "%.4f" % r[1], va="center", fontsize=6.1,
+    axa.text(r[1] + 0.006, yi, "%.4f" % r[1], va="center", fontsize=6.1,
              fontweight="bold" if r[2] != "published" else "normal",
              color=INK if r[2] != "published" else "#6B7280")
 
-# the rule that makes the claim countable: how many published entries the corrected baseline clears
+# the rule that makes the claim countable, on both denominators
 stage_c = A1["arms_seed0"]["clinical_age_sex_stage_from_DIMAF_file"]
 below = sum(1 for e in PUB["entries"] if e["cindex"] < stage_c)
+ver = [e for e in PUB["entries"] if _verified(e)]
+below_v = sum(1 for e in ver if e["cindex"] < stage_c)
 axa.axvline(stage_c, color=C["clinical"], lw=0.9, ls=(0, (3, 2)), zorder=0)
-axa.text(stage_c + 0.005, 1.6,
-         "the corrected clinical\nbaseline alone clears\n%d of the %d published entries"
-         % (below, len(PUB["entries"])), ha="left", va="center", fontsize=6.3,
-         color=C["clinical"], fontweight="bold", linespacing=1.35)
+# The count itself ("two of four on verified folds, five of all nine") is stated in the caption and
+# can be read off the markers; an in-panel sentence collided with the value labels.
+axa.scatter([], [], s=30, facecolor="#9AA1AD", edgecolor="#9AA1AD", label="released folds")
+axa.scatter([], [], s=30, facecolor="white", edgecolor="#9AA1AD", linewidths=1.1,
+            label="folds unverifiable")
+_lg = axa.legend(loc="upper left", fontsize=5.8, frameon=True, handletextpad=0.3,
+                 borderaxespad=0.3, borderpad=0.3)
+_lg.get_frame().set_facecolor("white")
+_lg.get_frame().set_edgecolor("none")
 
-# =========================================================================== b  five studies
+# =========================================================================== c  five studies (lettered b before 2026-09-11)
 order = ["blca", "brca", "coadread", "hnsc", "stad"]
 NAME = {"blca": "BLCA (bladder)", "brca": "BRCA", "coadread": "COADREAD", "hnsc": "HNSC",
         "stad": "STAD"}
@@ -116,7 +139,7 @@ axb.scatter([], [], s=26, color=C["clinical"], label="age + sex + stage")
 axb.legend(fontsize=6.2, loc="upper right", handletextpad=0.35, borderpad=0.2)
 
 
-# =========================================================================== c  the mechanism
+# =========================================================================== d  the mechanism (lettered c before 2026-09-11)
 pts = [(k, WG["cohorts"][k]["grade"]["normalised_entropy"],
         WG["cohorts"][k]["stage_minus_grade"])
        for k in order if isinstance(WG["cohorts"][k].get("grade"), dict)]
@@ -143,7 +166,7 @@ axc.text(0.03, 0.05, "%s:\nno usable grade\nin the shipped file"
          linespacing=1.3)
 
 
-# =========================================================================== d  the census itself
+# =========================================================================== b  the census itself (lettered d before 2026-09-11)
 # The paper's central factual claim is about ELEVEN papers, and until now it appeared only as prose.
 # One row per paper, one mark per question, and the three that could not be read say so rather than
 # being filled in from what the others do.
@@ -236,12 +259,14 @@ worst = min(v["clinical"] for _, v in SHOWN)
 axf.text(0.5, -0.40, "clinical falls to %.3f, below chance, in Stage III" % worst,
          transform=axf.transAxes, ha="center", va="top", fontsize=5.6, color="#6B7280")
 
-for tag, xx, yy in (("a", 0.012, 0.986), ("d", 0.545, 0.986), ("b", 0.012, 0.548),
-                    ("c", 0.545, 0.548), ("e", 0.012, 0.268), ("f", 0.545, 0.268)):
+# letters in reading order (a b / c d / e f); the census was "d" and the five-study swap "b" until
+# the 180 mm rebuild on 2026-09-11 showed the top row reading a, d
+for tag, xx, yy in (("a", 0.012, 0.986), ("b", 0.545, 0.986), ("c", 0.012, 0.548),
+                    ("d", 0.545, 0.548), ("e", 0.012, 0.268), ("f", 0.545, 0.268)):
     fig.text(xx, yy, tag, fontsize=7.5, fontweight="bold", color=INK, ha="left", va="top")
 
-style.save(fig, os.path.join(HERE, "fig2_missing_variable.pdf"))
+style.save(fig, style.out(HERE, "fig2_missing_variable.pdf"))
 print("wrote fig2_missing_variable.pdf   %.3f x %.3f in" % tuple(fig.get_size_inches()))
-print("  panel a: %d rows, corrected baseline clears %d of %d published" % (len(rows), below,
-                                                                           len(PUB["entries"])))
-print("  panel c: %d cohorts plotted, %d excluded for no usable grade" % (len(pts), len(missing)))
+print("  panel a: %d rows, corrected baseline clears %d of %d verified, %d of %d published"
+      % (len(rows), below_v, len(ver), below, len(PUB["entries"])))
+print("  panel d: %d cohorts plotted, %d excluded for no usable grade" % (len(pts), len(missing)))

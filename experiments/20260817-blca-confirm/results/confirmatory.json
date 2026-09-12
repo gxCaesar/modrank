@@ -2,7 +2,8 @@
  "artifact_type": "s6_confirmatory_run",
  "protocol": {
   "path": "development/benchmark-protocol.json",
-  "frozen_at": "2026-08-17"
+  "frozen_at": "2026-08-17",
+  "split_hash": "0d0b8f82e7f5aa6eb5833e89c19b0f5b53c14ba7490dfce28180cd3e050c7487"
  },
  "executed_at_utc": "2026-08-17T08:19:54Z",
  "phase_of_origin": "frozen",

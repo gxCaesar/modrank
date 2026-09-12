@@ -8,8 +8,10 @@ Three things a reader cannot get from a top-fifteen table.
      predictor. That is the honest headline of this panel and it is why the omics arm's value
      comes from the ensemble rather than from any single programme.
   b  what the two molecular-facing arms track, pathway by pathway, against each other. The two
-     ARMS correlate at rho 0.48 as scores, yet their pathway-association profiles correlate at
-     r 0.82: they disagree about patients far more than they disagree about biology.
+     ARMS correlate at rho 0.28 as scores (computed below from the dump's seed-averaged scores),
+     yet their pathway-association profiles correlate at r 0.82: they disagree about patients far
+     more than they disagree about biology. Until 2026-09-11 the artwork TYPED rho=0.48, which is
+     the slide arm against the incumbent's joint score, not against the omics arm.
   c  the distribution of |rho| per arm, which is the same fact as b without the reader having to
      judge a cloud by eye.
 
@@ -95,8 +97,11 @@ axb.set_xlim(-lim, lim); axb.set_ylim(-lim, lim)
 axb.set_xlabel("$\\rho$ with the slide arm", fontsize=6.4)
 axb.set_ylabel("$\\rho$ with the omics arm", fontsize=6.4)
 r_between = float(np.corrcoef(rs, ro)[0, 1])
+_sl = np.array([c_["seed_mean"]["wsi_titan"] for c_ in D["cases"]])
+_om = np.array([c_["seed_mean"]["omics_combine"] for c_ in D["cases"]])
+rho_arms = float(np.corrcoef(np.argsort(np.argsort(_sl)), np.argsort(np.argsort(_om)))[0, 1])
 axb.set_title("association profiles,\narm against arm", fontsize=6.4, pad=3)
-axb.text(0.04, 0.96, "$r=%.2f$. The two arms\nrank pathways alike even\nthough their own scores\nshare only $\\rho=0.48$" % r_between, transform=axb.transAxes, fontsize=5.2, va="top",
+axb.text(0.04, 0.96, "$r=%.2f$. The two arms\nrank pathways alike even\nthough their own scores\nshare only $\\rho=%.2f$" % (r_between, rho_arms), transform=axb.transAxes, fontsize=5.2, va="top",
          color=GREY, linespacing=1.35)
 panel("b", 0.655, 0.980)
 

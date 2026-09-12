@@ -115,6 +115,28 @@ def apply():
     })
 
 
+# -- the Nature Communications build. FIG_TARGET=nc authors the same figure at 180 mm, the Nature
+#    double-column width (G45, tolerance 0.2 mm), and writes it under nc/ so the BiB figures, whose
+#    width is bound to that manuscript's text block, are never overwritten.
+import os as _os                                                         # noqa: E402
+TARGET = _os.environ.get("FIG_TARGET", "bib")
+NC_WIDTH_IN = 180.0 / 25.4
+
+
+def width(bib_width_in):
+    """The authored width in inches: the BiB text block, or 180 mm for the NC build."""
+    return NC_WIDTH_IN if TARGET == "nc" else bib_width_in
+
+
+def out(here, name):
+    """Where a figure is written: beside its builder for BiB, under nc/ for the NC build."""
+    if TARGET == "nc":
+        d = _os.path.join(here, "nc")
+        _os.makedirs(d, exist_ok=True)
+        return _os.path.join(d, name)
+    return _os.path.join(here, name)
+
+
 def save(fig, path):
     """Save at the authored size. bbox_inches=None does NOT disable tight bbox.
 

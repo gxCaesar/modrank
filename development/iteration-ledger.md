@@ -33,9 +33,11 @@ derived_from:
   - {path: stage5.json, bytes: 4580, mtime_utc: 2026-08-17T06:24:40.045518Z, rows: 40}
   - {path: step0.json, bytes: 3337, mtime_utc: 2026-08-17T04:46:22.729521Z, rows: 6}
   - {path: transfer.json, bytes: 2235, mtime_utc: 2026-08-17T04:51:49.427511Z, rows: 5}
-provenance_policy: >
-  Canonical path, byte size, mtime and row count are recorded so N stays
-  verifiable by re-reading the same files.
+digest_policy: >
+  G-M12's sha256 stamp is omitted deliberately: this project's AGENTS.md bans
+  manual SHA loops and keeps hash strings out of routine reports. Path, size,
+  mtime and row count are recorded instead and N stays verifiable by re-reading
+  the same files.
 selected:
   candidate: 'headline arm: OURS -- TITAN slide embedding + SurvPath 275-pathway
     omics + clinical (age, sex, T, N, M, stage), plain ridge Cox per view,
@@ -322,3 +324,4 @@ iterations:
 ```
 
 Best dev value in the ledger: **0.7442** — `pan-cohort brca / titan_only`.
+

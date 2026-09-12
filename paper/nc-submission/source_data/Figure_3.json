@@ -1,0 +1,205 @@
+{
+ "figure": "Figure 3",
+ "title": "What limits a method at 359 patients and 113 events",
+ "a_capacity_against_noise": {
+  "description": "a ridge Cox fitted to pure noise and scored in sample",
+  "source_file": "experiments/20260817-blca-confirm/results/regime-evidence.json",
+  "field": "capacity_sweep",
+  "values": {
+   "note": "an oracle arm fitted IN-SAMPLE on the held-out fold at matched capacity (d principal components of the training fold's own basis), against a null at the same capacity.",
+   "corrected_null_definition": "fit the permuted outcome, score THAT SAME permutation. Zero signal, identical n, event count, censoring and capacity. 200 draws per fold.",
+   "first_control_definition": "fit the permuted outcome, score the REAL one. 1,000 draws. THIS WAS THE WRONG CONTROL and its answer was reported as a finding before the correction.",
+   "arms": [
+    {
+     "arm": "TITAN",
+     "d": 16,
+     "in_sample": 0.7666,
+     "corrected_null": 0.7474,
+     "first_control": 0.4968,
+     "out_of_fold": 0.6496,
+     "excess": 0.0192
+    },
+    {
+     "arm": "TITAN",
+     "d": 8,
+     "in_sample": 0.7067,
+     "corrected_null": 0.665,
+     "first_control": 0.4959,
+     "out_of_fold": 0.6094,
+     "excess": 0.0417
+    },
+    {
+     "arm": "TITAN",
+     "d": 4,
+     "in_sample": 0.645,
+     "corrected_null": 0.6167,
+     "first_control": 0.4953,
+     "out_of_fold": 0.6056,
+     "excess": 0.0283
+    },
+    {
+     "arm": "TITAN",
+     "d": 2,
+     "in_sample": 0.573,
+     "corrected_null": 0.5793,
+     "first_control": 0.5026,
+     "out_of_fold": 0.5515,
+     "excess": -0.0063
+    },
+    {
+     "arm": "clinical",
+     "d": 16,
+     "in_sample": 0.756,
+     "corrected_null": 0.699,
+     "first_control": 0.4906,
+     "out_of_fold": 0.6741,
+     "excess": 0.057
+    },
+    {
+     "arm": "clinical",
+     "d": 2,
+     "in_sample": 0.6882,
+     "corrected_null": 0.5756,
+     "first_control": 0.5014,
+     "out_of_fold": 0.693,
+     "excess": 0.1127
+    }
+   ],
+   "reading": "a Cox fit to PURE NOISE, scored in-sample at d=16, reaches 0.7474. The real excess over a matched null is +0.0192 at d=16 and SHRINKS as capacity grows, which is what added noise dimensions look like.",
+   "withdrawn": "the earlier reading -- that the image representation holds 0.2686 above its control and gives up 0.1170 to estimation -- is withdrawn. Both were artifacts of comparing an inflated quantity against an honest one."
+  }
+ },
+ "b_weight_sweep": {
+  "description": "the 21-point weight sweep, the held-out-fold oracle and equal weighting",
+  "source_file": "experiments/20260817-blca-confirm/results/regime-evidence.json",
+  "field": "fusion",
+  "values": {
+   "deployed_equal_weight": 0.7191,
+   "best_fixed_weight_on_a_21_point_sweep": {
+    "value": 0.7191,
+    "at_w": 0.5
+   },
+   "linear_fusion_oracle": {
+    "value": 0.7268,
+    "control": 0.5006,
+    "params_fitted_in_sample": 2,
+    "gain_over_deployed": 0.0077
+   },
+   "gated_fusion_oracle": {
+    "value": 0.7492,
+    "control": 0.4977,
+    "gain_over_the_LINEAR_oracle": 0.0224,
+    "gain_over_the_deployed_equal_weight": 0.0301,
+    "control_gain": -0.0029,
+    "which_baseline": "the +0.0224 in the ledger is measured against the LINEAR fusion oracle (0.7268), not against the deployed equal weight (0.7191). Writing it without saying which would let a reader attach the smaller gain to the larger claim; both are recorded here because a self-consistency check on this file caught exactly that ambiguity."
+   },
+   "model_reference_two_signals_rank_averaged": {
+    "value": 0.7421,
+    "sd": 0.0238
+   },
+   "reading": "even given the held-out outcomes, the best fixed linear fusion gains +0.008 over the equal weight already in use, and the sweep's maximum sits exactly at equal weight. The room is not in the fusion rule."
+  }
+ },
+ "c_gated_component_and_control": {
+  "description": "the gated component against its permuted-stratum control",
+  "source_file": "development/s5-results/c2.json",
+  "field": "C5_gated_fusion",
+  "values": {
+   "flat_rank_average": 0.7447,
+   "gated_on_clinical_tertile": 0.7493,
+   "gated_on_PERMUTED_tertile_CONTROL": 0.7502,
+   "note": "the gating weights here are read off the SAME pooled outcome they are scored on, so this is an oracle-flavoured reference for whether gating is worth building in-fold, not an arm. Its control says how much the structure alone buys."
+  }
+ },
+ "d_power": {
+  "description": "power against a true difference at this cohort's patient-resampling standard error",
+  "source_file": "experiments/20260817-blca-confirm/results/reviewer-gaps.json",
+  "field": "m_detectable_margin",
+  "values": {
+   "case_level_bootstrap_se": 0.021,
+   "detectable_at_80pc_power_two_sided_0.05": 0.0589,
+   "power_of_the_observed_input_parity_margin": 0.355,
+   "n": 359,
+   "events": 113,
+   "reading": "a two-sided test at this cohort's SE detects a margin of about 0.059 at 80% power. The nine published entries on this benchmark span 0.596 to 0.691 and consecutive entries differ by 0.002 to 0.012, so almost none of the published ORDERING is resolvable at this n -- a statement about the benchmark, not about any one method."
+  }
+ },
+ "e_competitor_across_seeds": {
+  "description": "the competitor arms as seed-averaged scores",
+  "source_file": "experiments/20260817-blca-confirm/results/pibd-parity.json",
+  "field": "canonical_arms_seed_averaged_scores",
+  "values": {
+   "construction": "per seed 0-4: fit, score out-of-fold, percentile-normalise within fold. Then average the five score vectors and re-normalise within fold. Both sides of every comparison get this identical treatment.",
+   "ours": 0.7237,
+   "slide_alone": 0.6535,
+   "omics_alone": 0.6648,
+   "clinical_alone": 0.6644,
+   "ours_without_clinical": 0.6897,
+   "survpath_plus_clinical": 0.6897,
+   "pibd_plus_clinical_best_val": 0.6989,
+   "pibd_plus_clinical_final_epoch": 0.6639,
+   "not_the_primary_metric": "the pre-registered primary is 0.7212, the MEAN OF FIVE PER-SEED CONCORDANCES. This table's 'ours' is the concordance of the AVERAGED SCORE, which is a different and slightly higher quantity. Averaging favours the competitor if anything: its seeds are full retrainings, ours are inner-CV partitions."
+  }
+ },
+ "f_checkpoint_convention": {
+  "description": "PIBD at its best-validation checkpoint and at its final epoch",
+  "source_file": "experiments/20260817-blca-confirm/results/pibd-parity.json",
+  "field": "pibd",
+  "values": {
+   "best_validation_epoch": {
+    "pibd_alone": {
+     "cindex": 0.6514,
+     "td_auc_8m": 0.76,
+     "td_auc_14m": 0.7273,
+     "td_auc_22m": 0.6996,
+     "ibs": 0.2029,
+     "logrank_p": 5.82e-05
+    },
+    "pibd_plus_same_clinical": {
+     "cindex": 0.6989,
+     "td_auc_8m": 0.781,
+     "td_auc_14m": 0.7516,
+     "td_auc_22m": 0.7385,
+     "ibs": 0.195,
+     "logrank_p": 4.3e-09
+    },
+    "per_fold_cindex": [
+     0.6038,
+     0.698,
+     0.6256,
+     0.6147,
+     0.7626
+    ],
+    "fold_mean": 0.6609,
+    "fold_sd": 0.0677
+   },
+   "final_epoch": {
+    "pibd_alone": {
+     "cindex": 0.5849,
+     "td_auc_8m": 0.6299,
+     "td_auc_14m": 0.6365,
+     "td_auc_22m": 0.6179,
+     "ibs": 0.2141,
+     "logrank_p": 0.0441
+    },
+    "pibd_plus_same_clinical": {
+     "cindex": 0.6639,
+     "td_auc_8m": 0.7039,
+     "td_auc_14m": 0.6988,
+     "td_auc_22m": 0.7027,
+     "ibs": 0.1996,
+     "logrank_p": 9.38e-08
+    },
+    "per_fold_cindex": [
+     0.551,
+     0.6709,
+     0.5692,
+     0.6034,
+     0.5554
+    ],
+    "fold_mean": 0.59,
+    "fold_sd": 0.0497
+   }
+  }
+ }
+}

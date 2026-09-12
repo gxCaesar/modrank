@@ -1,0 +1,208 @@
+{
+ "artifact_type": "s23_calibration_and_decision_curve",
+ "phase_of_origin": "post_freeze_2026-09-11",
+ "reportable": true,
+ "known_answer": {
+  "ours_seed0": 0.7225,
+  "clinical_seed0": 0.6638
+ },
+ "horizons_months": [
+  12.0,
+  24.0,
+  36.0
+ ],
+ "at_risk": {
+  "12.0": 261,
+  "24.0": 127,
+  "36.0": 78
+ },
+ "events_by": {
+  "12.0": 47,
+  "24.0": 93,
+  "36.0": 105
+ },
+ "recalibration_slopes_per_fold": {
+  "ours": [
+   3.1966,
+   2.0795,
+   2.0382,
+   2.1784,
+   2.4327
+  ],
+  "clinical": [
+   2.0761,
+   1.8474,
+   1.8101,
+   1.8614,
+   2.3108
+  ]
+ },
+ "ours": {
+  "calibration_slope": 0.7704,
+  "by_horizon": {
+   "12.0": {
+    "mean_predicted_risk": 0.1472,
+    "observed_km_risk": 0.1439,
+    "brier": 0.1112,
+    "brier_null_km": 0.1233,
+    "ipa": 0.098
+   },
+   "24.0": {
+    "mean_predicted_risk": 0.3423,
+    "observed_km_risk": 0.3411,
+    "brier": 0.1908,
+    "brier_null_km": 0.2249,
+    "ipa": 0.1516
+   },
+   "36.0": {
+    "mean_predicted_risk": 0.414,
+    "observed_km_risk": 0.4151,
+    "brier": 0.2185,
+    "brier_null_km": 0.2441,
+    "ipa": 0.1048
+   }
+  },
+  "grouped_24m": [
+   {
+    "quintile": 1,
+    "n": 72,
+    "events": 9,
+    "predicted": 0.1292,
+    "observed_km": 0.137
+   },
+   {
+    "quintile": 2,
+    "n": 72,
+    "events": 18,
+    "predicted": 0.2077,
+    "observed_km": 0.2057
+   },
+   {
+    "quintile": 3,
+    "n": 71,
+    "events": 18,
+    "predicted": 0.3099,
+    "observed_km": 0.2635
+   },
+   {
+    "quintile": 4,
+    "n": 72,
+    "events": 30,
+    "predicted": 0.4462,
+    "observed_km": 0.5085
+   },
+   {
+    "quintile": 5,
+    "n": 72,
+    "events": 38,
+    "predicted": 0.618,
+    "observed_km": 0.6394
+   }
+  ],
+  "net_benefit_24m": {
+   "0.05": 0.3064,
+   "0.1": 0.2642,
+   "0.15": 0.2209,
+   "0.2": 0.1785,
+   "0.25": 0.164,
+   "0.3": 0.1444,
+   "0.35": 0.1222,
+   "0.4": 0.1356,
+   "0.45": 0.093,
+   "0.5": 0.0712,
+   "0.55": 0.0347,
+   "0.6": 0.0136
+  }
+ },
+ "clinical": {
+  "calibration_slope": 0.8488,
+  "by_horizon": {
+   "12.0": {
+    "mean_predicted_risk": 0.1459,
+    "observed_km_risk": 0.1439,
+    "brier": 0.1176,
+    "brier_null_km": 0.1233,
+    "ipa": 0.0468
+   },
+   "24.0": {
+    "mean_predicted_risk": 0.3372,
+    "observed_km_risk": 0.3411,
+    "brier": 0.2072,
+    "brier_null_km": 0.2249,
+    "ipa": 0.0788
+   },
+   "36.0": {
+    "mean_predicted_risk": 0.4075,
+    "observed_km_risk": 0.4151,
+    "brier": 0.2184,
+    "brier_null_km": 0.2441,
+    "ipa": 0.1052
+   }
+  },
+  "grouped_24m": [
+   {
+    "quintile": 1,
+    "n": 72,
+    "events": 16,
+    "predicted": 0.1546,
+    "observed_km": 0.2168
+   },
+   {
+    "quintile": 2,
+    "n": 72,
+    "events": 16,
+    "predicted": 0.2236,
+    "observed_km": 0.2395
+   },
+   {
+    "quintile": 3,
+    "n": 71,
+    "events": 9,
+    "predicted": 0.3132,
+    "observed_km": 0.155
+   },
+   {
+    "quintile": 4,
+    "n": 72,
+    "events": 34,
+    "predicted": 0.4275,
+    "observed_km": 0.4901
+   },
+   {
+    "quintile": 5,
+    "n": 72,
+    "events": 38,
+    "predicted": 0.5669,
+    "observed_km": 0.5489
+   }
+  ],
+  "net_benefit_24m": {
+   "0.05": 0.3064,
+   "0.1": 0.2678,
+   "0.15": 0.2147,
+   "0.2": 0.1691,
+   "0.25": 0.13,
+   "0.3": 0.1078,
+   "0.35": 0.1054,
+   "0.4": 0.0901,
+   "0.45": 0.0514,
+   "0.5": 0.0227,
+   "0.55": 0.025,
+   "0.6": -0.0117
+  }
+ },
+ "treat_all_net_benefit_24m": {
+  "0.05": 0.3064,
+  "0.1": 0.2678,
+  "0.15": 0.2248,
+  "0.2": 0.1763,
+  "0.25": 0.1214,
+  "0.3": 0.0586,
+  "0.35": -0.0138,
+  "0.4": -0.0982,
+  "0.45": -0.1981,
+  "0.5": -0.3179,
+  "0.55": -0.4643,
+  "0.6": -0.6474
+ }
+}

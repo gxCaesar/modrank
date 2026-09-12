@@ -43,6 +43,8 @@
   "each_case_in_exactly_one_val_fold": true,
   "verified_by": "s6_leakage_falsifiers.py L1, ran_and_passed"
  },
+ "canonical_form": "per fold: '<fold>\\t<comma-joined sorted train ids>\\t<comma-joined sorted val ids>', newline-joined",
+ "split_hash": "0d0b8f82e7f5aa6eb5833e89c19b0f5b53c14ba7490dfce28180cd3e050c7487",
  "membership": [
   {
    "fold": 0,

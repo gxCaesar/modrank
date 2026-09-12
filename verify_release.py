@@ -282,7 +282,7 @@ if all(os.path.exists(p) for p in (S15, LEDGER, RANK)):
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROMISED = [
     ("the frozen protocol", "development/benchmark-protocol.json"),
-    ("the split manifest", "development/split-manifest.json"),
+    ("the split manifest with its hash", "development/split-manifest.json"),
     ("the iteration ledger covering all 269 scored candidates", "development/iteration-ledger.md"),
     ("the error atlas", "development/error-atlas.json"),
     ("the component pre-registrations with their controls", "development/contribution-design.md"),

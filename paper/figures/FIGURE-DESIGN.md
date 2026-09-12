@@ -184,7 +184,8 @@ written to be able to fail.
 - **No representative slide images or attention heatmaps.** We hold precomputed embeddings, not the
   whole-slide images, so any such panel would be fabricated. A computational-pathology paper without
   a picture of tissue is unusual and this one has a reason.
-- **No decorative raster schematic.** A method diagram, if one is wanted, is drawn as vector
+- **No AI-generated schematic.** The venue lock records that Oxford Academic prohibits
+  prompt-generated manuscript figures; a method diagram, if one is wanted, is drawn as vector
   primitives.
 - **No graphical abstract yet** — the venue lock says Briefings in Bioinformatics requires one, but
   the venue is not fixed, and it is derived from Figure 2 once it is.

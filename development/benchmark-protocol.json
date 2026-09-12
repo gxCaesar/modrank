@@ -28,13 +28,14 @@
    "any slide-level split (a case may hold several slides and they must move together)",
    "standardisation moments, ridge alpha, feature screening or combination weights fitted on any validation row",
    "selecting the omics representation, the slide encoder, the estimator or the combination rule after seeing a validation outcome"
-  ]
+  ],
+  "split_hash": "0d0b8f82e7f5aa6eb5833e89c19b0f5b53c14ba7490dfce28180cd3e050c7487"
  },
  "locked_inputs": {
   "partition_manifest": {
    "path": "development/split-manifest.json",
    "gate": "required_before_execution",
-   "binding": "the released membership listed in this manifest is the exact partition used by every run"
+   "binding": "split_hash above must equal the manifest's split_hash; G-M3 checks the pair"
   },
   "features": [
    {

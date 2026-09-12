@@ -16,11 +16,12 @@ of those measurements were sitting unused.
      Choosing WITHIN a modality moves the number as much as choosing between modalities, which is
      the fact that makes a single-representation multimodal comparison hard to interpret.
   c  how far the three risk scores are from being the same score. Spearman between arms, out of
-     fold. Image and clinical share 0.213: nearly orthogonal, which is why the equal-weight average
+     fold. Image and clinical share 0.2445 (amended clinical block): nearly orthogonal, which is why
+     the equal-weight average
      works and why it is not the representation that limits the fusion.
   d  THE PANEL THIS FIGURE IS FOR. Restrict the comparable pairs to those the clinical model cannot
-     separate and score the arms again. On the tightest 1,281 pairs of 24,219 the clinical arm is a
-     coin flip at 0.5012 and the slide arm holds 0.612. That is the whole-slide image earning its
+     separate and score the arms again. On the tightest 1,213 pairs of 24,219 the clinical arm is a
+     coin flip at 0.4959 and the slide arm holds 0.6220. That is the whole-slide image earning its
      place, measured rather than asserted, and it is the answer to "what does the image add".
   e  discrimination over time, per modality, at three horizons plus the integrated Brier score.
   f  what capacity buys per modality, against the permuted-stratum control that voids it.
@@ -51,7 +52,13 @@ RES = os.path.join(ROOT, "experiments", "20260817-blca-confirm", "results")
 S5 = os.path.join(ROOT, "development", "s5-results")
 load = lambda d, n: json.load(open(os.path.join(d, n)))                  # noqa: E731
 
-ATLAS = load(S5, "atlas.json")
+# Panels c and d read the AMENDED atlas (analysis/s19b_modality_atlas_amended.py), which re-runs the
+# development atlas with the manuscript's clinical block. The original atlas.json used the
+# pre-amendment 23-column block, and so did every clinical value this figure drew until 2026-09-11.
+ATLAS = json.load(open(os.path.join(ROOT, "experiments", "20260911-blca-posthoc", "results",
+                                    "modality-atlas-amended.json")))
+A1 = load(RES, "amendment-A1-clinical-provenance.json")
+CLIN_AMENDED = A1["arms_seed0"]["clinical_age_sex_stage_from_DIMAF_file"]
 C6 = load(S5, "c6.json")
 OF = load(S5, "oracle_fix.json")
 SM = load(RES, "survival-metrics.json")
@@ -83,7 +90,7 @@ GREY, FAINT = "#8C8C8C", "#C9CFD8"
 # must not have to relearn it in g.
 MOD = {"slide": C["slide"], "omics": C["omics"], "clinical": C["clinical"], "ours": C["ours"]}
 
-FIGW, FIGH = 6.785, 6.45
+FIGW, FIGH = style.width(6.785), 6.45
 fig = plt.figure(figsize=(FIGW, FIGH))
 
 
@@ -101,7 +108,7 @@ N_PATH = BIO["B2_survival_association"]["pathways_tested"]
 N_TRACKED = BIO["B3_what_the_image_arm_tracks"]["pathways_with_BH_q_below_0.05"]
 STAGE = WG["cohorts"]["blca"]["stage"]["levels"]
 ALONE = {"slide": C6["single_arms"]["wsi_titan"], "omics": C6["single_arms"]["omics_combine"],
-         "clinical": C6["single_arms"]["clinical"]}
+         "clinical": CLIN_AMENDED}
 
 CARDS = [
     ("slide", "Whole-slide H&E", "one 768-dim slide embedding per case,\nmean-pooled over a "
@@ -200,13 +207,16 @@ REPS = [("wsi_titan", "TITAN", "slide"), ("wsi_chief_mean", "CHIEF, mean", "slid
         ("omics_xena", "Xena expression", "omics"), ("omics_combine", "SurvPath pathways", "omics"),
         ("omics_hallmarks", "Hallmark sets", "omics"),
         ("clinical", "age + sex + stage", "clinical")]
-vals = [(lab, C6["single_arms"][k], fam) for k, lab, fam in REPS]
+vals = [(lab, CLIN_AMENDED if k == "clinical" else C6["single_arms"][k], fam)
+        for k, lab, fam in REPS]
 vals.sort(key=lambda r: r[1])
 y = np.arange(len(vals))
-axb.barh(y, [v for _, v, _ in vals], color=[MOD[f] for _, _, f in vals], height=0.68,
-         edgecolor="none")
+# a dot plot: the axis starts at 0.50, and a bar drawn from there would overstate every gap
+for yi, (_, v, fam) in zip(y, vals):
+    axb.plot([0.50, v], [yi, yi], color="#E3E6EC", lw=0.8, zorder=1)
+    axb.scatter([v], [yi], s=26, color=MOD[fam], edgecolor="none", zorder=3)
 for yi, (lab, v, fam) in zip(y, vals):
-    axb.text(v + 0.003, yi, "%.4f" % v, va="center", fontsize=5.9, color=INK)
+    axb.text(v + 0.005, yi, "%.4f" % v, va="center", fontsize=5.9, color=INK)
 axb.axvline(0.5, color=INK, lw=0.7, zorder=3)
 axb.set_yticks(y)
 axb.set_yticklabels([lab for lab, _, _ in vals], fontsize=6.0)
@@ -367,7 +377,7 @@ assert R["spearman_titan_vs_clinical"] < 0.5, (
 assert CP["clinically_tied_q05"]["pairs_total"] == CP["all_pairs"]["pairs"], (
     "the tie quantiles and the full set must be drawn from one pair universe")
 
-style.save(fig, os.path.join(HERE, "fig3_modalities.pdf"))
+style.save(fig, style.out(HERE, "fig3_modalities.pdf"))
 print("wrote fig3_modalities.pdf   %.3f x %.3f in" % (FIGW, FIGH))
 print("  a: 3 modality cards | b: %d representations | c: rho(slide,clinical)=%.3f"
       % (len(REPS), R["spearman_titan_vs_clinical"]))

@@ -1,0 +1,80 @@
+{
+ "artifact_type": "s23b_utility_intervals",
+ "phase_of_origin": "post_freeze_2026-09-11",
+ "reportable": true,
+ "reproduces": "calibration-and-decision-curve.json",
+ "bootstrap": {
+  "replicates": 6000,
+  "unit": "patient",
+  "rng_seed": 20260911,
+  "what_is_resampled": "the evaluation; predictions are held fixed"
+ },
+ "ipa_modrank_minus_clinical": {
+  "12.0": {
+   "mean": 0.0512,
+   "ci95": [
+    -0.0003,
+    0.0993
+   ],
+   "p_two_sided": 0.052
+  },
+  "24.0": {
+   "mean": 0.0724,
+   "ci95": [
+    -0.0054,
+    0.1502
+   ],
+   "p_two_sided": 0.0703
+  },
+  "36.0": {
+   "mean": -0.0013,
+   "ci95": [
+    -0.0897,
+    0.0842
+   ],
+   "p_two_sided": 0.994
+  }
+ },
+ "net_benefit_24m_modrank_minus_clinical": {
+  "0.2": {
+   "mean": 0.009,
+   "ci95": [
+    -0.0235,
+    0.0413
+   ],
+   "p_two_sided": 0.586
+  },
+  "0.3": {
+   "mean": 0.0364,
+   "ci95": [
+    -0.0038,
+    0.0768
+   ],
+   "p_two_sided": 0.079
+  },
+  "0.4": {
+   "mean": 0.0454,
+   "ci95": [
+    0.0006,
+    0.0915
+   ],
+   "p_two_sided": 0.0467
+  },
+  "0.5": {
+   "mean": 0.0482,
+   "ci95": [
+    -0.0075,
+    0.1035
+   ],
+   "p_two_sided": 0.091
+  },
+  "0.6": {
+   "mean": 0.025,
+   "ci95": [
+    -0.0279,
+    0.0766
+   ],
+   "p_two_sided": 0.3383
+  }
+ }
+}

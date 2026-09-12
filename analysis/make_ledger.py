@@ -8,8 +8,10 @@ the rows an author remembers are the ones that worked.
 
 So this walks the JSON each run actually wrote and enumerates every scored arm out of it.
 
-`derived_from` records canonical path, byte size, mtime and row count, leaving N verifiable by
-re-reading the same files.
+On digests: G-M12 normally stamps a sha256 per source file. This project's AGENTS.md bans manual
+SHA loops and keeps hash strings out of routine reports, so `derived_from` records canonical path,
+byte size, mtime and row count instead. That is a deliberate, stated deviation rather than an
+omission, and it leaves N verifiable by re-reading the same files.
 """
 
 from __future__ import annotations
@@ -225,9 +227,11 @@ def main():
         else:
             lines.append("  - {path: %s, bytes: %d, mtime_utc: %s, rows: %d}"
                          % (p["path"], p["bytes"], p["mtime_utc"], p["rows_contributed"]))
-    lines.append("provenance_policy: >")
-    lines.append("  Canonical path, byte size, mtime and row count are recorded so N stays")
-    lines.append("  verifiable by re-reading the same files.")
+    lines.append("digest_policy: >")
+    lines.append("  G-M12's sha256 stamp is omitted deliberately: this project's AGENTS.md bans")
+    lines.append("  manual SHA loops and keeps hash strings out of routine reports. Path, size,")
+    lines.append("  mtime and row count are recorded instead and N stays verifiable by re-reading")
+    lines.append("  the same files.")
     # G-M11 reads this: the candidate the freeze is built on and the strongest thing it is measured
     # against, so the margin it checks is the margin actually claimed. `dev_value` must be a score
     # some iteration below really recorded -- a selected number that appears nowhere in the run log

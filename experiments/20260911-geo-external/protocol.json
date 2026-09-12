@@ -1,0 +1,52 @@
+{
+ "protocol_id": "geo-external-v1",
+ "written": "2026-09-11",
+ "status": "frozen at the commit that first adds this file, before any GEO outcome has been analysed",
+ "what_had_been_seen": "GATE 0 only: characteristic keys, level counts, presence counts and expression value ranges (experiments/20260911-geo-gate0). No survival analysis of any GEO cohort has been run.",
+ "purpose": "Replicate two things in independent public bladder cohorts that carry expression and clinical data but no histology: (1) the combination rule applied to the two modalities these cohorts have (transcriptome and clinical), against its components and the fusion alternatives; (2) the added-value inflation D produced by a grade-based clinical reference. The recipe is re-fitted within each cohort by cross-validation; coefficients fitted on TCGA are not transferred across platforms.",
+ "cohorts": {
+  "GSE31684": {"role": "primary", "platform": "GPL570", "setting": "radical cystectomy",
+               "endpoint": "disease-specific survival: event = 'last known status' == 'DOD'; time = 'survival.months'",
+               "clinical_weak": "age ('age at rc'), female indicator ('gender'), grade ('rc grade', case-folded; High/Low)",
+               "clinical_stage": "age, female, pathologic stage ('rc_stage', one-hot)",
+               "inclusion": "all 93 samples; sensitivity without the pre-cystectomy chemotherapy cases ('prerc_chemo' yes)"},
+  "GSE32894": {"role": "secondary", "platform": "GPL6947", "setting": "mixed non-muscle-invasive and muscle-invasive (Lund)",
+               "endpoint": "disease-specific survival: event = 'dod_event_(yes/no)' == 'yes'; time = 'time_to_dod_(months)'; cases with 'dod_excluded_(yes/no)' == 'yes' or a missing event or time are excluded",
+               "clinical_weak": "age, female, grade ('tumor_grade' G1/G2/G3; Gx coded as reference)",
+               "clinical_stage": "age, female, stage ('tumor_stage', one-hot)",
+               "clinical_rule": "age, female, stage and grade: both vary in this cohort"},
+  "GSE48075": {"role": "secondary, method only", "platform": "GPL6947",
+               "endpoint": "disease-specific survival: event = 'dss censor' == 'uncensored'; time = 'survival (mo)'; samples without these fields excluded",
+               "clinical_stage": "age ('age (at specimen collection)'), female ('gender', case-folded), clinical T category parsed from 'cstage' (cTa, cTis, cT1, cT2, cT3, cT4 by leading token)",
+               "note": "no grade field, so D is not defined here"},
+  "excluded": {"GSE48277-GPL6947": "the same 142 samples as GSE48075", "GSE48277-GPL10558": "cell lines",
+               "GSE48277-GPL14951": "neoadjuvant chemotherapy mixed into the cohort and no grade"}
+ },
+ "omics": {
+  "probe_to_gene": "GEO platform annotation (GPL570.annot, GPL6947.annot) 'Gene symbol'; probes mapping to more than one symbol ('///') or none are dropped; probes of one gene are averaged",
+  "values": "as provided in the series matrix (all three are on log2-type scales; GSE32894 is centred per probe)",
+  "pathways": "analysis/s5_omics_arm.py pathway_matrix over the 331 SurvPath combine signatures, keeping signatures with at least three genes present"
+ },
+ "methods": {
+  "primary": "two-arm ModRank: one ridge Cox per arm (transcriptome pathways; clinical stage block), within-fold percentiles, equal-weight rank average. Estimator blca_common.fitapply, grid (1, 8, 64, 512, 4096), inner 3-fold CV.",
+  "comparators": ["clinical stage block alone", "transcriptome alone", "concatenated ridge Cox on both blocks, grid extended to 32768", "stacked Cox: two weights fitted on inner out-of-fold percentiles (ridge 1.0)", "clinical weak (grade) block alone"],
+  "for_D": "two-arm ModRank with the weak block in place of the stage block"
+ },
+ "evaluation": {
+  "cross_validation": "5 repeats of 5-fold stratified CV, analysis/s18_chimera_two_arm.py strat_folds with np.random.default_rng(0) consumed sequentially; estimator seed = repeat index",
+  "point_estimate": "mean over repeats of the pooled out-of-fold concordance",
+  "paired": "repeat-averaged per-case scores, 6000 case-resampling replicates (rng 20260911), Holm across the comparators within each cohort",
+  "floor": "SD over 24 stratified resplits (rng 3000 + k, estimator seed 0) of C(two-arm ModRank) minus C(clinical stage block); bar = 2 x SD",
+  "D": "[C(ModRank with weak) - C(weak)] - [C(ModRank with stage) - C(stage)], repeat-averaged vectors, 6000 replicates"
+ },
+ "predictions_written_before_the_run": {
+  "D_GSE31684": "grade is near-constant here (High in about 94%), as in TCGA-BLCA, so D is expected to be positive",
+  "D_GSE32894": "grade varies here, so the grade reference is not degenerate and D is expected to be smaller than in GSE31684",
+  "ModRank": "no directional prediction; at 93 and 224 cases the comparisons may not be resolvable"
+ },
+ "branch_statements_written_before_the_run": {
+  "rule_holds": "Applied to the two modalities an independent cystectomy cohort carries, the combination rule exceeds both its components and both fusion alternatives by more than that cohort's split-reseed floor.",
+  "rule_does_not_hold": "In independent microarray cohorts of 73 to 224 patients, the combination rule on transcriptome and clinical stage does not exceed [named comparator] beyond the floor, and the TCGA result is not replicated on these modalities at this size.",
+  "D": "Reported for both cohorts where it is defined, whatever its sign, beside the prediction above."
+ }
+}

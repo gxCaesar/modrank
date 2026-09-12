@@ -7,5 +7,10 @@ authors:
     orcid: "https://orcid.org/0000-0002-4435-0884"
     affiliation: "City University of Hong Kong (Dongguan)"
 license: MIT
-version: 1.0.0
-repository-code: "TO BE FILLED AT SUBMISSION"
+version: 1.1.0
+date-released: 2026-08-20
+repository-code: "https://github.com/gxCaesar/modrank"
+identifiers:
+  - type: doi
+    value: "https://doi.org/10.5281/zenodo.22025756"
+    description: "the concept DOI, resolving to the latest archived version"

@@ -1,0 +1,32 @@
+{
+ "artifact_type": "s16_encoder_parity_on_the_comparators_own_features",
+ "phase_of_origin": "frozen_post_hoc",
+ "answers": "cold panel round 2, finding G8",
+ "n": 359,
+ "events": 113,
+ "comparable_pairs": 24219,
+ "known_answer_check": {
+  "encoder": "titan",
+  "recomputed": [
+   0.6596,
+   0.7225
+  ],
+  "shipped": [
+   0.6596,
+   0.7225
+  ],
+  "reproduced": true
+ },
+ "chief": {
+  "slide_alone": 0.5836,
+  "full_method": 0.7009,
+  "cases_covered": 359,
+  "what_it_is": "the tile features the SurvPath rerun in this study consumed, mean-pooled to the case"
+ },
+ "titan_for_reference": {
+  "slide_alone": 0.6596,
+  "full_method": 0.7225
+ },
+ "reading": "the comparison on the comparator's own encoder. A full-method value that still clears the published entries means the lead is not an artefact of reading a better slide encoder than the methods it is compared against.",
+ "the_other_direction_was_not_run": "comparators on TITAN. Not merely expensive: SurvPath and PIBD consume a bag of 4,096 patch tokens while the public TITAN release is one vector per slide, so the substitution is undefined without re-extracting tile-level features from the whole-slide images and retraining both models."
+}

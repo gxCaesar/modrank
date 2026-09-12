@@ -119,7 +119,8 @@ def main():
 
     rep = {
         "artifact_type": "s6_confirmatory_run",
-        "protocol": {"path": os.path.relpath(a.protocol), "frozen_at": proto["frozen_at"]},
+        "protocol": {"path": os.path.relpath(a.protocol), "frozen_at": proto["frozen_at"],
+                     "split_hash": proto["splits"]["split_hash"]},
         "executed_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "phase_of_origin": "frozen",
         "n": len(co.keep), "events": int(co.e.sum()), "comparable_pairs": int(ii.size),

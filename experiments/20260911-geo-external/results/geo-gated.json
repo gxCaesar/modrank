@@ -1,0 +1,1116 @@
+{
+ "artifact_type": "s24b_geo_gated_amendment_01",
+ "phase_of_origin": "post_freeze_2026-09-11",
+ "amendment": "experiments/20260911-geo-external/amendment-01.md (0d89861)",
+ "cohorts": {
+  "GSE32894": {
+   "n": 224,
+   "events": 25,
+   "comparable_pairs": 4186,
+   "cv": {
+    "transcriptome": {
+     "mean": 0.8163,
+     "sd": 0.0165,
+     "repeat_averaged_vector_c": 0.8267
+    },
+    "clinical_stage": {
+     "mean": 0.8672,
+     "sd": 0.0125,
+     "repeat_averaged_vector_c": 0.8723
+    },
+    "modrank": {
+     "mean": 0.8779,
+     "sd": 0.0072,
+     "repeat_averaged_vector_c": 0.8907
+    },
+    "concatenated": {
+     "mean": 0.8216,
+     "sd": 0.0263,
+     "repeat_averaged_vector_c": 0.8364
+    },
+    "stacked": {
+     "mean": 0.8747,
+     "sd": 0.0081,
+     "repeat_averaged_vector_c": 0.8874
+    },
+    "gated": {
+     "mean": 0.8779,
+     "sd": 0.0072
+    }
+   },
+   "paired_vs_modrank": {
+    "clinical_stage": {
+     "mean": 0.0185,
+     "ci95": [
+      -0.0245,
+      0.0622
+     ],
+     "p_two_sided": 0.381,
+     "p_holm": 0.762
+    },
+    "transcriptome": {
+     "mean": 0.0641,
+     "ci95": [
+      0.027,
+      0.1061
+     ],
+     "p_two_sided": 0.001,
+     "p_holm": 0.004
+    },
+    "concatenated": {
+     "mean": 0.0543,
+     "ci95": [
+      0.0182,
+      0.098
+     ],
+     "p_two_sided": 0.0013,
+     "p_holm": 0.004
+    },
+    "stacked": {
+     "mean": 0.0034,
+     "ci95": [
+      -0.0044,
+      0.0129
+     ],
+     "p_two_sided": 0.44,
+     "p_holm": 0.762
+    }
+   },
+   "floor": {
+    "sd": 0.0109,
+    "bar": 0.0217
+   },
+   "decision": {
+    "margins": {
+     "clinical_stage": 0.0107,
+     "transcriptome": 0.0616,
+     "concatenated": 0.0563,
+     "stacked": 0.0032
+    },
+    "clears_every_comparator": false
+   },
+   "gated_decision": {
+    "margins": {
+     "clinical_stage": 0.0107,
+     "transcriptome": 0.0616,
+     "concatenated": 0.0563,
+     "stacked": 0.0032,
+     "modrank": 0.0
+    },
+    "bar": 0.0217,
+    "succeeds": false
+   },
+   "gate_pass_counts": {
+    "transcriptome_pass": 25,
+    "clinical_stage_pass": 25
+   }
+  },
+  "GSE48075": {
+   "n": 73,
+   "events": 35,
+   "comparable_pairs": 1749,
+   "cv": {
+    "transcriptome": {
+     "mean": 0.5683,
+     "sd": 0.0232,
+     "repeat_averaged_vector_c": 0.5718
+    },
+    "clinical_stage": {
+     "mean": 0.6322,
+     "sd": 0.0106,
+     "repeat_averaged_vector_c": 0.6398
+    },
+    "modrank": {
+     "mean": 0.6384,
+     "sd": 0.0281,
+     "repeat_averaged_vector_c": 0.6584
+    },
+    "concatenated": {
+     "mean": 0.5864,
+     "sd": 0.0236,
+     "repeat_averaged_vector_c": 0.5952
+    },
+    "stacked": {
+     "mean": 0.6201,
+     "sd": 0.0318,
+     "repeat_averaged_vector_c": 0.6401
+    },
+    "gated": {
+     "mean": 0.6326,
+     "sd": 0.0225
+    }
+   },
+   "paired_vs_modrank": {
+    "clinical_stage": {
+     "mean": 0.018,
+     "ci95": [
+      -0.0648,
+      0.1021
+     ],
+     "p_two_sided": 0.6667,
+     "p_holm": 0.9794
+    },
+    "transcriptome": {
+     "mean": 0.0884,
+     "ci95": [
+      -0.0119,
+      0.1866
+     ],
+     "p_two_sided": 0.083,
+     "p_holm": 0.332
+    },
+    "concatenated": {
+     "mean": 0.0647,
+     "ci95": [
+      -0.0288,
+      0.1559
+     ],
+     "p_two_sided": 0.166,
+     "p_holm": 0.498
+    },
+    "stacked": {
+     "mean": 0.0182,
+     "ci95": [
+      -0.0361,
+      0.0733
+     ],
+     "p_two_sided": 0.4897,
+     "p_holm": 0.9794
+    }
+   },
+   "floor": {
+    "sd": 0.027,
+    "bar": 0.054
+   },
+   "decision": {
+    "margins": {
+     "clinical_stage": 0.0062,
+     "transcriptome": 0.0701,
+     "concatenated": 0.052,
+     "stacked": 0.0183
+    },
+    "clears_every_comparator": false
+   },
+   "gated_decision": {
+    "margins": {
+     "clinical_stage": 0.0004,
+     "transcriptome": 0.0643,
+     "concatenated": 0.0462,
+     "stacked": 0.0125,
+     "modrank": -0.0058
+    },
+    "bar": 0.054,
+    "succeeds": false
+   },
+   "gate_pass_counts": {
+    "transcriptome_pass": 9,
+    "clinical_stage_pass": 18,
+    "transcriptome_fail": 16,
+    "clinical_stage_fail": 7
+   }
+  }
+ },
+ "gate_log": [
+  {
+   "cohort": "GSE32894",
+   "repeat": 0,
+   "fold": 0,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.8276,
+   "null_q95": 0.6075,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 0,
+   "fold": 0,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8701,
+   "null_q95": 0.6106,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 0,
+   "fold": 1,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7402,
+   "null_q95": 0.6115,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 0,
+   "fold": 1,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8743,
+   "null_q95": 0.6133,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 0,
+   "fold": 2,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7753,
+   "null_q95": 0.6087,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 0,
+   "fold": 2,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8749,
+   "null_q95": 0.6112,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 0,
+   "fold": 3,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.8026,
+   "null_q95": 0.6116,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 0,
+   "fold": 3,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8024,
+   "null_q95": 0.6172,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 0,
+   "fold": 4,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7667,
+   "null_q95": 0.604,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 0,
+   "fold": 4,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8773,
+   "null_q95": 0.6039,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 1,
+   "fold": 0,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7867,
+   "null_q95": 0.6081,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 1,
+   "fold": 0,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8746,
+   "null_q95": 0.61,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 1,
+   "fold": 1,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7296,
+   "null_q95": 0.6128,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 1,
+   "fold": 1,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8696,
+   "null_q95": 0.6069,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 1,
+   "fold": 2,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7867,
+   "null_q95": 0.6129,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 1,
+   "fold": 2,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8448,
+   "null_q95": 0.6023,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 1,
+   "fold": 3,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7403,
+   "null_q95": 0.6024,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 1,
+   "fold": 3,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8545,
+   "null_q95": 0.6104,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 1,
+   "fold": 4,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7888,
+   "null_q95": 0.6133,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 1,
+   "fold": 4,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.76,
+   "null_q95": 0.6102,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 2,
+   "fold": 0,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.8507,
+   "null_q95": 0.6092,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 2,
+   "fold": 0,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.7857,
+   "null_q95": 0.6088,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 2,
+   "fold": 1,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.8364,
+   "null_q95": 0.6182,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 2,
+   "fold": 1,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8593,
+   "null_q95": 0.6092,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 2,
+   "fold": 2,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7698,
+   "null_q95": 0.6173,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 2,
+   "fold": 2,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.842,
+   "null_q95": 0.6105,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 2,
+   "fold": 3,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7652,
+   "null_q95": 0.6163,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 2,
+   "fold": 3,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8434,
+   "null_q95": 0.615,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 2,
+   "fold": 4,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7262,
+   "null_q95": 0.6129,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 2,
+   "fold": 4,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.852,
+   "null_q95": 0.6134,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 3,
+   "fold": 0,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7551,
+   "null_q95": 0.6092,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 3,
+   "fold": 0,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8667,
+   "null_q95": 0.6112,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 3,
+   "fold": 1,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.8171,
+   "null_q95": 0.6102,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 3,
+   "fold": 1,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8587,
+   "null_q95": 0.6177,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 3,
+   "fold": 2,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7848,
+   "null_q95": 0.6149,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 3,
+   "fold": 2,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8407,
+   "null_q95": 0.6226,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 3,
+   "fold": 3,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.8233,
+   "null_q95": 0.6141,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 3,
+   "fold": 3,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8654,
+   "null_q95": 0.6128,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 3,
+   "fold": 4,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7872,
+   "null_q95": 0.6096,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 3,
+   "fold": 4,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8211,
+   "null_q95": 0.6074,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 4,
+   "fold": 0,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.8184,
+   "null_q95": 0.6094,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 4,
+   "fold": 0,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8321,
+   "null_q95": 0.6139,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 4,
+   "fold": 1,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.8281,
+   "null_q95": 0.6049,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 4,
+   "fold": 1,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8503,
+   "null_q95": 0.6057,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 4,
+   "fold": 2,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.8053,
+   "null_q95": 0.6165,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 4,
+   "fold": 2,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8508,
+   "null_q95": 0.6061,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 4,
+   "fold": 3,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.751,
+   "null_q95": 0.5992,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 4,
+   "fold": 3,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8884,
+   "null_q95": 0.6105,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 4,
+   "fold": 4,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.7821,
+   "null_q95": 0.6137,
+   "passes": true
+  },
+  {
+   "cohort": "GSE32894",
+   "repeat": 4,
+   "fold": 4,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.8892,
+   "null_q95": 0.6181,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 0,
+   "fold": 0,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.6354,
+   "null_q95": 0.5933,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 0,
+   "fold": 0,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6034,
+   "null_q95": 0.5911,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 0,
+   "fold": 1,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.641,
+   "null_q95": 0.5934,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 0,
+   "fold": 1,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6273,
+   "null_q95": 0.5962,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 0,
+   "fold": 2,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.5711,
+   "null_q95": 0.5951,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 0,
+   "fold": 2,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6985,
+   "null_q95": 0.5947,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 0,
+   "fold": 3,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.5414,
+   "null_q95": 0.5998,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 0,
+   "fold": 3,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.5876,
+   "null_q95": 0.5898,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 0,
+   "fold": 4,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.6296,
+   "null_q95": 0.5953,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 0,
+   "fold": 4,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6069,
+   "null_q95": 0.5954,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 1,
+   "fold": 0,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.5142,
+   "null_q95": 0.5946,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 1,
+   "fold": 0,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.5772,
+   "null_q95": 0.5978,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 1,
+   "fold": 1,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.5936,
+   "null_q95": 0.5904,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 1,
+   "fold": 1,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6105,
+   "null_q95": 0.5886,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 1,
+   "fold": 2,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.6012,
+   "null_q95": 0.5962,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 1,
+   "fold": 2,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6397,
+   "null_q95": 0.603,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 1,
+   "fold": 3,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.5665,
+   "null_q95": 0.5926,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 1,
+   "fold": 3,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6396,
+   "null_q95": 0.5922,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 1,
+   "fold": 4,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.5418,
+   "null_q95": 0.5928,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 1,
+   "fold": 4,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6625,
+   "null_q95": 0.5893,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 2,
+   "fold": 0,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.6456,
+   "null_q95": 0.6021,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 2,
+   "fold": 0,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.5998,
+   "null_q95": 0.5962,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 2,
+   "fold": 1,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.6232,
+   "null_q95": 0.6023,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 2,
+   "fold": 1,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6528,
+   "null_q95": 0.5958,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 2,
+   "fold": 2,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.643,
+   "null_q95": 0.5928,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 2,
+   "fold": 2,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.5444,
+   "null_q95": 0.5965,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 2,
+   "fold": 3,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.5753,
+   "null_q95": 0.5901,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 2,
+   "fold": 3,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.584,
+   "null_q95": 0.5902,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 2,
+   "fold": 4,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.5558,
+   "null_q95": 0.5987,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 2,
+   "fold": 4,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6748,
+   "null_q95": 0.5982,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 3,
+   "fold": 0,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.595,
+   "null_q95": 0.5968,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 3,
+   "fold": 0,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6492,
+   "null_q95": 0.595,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 3,
+   "fold": 1,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.5637,
+   "null_q95": 0.5893,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 3,
+   "fold": 1,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6609,
+   "null_q95": 0.592,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 3,
+   "fold": 2,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.4991,
+   "null_q95": 0.5932,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 3,
+   "fold": 2,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.5923,
+   "null_q95": 0.6015,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 3,
+   "fold": 3,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.5421,
+   "null_q95": 0.5906,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 3,
+   "fold": 3,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.635,
+   "null_q95": 0.5951,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 3,
+   "fold": 4,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.575,
+   "null_q95": 0.5923,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 3,
+   "fold": 4,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6249,
+   "null_q95": 0.5891,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 4,
+   "fold": 0,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.6036,
+   "null_q95": 0.5939,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 4,
+   "fold": 0,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6133,
+   "null_q95": 0.5925,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 4,
+   "fold": 1,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.5535,
+   "null_q95": 0.5928,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 4,
+   "fold": 1,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.5695,
+   "null_q95": 0.5974,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 4,
+   "fold": 2,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.4794,
+   "null_q95": 0.5937,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 4,
+   "fold": 2,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.5766,
+   "null_q95": 0.5923,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 4,
+   "fold": 3,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.5693,
+   "null_q95": 0.5954,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 4,
+   "fold": 3,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.6934,
+   "null_q95": 0.5937,
+   "passes": true
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 4,
+   "fold": 4,
+   "arm": "transcriptome",
+   "inner_oof_c": 0.4793,
+   "null_q95": 0.5993,
+   "passes": false
+  },
+  {
+   "cohort": "GSE48075",
+   "repeat": 4,
+   "fold": 4,
+   "arm": "clinical_stage",
+   "inner_oof_c": 0.616,
+   "null_q95": 0.5936,
+   "passes": true
+  }
+ ],
+ "runtime_seconds": 214.8
+}

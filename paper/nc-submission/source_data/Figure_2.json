@@ -1,0 +1,697 @@
+{
+ "figure": "Figure 2",
+ "title": "The missing variable, quantified",
+ "a_published_entries": {
+  "description": "every published value on this benchmark, with whether its folds could be verified",
+  "source_file": "experiments/20260817-blca-confirm/results/published-benchmark-table.json",
+  "field": "entries",
+  "values": [
+   {
+    "method": "MOAD-FNet",
+    "venue": "arXiv",
+    "year": 2024,
+    "cindex": 0.691,
+    "folds": "unverified, no code released"
+   },
+   {
+    "method": "DIMAF",
+    "venue": "MICCAI",
+    "year": 2025,
+    "cindex": 0.679,
+    "folds": "verified, 5/5 folds identical",
+    "is_incumbent": true
+   },
+   {
+    "method": "APL",
+    "venue": "arXiv",
+    "year": 2025,
+    "cindex": 0.677,
+    "folds": "uncheckable, repository empty"
+   },
+   {
+    "method": "PIBD",
+    "venue": "ICLR",
+    "year": 2024,
+    "cindex": 0.667,
+    "folds": "verified, byte-identical",
+    "we_reran": 0.6609
+   },
+   {
+    "method": "DSCASurv",
+    "venue": "Brief. Bioinform.",
+    "year": 2025,
+    "cindex": 0.646,
+    "folds": "unverified"
+   },
+   {
+    "method": "OTSurv",
+    "venue": "MICCAI",
+    "year": 2025,
+    "cindex": 0.637,
+    "folds": "follows MMP's protocol"
+   },
+   {
+    "method": "MMP",
+    "venue": "ICML",
+    "year": 2024,
+    "cindex": 0.635,
+    "folds": "own site-stratified protocol"
+   },
+   {
+    "method": "SurvPath",
+    "venue": "CVPR",
+    "year": 2024,
+    "cindex": 0.625,
+    "folds": "definitional",
+    "we_reran": 0.6118
+   },
+   {
+    "method": "MOTCat",
+    "venue": "ICCV",
+    "year": 2023,
+    "cindex": 0.596,
+    "folds": "as reported in SurvPath"
+   }
+  ]
+ },
+ "b_census": {
+  "description": "one row per method paper: what it compares against",
+  "source_file": "development/clinical-baseline-census.json",
+  "field": "papers",
+  "values": [
+   {
+    "id": "porpoise",
+    "name": "PORPOISE / MMF",
+    "authors": "Chen et al.",
+    "venue": "Cancer Cell 2022 (arXiv 2108.02278)",
+    "status": "verified",
+    "covariates": [
+     "age",
+     "gender",
+     "tumour grade"
+    ],
+    "uses_stage": false,
+    "quote": "we also assessed Cox proportional hazard models using age, gender, and tumor grade covariates as baselines, which were still outperformed by MMF (Table S4)",
+    "location": "main text, referring to Table S4, 'Cox Baselines on Survival Prediction across 14 Cancer Types'",
+    "table_variants": [
+     "grade alone",
+     "age+gender",
+     "age+gender+grade"
+    ],
+    "blca_included": true,
+    "fetched": "2026-08-18 via ar5iv full text",
+    "reports_clinical_baseline": true
+   },
+   {
+    "id": "survpath",
+    "name": "SurvPath",
+    "authors": "Jaume et al.",
+    "venue": "CVPR 2024 (arXiv 2304.06819)",
+    "status": "verified",
+    "covariates": [
+     "age",
+     "sex",
+     "grade"
+    ],
+    "uses_stage": false,
+    "quote": "Survival prediction results of SurvPath compared with clinical covariates. ... Predictions using clinical covariates are done using Cox proportional hazards model on the same 5-fold cross-validation splits as SurvPath.",
+    "covariate_list_verbatim": "Age, Sex, Grade",
+    "location": "Supplementary Table 3",
+    "blca_included": true,
+    "blca_values": {
+     "age": 0.578,
+     "age_sex_grade": 0.57
+    },
+    "note": "THE 0.578 AND 0.570 THE MANUSCRIPT ATTRIBUTES TO MMP ARE SURVPATH'S. Caught here; the attribution must be corrected or MMP must be shown to report the same numbers independently.",
+    "fetched": "2026-08-18 via ar5iv full text",
+    "reports_clinical_baseline": true
+   },
+   {
+    "id": "pibd",
+    "name": "PIBD",
+    "authors": "Zhang et al.",
+    "venue": "ICLR 2024 (arXiv 2401.01646)",
+    "status": "verified",
+    "reports_clinical_baseline": false,
+    "covariates": [],
+    "uses_stage": false,
+    "quote": "NOT PRESENT -- all baselines are machine-learning methods on pathology or genomic data",
+    "baselines_verbatim": [
+     "MLP",
+     "SNN",
+     "SNNTrans",
+     "ABMIL",
+     "AMISL",
+     "TransMIL",
+     "CLAM-SB",
+     "CLAM-MB",
+     "SNNTrans+CLAM-MB",
+     "Porpoise(Cat)",
+     "Porpoise(KP)",
+     "MCAT(Cat)",
+     "MCAT(KP)",
+     "MOTCat",
+     "SurvPath",
+     "CLAM-SB-FT",
+     "MIB",
+     "DeepIMV",
+     "L-MIB"
+    ],
+    "location": "results tables; no clinical-covariate row anywhere",
+    "blca_included": true,
+    "note": "FALSIFIES the manuscript's claim that EVERY method paper on this benchmark reports a clinical-variable baseline. PIBD reports none.",
+    "fetched": "2026-08-18 via ar5iv full text"
+   },
+   {
+    "id": "motcat",
+    "name": "MOTCat",
+    "authors": "Xu and Chen",
+    "venue": "ICCV 2023 (arXiv 2306.08330)",
+    "status": "verified",
+    "reports_clinical_baseline": false,
+    "covariates": [],
+    "uses_stage": false,
+    "quote": "NOT PRESENT -- no clinical-covariate baseline anywhere in the paper",
+    "location": "Table 1 lists only ML baselines: SNN, SNNTrans, AttnMIL, DeepAttnMISL, CLAM-SB, CLAM-MB, TransMIL, DTFD-MIL, Pathomic, PONET, Porpoise, MCAT",
+    "blca_included": true,
+    "blca_n": 373,
+    "note": "AND IT IS NOT ON THE SAME BENCHMARK. Its cohorts are BLCA/BRCA/UCEC/GBMLGG/LUAD with BLCA at n=373, not the SurvPath five at n=359. The 0.596 in our table is SurvPath's rerun of MOTCat, not MOTCat's own number, which the table already says.",
+    "fetched": "2026-08-18 via ar5iv full text"
+   },
+   {
+    "id": "mmp",
+    "name": "MMP",
+    "authors": "Song et al.",
+    "venue": "ICML 2024 (arXiv 2407.00224)",
+    "status": "verified",
+    "reports_clinical_baseline": true,
+    "covariates": [
+     "age",
+     "sex",
+     "cancer grade"
+    ],
+    "uses_stage": false,
+    "quote": "The clinical baseline includes age, sex, and cancer grade as reported in the TCGA cohort.",
+    "location": "Table 1 caption",
+    "blca_included": true,
+    "blca_values": {
+     "age_sex_grade": 0.57
+    },
+    "cohorts": [
+     "BRCA",
+     "BLCA",
+     "LUAD",
+     "STAD",
+     "CRC",
+     "KIRC"
+    ],
+    "note": "0.570 IS MMP's. The 0.578 the manuscript also attributes to MMP is SurvPath's age-only value.",
+    "fetched": "2026-08-18 via ar5iv full text"
+   },
+   {
+    "id": "dimaf",
+    "name": "DIMAF",
+    "authors": "Eijpe et al.",
+    "venue": "MICCAI 2025 (arXiv 2503.16069)",
+    "status": "verified",
+    "reports_clinical_baseline": true,
+    "covariates": [
+     "grade",
+     "age",
+     "sex"
+    ],
+    "uses_stage": false,
+    "quote": "multivariate linear Cox regression as a clinical baseline using grade, age, and sex",
+    "location": "Table 1, 'Clinical' row",
+    "blca_included": true,
+    "blca_n": 359,
+    "blca_values": {
+     "clinical": 0.519
+    },
+    "cohorts": [
+     "BRCA",
+     "BLCA",
+     "LUAD",
+     "KIRC"
+    ],
+    "note": "This is the incumbent, and its own released split files carry ajcc_pathologic_tumor_stage beside histological_grade -- the column its baseline does not use.",
+    "fetched": "2026-08-18 via ar5iv full text"
+   },
+   {
+    "id": "otsurv",
+    "name": "OTSurv",
+    "authors": "Ren et al.",
+    "venue": "MICCAI 2025 (arXiv 2506.20741)",
+    "status": "verified",
+    "reports_clinical_baseline": false,
+    "covariates": [],
+    "uses_stage": false,
+    "quote": "NOT PRESENT -- no clinical-covariate baseline, and neither 'grade' nor 'stage' appears as a covariate anywhere",
+    "location": "Table 1 lists only ML baselines: Mean-Pooling, CLAM, HIPT, ABMIL, TransMIL, AttnMISL, IB-MIL, ILRA, PANTHER",
+    "blca_included": true,
+    "blca_n": 359,
+    "fetched": "2026-08-18 via arxiv html"
+   },
+   {
+    "id": "dscasurv",
+    "name": "DSCASurv",
+    "authors": "Song et al.",
+    "venue": "Briefings in Bioinformatics 26(2) 2025, bbaf103",
+    "status": "verified",
+    "reports_clinical_baseline": false,
+    "covariates": [],
+    "uses_stage": false,
+    "quote": "NOT PRESENT -- all baselines are deep-learning methods on genomics, pathology or both",
+    "location": "Table 2: MLP, SNN, SNNTrans, ABMIL, TransMIL, MCAT(Cat/KP), Porpoise(Cat/KP), MOTCAT(Cat/KP), CMTA(Cat/KP), SurvPath, PIBD",
+    "blca_included": true,
+    "blca_n": 359,
+    "note": "This is the single JOURNAL paper among the benchmark's method papers, and it is in the venue this manuscript targets.",
+    "fetched": "2026-08-18 via the publisher's own page"
+   },
+   {
+    "id": "mcat",
+    "name": "MCAT",
+    "authors": "Chen et al.",
+    "venue": "ICCV 2021",
+    "status": "NOT VERIFIED",
+    "reports_clinical_baseline": null,
+    "covariates": null,
+    "uses_stage": null,
+    "why_not": "No arXiv preprint located; the CVF open-access PDF returns HTTP 403 to this fetcher. Not read, so not claimed. MCAT is named in our Introduction as one of the papers carrying this benchmark but is not an entry in our published-values table.",
+    "attempted": [
+     "ar5iv 2108.02278 -> that identifier is PORPOISE, not MCAT",
+     "ar5iv 2109.01988 -> an unrelated physics paper",
+     "openaccess.thecvf.com PDF -> HTTP 403"
+    ]
+   },
+   {
+    "id": "moadfnet",
+    "name": "MOAD-FNet",
+    "venue": "arXiv 2024",
+    "status": "NOT VERIFIED",
+    "reports_clinical_baseline": null,
+    "covariates": null,
+    "uses_stage": null,
+    "why_not": "Not fetched in this pass. Our own published-values table already records it as 'unverified, no code released', so its fold identity was never checkable either."
+   },
+   {
+    "id": "apl",
+    "name": "APL",
+    "venue": "arXiv 2025",
+    "status": "NOT VERIFIED",
+    "reports_clinical_baseline": null,
+    "covariates": null,
+    "uses_stage": null,
+    "why_not": "Not fetched in this pass. Our own table records its repository as empty, so nothing about it was checkable."
+   }
+  ]
+ },
+ "c_five_study_swap": {
+  "description": "the same one-column swap in each of the five studies",
+  "source_file": "experiments/20260911-five-study-repro/results/stage5.json",
+  "field": "cohorts",
+  "values": {
+   "blca": {
+    "n_cases": 359,
+    "events": 113,
+    "cases_with_clinical_row": 359,
+    "stage_levels": [
+     "0",
+     "I",
+     "II",
+     "III",
+     "IV"
+    ],
+    "grade_levels": [
+     "G1",
+     "G2"
+    ],
+    "arms": {
+     "age_sex": 0.5636,
+     "age_sex_grade": 0.5658,
+     "age_sex_stage": 0.6218,
+     "titan": 0.6596,
+     "omics": 0.651
+    },
+    "WSI_plus_OMICS": 0.6841,
+    "OURS_wsi_omics_age_sex_stage": 0.6992,
+    "control_same_arm_with_GRADE_instead": 0.6861,
+    "published_age_sex_grade": 0.57,
+    "published_best_any_protocol": [
+     "DIMAF",
+     0.679
+    ],
+    "published_best_verified_released_folds": [
+     "SurvPath",
+     0.625
+    ],
+    "our_age_sex_grade_minus_published": -0.0042,
+    "stage_minus_grade_same_pipeline": 0.056
+   },
+   "brca": {
+    "n_cases": 871,
+    "events": 60,
+    "cases_with_clinical_row": 871,
+    "stage_levels": [
+     "0",
+     "I",
+     "II",
+     "III",
+     "IV"
+    ],
+    "grade_levels": [],
+    "arms": {
+     "age_sex": 0.4828,
+     "age_sex_grade": 0.4828,
+     "age_sex_stage": 0.5686,
+     "titan": 0.7442,
+     "omics": 0.5829
+    },
+    "WSI_plus_OMICS": 0.7101,
+    "OURS_wsi_omics_age_sex_stage": 0.6892,
+    "control_same_arm_with_GRADE_instead": 0.6614,
+    "published_age_sex_grade": 0.563,
+    "published_best_any_protocol": [
+     "APL",
+     0.794
+    ],
+    "published_best_verified_released_folds": [
+     "SurvPath",
+     0.655
+    ],
+    "our_age_sex_grade_minus_published": -0.0802,
+    "stage_minus_grade_same_pipeline": 0.0858
+   },
+   "coadread": {
+    "n_cases": 298,
+    "events": 37,
+    "cases_with_clinical_row": 298,
+    "stage_levels": [
+     "0",
+     "I",
+     "II",
+     "III",
+     "IV"
+    ],
+    "grade_levels": [],
+    "arms": {
+     "age_sex": 0.469,
+     "age_sex_grade": 0.469,
+     "age_sex_stage": 0.6898,
+     "titan": 0.6542,
+     "omics": 0.6116
+    },
+    "WSI_plus_OMICS": 0.6819,
+    "OURS_wsi_omics_age_sex_stage": 0.7141,
+    "control_same_arm_with_GRADE_instead": 0.6231,
+    "published_age_sex_grade": 0.655,
+    "published_best_any_protocol": [
+     "DSCASurv",
+     0.832
+    ],
+    "published_best_verified_released_folds": [
+     "SurvPath",
+     0.673
+    ],
+    "our_age_sex_grade_minus_published": -0.186,
+    "stage_minus_grade_same_pipeline": 0.2208
+   },
+   "hnsc": {
+    "n_cases": 394,
+    "events": 117,
+    "cases_with_clinical_row": 394,
+    "stage_levels": [
+     "0",
+     "I",
+     "II",
+     "III",
+     "IV"
+    ],
+    "grade_levels": [
+     "G1",
+     "G2",
+     "G3",
+     "G4",
+     "GX"
+    ],
+    "arms": {
+     "age_sex": 0.485,
+     "age_sex_grade": 0.5027,
+     "age_sex_stage": 0.545,
+     "titan": 0.6135,
+     "omics": 0.5852
+    },
+    "WSI_plus_OMICS": 0.6169,
+    "OURS_wsi_omics_age_sex_stage": 0.6179,
+    "control_same_arm_with_GRADE_instead": 0.6015,
+    "published_age_sex_grade": 0.512,
+    "published_best_any_protocol": [
+     "DSCASurv",
+     0.666
+    ],
+    "published_best_verified_released_folds": [
+     "SurvPath",
+     0.6
+    ],
+    "our_age_sex_grade_minus_published": -0.0093,
+    "stage_minus_grade_same_pipeline": 0.0423
+   },
+   "stad": {
+    "n_cases": 319,
+    "events": 84,
+    "cases_with_clinical_row": 319,
+    "stage_levels": [
+     "I",
+     "II",
+     "III",
+     "IV"
+    ],
+    "grade_levels": [
+     "G1",
+     "G2",
+     "G3",
+     "GX"
+    ],
+    "arms": {
+     "age_sex": 0.515,
+     "age_sex_grade": 0.5358,
+     "age_sex_stage": 0.5819,
+     "titan": 0.5858,
+     "omics": 0.5887
+    },
+    "WSI_plus_OMICS": 0.6108,
+    "OURS_wsi_omics_age_sex_stage": 0.6311,
+    "control_same_arm_with_GRADE_instead": 0.6125,
+    "published_age_sex_grade": 0.592,
+    "published_best_any_protocol": [
+     "DSCASurv",
+     0.698
+    ],
+    "published_best_verified_released_folds": [
+     "SurvPath",
+     0.592
+    ],
+    "our_age_sex_grade_minus_published": -0.0562,
+    "stage_minus_grade_same_pipeline": 0.0461
+   }
+  }
+ },
+ "d_gain_against_grade_entropy": {
+  "description": "each study's grade entropy and the gain from swapping grade for stage",
+  "source_file": "experiments/20260817-blca-confirm/results/why-grade-fails.json",
+  "field": "cohorts",
+  "values": {
+   "blca": {
+    "n": 359,
+    "grade": {
+     "n_with_a_value": 357,
+     "n_levels": 2,
+     "modal_share": 0.944,
+     "normalised_entropy": 0.311,
+     "levels": {
+      "G2": 337,
+      "G1": 20
+     }
+    },
+    "stage": {
+     "n_with_a_value": 334,
+     "n_levels": 5,
+     "modal_share": 0.506,
+     "normalised_entropy": 0.665,
+     "levels": {
+      "III": 169,
+      "II": 109,
+      "IV": 51,
+      "I": 3,
+      "0": 2
+     }
+    },
+    "c_age_sex_grade": 0.5658,
+    "c_age_sex_stage": 0.6218,
+    "stage_minus_grade": 0.056
+   },
+   "brca": {
+    "n": 871,
+    "grade": null,
+    "stage": {
+     "n_with_a_value": 871,
+     "n_levels": 5,
+     "modal_share": 0.603,
+     "normalised_entropy": 0.631,
+     "levels": {
+      "II": 525,
+      "I": 226,
+      "III": 89,
+      "IV": 29,
+      "0": 2
+     }
+    },
+    "c_age_sex_grade": 0.4828,
+    "c_age_sex_stage": 0.5686,
+    "stage_minus_grade": 0.0858
+   },
+   "coadread": {
+    "n": 298,
+    "grade": null,
+    "stage": {
+     "n_with_a_value": 297,
+     "n_levels": 5,
+     "modal_share": 0.687,
+     "normalised_entropy": 0.572,
+     "levels": {
+      "III": 204,
+      "II": 46,
+      "IV": 39,
+      "I": 7,
+      "0": 1
+     }
+    },
+    "c_age_sex_grade": 0.469,
+    "c_age_sex_stage": 0.6898,
+    "stage_minus_grade": 0.2208
+   },
+   "hnsc": {
+    "n": 394,
+    "grade": {
+     "n_with_a_value": 392,
+     "n_levels": 5,
+     "modal_share": 0.597,
+     "normalised_entropy": 0.643,
+     "levels": {
+      "G2": 234,
+      "G3": 97,
+      "G1": 50,
+      "GX": 7,
+      "G4": 4
+     }
+    },
+    "stage": {
+     "n_with_a_value": 381,
+     "n_levels": 5,
+     "modal_share": 0.375,
+     "normalised_entropy": 0.884,
+     "levels": {
+      "IV": 143,
+      "II": 106,
+      "III": 77,
+      "I": 34,
+      "0": 21
+     }
+    },
+    "c_age_sex_grade": 0.5027,
+    "c_age_sex_stage": 0.545,
+    "stage_minus_grade": 0.0423
+   },
+   "stad": {
+    "n": 319,
+    "grade": {
+     "n_with_a_value": 319,
+     "n_levels": 4,
+     "modal_share": 0.589,
+     "normalised_entropy": 0.623,
+     "levels": {
+      "G3": 188,
+      "G2": 115,
+      "GX": 9,
+      "G1": 7
+     }
+    },
+    "stage": {
+     "n_with_a_value": 319,
+     "n_levels": 4,
+     "modal_share": 0.473,
+     "normalised_entropy": 0.835,
+     "levels": {
+      "III": 151,
+      "IV": 93,
+      "II": 63,
+      "I": 12
+     }
+    },
+    "c_age_sex_grade": 0.5358,
+    "c_age_sex_stage": 0.5819,
+    "stage_minus_grade": 0.0461
+   }
+  }
+ },
+ "e_four_clinical_constructions": {
+  "description": "four constructions of the clinical block, alone and with the other two modalities",
+  "source_file": "development/s5-results/decomp.json",
+  "field": "",
+  "values": {
+   "A frozen: GDC TNM+stage, FIRST-diagnosis defect": [
+    0.6863,
+    0.7285
+   ],
+   "B amended: DIMAF file, age+sex+stage only": [
+    0.6638,
+    0.7225
+   ],
+   "C corrected: GDC TNM+stage, right diagnosis": [
+    0.6992,
+    0.7335
+   ],
+   "D corrected, grade instead of stage": [
+    0.5666,
+    0.6856
+   ]
+  },
+  "provenance_note": "This is the one panel in the figure set whose values have no committed emitter: the file was written on 2026-08-17 by a script that was never committed. Two of its four rows (the amended block, and grade in place of stage) reproduce exactly in amendment-A1-clinical-provenance.json; the other two use a GDC record that the amendment replaced."
+ },
+ "f_within_stage_strata": {
+  "description": "concordance inside strata where the clinical variable carries little information",
+  "source_file": "experiments/20260817-blca-confirm/results/biology.json",
+  "field": "B5_within_molecular_subtype",
+  "values": {
+   "axis": "basal-minus-luminal signature difference, split at its median. A continuous split, not a published classifier: the released files carry no subtype call and we do not have the training data to reproduce one.",
+   "subtype_axis_itself": {
+    "n_luminal_leaning": 180,
+    "n_basal_leaning": 179,
+    "events": [
+     42,
+     71
+    ],
+    "logrank_p": 0.00122,
+    "cindex_of_the_axis_as_a_risk_score": 0.6027
+   },
+   "luminal_leaning": {
+    "n": 180,
+    "events": 42,
+    "pairs": 4157,
+    "OURS": 0.6997,
+    "image": 0.6197,
+    "omics": 0.6218,
+    "clinical": 0.7005
+   },
+   "basal_leaning": {
+    "n": 179,
+    "events": 71,
+    "pairs": 7831,
+    "OURS": 0.7109,
+    "image": 0.6693,
+    "omics": 0.6226,
+    "clinical": 0.6472
+   }
+  }
+ }
+}

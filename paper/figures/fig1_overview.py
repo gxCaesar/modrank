@@ -76,13 +76,29 @@ N = {
     "p_fitted":  dig(PC, "ours/fitted_in_the_combination"),
 }
 N["events"] = A1.get("events", 113)
+# The census, read rather than typed. The first version of panel (a) said "what all 11 method
+# papers used", which the census contradicts twice: three of the eleven were never read, and
+# four of the eight that were report no clinical baseline at all. The label now counts the
+# papers the claim is actually about, and refuses to draw if the census stops supporting it.
+with open(os.path.join(HERE, "..", "..", "development", "clinical-baseline-census.json")) as _fh:
+    CENSUS = json.load(_fh)["summary"]
+N["census_baselines"] = CENSUS["verified_report_a_clinical_baseline"]
+if CENSUS["of_those_with_a_baseline_using_grade"] != N["census_baselines"] or \
+        CENSUS["of_those_with_a_baseline_using_stage"] != 0:
+    raise SystemExit("figure 1: the census no longer says every reported baseline used grade")
+# the two falsifier values printed in panel c, read rather than typed (they were typed until
+# 2026-09-11; the values were right, the practice was not)
+with open(os.path.join(HERE, "..", "..", "development", "s5-results", "leakage.json")) as _fh:
+    LEAK = json.load(_fh)["falsifiers"]
+N["planted_label_difference"] = dig(LEAK, "L3_planted_label/difference")
+N["shuffled_alignment_c"] = dig(LEAK, "L4_case_alignment/shuffled_alignment_cindex_mean")
 GRADE_LEVELS = dig(WG, "cohorts/blca/grade/levels")
 STAGE_LEVELS = dig(WG, "cohorts/blca/stage/levels")
 
 
 # --------------------------------------------------------------------------- canvas
 style.apply()
-FIGW, FIGH = 6.785, 6.45
+FIGW, FIGH = style.width(6.785), 6.45
 fig = plt.figure(figsize=(FIGW, FIGH))
 
 # Four schematic bands. Heights are in figure fraction and were chosen so that panel b, the one
@@ -131,7 +147,8 @@ label(ax, 0.2125, 0.090, "the two sit one row apart", size=6.2, style="italic", 
 # -- the two branches
 up = Box(ax, 0.520, 0.505, 0.286, 0.335, facecolor=C["competitor"], alpha=0.13, edgecolor="none")
 Box(ax, 0.520, 0.505, 0.286, 0.335, facecolor="none", edgecolor=C["competitor"], lw=1.0)
-label(ax, 0.663, 0.775, "what all 11 method papers used", size=6.5, weight="bold",
+label(ax, 0.663, 0.775, "what all %d reported baselines used" % N["census_baselines"],
+      size=6.5, weight="bold",
       colour=C["competitor"])
 label(ax, 0.663, 0.690, "age + sex + grade", size=7.4)
 label(ax, 0.663, 0.578, "C = %.4f" % N["c_grade"], size=9.5, weight="bold")
@@ -280,8 +297,9 @@ bracket(ax, 0.015, 0.721, 0.700,
 label(ax, 0.015, 0.145, "five leakage falsifiers executed first, and two of them rejected:",
       size=6.3, ha="left", weight="bold")
 label(ax, 0.015, 0.055,
-      "per-fold planted label $-0.0006$  ·  permuted feature-to-case assignment $0.5127$  ·  "
-      "three others", size=6.1, ha="left", colour="#5A6273")
+      "per-fold planted label $%+.4f$  ·  permuted feature-to-case assignment $%.4f$  ·  "
+      "three others" % (N["planted_label_difference"], N["shuffled_alignment_c"]),
+      size=6.1, ha="left", colour="#5A6273")
 
 # =========================================================================== d  THE MECHANISM
 ax = AX["d"]
@@ -320,5 +338,5 @@ for _name, _ in COLS:
     assert "_" not in _name and "." not in _name, (
         "a field label in the artwork is a code identifier: %r" % _name)
 
-style.save(fig, os.path.join(HERE, "fig1_overview.pdf"))
+style.save(fig, style.out(HERE, "fig1_overview.pdf"))
 print("wrote fig1_overview.pdf   %.2f x %.2f in" % (FIGW, FIGH))

@@ -17,9 +17,9 @@ is one the reported result does not clear.
 
 | | |
 |---|---|
-| `analysis/` | 43 scripts, the code that produced every reported number. `analysis/README.md` maps each to what it establishes |
+| `analysis/` | 54 scripts, the code that produced every reported number. `analysis/README.md` maps each to what it establishes |
 | `development/benchmark-protocol.json` | the protocol, frozen before the confirmatory run, with amendment A1 recorded in it |
-| `development/split-manifest.json` | the exact released case membership used by the protocol |
+| `development/split-manifest.json` | the split manifest whose SHA-256 the protocol binds |
 | `development/iteration-ledger.md` | all 269 scored candidates, which is what the selection-inflation term is computed over |
 | `development/contribution-design.md` | the seven components as pre-registered, each with its falsifier and matched control |
 | `experiments/20260817-blca-confirm/` | the confirmatory run: command, environment, and 20 result files |
@@ -32,8 +32,9 @@ No slides, no expression matrices, no split files: none of the inputs is ours to
 are the released SurvPath split files, the public precomputed TITAN embeddings, and DIMAF's released
 split files, each cited in the manuscript's Data availability.
 
-The bundle is built from an explicit human-facing allowlist rather than by exporting the working
-tree.
+Also absent by construction: this project's own control plane. The bundle is built from an explicit
+allowlist rather than by exporting the working tree, so no approval receipt, pipeline state or
+review trace can reach it.
 
 ## The three things worth checking first
 

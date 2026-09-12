@@ -1,0 +1,69 @@
+{
+ "artifact_type": "s19c_double_tied_probe",
+ "phase_of_origin": "post_freeze_2026-09-11",
+ "reportable": true,
+ "known_answer": {
+  "reproduced": true,
+  "pairs": 24219,
+  "slide_all": 0.6596,
+  "omics_all": 0.651,
+  "clinical_all": 0.6638,
+  "clinical_dev_all": 0.6856,
+  "note_values_reproduced": {
+   "q40_pairs": true,
+   "q40_slide": true,
+   "q40_omics": true,
+   "double_pairs": true,
+   "double_slide": true
+  }
+ },
+ "definitions": {
+  "scores": "seed-0 within-fold percentiles",
+  "transcriptome_tied": "comparable pairs whose transcriptome-arm gap is at or below its 0.40 quantile",
+  "clinically_tied": "the same rule on the clinical arm's gap",
+  "stage_group_tied": "sensitivity only: the same non-missing stage group on both sides"
+ },
+ "all_pairs": {
+  "pairs": 24219,
+  "slide": 0.6596,
+  "omics": 0.651,
+  "clinical": 0.6638
+ },
+ "transcriptome_tied_q40": {
+  "pairs": 9688,
+  "slide": 0.6396,
+  "omics": 0.5604,
+  "clinical": 0.6455
+ },
+ "transcriptome_and_clinically_tied_q40": {
+  "amended_clinical_block": {
+   "pairs": 3893,
+   "slide": 0.6212,
+   "omics": 0.5543,
+   "clinical": 0.5634
+  },
+  "development_era_clinical_block": {
+   "pairs": 3969,
+   "slide": 0.6165
+  },
+  "amended_block_from_the_rounded_committed_vector": {
+   "pairs": 3892,
+   "slide": 0.6209,
+   "why_reported": "the committed vectors are rounded to five decimals, and a gap-quantile restriction is sensitive to the cross-fold collisions that rounding creates"
+  }
+ },
+ "sensitivity_transcriptome_tied_and_same_stage_group": {
+  "amended_stage_group": {
+   "pairs": 3183,
+   "slide": 0.603,
+   "omics": 0.5533,
+   "clinical": 0.5357
+  },
+  "development_era_stage_group": {
+   "pairs": 2335,
+   "slide": 0.6066,
+   "omics": 0.5542,
+   "clinical": 0.4972
+  }
+ }
+}

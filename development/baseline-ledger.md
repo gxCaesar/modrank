@@ -206,13 +206,13 @@ baselines:
     metric: harrell_c_index
     observed_value: 0.5000
     search_budget: "0 trials"
-    provenance: {repo: null, commit: null, command: "s5_step0_headroom.py", seeds: [0]}
+    provenance: {repo: null, commit: null, command: "s5_step0_headroom.py", split_hash: "0d0b8f82e7f5aa6eb5833e89c19b0f5b53c14ba7490dfce28180cd3e050c7487", seeds: [0]}
   - name: age alone
     tier: trivial
     metric: harrell_c_index
     observed_value: 0.5756
     search_budget: "5 alphas x 3-fold inner CV"
-    provenance: {repo: null, commit: null, command: "s5_step0_headroom.py", seeds: [0]}
+    provenance: {repo: null, commit: null, command: "s5_step0_headroom.py", split_hash: "0d0b8f82e7f5aa6eb5833e89c19b0f5b53c14ba7490dfce28180cd3e050c7487", seeds: [0]}
   - name: ridge penalised Cox on clinical
     tier: cheap
     metric: harrell_c_index
@@ -221,19 +221,19 @@ baselines:
     note: "age, sex, T, N, M, AJCC stage. THE decisive cheap baseline: it beats 8 of the 9 published
       numbers on this benchmark, and a full-text pass over eleven primary papers found none that
       ever ran it -- every published clinical baseline in the family uses grade, not stage."
-    provenance: {repo: null, commit: null, command: "s5_step0_headroom.py", seeds: [0]}
+    provenance: {repo: null, commit: null, command: "s5_step0_headroom.py", split_hash: "0d0b8f82e7f5aa6eb5833e89c19b0f5b53c14ba7490dfce28180cd3e050c7487", seeds: [0]}
   - name: ridge penalised Cox on the slide embedding
     tier: cheap
     metric: harrell_c_index
     observed_value: 0.6596
     search_budget: "5 alphas x 3-fold inner CV, inside each training fold"
-    provenance: {repo: null, commit: null, command: "s5_step0_headroom.py", seeds: [0]}
+    provenance: {repo: null, commit: null, command: "s5_step0_headroom.py", split_hash: "0d0b8f82e7f5aa6eb5833e89c19b0f5b53c14ba7490dfce28180cd3e050c7487", seeds: [0]}
   - name: ridge penalised Cox on pathway expression
     tier: cheap
     metric: harrell_c_index
     observed_value: 0.6510
     search_budget: "5 alphas x 3-fold inner CV, inside each training fold"
-    provenance: {repo: null, commit: null, command: "s5_omics_arm.py", seeds: [0]}
+    provenance: {repo: null, commit: null, command: "s5_omics_arm.py", split_hash: "0d0b8f82e7f5aa6eb5833e89c19b0f5b53c14ba7490dfce28180cd3e050c7487", seeds: [0]}
   - name: SurvPath, official implementation, rerun
     tier: recent_strong
     metric: harrell_c_index
@@ -245,6 +245,7 @@ baselines:
       repo: "https://github.com/mahmoodlab/SurvPath"
       commit: "codeload tarball fetched 2026-08-16; upstream ships no tagged release"
       command: "experiments/20260816-survpath-blca-repro/run.sh"
+      split_hash: "0d0b8f82e7f5aa6eb5833e89c19b0f5b53c14ba7490dfce28180cd3e050c7487"
       seeds: [1]
       note: "reproduced with the 768-d CTransPath-family features its own paper specifies, after
         patching an upstream defect in which --encoding_dim never reaches SurvPath's model_dict
@@ -262,6 +263,7 @@ baselines:
       repo: "https://github.com/mahmoodlab/SurvPath"
       commit: "codeload tarball fetched 2026-08-16"
       command: "s5_headline.py"
+      split_hash: "0d0b8f82e7f5aa6eb5833e89c19b0f5b53c14ba7490dfce28180cd3e050c7487"
       seeds: [1]
 
 # Published values that were NOT rerun. They are deliberately not in `baselines` above: a tier tag

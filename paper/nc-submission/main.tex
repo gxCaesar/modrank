@@ -1,0 +1,588 @@
+%% Nature Communications build (Article). Written 2026-09-11 against paper/nc_npjdm_venue_lock.md:
+%% abstract <=150 words with no references or abbreviations; main text <=5,000 words excluding the
+%% abstract, Methods, references and legends; <=10 display items; legends <=350 words; <=70 references;
+%% Methods after the Discussion; TRIPOD-AI checklist in the Supplement. Every number here is one the
+%% repository's result files state; paper/check_numbers.py will read this file once it is complete.
+%%
+%% EMBARGO. Nothing from the embargoed external cohort may appear here until its permission file
+%% records permission. The external section below carries the public GEO cohorts only.
+
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper, margin=2.4cm]{geometry}
+\usepackage{graphicx}
+\graphicspath{{../figures/nc/}{../figures/}}   % 180 mm builds first (FIG_TARGET=nc), then the shared ones
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{lineno}
+\linenumbers
+\renewcommand{\baselinestretch}{1.25}
+
+\newcommand{\TODO}[1]{\textcolor{red}{[TODO: #1]}}
+
+\title{Parameter-free fusion of histology, transcriptome and stage predicts bladder cancer survival}
+\author{Guanxing Chen\\
+\small City University of Hong Kong (Dongguan), Dongguan, China\\
+\small ORCID 0000-0002-4435-0884 \quad \texttt{guanxing.chen@cityu-dg.edu.cn}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent Multimodal models combining whole-slide images with tumour transcriptomes are ranked for bladder
+cancer survival on one public benchmark against a clinical reference built from tumour grade. In
+muscle-invasive disease nearly every tumour is high grade. Rebuilding the reference with pathologic
+stage from the benchmark's own files raised its concordance from 0.567 to 0.664 and more than halved
+the apparent added value of three multimodal models, a bias that replicated in an independent
+cohort. We introduce ModRank, which fits one penalised Cox model per modality and averages their
+ranks without fitting the combination. It reached 0.721, the highest value reported on the
+benchmark, exceeded concatenated and learned fusion on identical inputs in all 24 re-partitions and
+kept its concordance when whole hospitals were held out. In three external cohorts without
+histology, the two-modality combination did not exceed stage beyond the noise floor. Clinical
+references for this disease should include pathologic stage.
+\end{abstract}
+
+\section*{Introduction}
+
+Bladder cancer causes more than 200,000 deaths a year worldwide~\citep{bray2024globocan}. For the
+quarter of patients who present with muscle-invasive disease and are treated by radical cystectomy,
+the pathologic stage of the specimen is the strongest routine predictor of what happens after
+surgery, and it guides whether adjuvant treatment is considered and how closely the patient is
+followed~\citep{witjes2021eau}. Stage is also a coarse instrument. Two patients with the same pT3N0
+disease receive the same recommendation and do not share an outcome, and the pathology report holds
+nothing that separates them. The residual heterogeneity is real. Transcriptomic classes of
+muscle-invasive tumours differ markedly in survival and cut across stage~\citep{kamoun2020consensus,
+robertson2017blca}, and the morphology of the resected tumour carries information no staging
+category encodes. What a model should add, then, is what stage leaves unsaid.
+
+Multimodal deep learning answers that with the slide and the transcriptome together. Weakly
+supervised aggregation over whole-slide tiles made slide-level prediction practical without region
+annotation~\citep{lu2021clam, chen2024uni, ding2025titan}, and a family of models now fuses slide
+tokens with pathway-level expression through attention, optimal transport or prototype
+learning~\citep{chen2021mcat, xu2023motcat, jaume2024survpath, song2024mmp, zhang2024pibd,
+eijpe2025dimaf}. Their progress on bladder cancer is measured almost entirely on one benchmark: the
+five-fold splits of disease-specific survival that SurvPath released for 359 patients of The Cancer
+Genome Atlas~\citep{jaume2024survpath}. Two properties of that benchmark decide what its leaderboard
+can mean, and neither has been examined.
+
+The first is the clinical reference. A multimodal model's value is its improvement over what the
+clinic already knows, so the clinical arm fixes the zero point of every comparison. On this
+benchmark, every method paper we could read that reports a clinical baseline builds it from tumour
+grade, and none uses pathologic stage. Muscle-invasive urothelial carcinoma is almost uniformly high
+grade: in this cohort 94.4\% of cases share one grade level. A covariate that does not distinguish
+the patients cannot separate them, and a grade-based reference therefore understates what the
+clinic knows. The multi-omics survival literature settled the equivalent question years ago, with
+stage in the reference~\citep{herrmann2021benchmark, wissel2023noise}. The whole-slide literature
+inherited its reference from an earlier line of work that used grade~\citep{chen2022porpoise}.
+
+The second is the sample size. Three hundred and fifty-nine patients with 113 deaths from the
+disease is a small survival problem, and the events-per-parameter arithmetic behind modern
+sample-size guidance argues against fitting tens of millions of parameters to it~\citep{riley2020samplesize}.
+A method built for this regime should spend its events where the signal is and none on the
+combination.
+
+Here we measure both properties and build a method around them. We show that a stage-based
+reference, rebuilt from the benchmark's own files, lifts the clinical arm from 0.5666 to 0.6638
+concordance and more than halves the added value that published multimodal models appear to have. We then
+introduce ModRank, which fits one penalised Cox model per modality over a frozen foundation-model
+slide embedding, pathway-level transcriptomics and stage, and combines them by an equal-weight rank
+average with no fitted parameter. Under a protocol frozen before the run it reaches the highest
+concordance reported on the benchmark. It exceeds concatenated and learned fusion on identical
+inputs in every one of 24 re-partitions, holds its concordance when whole hospitals are held out,
+and gives calibrated two-year risks, with a gain in accuracy over the clinical model that this cohort
+cannot resolve. We report where it does not
+transfer, and why.
+
+%% ============================================================================ RESULTS (chunk 2)
+\section*{Results}
+
+\subsection*{The benchmark's clinical reference omits pathologic stage}
+
+We read every method paper reported on the bladder cohort of the benchmark. Eight of the eleven
+could be read in full. Four report a clinical-variable baseline, all four build it from age, sex and
+tumour grade, and none uses pathologic stage. The other four report no clinical baseline at all
+(Supplementary Note~1 and Supplementary Table~1). The three unread papers are marked unverified rather than assumed to
+follow the pattern. The reported bladder values are 0.519 and 0.570 concordance. Stage is not missing from
+the data. It is a column of the files released with the benchmark, and it sits directly beside grade
+in the split files of the current best method~\citep{eijpe2025dimaf} (Fig.~\ref{fig:overview}a).
+
+The mechanism is specific to this disease. In this cohort grade takes two levels with 94.4\% of
+cases in one of them (normalised entropy 0.311), against five levels and 0.665 for stage
+(Fig.~\ref{fig:overview}d). We rebuilt the clinical arm twice from the incumbent's own files,
+differing in one column. The grade construction reaches 0.5666 and the stage construction 0.6638, a
+gap of +0.0972 (95\% confidence interval $[+0.047, +0.149]$, $p<0.001$, 6,000 case-resampling
+replicates) on identical cases through an identical pipeline. The stage-based reference exceeds two of the four published entries on verified folds and five of all nine
+(Fig.~\ref{fig:missing}a, Table~\ref{tab:published}). The same one-column swap raises the clinical
+arm in all five studies the benchmark covers (Fig.~\ref{fig:missing}c). In two of them the released
+files carry no usable grade, so there the comparison is with age and sex alone (Supplementary
+Table~2).
+
+\subsection*{What limits a method at 359 patients}
+
+Before designing a model we measured three properties of the regime. A ridge Cox model fitted to
+pure noise and scored in-sample reaches 0.7474 concordance at sixteen parameters, so an in-sample
+fit on this cohort says little about signal. A two-parameter fusion fitted \emph{on the held-out
+fold}, an oracle no deployed model could have, is worth only $+0.008$ over equal weighting (0.7268
+against 0.7191), and a 21-point weight sweep peaks at exactly equal weight. A fusion gated on
+clinical risk loses to its own permuted-stratum control (0.7493 against 0.7502), and none of the seven
+components designed on this evidence passed its pre-registered test (Supplementary Note~2,
+Supplementary Table~3 and Supplementary Fig.~1). Re-splitting the
+same patients 24 times moves a paired difference between arms by a standard deviation of 0.0073, so a
+margin must exceed 0.0145 to survive a reader re-running the study (Fig.~\ref{fig:regime}).
+
+The three measurements point the same way. The binding constraint is estimation, not the fusion.
+ModRank therefore fits one ridge-penalised Cox model per modality on the training fold (a 768-dimensional
+TITAN slide embedding~\citep{ding2025titan}, the benchmark's own 275 pathway groups, and age, sex
+and pathologic stage), maps each out-of-fold score to its within-fold percentile, and takes the
+equal-weight mean. It carries 1,049 coefficients and fits nothing in the combination
+(Fig.~\ref{fig:overview}b).
+
+\subsection*{ModRank leads the benchmark and holds under re-partitioning and held-out hospitals}
+
+Under a protocol frozen before the run, with five leakage falsifiers executed first, ModRank reaches
+0.7212 concordance (mean over five seeds, standard deviation 0.0048, Supplementary Table~4), the
+highest value reported on
+these folds and $+0.0422$ above the best entry whose folds we verified (Table~\ref{tab:published}).
+The two competitors whose implementations run end to end were given the same clinical variables by
+the same rank average. ModRank exceeds SurvPath by $+0.0340$ ($[-0.0056, +0.0731]$, $p=0.084$,
+competitor averaged over five retrainings) and PIBD by $+0.0249$ ($[-0.0181, +0.0675]$, $p=0.241$),
+with 1,049 parameters against 24.7 and 26.9 million. Neither margin is significant at this cohort
+size, and we read the ordering against published values as descriptive (Fig.~\ref{fig:result}).
+
+The design choice that matters most is fitting one model per modality and not fitting the
+combination, and it can be tested on identical inputs. On the same features, folds, seeds and
+estimator (Fig.~\ref{fig:robust}a), a single ridge Cox on all three blocks concatenated reaches $0.6864 \pm 0.0063$, and
+fusion weights learned on inner out-of-fold scores (stacking) reach $0.7106 \pm 0.0044$. ModRank
+exceeds the concatenation by $+0.0340$ ($[+0.0014, +0.0674]$, $p=0.042$) and the stacking by
+$+0.0108$ ($[-0.0052, +0.0269]$). Over the 24 random re-partitions on which the noise floor was
+measured, ModRank exceeds the concatenation ($+0.0464 \pm 0.0158$), the stacking ($+0.0111 \pm 0.0065$)
+and the clinical arm ($+0.0549 \pm 0.0083$) in 24 of 24 (Fig.~\ref{fig:robust}b). When whole tissue
+source sites are held out, so that no hospital contributes to both sides of any fold (33 sites, five
+folds), ModRank holds 0.7210 while the stacking falls to 0.6855 and the concatenation to 0.6487
+(Fig.~\ref{fig:robust}c).
+
+Two further checks bound the result. ModRank reads a 2025 slide encoder that the competitors did not.
+Given instead the tile features SurvPath itself consumed, ModRank reaches 0.7009, still above every
+published entry, which places the encoder's contribution near 0.022. And the protocol's
+pre-registered selection correction was mis-specified. It used the standard deviation of a paired
+difference where the maximum-of-candidates correction needs that of a single candidate's score.
+Against the correctly measured bar of 0.7716 the primary does not clear it (Supplementary Note~2).
+
+\subsection*{A grade-based reference inflates the added value of every multimodal model}
+
+A clinical reference fixes the zero point of every claim about what histology and transcriptomics
+add, so we measured how far the reference moves it. For three multimodal constructions (ModRank, and
+SurvPath and PIBD each given the clinical block), we computed the added value over each reference,
+$C(\text{model} + \text{reference}) - C(\text{reference})$, and the inflation $D$, the difference
+between the added value over grade and over stage, with all four concordances recomputed on each of
+6,000 case resamples.
+
+Against the grade-based reference every construction appears to add a great deal: $+0.1204$
+($[+0.0684, +0.1708]$) for ModRank, $+0.0670$ for SurvPath and $+0.0841$ for PIBD. Against the stage-based
+reference the added values fall to $+0.0594$, $+0.0253$ and $+0.0345$
+(Fig.~\ref{fig:added}a). The inflation is significant for all three, $D = +0.0610$ ($[+0.0284,
++0.0955]$), $+0.0417$ ($[+0.0196, +0.0668]$) and $+0.0496$ ($[+0.0238, +0.0769]$), and for ModRank
+it is positive in 24 of 24 re-partitions ($+0.0628 \pm 0.0086$). Against the stage-based reference, only ModRank's
+added value has an interval that excludes zero (Fig.~\ref{fig:added}a,~b). That comparison does not
+survive correction across the six prespecified comparisons (Holm $q=0.065$), and we report it as the
+direction the evidence points rather than a resolved difference.
+
+\subsection*{Calibration and clinical utility}
+
+ModRank emits a rank, so absolute risk has to be learned on top of it without touching a validation
+outcome. Inside each training fold we fitted one Cox coefficient on the training cases'
+inner-out-of-fold ModRank score and a Breslow baseline hazard, and applied both to the validation
+cases. The clinical model received the identical treatment. Pooled over the validation folds, the
+mean predicted two-year risk of death from the disease was 0.342 against an observed 0.341, the
+calibration slope was 0.770 (clinical model 0.849), and predicted and observed risks agreed across
+quintiles (Fig.~\ref{fig:added}c, Supplementary Note~5 and Supplementary Table~8). Against a
+training-fold Kaplan--Meier null, the index of
+prediction accuracy was 0.098 at one year and 0.152 at two years for ModRank, against 0.047 and 0.079
+for the clinical model, and the two were equal at three years (0.105). Resampling patients with the
+predictions held fixed, the two-year difference of $+0.0724$ has a 95\% interval of
+$[-0.0054, +0.1502]$. At two years ModRank's net benefit exceeded both the clinical model and treating
+everyone at every threshold examined from 20 to 60\%, for example 0.136 against 0.090 and $-0.098$ at
+40\% (Fig.~\ref{fig:added}d). At 40\% the difference from the clinical model is $+0.0454$
+($[+0.0006, +0.0915]$), and at the other four thresholds tested its interval includes zero, so the
+utility gain is suggestive rather than established.
+
+\subsection*{What the slide contributes}
+
+The three arms are close to independent. The Spearman correlation between the slide and clinical
+scores is 0.2445, and between the incumbent's joint score and the clinical score 0.1924. The slide
+earns its place where the report cannot separate patients. On the 5\% of comparable pairs that the
+clinical model places closest together (1,213 of 24,219), the clinical arm is at chance (0.4959) and
+the slide arm reaches 0.6220 (Fig.~\ref{fig:modalities}d and Supplementary Table~5). On the 3,893
+pairs that neither the
+transcriptome arm nor the clinical model separates, each placing the two patients within its closest
+40\%, the slide arm reaches 0.6212 while those two arms sit at 0.5543 and 0.5634. The two molecular-facing arms read different
+biology. The transcriptome arm tracks the basal, luminal and epithelial--mesenchymal axes (Spearman
+0.3595, $-0.372$ and 0.3672). The slide arm's correlation with any of the eight standard axes is at
+most 0.2245 in magnitude, and its two strongest pathway correlates are metabolic
+(Supplementary Note~3 and Supplementary Fig.~2). Across the median split of the
+basal-minus-luminal axis, the slide and clinical arms exchange places while ModRank moves far less
+(0.7109 and 0.6997, Supplementary Table~6 and Supplementary Fig.~3). Supplementary Figs.~4 and~5
+draw the three modalities against one patient ordering and the pre-specified case series with its
+histology.
+
+\subsection*{External cohorts}
+
+The benchmark has no held-out bladder cohort, so we tested both findings in independent public
+cohorts under protocols frozen before their outcomes were analysed. The public cohorts that combine
+survival with bulk expression carry no slides, so these tests concern the transcriptome and clinical
+arms. The recipe was refitted inside each cohort by repeated cross-validation.
+
+The inflation from a grade-based reference replicated. In a Swedish cohort of 224 patients with 25
+deaths from the disease~\citep{sjodahl2012molecular}, where grade and stage both vary, a grade-based reference inflated the
+transcriptome's added value by $D = +0.0581$ ($[+0.0175, +0.0971]$, $p=0.007$). In a cystectomy
+cohort of 93 patients with 38 deaths~\citep{riester2012combination}, it was positive without reaching significance ($+0.0253$).
+The protocol's sensitivity analysis in that cohort, which excludes the three patients given
+chemotherapy before cystectomy, gave $+0.1094$ ($[+0.0424, +0.1774]$). An estimate that three patients
+move this far is fragile, and the all-patient value is the primary one.
+
+The combination rule did not replicate beyond each cohort's noise floor. The two-arm ModRank had the
+best point estimate in the Swedish cohort (0.8779 against 0.8672 for the stage block and 0.8747 for
+stacking) and in a third cohort of 73 patients~\citep{choi2014identification} (0.6384 against 0.6322).
+In the Swedish cohort it also exceeded the transcriptome alone and the concatenation after Holm
+correction ($p=0.004$ for both). But it did not exceed the clinical stage block by more than the
+pre-registered bar in any cohort. In the cystectomy cohort, microarray pathway
+scores were uninformative (0.4742), and the equal-weight average fell below the stage block (0.5898
+against 0.6590). A variant that admits an arm only when it clears a permutation null inside the
+training fold was defined before any of these cohorts was downloaded. It was added by a dated
+amendment after the cystectomy cohort's results had been read, so it was tested only on the two
+cohorts not yet seen. It equalled ModRank where both arms were informative, moved toward the stage
+block where the transcriptome arm was weak, and exceeded the stage block by less than the bar in
+both (Supplementary Note~4 and Supplementary Table~7).
+
+\TODO{second external cohort: only once permission is recorded}
+
+%% ============================================================================ DISPLAY ITEMS
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig1_overview.pdf}
+\caption{\textbf{The clinical reference, the method and the protocol.} \textbf{a},~The files
+released with the benchmark carry histological grade and AJCC pathologic tumour stage one row apart.
+Every method paper that reports a clinical baseline builds it from the first. The second reaches
+0.6638 against 0.5666 on identical patients through an identical pipeline. \textbf{b},~ModRank: one
+penalised Cox model per modality over a frozen slide embedding, pathway-level transcriptomics and the
+staging variables, combined by an equal-weight rank average. It has 1,049 coefficients, against 24.7
+and 26.9 million for the two competitors whose code could be rerun. \textbf{c},~What the protocol
+fixed before the number existed. \textbf{d},~Why grade cannot work here. It takes two levels, with
+94.4\% of patients in one of them (normalised entropy 0.311), where stage takes five levels
+(0.665).}
+\label{fig:overview}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig2_missing_variable.pdf}
+\caption{\textbf{The missing variable, quantified.} \textbf{a},~The nine published entries, ModRank
+and the two clinical constructions. The dashed line marks the stage-based clinical arm. Two of the
+four published entries on verified folds fall below it, and five of all nine. Entries whose folds
+could not be verified are drawn open. \textbf{b},~The census, one row per paper. Four of the eight papers whose text could be read report a
+clinical baseline, all four build it from grade, and none of the eight uses stage. The three that could
+not be read carry a bar, not an inferred mark. \textbf{c},~The same one-column swap in all five studies
+the benchmark covers, each on its own patients. \textbf{d},~The swap gains most where grade is least
+informative. Three studies carry a usable grade.
+\textbf{e},~Four constructions of the clinical block, alone and with the other two modalities.
+\textbf{f},~Inside a single stage stratum, the slide and transcriptome arms still separate patients.}
+\label{fig:missing}
+\end{figure}
+
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig4_regime.pdf}
+\caption{\textbf{What limits a method at 359 patients and 113 events.} \textbf{a},~A ridge Cox model
+fitted to pure noise and scored in-sample reaches 0.7474 at sixteen parameters. \textbf{b},~A
+21-point weight sweep peaks at exactly equal weight. \textbf{c},~A fusion gated on clinical risk
+loses to its permuted-stratum control. \textbf{d},~Power against a true difference at this cohort's
+patient-resampling standard error. \textbf{e},~One competitor across five retrainings.
+\textbf{f},~PIBD at its best-validation checkpoint and at its final epoch, beside the median gap
+between consecutive published entries.}
+\label{fig:regime}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig3_method_result.pdf}
+\caption{\textbf{The confirmatory result and the comparisons that do not survive correction.}
+\textbf{a},~All six prespecified comparisons under Holm correction. Filled points survive at
+$\alpha=0.05$, open points do not, and both input-parity comparisons are among the four that do not.
+\textbf{b},~Kaplan--Meier curves by risk tertile with the numbers at risk. \textbf{c},~The incumbent
+as published, beside its predictions given the same clinical block. \textbf{d},~Time-dependent area
+under the curve. \textbf{e},~All seven modality subsets. \textbf{f},~Cost against benefit. Two parameter counts are measured, and the other seven entries report none.}
+\label{fig:result}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig6_robustness.pdf}
+\caption{\textbf{Fusion on identical inputs, and whether the ordering survives the partition.}
+\textbf{a},~The released folds at five inner-cross-validation seeds (points, with the mean as a line). ModRank
+($0.7212 \pm 0.0048$), weights learned on inner out-of-fold scores ($0.7106 \pm 0.0044$) and one
+ridge Cox model on all three blocks concatenated ($0.6864 \pm 0.0063$) use the same features,
+estimator and folds. \textbf{b},~The 24 random re-partitions on which the noise floor was measured.
+Each grey line joins one partition's four values. ModRank is ahead of the stacking, the
+concatenation and the clinical arm in 24 of 24. \textbf{c},~Five-fold cross-validation with whole
+tissue source sites held out (33 sites), per fold and pooled. ModRank holds 0.7210, while the stacking falls to 0.6855 and the concatenation to 0.6487.}
+\label{fig:robust}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig7_added_value_utility.pdf}
+\caption{\textbf{How far the clinical reference moves the added value, and what the model is worth
+clinically.} \textbf{a},~Added concordance over the grade-based (open) and the stage-based (filled)
+reference for three multimodal constructions, with 95\% intervals from 6,000 patient resamples.
+\textbf{b},~The inflation $D$, the added value over grade minus the added value over stage, in the
+development cohort (three constructions) and in the two independent cohorts that record grade,
+where the transcriptome is the added modality. \textbf{c},~Two-year calibration by quintile of predicted risk,
+with recalibration fitted inside the training folds only. The dotted line marks ideal calibration.
+\textbf{d},~Net benefit at two years for ModRank, the clinical model, treating all and treating none.}
+\label{fig:added}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig3_modalities.pdf}
+\caption{\textbf{The three modalities: what each is, and what each carries.} \textbf{a},~The inputs as they enter the model. All 359 patients carry all three. The histology is a diagnostic slide from
+the study's own partition. \textbf{b},~Seven representations across the three families, on identical
+patients and folds. \textbf{c},~Spearman correlation between the arms' out-of-fold scores, with the
+amended clinical block. \textbf{d},~Comparable pairs restricted by how far apart the clinical model
+places the two patients. On the tightest 1,213 of 24,219 pairs the clinical arm is at chance and the
+slide arm is not. \textbf{e},~Time-dependent area under the curve at three horizons.
+\textbf{f},~What capacity buys above the permuted control. \textbf{g},~Log-rank separation across
+each arm's own risk tertiles.}
+\label{fig:modalities}
+\end{figure}
+
+\begin{table}[p]
+\centering
+\caption{Published values on TCGA bladder disease-specific survival at $n=359$, with fold identity
+recorded rather than assumed. The upper block uses the released folds, verified here or by
+definition. The lower block used another or an unverifiable protocol and is context only.}
+\label{tab:published}
+\small
+\begin{tabular}{llcl}
+\toprule
+method & venue & C-index & released folds \\
+\midrule
+\multicolumn{4}{l}{\emph{on the released folds, verified here or by definition}} \\
+ModRank (this work) & n/a & \textbf{0.7212} & verified (definitional) \\
+DIMAF~\citep{eijpe2025dimaf} & MICCAI 2025 & 0.679 & verified, 5/5 folds identical \\
+PIBD~\citep{zhang2024pibd} & ICLR 2024 & 0.667 & verified; rerun here at 0.6609 \\
+SurvPath~\citep{jaume2024survpath} & CVPR 2024 & 0.625 & definitional \\
+MOTCat~\citep{xu2023motcat} & ICCV 2023 & 0.596 & as reported in SurvPath \\
+\midrule
+\multicolumn{4}{l}{\emph{another or an unverifiable protocol, context only}} \\
+MOAD-FNet~\citep{moadfnet2024} & arXiv & 0.691 & unverified, no code released \\
+APL~\citep{apl2025} & arXiv & 0.677 & uncheckable, repository empty \\
+DSCASurv~\citep{song2025dscasurv} & Brief.\ Bioinform.\ 2025 & 0.646 & unverified \\
+OTSurv~\citep{ren2025otsurv} & MICCAI 2025 & 0.637 & follows MMP's protocol \\
+MMP~\citep{song2024mmp} & ICML 2024 & 0.635 & own site-stratified protocol \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{Discussion}
+
+This study makes two findings about how multimodal survival models for bladder cancer are measured
+and one about how they should be built. The benchmark's clinical reference omits the routine
+pathology variable that separates patients in muscle-invasive disease, and correcting it changes what
+every multimodal model appears to add. At 359 patients and 113 events, a method that fits nothing in
+its combination is the strongest construction on identical inputs, and it keeps that position when
+the same patients are re-partitioned and when whole hospitals are held out.
+
+The inflation is a property of the reference, not of one model. It appears for three constructions
+with different architectures, and for each of them the gain over a grade-based reference is two to
+three times the gain over a stage-based one. It replicated in an independent cohort in which grade
+and stage both vary. What sets its size is not settled. Across the benchmark's five studies the gain
+from swapping grade for stage tracks how uninformative grade is, which is a consistency check over
+three points, but in the external cohorts the inflation was larger where grade varied, against the
+protocol's prediction. The practical consequence does not depend on that and is a reporting rule. A multimodal survival model for this disease should report its added value over a
+clinical reference that contains pathologic stage, and gains reported over grade alone should not be
+compared with it.
+
+The simplest combination wins here for a reason that can be stated in advance. The three arms are
+close to independent, each is estimated with the events it can afford, and no event is spent on the
+combination. Learned fusion spends events on weights, and a joint penalised model spends them on
+1,049 coefficients at once. On this cohort both lose in every one of 24 re-partitions: narrowly to
+stacking ($+0.0111$) and clearly to concatenation ($+0.0464$). Holding out whole hospitals widens both
+gaps. This is the regime that sample-size guidance for prediction models anticipates. With 113 events
+a method can afford few estimated quantities, and it should spend them on the modalities.
+
+The ranking against published entries is a weaker statement, and we make it as one. ModRank has the
+highest concordance reported on these folds, but it cannot be distinguished from the two competitors
+that could be rerun with the same clinical variables, and a correctly specified correction for having
+selected it among 206 candidates sets a bar it does not reach. Its utility over the clinical model is
+suggestive, with intervals that mostly include zero. At this size the benchmark can separate a
+correctly specified clinical reference from an incorrect one, and it cannot rank methods whose
+published values differ by a few hundredths.
+
+External evidence bounds the method claim. In three public cohorts without histology, the two-arm form
+of the rule did not exceed the clinical stage block by more than each cohort's noise floor, and where
+the microarray transcriptome carried no signal the equal-weight average fell below the stage block.
+That is the cost of fitting nothing in the combination: an uninformative arm dilutes the average. A
+gate that admits an arm only when it clears a permutation null inside the training fold removes the
+dilution, but it cannot supply signal that the arms do not carry.
+
+\TODO{second external cohort: one paragraph, written from its pre-registered branch statement once permission is recorded}
+
+The study has further limitations. The only development cohort with slides is one public cohort
+assembled across many hospitals, retrospectively, with an endpoint derived from curated follow-up.
+ModRank ranks a validation fold within itself. A deployable variant that ranks each patient against
+the training fold reaches 0.7247 against 0.7212, so this does not flatter the result. Part of its lead over the published entries
+belongs to its slide encoder: given the tile features the incumbent consumed, it reaches 0.7009, which
+is still above every published entry. Its calibration slope of 0.770 means that risks would be shrunk
+by recalibration in a new setting. No analysis of performance across sociodemographic groups was done.
+Deployment would need a digitised diagnostic slide, tumour expression profiling and the pathologic
+stage of the resected specimen, which is available only after surgery.
+
+What a reader can adopt now does not depend on the leaderboard. Clinical references for multimodal
+survival models in bladder cancer should include pathologic stage, added value should be reported
+against that reference, and at the sample sizes public cohorts provide, a fusion rule with nothing to
+fit is a strong baseline that learned fusion has to beat on identical inputs before its gain is
+attributed to the architecture.
+
+\section*{Methods}
+
+\subsection*{Cohort, endpoint and prediction time point}
+
+The development cohort is the bladder study of The Cancer Genome Atlas as partitioned by the
+benchmark~\citep{jaume2024survpath}: 359 patients holding both a diagnostic whole-slide image and a
+disease-specific survival label, 113 events and 24,219 comparable pairs. Time and event derive from
+the Pan-Cancer Clinical Data Resource~\citep{liu2018tcgacdr}, which measures every endpoint from the
+date of initial pathologic diagnosis. The tumours had not been exposed to chemotherapy when the
+tissue was acquired~\citep{robertson2017blca}, and stage is the pathologic stage of the resected
+specimen. The prediction is therefore post-operative. It can inform adjuvant treatment and follow-up.
+It cannot inform the decision to give neoadjuvant chemotherapy, which precedes the specimen. The
+study uses public, de-identified data only and required no ethical approval. Reporting follows
+TRIPOD+AI (Supplementary Table~9).
+
+\subsection*{Folds, representations and estimator}
+
+The five fold files the benchmark released were used verbatim, and their membership is bound by
+hash into the frozen protocol. We verified fold identity for each comparator where a repository
+allowed it. Entries on other or unverifiable protocols are reported as context only
+(Table~\ref{tab:published}).
+
+\emph{Slide.} One 768-dimensional TITAN embedding per slide from a public precomputed
+release~\citep{ding2025titan}, mean-pooled over a patient's slides. TITAN was pretrained without
+patient outcomes and without TCGA slides. \emph{Transcriptome.} The benchmark's 4,999-gene matrix
+averaged into the 275 of its 331 pathway groups that carry at least three of those genes.
+\emph{Clinical.} Age, sex and AJCC pathologic tumour stage (one-hot) from the incumbent's released
+split files, with histological grade from the same files for the grade construction. Missing levels
+enter as the reference level, and no patient is dropped.
+
+Each arm is a ridge-penalised Cox model~\citep{cox1972regression, simon2011regularization} fitted by
+L-BFGS on the exact Breslow partial likelihood. The penalty is chosen from $\{1, 8, 64, 512, 4096\}$
+by three-fold inner cross-validation inside the training fold, and standardisation uses
+training-fold moments only. Out-of-fold linear predictors are mapped to within-fold percentiles, and
+ModRank is the within-fold percentile of their equal-weight sum. A deployable variant that ranks a
+new patient against the training fold's own scores reaches 0.7247 against the transductive 0.7212
+(paired $p=0.69$).
+
+\subsection*{Protocol, falsifiers and uncertainty}
+
+The protocol fixed the arm, estimator, penalty grid, combination rule, comparator set, seeds and
+decision rule after the development campaign and before the confirmatory run. Five leakage
+falsifiers ran first: fold integrity, a mutation test of the standardisation boundary, a per-fold
+planted label, row permutation and outcome provenance. Two were designed to reject and did. One
+amendment rebuilt the clinical block from the incumbent's own files after a cached query was found
+to have taken the first of several diagnosis records per patient. The amendment moved the primary
+from 0.7260 to 0.7212. Concordance is Harrell's~\citep{harrell1982cindex}, pooled over out-of-fold
+predictions after within-fold percentile normalisation. The primary is the mean over five
+inner-cross-validation seeds, and paired comparisons use the seed-averaged score vector with 6,000
+replicates that resample patients, never pairs. The noise floor is the standard deviation of a paired
+difference over 24 random re-partitions (0.0073).
+
+\subsection*{Fusion alternatives, re-partitions and held-out hospitals}
+
+The concatenated model is one ridge Cox on all 1,049 columns with the penalty grid extended to
+32,768, which is generous to it. The stacked model fits three weights (ridge 1.0) on the inner
+out-of-fold percentiles of the three arms inside each training fold and applies them to the
+validation percentiles. The re-partitions are the noise floor's own 24. For the hospital-grouped
+analysis, whole tissue source sites (the second field of the patient identifier) were assigned to
+five folds, largest first to the fold holding fewest patients.
+
+\subsection*{Added value and its inflation}
+
+For a construction $M$ and a clinical reference $R$, the added value is $C(M+R)-C(R)$, where $M+R$
+combines them by the same rank rule. The inflation is $D = [C(M+\text{grade}) - C(\text{grade})] -
+[C(M+\text{stage}) - C(\text{stage})]$. All four concordances are recomputed on each of 6,000
+patient resamples. Competitors' scores are their own released out-of-fold predictions: SurvPath
+averaged over five retrainings, and PIBD at its best-validation checkpoint, the convention behind its
+published value.
+
+\subsection*{Calibration and decision curves}
+
+Inside each training fold, the training patients were scored by the same construction through a
+three-fold inner split, one Cox coefficient on that score and a Breslow baseline hazard were fitted,
+and both were applied to the validation patients to give survival at 12, 24 and 36 months. Reported:
+calibration slope, calibration in the large (mean predicted against Kaplan--Meier observed risk at
+each horizon), grouped calibration, the inverse-probability-of-censoring
+weighted Brier score, the index of prediction accuracy against a training-fold Kaplan--Meier null,
+and net benefit against treating all and none, estimated with Kaplan--Meier within the high-risk
+group.
+
+\subsection*{External cohorts}
+
+Three public cohorts were selected by a joint-availability count of expression, stage, grade, age,
+sex and a timed disease-specific outcome in the same samples, and three further series were excluded
+(a duplicate, cell lines, a mixed neoadjuvant cohort). The analysis protocol, frozen before any of
+their outcomes was analysed, specifies the endpoints, the clinical blocks, probe-to-gene mapping by
+the platform annotation, the same 275 pathway groups, five repeats of stratified five-fold
+cross-validation, and a noise floor from 24 re-partitions. An amendment recorded before two of the
+three cohorts' results were inspected added an evidence-gated variant whose definition had been
+fixed before any of these cohorts was downloaded.
+
+\TODO{second external cohort, methods: only once permission is recorded}
+
+\subsection*{Software}
+
+Python 3.8.20, NumPy 1.24.4 and SciPy 1.10.1 on one CPU host for every ModRank result. The competitors' reruns used their own code on one GPU each.
+
+\section*{Data availability}
+
+All data are public. The benchmark's splits, pathway definitions and clinical files are those
+released with SurvPath (\url{https://github.com/mahmoodlab/SurvPath}). TCGA bladder data are from
+the Genomic Data Commons~\citep{heath2021gdc}, and the external cohorts from the Gene Expression
+Omnibus (GSE31684, GSE32894, GSE48075).
+
+\section*{Code availability}
+
+All analysis code, the frozen protocols with their amendments, the development ledger, the
+confirmatory run, the outcome-permuted selection null and the external analyses are archived on
+Zenodo under the concept identifier \url{https://doi.org/10.5281/zenodo.22025756}, which resolves to
+the most recent archived version, and mirrored at \url{https://github.com/gxCaesar/modrank}. The
+archive carries a check script that recomputes the reported numbers from the deposited result files
+rather than reading them from this manuscript. \TODO{version DOI for 1.1.0, once the archive is
+deposited}
+
+\section*{Acknowledgements}
+
+The author thanks the developers of SurvPath and PIBD for releasing pipelines complete enough to be
+rerun end to end, and the developers of DIMAF for releasing the split files the clinical block is
+built from. The results published here are in whole or part based upon data generated by the TCGA
+Research Network (\url{https://www.cancer.gov/tcga}). The histology shown was read from the
+open-access tier of the NCI Genomic Data Commons. This work was supported by the Guangdong Basic and
+Applied Basic Research Foundation (No.~2025A1515110446).
+
+\section*{Author contributions}
+
+G.C. conceived the study, designed and executed the analyses, and wrote the manuscript.
+
+\section*{Competing interests}
+
+The author declares no competing interests.
+
+\bibliographystyle{unsrtnat}
+\bibliography{../references}
+
+\end{document}

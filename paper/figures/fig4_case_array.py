@@ -95,12 +95,14 @@ for row, group in enumerate((hi, lo)):
             axb.add_patch(Rectangle((0, 0.12), c[key], 0.76, facecolor=MOD[key], edgecolor="none"))
             if col == 0:
                 axb.text(-0.045, 0.5, key, transform=axb.transAxes, ha="right", va="center",
-                         fontsize=4.8, color=MOD[key])
+                         fontsize=5.0, color=MOD[key])
 
         died = bool(c["event"])
         fig.text(x + CW / 2, y + IMH + 0.014, c["case_id"].replace("TCGA-", ""), ha="center",
                  va="bottom", fontsize=5.6, color=INK, fontweight="bold")
-        fig.text(x + 0.008, y - 0.104, "%s" % c["stage"].replace("Stage ", "pT"), ha="left",
+        # The field is the AJCC stage GROUP (Stage I-IV). An earlier label rewrote it as "pTIII", a
+        # pathologic-T prefix on a stage-group numeral, which is valid in neither system.
+        fig.text(x + 0.008, y - 0.104, "%s" % c["stage"], ha="left",
                  va="top", fontsize=5.2, color=GREY)
         fig.text(x + CW - 0.014, y - 0.104, "%.1f mo %s" % (c["observed_months"],
                                                             "died" if died else "alive"),

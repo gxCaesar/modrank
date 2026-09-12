@@ -1,0 +1,152 @@
+{
+ "figure": "Figure 4",
+ "title": "The confirmatory result and the comparisons that do not survive correction",
+ "a_holm_family": {
+  "description": "all six prespecified comparisons, their intervals and their Holm-adjusted p values",
+  "source_file": "experiments/20260817-blca-confirm/results/pibd-parity.json",
+  "field": "holm_family_of_six/comparisons",
+  "values": {
+   "ours vs omics alone": {
+    "delta": 0.0588,
+    "ci95": [
+     0.0172,
+     0.1009
+    ],
+    "p_raw": 0.0053,
+    "p_holm": 0.0265,
+    "survives_at_0.05": true
+   },
+   "ours vs slide alone": {
+    "delta": 0.0704,
+    "ci95": [
+     0.0288,
+     0.1138
+    ],
+    "p_raw": 0.0007,
+    "p_holm": 0.0042,
+    "survives_at_0.05": true
+   },
+   "ours vs clinical alone": {
+    "delta": 0.0594,
+    "ci95": [
+     0.0111,
+     0.107
+    ],
+    "p_raw": 0.0163,
+    "p_holm": 0.0652,
+    "survives_at_0.05": false
+   },
+   "ours vs ours-without-clinical": {
+    "delta": 0.034,
+    "ci95": [
+     0.005,
+     0.0635
+    ],
+    "p_raw": 0.0187,
+    "p_holm": 0.0652,
+    "survives_at_0.05": false
+   },
+   "ours vs SurvPath+clinical (seed-matched)": {
+    "delta": 0.034,
+    "ci95": [
+     -0.0056,
+     0.0731
+    ],
+    "p_raw": 0.0843,
+    "p_holm": 0.1686,
+    "survives_at_0.05": false
+   },
+   "ours vs PIBD+clinical (best-val checkpoint)": {
+    "delta": 0.0249,
+    "ci95": [
+     -0.0181,
+     0.0675
+    ],
+    "p_raw": 0.2413,
+    "p_holm": 0.2413,
+    "survives_at_0.05": false
+   }
+  }
+ },
+ "e_modality_subsets": {
+  "description": "all seven modality subsets and the leave-one-out differences",
+  "source_file": "experiments/20260817-blca-confirm/results/ablation-generalisation.json",
+  "field": "B_ablation_bladder",
+  "values": {
+   "arms": {
+    "wsi": 0.6596,
+    "omics": 0.651,
+    "clin": 0.6638,
+    "wsi + omics": 0.6841,
+    "wsi + clin": 0.7,
+    "omics + clin": 0.7005,
+    "wsi + omics + clin": 0.7225
+   },
+   "leave_one_out": {
+    "drop wsi   (omics + clin)": -0.022,
+    "drop omics (wsi + clin)": -0.0225,
+    "drop clin  (wsi + omics)": -0.0384
+   },
+   "paired_vs_full": {
+    "omics + clin": {
+     "mean": -0.0218,
+     "se": 0.0136,
+     "ci95": [
+      -0.0481,
+      0.0038
+     ],
+     "p_two_sided": 0.1047
+    },
+    "wsi + clin": {
+     "mean": -0.0222,
+     "se": 0.0141,
+     "ci95": [
+      -0.0489,
+      0.006
+     ],
+     "p_two_sided": 0.11
+    },
+    "wsi + omics": {
+     "mean": -0.0385,
+     "se": 0.0154,
+     "ci95": [
+      -0.0687,
+      -0.0084
+     ],
+     "p_two_sided": 0.01
+    }
+   }
+  }
+ },
+ "f_cost_against_benefit": {
+  "description": "the two measured parameter counts against concordance",
+  "source_file": "experiments/20260817-blca-confirm/results/parameter-counts.json",
+  "field": "",
+  "values": {
+   "artifact_type": "parameter_counts",
+   "phase_of_origin": "frozen_post_hoc",
+   "provenance": "each competitor's count was written by ITS OWN trainer, not reconstructed by us. SurvPath's core_utils calls _print_network into model_<tag>.txt; PIBD's writes model_parameters.txt. Both files were produced by the runs reported in this paper, on sysu, and the line quoted is verbatim.",
+   "ours": {
+    "parameters": 1049,
+    "how": "768 TITAN dimensions + 275 SurvPath pathway means + 6 clinical columns = 1049 Cox coefficients. The combination adds ZERO: it is an equal-weight rank average.",
+    "fitted_in_the_combination": 0
+   },
+   "survpath": {
+    "parameters": 24702532,
+    "trainable": 24702532,
+    "verbatim": "Total number of parameters: 24702532",
+    "file": "experiments/20260816-survpath-blca-repro/results/tcga_blca__nll_surv_a0.5_lr5e-04_l2Weight_0.0001_5foldcv_b1_survival_months_dss_dim1_768_patches_4096_wsiDim_256_epochs_5_fusion_None_modality_survpath_pathT_combine/model_<same-tag>.txt",
+    "ratio_to_ours": 23549
+   },
+   "pibd": {
+    "parameters": 26930702,
+    "trainable": 26930702,
+    "verbatim": "Total number of parameters: 26930702",
+    "file": "experiments/20260817-pibd-blca-repro/results/tcga_blca_b32_survival_months_dss_wsiDim_256_epochs_30_omics_pathways_pathT_combine_s1/model_parameters.txt",
+    "ratio_to_ours": 25673
+   },
+   "the_other_eight_entrants": "NOT REPORTED. No published entry on this benchmark states a parameter count, and we did not run their code, so we do not assign them one.",
+   "reading": "the two entrants we could rerun carry 23,549x and 25,673x our parameter count, on a cohort with 113 events. This is a statement about the sample size, not about deep learning."
+  }
+ }
+}

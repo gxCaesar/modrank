@@ -114,7 +114,7 @@ their ledger entries carry the same names**, so the gate compares like with like
 | SurvPath rerun **plus the same clinical variables** | recent_strong | same | same | 0.6963 | **input parity.** The comparison a reviewer will ask for |
 | DIMAF | quoted | <https://doi.org/10.1007/978-3-032-05185-1_12> | not rerun | 0.679 ± 0.043 | the incumbent |
 | MOAD-FNet | quoted | arXiv:2411.17418 | not rerun | 0.691 ± 0.069 | highest published on this endpoint and n; folds unverified |
-| PIBD | quoted | arXiv:2401.01646 | rerun crashed after fold 0 (0.6038) | 0.667 ± 0.061 | folds verified byte-identical |
+| PIBD | rerun | arXiv:2401.01646 | rerun on all five folds (fold 0 0.6038 first, folds 1–4 later), best-val mean 0.6609 | 0.667 ± 0.061 | folds verified byte-identical |
 | APL · DSCASurv · ProtoPathway · OTSurv · MMP · MCAT · MOTCat | quoted | see `development/benchmark-protocol.json` | not rerun | 0.677 · 0.646 · 0.646 · 0.637 · 0.635 · 0.598 · 0.596 | the rest of the published field |
 
 `quoted` is a real tier and a limitation: none of those methods releases per-case predictions, so
@@ -124,8 +124,8 @@ paper rather than averaged over.
 ## Winning condition
 
 - **benchmark and split**: TCGA-BLCA disease-specific survival on the released `mahmoodlab/SurvPath`
-  five-fold case-ID splits, 359 cases, 113 events, 24,219 comparable pairs. The exact membership is
-  recorded in `development/split-manifest.json` and bound by the frozen protocol.
+  five-fold case-ID splits, 359 cases, 113 events, 24,219 comparable pairs. `split_hash`
+  `0d0b8f82e7f5aa6e…`, pinned in `development/split-manifest.json` and bound by the frozen protocol.
 - **metric**: Harrell C-index, higher is better, pooled over out-of-fold predictions after
   within-fold percentile normalisation, averaged over seeds 0–4.
 - **incumbent**: **DIMAF at 0.679** (± 0.043), <https://doi.org/10.1007/978-3-032-05185-1_12>. Its

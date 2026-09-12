@@ -69,8 +69,8 @@ of histology, transcriptome and pathologic stage for bladder cancer survival}
 \revised{}{0}{}
 \accepted{}{0}{}
 
-\abstract{Pathologic stage decides how muscle-invasive bladder cancer is treated, and it does not
-decide which patients within a stage will die of it. Progress on closing it is measured almost entirely on one benchmark, the five-fold splits of TCGA disease-specific survival released with SurvPath. We read the method papers on its bladder cohort. Four report a clinical-variable baseline and \textbf{every one builds it from tumour grade}. \textbf{Not one uses
+\abstract{After cystectomy, pathologic stage is the strongest routine predictor of how muscle-invasive
+bladder cancer will behave, and it does not say which patients within a stage will die of it. Progress on closing it is measured almost entirely on one benchmark, the five-fold splits of TCGA disease-specific survival released with SurvPath. We read the method papers on its bladder cohort, eight of the eleven in full. Four report a clinical-variable baseline and \textbf{every one builds it from tumour grade}. \textbf{Not one uses
 pathologic stage}, and four more report no clinical baseline at all. Grade cannot separate these patients: two levels, 94.4\% in one, entropy 0.311. Stage is not
 missing. It ships with the benchmark, in the same files. Rebuilt from them it reaches 0.6638 against 0.5666 for the grade construction on identical cases (95\% CI $[+0.047,\,+0.149]$, $p<0.001$), and beats the incumbent clinical arm in all five TCGA studies the benchmark covers. Measurement then dictates the method: at 359 patients and 113 events a ridge Cox fitted to pure noise scores 0.7474 in-sample. ModRank
 therefore fits one penalised Cox model per modality and averages their ranks with equal weights,
@@ -85,15 +85,16 @@ integration; clinical baselines}
 %% published position is different.
 \boxedtext{
 \begin{itemize}
-\item On the TCGA-BLCA whole-slide survival benchmark, every method paper that reports a
-  clinical-variable baseline builds it from tumour grade and none uses pathologic stage, and half
-  of the papers we read report no clinical baseline at all. Stage is a column in the released files,
+\item On the TCGA-BLCA whole-slide survival benchmark, every method paper we could read that
+  reports a clinical-variable baseline builds it from tumour grade and none uses pathologic stage,
+  and half of the papers we read report no clinical baseline at all. Stage is a column in the released files,
   including the split files of the current best method.
 \item The failure is structural and specific to this disease: muscle-invasive urothelial carcinoma
   is 94.4\% one grade level, so the covariate the field has been comparing against cannot separate
   the patients it does not distinguish.
 \item Rebuilt with stage, the clinical baseline reaches 0.6638 against 0.5666 for the grade
-  construction, and it exceeds five of the nine published entries the benchmark carries.
+  construction, and it exceeds two of the four published entries on verified folds and five of
+  all nine the benchmark carries.
 \item \textbf{ModRank}, a method chosen by measurement rather than architecture (one penalised Cox per modality, combined by an equal-weight rank average with no fitted parameter), reaches 0.7212 with 1,049 parameters against competitors carrying 25 million, the highest value reported on these folds by the point-estimate convention every entry is ranked by. Its own pre-registered selection correction was mis-specified, and against a permuted-outcome null the value does not clear the corrected bar. We report both.
 \end{itemize}}
 
@@ -102,9 +103,10 @@ integration; clinical baselines}
 \section{Introduction}
 Bladder cancer is the tenth most common cancer worldwide, with more than 600,000 new cases a year
 and roughly 220,000 deaths~\citep{bray2024globocan}. About a quarter of patients present with
-muscle-invasive disease, and for them the pathologic stage of the cystectomy specimen is the
-variable that drives management: whether neoadjuvant chemotherapy is given, how the surgery is
-planned, and what surveillance follows~\citep{witjes2021eau}. Stage is also, by construction, a
+muscle-invasive disease. For those treated by radical cystectomy, the pathologic stage of the
+specimen is the strongest routine predictor of what happens after surgery, and it guides what
+follows it: whether adjuvant treatment is considered and how closely the patient is
+followed~\citep{witjes2021eau}. Stage is also, by construction, a
 coarse instrument. Two patients with pT3 N0 M0 disease receive the same recommendation and do not
 have the same outcome, and the report holds nothing that separates them. That residual
 heterogeneity is real and it is molecular: a consensus classification places muscle-invasive
@@ -126,13 +128,13 @@ MCAT~\citep{chen2021mcat} and MOTCat~\citep{xu2023motcat} through MMP~\citep{son
 PIBD~\citep{zhang2024pibd}, OTSurv~\citep{ren2025otsurv}, DSCASurv~\citep{song2025dscasurv} and
 DIMAF~\citep{eijpe2025dimaf}. Reported concordance on it has moved from 0.596 to 0.679.
 
-Every one of those papers is measured against a clinical baseline, and on this benchmark that
-baseline is either specified wrongly or absent altogether
-(Fig.~\ref{fig:overview}a). Each paper was read in full, and the census is Supplementary Table~S1: of the eight whose text could be read, four report a clinical-variable
-baseline, all four build it from tumour grade, and not one uses pathologic
-stage. The bladder values reported are 0.519 (DIMAF) and 0.570 (MMP, and the same figure in
+On this benchmark the clinical baseline is either specified without stage or absent altogether
+(Fig.~\ref{fig:overview}a). The census is Supplementary Table~S1. Eight of the eleven papers
+could be read in full: four report a clinical-variable baseline, all four build it from tumour
+grade, and not one of the eight uses pathologic stage. The other three are marked unverified
+rather than assumed to follow the pattern. The bladder values reported are 0.519 (DIMAF) and 0.570 (MMP, and the same figure in
 SurvPath's own table), and SurvPath's age-alone arm reaches 0.578 (MMP). A concordance of 0.519 for
-the clinical arm, in a disease whose staging determines therapy, is a claim that the routine
+the clinical arm, in a disease whose staging guides post-operative care, is a claim that the routine
 pathology report is a coin flip. The variable that would have avoided it ships with the benchmark:
 the released clinical table carries stage, grade and subtype for all five studies, and DIMAF's own
 split files carry the AJCC pathologic tumour stage directly beside the histological grade. The
@@ -201,8 +203,15 @@ normalised entropy 0.311, against five levels and 0.665 for stage.}
 TCGA-BLCA, disease-specific survival, as defined by the metadata SurvPath
 releases~\citep{jaume2024survpath}: its disease-specific survival time and censoring
 indicator, which derive from the
-TCGA Pan-Cancer Clinical Data Resource~\citep{liu2018tcgacdr}. An event is
+TCGA Pan-Cancer Clinical Data Resource~\citep{liu2018tcgacdr}. A case has an event when
 the censoring indicator is zero.
+
+The prediction this benchmark scores is a post-operative one. The tumours had not been exposed
+to chemotherapy when the tissue was acquired~\citep{robertson2017blca}, the stage is the
+pathologic stage of the resected specimen, and survival runs from the date of initial pathologic
+diagnosis, the origin the resource uses for every endpoint~\citep{liu2018tcgacdr}. A score of this
+kind can inform adjuvant treatment and follow-up. It cannot inform the decision to give
+neoadjuvant chemotherapy, which is taken before the specimen exists.
 
 The analysis cohort is the intersection of cases holding a slide embedding and a disease-specific
 survival label: 359 cases, 113 events, 24{,}219 comparable pairs. That is exactly the set
@@ -217,8 +226,9 @@ Fold sizes (train/validation, cases): 289/70, 287/72, 284/75, 288/71, 288/71. We
 the PIBD repository~\citep{zhang2024pibd} and confirmed byte by byte that all five files are
 byte-identical to SurvPath's.
 
-A canonical membership manifest records the exact train and validation case identifiers used in
-every fold so that a later run cannot silently use a different partition.
+A canonical membership manifest (per fold, the fold index and the comma-joined sorted train and validation case identifiers, newline-joined) is recorded in
+a machine-readable split manifest whose SHA-256 is bound into the frozen protocol so that a
+later run cannot silently use a different partition.
 
 \paragraph{Verifying the comparators' folds.} Fold identity is the axis on which these results are
 or are not comparable, and it is not uniform across the field, so we checked it rather than assuming
@@ -229,8 +239,8 @@ not the other.
 
 The rest cannot be checked. APL's repository contains two files. MMP states its own site-stratified
 protocol and OTSurv follows MMP, so neither uses the released partition. MOAD-FNet and DSCASurv
-release no split files at all. Values from that group are quoted rather than placed in the same
-column, and are excluded from the comparison the paper's claim rests on.
+release no split files at all. Values from that group are listed separately wherever they
+appear, and are excluded from the comparison the paper's claim rests on.
 
 \subsection{Representations}
 
@@ -314,8 +324,9 @@ standard deviations only. The estimator is identical for every view.
 \paragraph{Why the estimator is not selected per view.} It could be, and we measured what that
 costs. Choosing among $\{$plain ridge, dense-grid ridge, bagged ridge$\}$ per view by inner
 cross-validation gives 0.6568, 0.6543 and 0.6743 for the morphology, transcriptome and clinical
-views against 0.6596, 0.6510 and 0.6856 for plain ridge everywhere: selection \emph{cost}
-performance on two views of three. At 287 training patients the inner criterion cannot reliably
+views against 0.6596, 0.6510 and 0.6856 for plain ridge everywhere, measured during development
+while the clinical view was still the earlier block that Amendment~A1 replaced: selection
+\emph{cost} performance on two views of three. At 287 training patients the inner criterion cannot reliably
 separate estimators that differ by 0.02, so adaptive selection buys noise at full price.
 
 \subsection{Combination}
@@ -372,6 +383,8 @@ and they answer different questions:
     $0.679+0.0239=0.7029$ is the pre-registered target. The campaign finished at 269 candidates,
     all of them scored before the confirmatory run, and the same term over 269 is $0.0244$ for a
     bar of $0.7034$. Both are reported, because the frozen figure is the smaller of the two.
+    Both rest on the wrong standard deviation, as the Results show, and neither is used as a test
+    the result passes.
   \item Case-level bootstrap. 6{,}000 replicates resampling \emph{cases}, never comparable
     pairs, because pairs sharing a patient are not independent. Where a restricted pair set is used, the ``clinically tied'' decile, the threshold is recomputed inside each replicate, so it
     is a property of the resampled cohort rather than of the original one.
@@ -443,8 +456,8 @@ block takes every clinical column from the incumbent's own files, which \emph{dr
 our cached query had supplied, and that is worth $-0.0110$.
 
 Net, the reported primary fell from 0.7260 to 0.7212, a move of $-0.0048$ and the same size
-as the seed-to-seed SD. We report the lower, more conservative arm, and both figures clear the
-pre-registered target so the verdict is unchanged. The amendment is recorded in the protocol with
+as the seed-to-seed SD. We report the lower, more conservative arm. Both values exceed the target
+as it was frozen, and the Results show why that target was itself mis-specified. The amendment is recorded in the protocol with
 all four blocks measured. The conservative arm, every clinical column from the incumbent's own
 files, is the one reported, not the higher-scoring variant that adds T, N and M from an external
 clinical query under a selection rule of our own design.
@@ -457,14 +470,14 @@ the confirmatory run takes minutes. The library versions are pinned because the 
 same split under a different numerical stack has been shown elsewhere to move a baseline by more
 than the margins this area publishes.
 
-\paragraph{Availability.} \TODO{repository URL and archived DOI -- create at submission. The target
-venue requires a repository issuing DOIs.} The frozen protocol, the split manifest,
+\paragraph{Availability.} Everything needed to recompute the numbers reported here is archived under
+the identifier given in Code availability. The frozen protocol, the split manifest with its hash,
 the iteration ledger covering all 269 scored candidates, the error atlas, the component
 pre-registrations with their controls, and the confirmatory run with its logs and environment record
 are all included.
 
 \section{Results}
-\subsection{The benchmark's clinical baseline omits the variable that decides treatment}
+\subsection{The benchmark's clinical baseline omits pathologic stage}
 
 Table~\ref{tab:published-clinical} reproduces the clinical-variable baselines the primary papers
 report on the released folds. Supplementary Table~S1 is the census one paper at a time:
@@ -477,8 +490,8 @@ study the benchmark covers, and that it helps most where grade is least informat
 \begin{table*}[t]
 \centering
 \caption{Clinical-variable baselines as published on the released folds, from the primary tables
-(SurvPath Supplementary Table~3; MMP Table~1; DIMAF Table~1). No paper in this benchmark family
-reports a baseline using pathologic stage or T, N and M.}
+(SurvPath Supplementary Table~3; MMP Table~1; DIMAF Table~1). No paper we could read in this
+benchmark family reports a baseline using pathologic stage or T, N and M.}
 \label{tab:published-clinical}
 \begin{tabular}{lcccc}
 \toprule
@@ -532,14 +545,16 @@ one, our grade arm against our stage arm, and it is the only one this claim rest
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{fig2_missing_variable.pdf}
-\caption{\textbf{The missing variable, quantified.} \textbf{(a)} The nine published entries, ModRank and the two clinical constructions. The dashed rule marks the stage-based clinical arm and five of
-the nine published entries fall below it. \textbf{(b)} The same one-column swap in all five studies
-the benchmark covers, each on its own cases. \textbf{(c)} The swap buys most where grade is least
-informative. Three cohorts carry a usable grade, and the panel says so inside itself because a
-correlation printed beside three points reads as an estimate. \textbf{(d)} The census behind the
+\caption{\textbf{The missing variable, quantified.} \textbf{(a)} The nine published entries, ModRank and the two clinical constructions. The dashed rule marks the stage-based clinical arm. Two of the four published entries on
+verified folds fall below it, and five of all nine. Entries whose folds could not be verified are
+drawn open. \textbf{(b)} The census behind the
 claim, one row per paper. Four of the eight papers whose text could be read report a
-clinical-variable baseline, all four build it from tumour grade, and none of the eleven uses
+clinical-variable baseline, all four build it from tumour grade, and none of the eight uses
 pathologic stage. The three that could not be read carry a bar rather than an inferred mark.
+\textbf{(c)} The same one-column swap in all five studies
+the benchmark covers, each on its own cases. \textbf{(d)} The swap buys most where grade is least
+informative. Three cohorts carry a usable grade, and the panel says so inside itself because a
+correlation printed beside three points reads as an estimate.
 \textbf{(e)} Four constructions of the clinical block, alone and with the other two modalities. The
 provenance amendment and the diagnosis-record correction move it by less than the noise floor of a
 reader re-running the study. Substituting grade for stage does not. \textbf{(f)} Inside a single
@@ -555,24 +570,25 @@ say.}
 The three inputs are not interchangeable, and they are not one signal written three ways.
 Figure~\ref{fig:modalities} is the accounting.
 
-Alone, the corrected clinical block is the strongest of the three at 0.6856, the slide embedding
-reaches 0.6596 and the pathway means 0.6510. That ordering is stable across seeds, and it is not
-the interesting part. Choosing a representation \emph{within} a modality moves the number nearly as
+Alone, the three arms sit close together. At seed 0 the clinical block reaches 0.6638, the slide
+embedding 0.6596 and the pathway means 0.6510, and across seeds the order changes, with the
+pathway means ahead at three seeds of five (Supplementary Table~S4). The ordering is not the
+interesting part. Choosing a representation \emph{within} a modality moves the number nearly as
 far as choosing between modalities: across three slide encoders the spread is 0.104, and across
 three transcriptomic representations 0.069 (Fig.~\ref{fig:modalities}b). A multimodal comparison
 that fixes one representation per modality and reports the difference is therefore reporting a
 choice as much as a modality.
 
 The scores the three arms produce are close to independent. Spearman between the slide arm and the
-clinical arm is 0.213, and between the incumbent's joint score and the clinical arm 0.166
+clinical arm is 0.2445, and between the incumbent's joint score and the clinical arm 0.1924
 (Fig.~\ref{fig:modalities}c). An equal-weight rank average over three nearly orthogonal scores is
 doing what an average of independent estimates does, which is the reason a rule with no fitted
 parameter is not leaving much on the table.
 
 What the whole-slide image contributes shows only where the clinical model is not already
 answering. Ordering the 24,219 comparable pairs by how far apart the clinical model places the two
-patients and keeping the tightest 5\%, the clinical arm falls to 0.5012, a coin flip by
-construction. On those same 1,281 pairs the slide arm reads 0.6120
+patients and keeping the tightest 5\%, the clinical arm falls to 0.4959, a coin flip by
+construction. On those same 1,213 pairs the slide arm reads 0.6220
 (Fig.~\ref{fig:modalities}d). The image is not adding a small increment to something the report
 already carries. It separates patients the report cannot separate at all, and that is the part of
 the multimodal claim that survives a clinical baseline built correctly.
@@ -592,7 +608,7 @@ with the boxed region shown at the magnification the slide pipeline works at. \t
 cases and identical folds. \textbf{(c)} Spearman between the arms' out-of-fold scores. The middle
 row is the incumbent's joint slide-and-transcriptome score, which is what the frozen redundancy
 measurement was taken against. \textbf{(d)} Comparable pairs restricted by how far apart the
-clinical model places the two patients. On the tightest 1,281 of 24,219 pairs the clinical arm is a
+clinical model places the two patients. On the tightest 1,213 of 24,219 pairs the clinical arm is a
 coin flip and the slide arm is not. \textbf{(e)} IPCW time-dependent AUC at three horizons.
 \textbf{(f)} What capacity buys above the permuted-stratum control that voids it, for the two
 modalities the control was run on. \textbf{(g)} Log-rank across each arm's own risk tertiles, with
@@ -624,10 +640,11 @@ arm's percentile-normalised score is added, and the sum is re-ranked within fold
 identical equal-weight rank average ModRank uses, with the competitor's joint slide-and-omics score
 standing where ModRank's two molecular arms stand. We chose late fusion because retraining a
 26.9-million-parameter transformer on 287 training cases to absorb six appended columns is a
-different experiment with its own tuning, and because this construction cannot disadvantage the
-competitor: it gives the competitor exactly the combination rule that produces our own headline. It
-is also a limitation, and we state it as one. A competitor retrained with the staging variables
-inside its own architecture might do better than the number we report, and we have not measured
+different experiment with its own tuning, and because it hands the competitor the same
+equal-weight rank combination that produces our own headline. It is a practical input-parity
+comparator and not the only one possible. The clinical arm carries weight one half in the
+competitor's average and one third in ours, and a competitor retrained with the staging variables
+inside its own architecture might do better than the number we report. We have not measured
 that. Second, the estimand. Our primary is a concordance pooled over all out-of-fold predictions
 after within-fold percentile normalisation, whereas the convention on these folds is generally a
 mean of per-fold values. On identical predictions the two differ by \textbf{+0.0034} for ModRank,
@@ -754,7 +771,7 @@ consecutive entries are 0.002 to 0.012 and the largest two are 0.021 and 0.029, 
 numbers in it.
 
 \paragraph{A second competitor at input parity, and it reveals a second unreported source of
-optimism.} PIBD~\citep{zhang2024pibd} is the strongest entrant besides SurvPath whose implementation
+variation.} PIBD~\citep{zhang2024pibd} is the strongest entrant besides SurvPath whose implementation
 runs end to end, and its split files were byte-identical to the released ones on all five studies.
 We reran it on the same folds: per fold 0.6038, 0.6980, 0.6256, 0.6147 and 0.7626, mean
 $\mathbf{0.6609 \pm 0.0677}$ against a published $0.667 \pm 0.061$, a close reproduction. Its
@@ -764,12 +781,14 @@ covered, labels, events and fold assignment identical.
 PIBD writes two checkpoints per fold, one at its best \emph{validation} epoch and one at the last,
 and its reported figure is a ``Best Val C-index''. The checkpoint is chosen on the very fold it is
 then scored on. Both are available and both are reported here. At the best-validation
-checkpoint it reaches 0.6609. At the final epoch it reaches 0.5900. Checkpoint selection on the
-scored fold is therefore worth $+0.0709$, roughly six times the largest gap between consecutive
-entries in Table~\ref{tab:published}. We are not accusing anyone of misconduct: this is the
+checkpoint it reaches 0.6609. At the final epoch it reaches 0.5900. The checkpoint convention
+therefore moves the reported value by $+0.0709$, seven times the median gap between consecutive
+entries in Table~\ref{tab:published} and more than twice the largest. That difference mixes
+selection on the scored fold with the decline of a model trained to its last epoch, so it measures
+what the convention is worth rather than selection optimism alone. We are not accusing anyone of misconduct: this is the
 standard convention in the released code and it is how the number was always meant to be read. The
 point is that a table ranking ten methods to three decimal places contains at least two effects
-larger than its own resolution, seed variance and checkpoint selection, and reports neither.
+larger than its own resolution, seed variance and the checkpoint convention, and reports neither.
 
 Given the same clinical variables ModRank uses, PIBD reaches 0.6989 at its best-validation
 checkpoint and 0.6639 at its final epoch. Against the first (the harder comparison for us, and the one we quote) our margin is +0.0249 (95\% CI $[-0.0181,\,+0.0675]$, $p=0.241$). Against the second it is $+0.0595$ ($p=0.010$). Neither of our two input-parity margins reaches
@@ -789,22 +808,26 @@ reports a parameter count and we did not run their code.
 \centering
 \caption{Published values on TCGA-BLCA disease-specific survival at $n=359$, with fold identity
 recorded rather than assumed. ``verified'' means the entrant's own split files were compared with
-the released ones here.}
+the released ones here. The upper block is on the released folds. The lower block used another
+or an unverifiable protocol and is quoted as context only.}
 \label{tab:published}
 \begin{tabular}{llcl}
 \toprule
 method & venue & C-index & released folds \\
 \midrule
+\multicolumn{4}{l}{\emph{on the released folds, verified here or by definition}} \\
 ours          & n/a                & \textbf{0.7212} & verified (definitional) \\
-MOAD-FNet~\citep{moadfnet2024}   & arXiv    & 0.691 & unverified, no code released \\
 DIMAF~\citep{eijpe2025dimaf}          & MICCAI 2025 & 0.679 & \textbf{verified}, 5/5 folds identical \\
-APL~\citep{apl2025}              & arXiv    & 0.677 & uncheckable, repository empty \\
 PIBD~\citep{zhang2024pibd}       & ICLR 2024 & 0.667 & \textbf{verified}; rerun here at $0.6609$ \\
+SurvPath~\citep{jaume2024survpath} & CVPR 2024 & 0.625 & definitional \\
+MOTCat~\citep{xu2023motcat}      & ICCV 2023 & 0.596 & as reported in SurvPath \\
+\midrule
+\multicolumn{4}{l}{\emph{another or an unverifiable protocol, quoted as context only}} \\
+MOAD-FNet~\citep{moadfnet2024}   & arXiv    & 0.691 & unverified, no code released \\
+APL~\citep{apl2025}              & arXiv    & 0.677 & uncheckable, repository empty \\
 DSCASurv~\citep{song2025dscasurv}    & Brief.\ Bioinform.\ 2025 & 0.646 & unverified \\
 OTSurv~\citep{ren2025otsurv}        & MICCAI 2025 & 0.637 & follows MMP's protocol \\
 MMP~\citep{song2024mmp}          & ICML 2024 & 0.635 & own site-stratified protocol \\
-SurvPath~\citep{jaume2024survpath} & CVPR 2024 & 0.625 & definitional \\
-MOTCat~\citep{xu2023motcat}      & ICCV 2023 & 0.596 & as reported in SurvPath \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -823,26 +846,11 @@ published entry reports one.}
 \end{figure*}
 
 
-\paragraph{Calibration, which discrimination does not cover.} A concordance index says whether the
-ordering is right and nothing about whether the level is. Comparing the observed Kaplan--Meier
-survival in each risk tertile against the survival the arm implies, at the quartiles of the event
-times (8.2, 13.8 and 21.7 months), gives a consistent and unflattering pattern. The arm
-compresses the risk range: in the low-risk tertile observed survival exceeds predicted by
-0.045 to 0.076, and in the high-risk tertile predicted exceeds observed by 0.037 to 0.065. The middle
-tertile sits between them. The ordering is right at every horizon and the spread between the groups
-is too narrow.
-
-One qualification belongs with those numbers rather than in a limitation paragraph. The
-method emits a rank, not a hazard. The predicted column turns that rank into a survival probability
-through the cohort's own baseline, so what is tested here is whether the \emph{group ordering} is
-calibrated. It is not a claim about the absolute calibration of a model that was never fitted to
-produce probabilities, and a reader wanting absolute risks would have to refit the combination as a
-hazard model, which this paper does not do.
 
 \subsection{What the slide is seeing, and whether it is what the transcriptome sees}
 
-The performance result asserts that morphology and molecules each carry prognostic information the
-pathology report does not. It says nothing about what. Eight biological axes that matter in
+The performance result suggests that morphology and molecules each add prognostic discrimination
+to the pathology report. It says nothing about what. Eight biological axes that matter in
 muscle-invasive urothelial carcinoma (Fig.~\ref{fig:biology}) were scored per case as the mean of their z-scored member
 genes (basal, luminal, EMT/claudin-low, immune T-cell, proliferation, p53--cell-cycle, the FGFR3 axis, and stroma/fibroblast) with no outcome entering their construction, and the claudin genes
 entered the EMT score negatively because they are \emph{lost} in that phenotype.
@@ -872,31 +880,38 @@ tests. They say what the score co-varies with, not that the model reads that pat
 \paragraph{The direct test: morphology holds up where the molecules cannot separate patients.}
 Restricting the comparable pairs to those the transcriptome arm separates least, the slide arm
 reaches 0.6396 where the transcriptome arm itself is at 0.5604. Restricting further, to
-pairs that \emph{neither} the transcriptome nor stage can separate (3{,}893 of 24{,}219) the
-slide arm still reaches 0.6212. Morphology therefore carries prognostic information present
-in neither the transcriptome nor the stage, which is the claim a whole-slide paper has to support
-and the one this analysis was built to be able to refute.
+pairs that \emph{neither} the transcriptome arm nor the clinical model can separate, each placing
+the two patients within its closest 40\% (3{,}893 of 24{,}219), the slide arm still reaches 0.6212.
+Morphology therefore retains prognostic discrimination among patients whom neither the
+transcriptomic score nor the clinical model separates, which is the claim a
+whole-slide paper has to support and the one this analysis was built to be able to refute. It
+concerns these two scores and is not a proof that no transcriptomic model could recover the same
+information.
 
-\paragraph{And the two modalities are informative in different tumours.} Assigning each case to
-basal or luminal by whichever signature is higher (a two-centroid rule, since the released files carry no subtype call) the axis is itself prognostic ($z=2.99$, $p=0.003$) and splits the cohort
-150 basal / 209 luminal. Within them (Table~\ref{tab:subtype}) the ordering of the modalities
-\emph{reverses}: in basal tumours the slide arm (0.6787) beats the clinical arm (0.6379), and in
-luminal tumours the clinical arm (0.7079) beats the slide arm (0.6183) by more. The combined arm
-sits at 0.7070 and 0.7092, flat across subtypes while every one of its components swings.
-That is the clearest statement of what the combination buys: not a higher number in one place, but
-a number that does not depend on which molecular subtype a cohort happens to contain.
+\paragraph{And the two modalities are informative in different tumours.} Splitting the cohort at
+the median of the basal-minus-luminal signature difference (a continuous split, since the released
+files carry no subtype call), the axis is itself prognostic (log-rank $p=0.0012$) and divides the
+cohort into 179 basal-leaning and 180 luminal-leaning cases. Within them (Table~\ref{tab:subtype})
+the ordering of the modalities \emph{reverses}: in basal-leaning tumours the slide arm (0.6693) beats
+the clinical arm (0.6472), and in luminal-leaning tumours the clinical arm (0.7005) beats the slide
+arm (0.6197) by more. The combined arm sits at 0.7109 and 0.6997. It is the strongest arm in the
+basal-leaning half and within 0.001 of the clinical arm in the luminal-leaning half, and it moves
+far less across the split than either component that swings. That is the clearest statement of
+what the combination buys: not a higher number in one place, but a number that depends less on which
+molecular subtype a cohort happens to contain.
 
 \begin{table*}[t]
 \centering
-\caption{Concordance within molecular subtype. The modalities swap places. The combination does
-not move. Assignment is by the sign of (basal $-$ luminal) signature score.}
+\caption{Concordance within the two halves of the basal-minus-luminal signature axis, split at its
+median. The slide and clinical arms swap places. The combination moves far less. The best arm in
+each row is in bold.}
 \label{tab:subtype}
 \begin{tabular}{lccccc}
 \toprule
-subtype & $n$ / events & clinical & slide & omics & \textbf{ours} \\
+half & $n$ / events & clinical & slide & omics & ours \\
 \midrule
-basal   & 150 / 59 & 0.6379 & \textbf{0.6787} & 0.6157 & \textbf{0.7070} \\
-luminal & 209 / 54 & \textbf{0.7079} & 0.6183 & 0.6234 & \textbf{0.7092} \\
+basal-leaning   & 179 / 71 & 0.6472 & 0.6693 & 0.6226 & \textbf{0.7109} \\
+luminal-leaning & 180 / 42 & \textbf{0.7005} & 0.6197 & 0.6218 & 0.6997 \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -1058,8 +1073,24 @@ transcriptomic and clinical arms unchanged. The slide arm alone spans \textbf{0.
 encoders, from 0.6596 for TITAN down to 0.5224 for mean-pooled UNI. The full method spans
 \textbf{0.0521}, from 0.7225 to 0.6704: the combination compresses the encoder difference by a
 factor of 2.6. \textbf{Five of the seven still exceed the incumbent's 0.679}, and the two that do
-not are the two weakest encoders in the sweep. The lead is therefore not an artefact of one
-embedding, and it is also not independent of it, and both halves of that sentence are load-bearing.
+not are the two weakest encoders in the sweep. The two halves of this sweep sit on opposite sides of
+the freeze and are labelled accordingly. All seven slide-arm values are development rows, scored
+during the campaign and counted among the 269 candidates the selection term is computed over. None
+of the seven full-method values is. Those were computed after the confirmatory run in response to
+review, so this paragraph is a post-hoc measurement and not part of the frozen result.
+
+None of those seven encoders is the one the comparators read, which leaves the confound answered in
+general and not on the ground where it was raised. Our rerun of the weakest comparator consumed
+CHIEF tile features, so we pooled those same features to the case and put them where our slide arm
+goes. \textbf{The full method reaches 0.7009 on the comparator's own encoder}, above every one of
+the nine published entries the benchmark carries, including the highest at 0.6910, while the
+comparator that read those very features reruns at 0.6118. The CHIEF slide arm by itself is 0.5836,
+below eight of the nine. The lead is therefore not an artefact of reading a better slide encoder
+than the methods it is compared against. It is also not independent of the encoder: 0.7225 against
+0.7009 puts that contribution near 0.022, a fifth of the margin over the incumbent and not nothing.
+Both halves of that sentence are load-bearing. The reverse substitution is undefined rather than
+merely expensive, because the comparators attend over a bag of four thousand patch tokens where the
+public release of our slide encoder is one vector per slide.
 
 \subsection{Three uncertainties, answering three different questions}
 \label{sec:uncertainty}
@@ -1068,18 +1099,21 @@ embedding, and it is also not independent of it, and both halves of that sentenc
   \item Split-reseed SD 0.0073 (bar 0.0145). What moves if the same 359 patients are
     re-split. This is what a reader reproducing the study varies, and it is the right bar for a
     claim on a fixed benchmark.
-  \item Selection inflation 0.0244, computed as $\sigma\sqrt{2\ln N}$ over the $N=269$
-    candidates the campaign finished with, which is the larger of the two figures given in Methods. The margin over the incumbent, $+0.0422$, clears
-    it by $+0.0178$.
+  \item Selection, measured rather than assumed. Under permuted outcomes a single candidate's
+    concordance has SD 0.0397, and the empirical maximum over the candidate family puts the
+    bar at 0.7716, which the primary does not clear. The frozen term, computed with a paired SD
+    at $N=211$, is given in Methods as what was pre-registered. This item measures how adaptive
+    the development was. It is not a test the result passes.
   \item Case-level bootstrap SE $\approx 0.020$. What moves under a \emph{new} cohort of
     359. Under it NEITHER input-parity comparison reaches significance ($p=0.084$ against seed-matched SurvPath, $p=0.241$ against PIBD at its own checkpoint convention) nor does
-    the comparison against the clinical arm alone. All three clear the split-reseed bar and the
-    selection-inflation term, which are the right instruments for a claim on a FIXED benchmark.
-    None clears the bar for a claim about a new cohort, and we do not make one.
+    the comparison against the clinical arm alone. All three clear the split-reseed bar, which is
+    the right instrument for a claim on a fixed benchmark. None clears the bar for a claim about a
+    new cohort, and we do not make one.
 \end{itemize}
 
-At 359 patients and 113 events this cohort cannot resolve concordance differences of 0.03--0.05.
-That is a property of the benchmark, and it applies to every value in Table~\ref{tab:published},
+At 359 patients and 113 events a concordance difference has a case-resampling SE of 0.0210, so
+differences of 0.03 to 0.05 are underpowered here: 80\% power needs a true difference of 0.0589.
+That is a property of this cohort, and it applies to every value in Table~\ref{tab:published},
 not only to ours.
 
 \paragraph{The whole comparison family, corrected, including the comparisons that do not survive.}
@@ -1104,7 +1138,8 @@ comparison & $\Delta$C & 95\% CI & $p$ & Holm $q$ & survives \\
 vs.\ slide alone                  & $+0.0704$ & $[+0.0288, +0.1138]$ & 0.0007 & \textbf{0.0042} & yes \\
 vs.\ clinical alone               & $+0.0594$ & $[+0.0111, +0.1070]$ & 0.0163 & 0.0652 & no \\
 vs.\ omics alone                  & $+0.0588$ & $[+0.0172, +0.1009]$ & 0.0053 & \textbf{0.0265} & yes \\
-vs.\ ours without clinical        & $+0.0340$ & $[+0.0050, +0.0635]$ & 0.0187 & 0.0652 & (\\ vs.\ SurvPath + clinical (5 seeds)& $+0.0340$ & $[-0.0056, +0.0731]$ & 0.0843 & 0.1686 &) \\
+vs.\ ours without clinical        & $+0.0340$ & $[+0.0050, +0.0635]$ & 0.0187 & 0.0652 & no \\
+vs.\ SurvPath + clinical (5 seeds) & $+0.0340$ & $[-0.0056, +0.0731]$ & 0.0843 & 0.1686 & no \\
 vs.\ PIBD + clinical (best-val)   & $+0.0249$ & $[-0.0181, +0.0675]$ & 0.2413 & 0.2413 & no \\
 \bottomrule
 \end{tabular}}
@@ -1134,10 +1169,10 @@ per-fold event counts are Supplementary Figure~S3.
 \section{Discussion}
 The result that travels furthest here is not the concordance. It is that a benchmark carrying
 eleven method papers has been comparing image-and-omics models against a clinical baseline built
-from tumour grade, where it compares against one at all, while the variable that decides how the disease is treated sat in the same
+from tumour grade, where it compares against one at all, while pathologic stage, the variable post-operative care is built on, sat in the same
 files. The consequence is quantitative, not rhetorical: on bladder the correctly specified clinical
-arm reaches 0.6638, which is above five of the nine published entries in
-Table~\ref{tab:published} and within 0.016 of the incumbent. A field measuring the value added by
+arm reaches 0.6638, above two of the four published entries on verified folds and five of all
+nine in Table~\ref{tab:published}, and within 0.016 of the incumbent. A field measuring the value added by
 morphology and transcriptomics has been measuring it against the wrong reference.
 
 Two things appear to have made this durable. The first is that the benchmark's clinical baselines were
@@ -1196,11 +1231,10 @@ than of the arm. The published entries do carry a fold-to-fold standard deviatio
 \emph{difference between methods}, or a paired test of any kind. The field ranks by point
 estimates, and by that convention 0.7212 is first. A
 significant paired margin is a standard \emph{no entrant here has ever met}, and this paper is
-what shows why it cannot be met: 80\% power at this cohort's resampling SE requires a true
+what shows why it is hard to meet at this size: 80\% power at this cohort's resampling SE requires a true
 difference of 0.0589, while the median gap between consecutive published entries carries power
-0.076. Demanding that our margin clear a bar the cohort makes unreachable, while every value it is
-compared against was published without one, would apply the finding selectively against the work
-that established it.
+0.076. We therefore read the ordering of that table, ours included, as descriptive rather than
+confirmatory.
 
 So we make the weaker claim that is fully supported and decline the stronger one that is not. The
 arm leads the benchmark on the benchmark's own terms. Whether leading it means what the field has
@@ -1219,21 +1253,20 @@ significantly \emph{worse} than TITAN alone.
   \item No external validation, and none is available on this benchmark. It is
     cross-validation over 359 patients, and every published entrant is in the same position. The
     four other TCGA studies replicate the \emph{stage} finding, not the bladder number.
-  \item The cohort cannot resolve the margins this literature reports. Under case
-    resampling the SE of a concordance difference is $\approx0.020$, so a margin of 0.03 cannot
-    reach significance at this $n$ whoever produces it. Our input-parity comparison sits at
+  \item The cohort has little power for the margins this literature reports. Under case
+    resampling the SE of a concordance difference is 0.0210, so our own margin over SurvPath,
+    0.0340, carries a power of 0.367. Our input-parity comparison sits at
     $p=0.084$ once the competitor is seed-matched, $p=0.241$ against the second parity
-    comparator, and our comparison against the clinical arm alone at $p=0.063$. All clear the
-    split-reseed bar and the selection-inflation term. None is a claim about a new cohort.
+    comparator, and our comparison against the clinical arm alone at $p=0.0163$, which is
+    $0.0652$ after Holm correction. All clear the split-reseed bar. None is a claim about a new
+    cohort.
   \item Only two competitors could be placed at input parity, and we lead neither
     significantly. SurvPath and PIBD are the entrants whose implementations run end to end. The
     other eight rows of Table~\ref{tab:published} are quoted values that could not be given the clinical variables ModRank uses. Our margins over the two are $+0.0340$ ($p=0.084$) and
     $+0.0249$ ($p=0.241$), and neither survives Holm correction over the six-comparison family.
-  \item The arm is a rank, so it carries no absolute risk, and its groups are too close
-    together. Observed survival exceeds the implied survival in the low-risk tertile and falls
-    below it in the high-risk tertile, at every horizon we checked. A reader wanting absolute risks
-    would have to refit the combination as a hazard model, which we do not do. What is supported
-    here is the ordering, and the ordering with a narrower spread than the outcomes have.
+  \item The arm is a rank, so it carries no absolute risk by itself. Absolute risks need a hazard
+    model fitted on top of it inside each training fold, and without one only the ordering is
+    supported.
   \item Fold identity is unverifiable for four entrants, and three papers could not be read
     at all. We checked fold identity where a repository allowed. APL's contains two files. The
     covariate census rests on the eight papers whose text could be obtained, and the three that could not are marked as unread rather than assumed to follow the pattern.
@@ -1246,11 +1279,13 @@ significantly \emph{worse} than TITAN alone.
     things and they pull in opposite directions: fixing the defect is worth $+0.0050$ on ModRank (95\% CI $[-0.0117,+0.0219]$, $p=0.56$), so the pre-amendment number was not inflated by the defect, while rebuilding the block from the incumbent's own four columns \emph{drops}
     the T/N/M our cached query had supplied, which is worth $-0.0110$. Net, the reported
     primary fell from 0.7260 to 0.7212, a move of $-0.0048$, the same size as the seed-to-seed SD.
-    We report the lower, more conservative arm. It still clears the pre-registered 0.7029, which we now report as a target that does not survive its own correction.
+    We report the lower, more conservative arm. Both values exceed the target as it was frozen,
+    and neither clears it once its selection term is corrected.
 \end{itemize}
 
 \paragraph{Implications.} The immediate consequence for the benchmark is cheap to adopt: report a
-clinical baseline that uses stage. It requires no new data, it is one column in files everyone
+clinical baseline built from the clinical covariate that discriminates in the cohort, which on this
+benchmark is stage. It requires no new data, it is one column in files everyone
 already downloads, and it changes what a multimodal gain means. The consequence for methods is
 harder. At this cohort size the discriminating experiment between a parameter-free combination
 and a learned one may not exist, and settling it needs a larger cohort rather than a better model.
@@ -1259,17 +1294,18 @@ and a learned one may not exist, and settling it needs a larger cohort rather th
 \section{Conclusion}
 
 Two results are established here and they are of different kinds. The first is a fact about a
-literature: on the TCGA bladder whole-slide survival benchmark, every method paper that reports a
-clinical-variable baseline builds it from tumour grade, none uses pathologic stage, and half the
-papers we could read report no clinical baseline at all. The variable was never missing from the
+literature: on the TCGA bladder whole-slide survival benchmark, every method paper we could read
+that reports a clinical-variable baseline builds it from tumour grade, none of them uses pathologic
+stage, and half the papers we could read report no clinical baseline at all. The variable was never missing from the
 data. It sits in the released files, and supplying it lifts the clinical arm from 0.5666 to 0.6638
-on identical cases, above five of the nine published entries. The mechanism is specific and
+on identical cases, above two of the four published entries on verified folds and five of all
+nine. The mechanism is specific and
 checkable: muscle-invasive urothelial carcinoma is 94.4\% one grade level, so the covariate the
 field has been comparing against cannot separate the patients it does not distinguish.
 
 The second is a method. At 359 patients and 113 events an in-sample fit at sixteen parameters
 reaches 0.7474 on pure noise, so ModRank spends its events on one penalised Cox model per modality
-and none on the combination, which is an equal-weight rank average. It reaches 0.7212, the highest value reported on these folds, with 1,049 coefficients against two competitors' 25 million. It does not clear the selection-corrected bar its own decision rule should have set, and we report that alongside the number. What the same analysis also shows is that this cohort cannot resolve
+and none on the combination, which is an equal-weight rank average. It reaches 0.7212, the highest value reported on these folds, with 1,049 coefficients against two competitors' 25 million. It does not clear the selection-corrected bar its own decision rule should have set, and we report that alongside the number. What the same analysis also shows is that this cohort has little power for
 margins of the size the literature reports, ModRank's own included, so the ranking that number wins
 is a convention rather than a measurement. The correction to the baseline does not depend on that
 convention, and it is the part of this paper a reader can adopt tomorrow.
@@ -1304,7 +1340,14 @@ is TCGA-BLCA, with disease-specific survival from the TCGA Pan-Cancer Clinical D
 new data were generated.
 
 \section{Code availability}
-\TODOport{Repository URL, and the exact commit that produced every reported number.}
+All analysis code, the frozen benchmark protocol, the iteration ledger, the confirmatory run and the
+outcome-permuted selection null are archived on Zenodo under the concept identifier
+\url{https://doi.org/10.5281/zenodo.22025756}, which resolves to the most recent archived version.
+Version 1.0.0, deposited on 20 August 2026 as \url{https://doi.org/10.5281/zenodo.22025757}, is the
+version that produced every number reported here, and the archive carries a check script that
+recomputes those numbers from the deposited result files rather than reading them from this
+manuscript. The same content is held in a repository at \url{https://github.com/gxCaesar/modrank}.
+Both are public.
 
 \bibliographystyle{plain}
 \bibliography{../references}

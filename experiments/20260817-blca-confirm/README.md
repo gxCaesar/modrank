@@ -1,7 +1,7 @@
 # 20260817-blca-confirm — the frozen confirmatory run
 
-One run, against `development/benchmark-protocol.json` (`frozen_at: 2026-08-17`). No iteration
-after the freeze. `phase_of_origin: frozen`.
+One run, against `development/benchmark-protocol.json` (`frozen_at: 2026-08-17`,
+`split_hash 0d0b8f82e7f5aa6e…`). No iteration after the freeze. `phase_of_origin: frozen`.
 
 ## Observed
 
@@ -84,8 +84,8 @@ Two things the number does **not** say, both declared before the run:
 ## Provenance
 
 - `run.sh` — the exact command, written before the run
-- `env.txt` — UTC time, Python 3.8.20 / numpy 1.24.4 / scipy 1.10.1, the frozen protocol date,
-  and the leakage-falsifier verdict
+- `env.txt` — host, UTC time, git HEAD, Python 3.8.20 / numpy 1.24.4 / scipy 1.10.1, the frozen
+  protocol date, the split hash, and the leakage-falsifier verdict
 - `code/` — a copy of the four modules the run imported, so the run is readable without the
   scratchpad
 - `results/confirmatory.json` — the full record

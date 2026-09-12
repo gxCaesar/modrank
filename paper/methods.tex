@@ -11,8 +11,15 @@
 TCGA-BLCA, disease-specific survival, as defined by the metadata SurvPath
 releases~\citep{jaume2024survpath}: the columns the disease-specific survival time and
 the censoring indicator in the released benchmark files, which derive from the
-TCGA Pan-Cancer Clinical Data Resource~\citep{liu2018tcgacdr}. An event is
+TCGA Pan-Cancer Clinical Data Resource~\citep{liu2018tcgacdr}. A case has an event when
 the censoring indicator is zero.
+
+The prediction this benchmark scores is a post-operative one. The tumours had not been exposed
+to chemotherapy when the tissue was acquired~\citep{robertson2017blca}, the stage is the
+pathologic stage of the resected specimen, and survival runs from the date of initial pathologic
+diagnosis, the origin the resource uses for every endpoint~\citep{liu2018tcgacdr}. A score of this
+kind can inform adjuvant treatment and follow-up. It cannot inform the decision to give
+neoadjuvant chemotherapy, which is taken before the specimen exists.
 
 The analysis cohort is the intersection of cases holding a slide embedding and a disease-specific
 survival label: 359 cases, 113 events, 24{,}219 comparable pairs. That is exactly the set
@@ -27,8 +34,9 @@ Fold sizes (train/validation, cases): 289/70, 287/72, 284/75, 288/71, 288/71. We
 the PIBD repository~\citep{zhang2024pibd} and confirmed byte by byte that all five files are
 byte-identical to SurvPath's.
 
-A canonical membership manifest records the exact train and validation case identifiers used in
-every fold so that a later run cannot silently use a different partition.
+A canonical membership manifest (per fold, the fold index and the comma-joined sorted train and validation case identifiers, newline-joined) is recorded in
+a machine-readable split manifest whose SHA-256 is bound into the frozen protocol so that a
+later run cannot silently use a different partition.
 
 \paragraph{Verifying the comparators' folds.} Fold identity is the axis on which these results are
 or are not comparable, and it is not uniform across the field, so we checked it rather than assuming
@@ -39,8 +47,8 @@ not the other.
 
 The rest cannot be checked. APL's repository contains two files. MMP states its own site-stratified
 protocol and OTSurv follows MMP, so neither uses the released partition. MOAD-FNet and DSCASurv
-release no split files at all. Values from that group are quoted rather than placed in the same
-column, and are excluded from the comparison the paper's claim rests on.
+release no split files at all. Values from that group are listed separately wherever they
+appear, and are excluded from the comparison the paper's claim rests on.
 
 \subsection*{Representations}
 
@@ -100,8 +108,9 @@ standard deviations only. The estimator is identical for every view.
 \paragraph{Why the estimator is not selected per view.} It could be, and we measured what that
 costs. Choosing among $\{$plain ridge, dense-grid ridge, bagged ridge$\}$ per view by inner
 cross-validation gives 0.6568, 0.6543 and 0.6743 for the morphology, transcriptome and clinical
-views against 0.6596, 0.6510 and 0.6856 for plain ridge everywhere: selection \emph{cost}
-performance on two views of three. At 287 training patients the inner criterion cannot reliably
+views against 0.6596, 0.6510 and 0.6856 for plain ridge everywhere, measured during development
+while the clinical view was still the earlier block that Amendment~A1 replaced: selection
+\emph{cost} performance on two views of three. At 287 training patients the inner criterion cannot reliably
 separate estimators that differ by 0.02, so adaptive selection buys noise at full price.
 
 \subsection*{Combination}
@@ -158,6 +167,8 @@ and they answer different questions:
     $0.679+0.0239=0.7029$ is the pre-registered target. The campaign finished at 269 candidates,
     all of them scored before the confirmatory run, and the same term over 269 is $0.0244$ for a
     bar of $0.7034$. Both are reported, because the frozen figure is the smaller of the two.
+    Both rest on the wrong standard deviation, as the Results show, and neither is used as a test
+    the result passes.
   \item Case-level bootstrap. 6{,}000 replicates resampling \emph{cases}, never comparable
     pairs, because pairs sharing a patient are not independent. Where a restricted pair set is used, the ``clinically tied'' decile, the threshold is recomputed inside each replicate, so it
     is a property of the resampled cohort rather than of the original one.
@@ -229,8 +240,8 @@ block takes every clinical column from the incumbent's own files, which \emph{dr
 our cached query had supplied, and that is worth $-0.0110$.
 
 Net, the reported primary fell from 0.7260 to 0.7212, a move of $-0.0048$ and the same size
-as the seed-to-seed SD. We report the lower, more conservative arm, and both figures clear the
-pre-registered target so the verdict is unchanged. The amendment is recorded in the protocol with
+as the seed-to-seed SD. We report the lower, more conservative arm. Both values exceed the target
+as it was frozen, and the Results show why that target was itself mis-specified. The amendment is recorded in the protocol with
 all four blocks measured. The conservative arm, every clinical column from the incumbent's own
 files, is the one reported, not the higher-scoring variant that adds T, N and M from an external
 clinical query under a selection rule of our own design.
@@ -243,7 +254,7 @@ same split under a different numerical stack has been shown elsewhere to move a 
 than the margins this area publishes.
 
 \paragraph{Availability.} \TODO{repository URL and archived DOI -- create at submission. The target
-venue requires a repository issuing DOIs.} The frozen protocol, the split manifest,
+venue requires a repository issuing DOIs.} The frozen protocol, the split manifest with its hash,
 the iteration ledger covering all 269 scored candidates, the error atlas, the component
 pre-registrations with their controls, and the confirmatory run with its logs and environment record
 are all included.

@@ -1,0 +1,2198 @@
+{
+ "artifact_type": "geo_bladder_gate0_joint_count",
+ "phase_of_origin": "pre_analysis",
+ "reportable": false,
+ "series": {
+  "GSE31684_series_matrix.txt.gz": {
+   "platform": "GPL570",
+   "samples": 93,
+   "probes": 54675,
+   "characteristics": {
+    "gender": {
+     "present": 93,
+     "n_levels": 2,
+     "top_levels": [
+      [
+       "male",
+       68
+      ],
+      [
+       "female",
+       25
+      ]
+     ]
+    },
+    "preopclinstage": {
+     "present": 93,
+     "n_levels": 5,
+     "top_levels": [
+      [
+       "T2",
+       55
+      ],
+      [
+       "T1",
+       19
+      ],
+      [
+       "T3",
+       10
+      ],
+      [
+       "Ta",
+       8
+      ],
+      [
+       "T4",
+       1
+      ]
+     ]
+    },
+    "age at rc": {
+     "present": 93,
+     "n_levels": 92,
+     "top_levels": [
+      [
+       "51.33",
+       2
+      ],
+      [
+       "64.06",
+       1
+      ],
+      [
+       "62.14",
+       1
+      ],
+      [
+       "65.96",
+       1
+      ],
+      [
+       "56.1",
+       1
+      ],
+      [
+       "68",
+       1
+      ],
+      [
+       "69.93",
+       1
+      ],
+      [
+       "65",
+       1
+      ],
+      [
+       "69.44",
+       1
+      ],
+      [
+       "47.47",
+       1
+      ]
+     ]
+    },
+    "survival.months": {
+     "present": 93,
+     "n_levels": 92,
+     "top_levels": [
+      [
+       "4.435318",
+       2
+      ],
+      [
+       "103.7864",
+       1
+      ],
+      [
+       "13.17454",
+       1
+      ],
+      [
+       "19.77823",
+       1
+      ],
+      [
+       "16.4271",
+       1
+      ],
+      [
+       "13.14168",
+       1
+      ],
+      [
+       "87.85216",
+       1
+      ],
+      [
+       "173.4045",
+       1
+      ],
+      [
+       "108.4517",
+       1
+      ],
+      [
+       "175.5072",
+       1
+      ]
+     ]
+    },
+    "rc_stage": {
+     "present": 93,
+     "n_levels": 5,
+     "top_levels": [
+      [
+       "pT3",
+       42
+      ],
+      [
+       "pT4",
+       19
+      ],
+      [
+       "pT2",
+       17
+      ],
+      [
+       "pT1",
+       10
+      ],
+      [
+       "pTa",
+       5
+      ]
+     ]
+    },
+    "rc_histology": {
+     "present": 93,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "TCC",
+       86
+      ],
+      [
+       "TCC/Squamous",
+       5
+      ],
+      [
+       "TCC/CIS",
+       2
+      ]
+     ]
+    },
+    "plnd result": {
+     "present": 77,
+     "n_levels": 4,
+     "top_levels": [
+      [
+       "Negative",
+       49
+      ],
+      [
+       "Positive",
+       28
+      ],
+      [
+       "Nx",
+       14
+      ],
+      [
+       "NX",
+       2
+      ]
+     ]
+    },
+    "rc grade": {
+     "present": 93,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "High",
+       86
+      ],
+      [
+       "Low",
+       6
+      ],
+      [
+       "high",
+       1
+      ]
+     ]
+    },
+    "nomogram score": {
+     "present": 93,
+     "n_levels": 90,
+     "top_levels": [
+      [
+       "1",
+       4
+      ],
+      [
+       "81.44001734",
+       1
+      ],
+      [
+       "81.71198473",
+       1
+      ],
+      [
+       "79.95740897",
+       1
+      ],
+      [
+       "11.08510015",
+       1
+      ],
+      [
+       "49.06355452",
+       1
+      ],
+      [
+       "41.39963921",
+       1
+      ],
+      [
+       "50.12822813",
+       1
+      ],
+      [
+       "64.48725601",
+       1
+      ],
+      [
+       "76.49581054",
+       1
+      ]
+     ]
+    },
+    "distant mets": {
+     "present": 93,
+     "n_levels": 2,
+     "top_levels": [
+      [
+       "0",
+       59
+      ],
+      [
+       "1",
+       34
+      ]
+     ]
+    },
+    "local recurrence": {
+     "present": 93,
+     "n_levels": 2,
+     "top_levels": [
+      [
+       "0",
+       73
+      ],
+      [
+       "1",
+       20
+      ]
+     ]
+    },
+    "urothelial recurrence": {
+     "present": 93,
+     "n_levels": 2,
+     "top_levels": [
+      [
+       "0",
+       84
+      ],
+      [
+       "1",
+       9
+      ]
+     ]
+    },
+    "metastasis": {
+     "present": 93,
+     "n_levels": 2,
+     "top_levels": [
+      [
+       "0",
+       57
+      ],
+      [
+       "1",
+       36
+      ]
+     ]
+    },
+    "last known status": {
+     "present": 93,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "DOD",
+       38
+      ],
+      [
+       "NED",
+       28
+      ],
+      [
+       "DOC",
+       27
+      ]
+     ]
+    },
+    "prerc_chemo": {
+     "present": 93,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "No",
+       89
+      ],
+      [
+       "Yes",
+       3
+      ],
+      [
+       "no",
+       1
+      ]
+     ]
+    },
+    "post rc_chemo": {
+     "present": 93,
+     "n_levels": 2,
+     "top_levels": [
+      [
+       "No",
+       58
+      ],
+      [
+       "Yes",
+       35
+      ]
+     ]
+    },
+    "smoking": {
+     "present": 93,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "Former",
+       56
+      ],
+      [
+       "Current",
+       19
+      ],
+      [
+       "Never",
+       18
+      ]
+     ]
+    },
+    "postchemo type": {
+     "present": 35,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "",
+       58
+      ],
+      [
+       "salvage",
+       19
+      ],
+      [
+       "adjuvant",
+       16
+      ]
+     ]
+    },
+    "smokingpack-years": {
+     "present": 75,
+     "n_levels": 21,
+     "top_levels": [
+      [
+       "",
+       18
+      ],
+      [
+       "30",
+       10
+      ],
+      [
+       "40",
+       9
+      ],
+      [
+       "60",
+       9
+      ],
+      [
+       "10",
+       8
+      ],
+      [
+       "20",
+       5
+      ],
+      [
+       "80",
+       5
+      ],
+      [
+       "50",
+       4
+      ],
+      [
+       "5",
+       4
+      ],
+      [
+       "unk",
+       4
+      ]
+     ]
+    },
+    "recurrence free survival months (distant and local)": {
+     "present": 93,
+     "n_levels": 92,
+     "top_levels": [
+      [
+       "3.383984",
+       2
+      ],
+      [
+       "103.7864",
+       1
+      ],
+      [
+       "7.129363",
+       1
+      ],
+      [
+       "10.38193",
+       1
+      ],
+      [
+       "15.54004",
+       1
+      ],
+      [
+       "13.14168",
+       1
+      ],
+      [
+       "2.726899",
+       1
+      ],
+      [
+       "87.85216",
+       1
+      ],
+      [
+       "173.4045",
+       1
+      ],
+      [
+       "96.16427",
+       1
+      ]
+     ]
+    },
+    "recurrence/dod": {
+     "present": 93,
+     "n_levels": 2,
+     "top_levels": [
+      [
+       "No",
+       54
+      ],
+      [
+       "Yes",
+       39
+      ]
+     ]
+    },
+    "cluster": {
+     "present": 90,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "1",
+       48
+      ],
+      [
+       "2",
+       42
+      ],
+      [
+       "NA",
+       3
+      ]
+     ]
+    }
+   },
+   "candidate_keys_by_variable": {
+    "stage": [
+     "rc_stage"
+    ],
+    "grade": [
+     "rc grade"
+    ],
+    "age": [
+     "age at rc"
+    ],
+    "sex": [
+     "gender"
+    ],
+    "time": [
+     "recurrence free survival months (distant and local)",
+     "survival.months"
+    ],
+    "event": [
+     "last known status",
+     "local recurrence",
+     "recurrence free survival months (distant and local)",
+     "recurrence/dod",
+     "urothelial recurrence"
+    ]
+   }
+  },
+  "GSE32894_series_matrix.txt.gz": {
+   "platform": "GPL6947",
+   "samples": 308,
+   "probes": 24402,
+   "characteristics": {
+    "gender": {
+     "present": 308,
+     "n_levels": 2,
+     "top_levels": [
+      [
+       "M",
+       228
+      ],
+      [
+       "F",
+       80
+      ]
+     ]
+    },
+    "age": {
+     "present": 308,
+     "n_levels": 54,
+     "top_levels": [
+      [
+       "75",
+       16
+      ],
+      [
+       "76",
+       13
+      ],
+      [
+       "71",
+       12
+      ],
+      [
+       "67",
+       12
+      ],
+      [
+       "79",
+       12
+      ],
+      [
+       "65",
+       12
+      ],
+      [
+       "83",
+       12
+      ],
+      [
+       "57",
+       11
+      ],
+      [
+       "61",
+       11
+      ],
+      [
+       "72",
+       10
+      ]
+     ]
+    },
+    "hyb_slide": {
+     "present": 308,
+     "n_levels": 37,
+     "top_levels": [
+      [
+       "S25",
+       12
+      ],
+      [
+       "S27",
+       12
+      ],
+      [
+       "S21",
+       11
+      ],
+      [
+       "S9",
+       11
+      ],
+      [
+       "S18",
+       11
+      ],
+      [
+       "S31",
+       11
+      ],
+      [
+       "S15",
+       11
+      ],
+      [
+       "S3",
+       10
+      ],
+      [
+       "S2",
+       10
+      ],
+      [
+       "S12",
+       10
+      ]
+     ]
+    },
+    "labeling_plate": {
+     "present": 308,
+     "n_levels": 5,
+     "top_levels": [
+      [
+       "P4",
+       83
+      ],
+      [
+       "P5",
+       78
+      ],
+      [
+       "P1",
+       63
+      ],
+      [
+       "P2",
+       56
+      ],
+      [
+       "P6",
+       28
+      ]
+     ]
+    },
+    "molecular_subtype": {
+     "present": 308,
+     "n_levels": 7,
+     "top_levels": [
+      [
+       "MS1b",
+       78
+      ],
+      [
+       "MS2a.2",
+       55
+      ],
+      [
+       "MS1a",
+       53
+      ],
+      [
+       "MS2b.1",
+       43
+      ],
+      [
+       "MS2a.1",
+       30
+      ],
+      [
+       "MS2b2.2",
+       29
+      ],
+      [
+       "MS2b2.1",
+       20
+      ]
+     ]
+    },
+    "tumor_stage": {
+     "present": 306,
+     "n_levels": 9,
+     "top_levels": [
+      [
+       "Ta",
+       116
+      ],
+      [
+       "T1",
+       97
+      ],
+      [
+       "T2",
+       82
+      ],
+      [
+       "T3b",
+       6
+      ],
+      [
+       "T2b",
+       2
+      ],
+      [
+       "Tx",
+       2
+      ],
+      [
+       "T2a",
+       1
+      ],
+      [
+       "T3",
+       1
+      ],
+      [
+       "T4a",
+       1
+      ]
+     ]
+    },
+    "tumor_grade": {
+     "present": 308,
+     "n_levels": 5,
+     "top_levels": [
+      [
+       "G3",
+       154
+      ],
+      [
+       "G2",
+       103
+      ],
+      [
+       "G1",
+       48
+      ],
+      [
+       "Gx",
+       2
+      ],
+      [
+       "G4",
+       1
+      ]
+     ]
+    },
+    "progression_to_higher_stage_or_radiotherapy_(yes/no)": {
+     "present": 298,
+     "n_levels": 13,
+     "top_levels": [
+      [
+       "no",
+       258
+      ],
+      [
+       "yes (T2)",
+       13
+      ],
+      [
+       "",
+       10
+      ],
+      [
+       "yes (T1)",
+       5
+      ],
+      [
+       "yes (T3)",
+       5
+      ],
+      [
+       "yes (CIS)",
+       4
+      ],
+      [
+       "yes (T3b)",
+       4
+      ],
+      [
+       "yes (radiotherapy)",
+       3
+      ],
+      [
+       "yes (Cystectomy Stage T4a)",
+       2
+      ],
+      [
+       "yes (Cystectomy Stage T1 + CIS)",
+       1
+      ]
+     ]
+    },
+    "dod_excluded_(yes/no)": {
+     "present": 304,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "no",
+       224
+      ],
+      [
+       "yes",
+       80
+      ],
+      [
+       "",
+       4
+      ]
+     ]
+    },
+    "time_to_dod_(months)": {
+     "present": 224,
+     "n_levels": 213,
+     "top_levels": [
+      [
+       "",
+       84
+      ],
+      [
+       "17.68767123",
+       3
+      ],
+      [
+       "55.03561644",
+       2
+      ],
+      [
+       "6.575342466",
+       2
+      ],
+      [
+       "29.49041096",
+       2
+      ],
+      [
+       "69.50136986",
+       2
+      ],
+      [
+       "54.34520548",
+       2
+      ],
+      [
+       "67.92328767",
+       2
+      ],
+      [
+       "58.02739726",
+       2
+      ],
+      [
+       "13.41369863",
+       2
+      ]
+     ]
+    },
+    "node_status": {
+     "present": 71,
+     "n_levels": 9,
+     "top_levels": [
+      [
+       "",
+       237
+      ],
+      [
+       "pN0",
+       47
+      ],
+      [
+       "pN2",
+       10
+      ],
+      [
+       "N+",
+       7
+      ],
+      [
+       "pN1",
+       3
+      ],
+      [
+       "pN3",
+       1
+      ],
+      [
+       "pN1mic",
+       1
+      ],
+      [
+       "pN0(i+)",
+       1
+      ],
+      [
+       "N0",
+       1
+      ]
+     ]
+    },
+    "dod_event_(yes/no)": {
+     "present": 224,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "no",
+       199
+      ],
+      [
+       "",
+       84
+      ],
+      [
+       "yes",
+       25
+      ]
+     ]
+    }
+   },
+   "candidate_keys_by_variable": {
+    "stage": [
+     "progression_to_higher_stage_or_radiotherapy_(yes/no)",
+     "tumor_stage"
+    ],
+    "grade": [
+     "tumor_grade"
+    ],
+    "age": [
+     "age"
+    ],
+    "sex": [
+     "gender"
+    ],
+    "time": [
+     "time_to_dod_(months)"
+    ],
+    "event": [
+     "dod_event_(yes/no)",
+     "node_status",
+     "progression_to_higher_stage_or_radiotherapy_(yes/no)"
+    ]
+   }
+  },
+  "GSE48075_series_matrix.txt.gz": {
+   "platform": "GPL6947",
+   "samples": 142,
+   "probes": 48803,
+   "characteristics": {
+    "cstage": {
+     "present": 142,
+     "n_levels": 25,
+     "top_levels": [
+      [
+       "cT2N0M0",
+       36
+      ],
+      [
+       "cT1N0M0",
+       25
+      ],
+      [
+       "cTaN0M0",
+       24
+      ],
+      [
+       "cT3bN0M0",
+       12
+      ],
+      [
+       "cT1",
+       4
+      ],
+      [
+       "cT3bN+M0",
+       4
+      ],
+      [
+       "cTaN0",
+       4
+      ],
+      [
+       "cTa",
+       3
+      ],
+      [
+       "cT4bN0M0",
+       3
+      ],
+      [
+       "cT4aN0M0",
+       3
+      ]
+     ]
+    },
+    "fgfr3 mutation (1;yes, 0;no)": {
+     "present": 66,
+     "n_levels": 4,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "0",
+       54
+      ],
+      [
+       "1",
+       12
+      ],
+      [
+       "NA",
+       7
+      ]
+     ]
+    },
+    "gender": {
+     "present": 69,
+     "n_levels": 5,
+     "top_levels": [
+      [
+       "",
+       73
+      ],
+      [
+       "male",
+       32
+      ],
+      [
+       "Male",
+       20
+      ],
+      [
+       "Female",
+       13
+      ],
+      [
+       "female",
+       4
+      ]
+     ]
+    },
+    "ras mutation (1;yes, 0;no)": {
+     "present": 66,
+     "n_levels": 4,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "0",
+       63
+      ],
+      [
+       "NA",
+       7
+      ],
+      [
+       "1",
+       3
+      ]
+     ]
+    },
+    "rb1 mutation (1;yes, 0;no)": {
+     "present": 66,
+     "n_levels": 4,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "0",
+       59
+      ],
+      [
+       "NA",
+       7
+      ],
+      [
+       "1",
+       7
+      ]
+     ]
+    },
+    "p53 mutation (1;yes, 0;no)": {
+     "present": 66,
+     "n_levels": 4,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "0",
+       43
+      ],
+      [
+       "1",
+       23
+      ],
+      [
+       "NA",
+       7
+      ]
+     ]
+    },
+    "age (at specimen collection)": {
+     "present": 73,
+     "n_levels": 66,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "83.1",
+       2
+      ],
+      [
+       "69.1",
+       2
+      ],
+      [
+       "65.4",
+       2
+      ],
+      [
+       "72.1",
+       2
+      ],
+      [
+       "63.3",
+       2
+      ],
+      [
+       "67.7",
+       2
+      ],
+      [
+       "57.5",
+       2
+      ],
+      [
+       "71.4",
+       2
+      ],
+      [
+       "74.6",
+       1
+      ]
+     ]
+    },
+    "os censor": {
+     "present": 73,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "uncensored",
+       45
+      ],
+      [
+       "censored",
+       28
+      ]
+     ]
+    },
+    "dss censor": {
+     "present": 73,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "censored",
+       38
+      ],
+      [
+       "uncensored",
+       35
+      ]
+     ]
+    },
+    "survival (mo)": {
+     "present": 73,
+     "n_levels": 72,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "3.4",
+       2
+      ],
+      [
+       "8.0",
+       2
+      ],
+      [
+       "37.2",
+       1
+      ],
+      [
+       "60.0",
+       1
+      ],
+      [
+       "2.9",
+       1
+      ],
+      [
+       "7.6",
+       1
+      ],
+      [
+       "20.4",
+       1
+      ],
+      [
+       "68.1",
+       1
+      ],
+      [
+       "7.9",
+       1
+      ]
+     ]
+    }
+   },
+   "candidate_keys_by_variable": {
+    "stage": [],
+    "grade": [],
+    "age": [
+     "age (at specimen collection)"
+    ],
+    "sex": [
+     "gender"
+    ],
+    "time": [],
+    "event": [
+     "dss censor",
+     "os censor"
+    ]
+   }
+  },
+  "GSE48277-GPL10558_series_matrix.txt.gz": {
+   "platform": "GPL14951",
+   "samples": 48,
+   "probes": 47323,
+   "characteristics": {
+    "cell line": {
+     "present": 48,
+     "n_levels": 33,
+     "top_levels": [
+      [
+       "UC14",
+       6
+      ],
+      [
+       "Scaber",
+       6
+      ],
+      [
+       "UC7",
+       6
+      ],
+      [
+       "urothelial cancer cell line UM-UC18",
+       1
+      ],
+      [
+       "urothelial cancer cell line UM-UC10",
+       1
+      ],
+      [
+       "urothelial cancer cell line Um-UC11",
+       1
+      ],
+      [
+       "urothelial cancer cell line BV",
+       1
+      ],
+      [
+       "urothelial cancer cell line T24",
+       1
+      ],
+      [
+       "urothelial cancer cell line UM-UC3",
+       1
+      ],
+      [
+       "urothelial cancer cell line UM-UC6",
+       1
+      ]
+     ]
+    },
+    "sample type": {
+     "present": 18,
+     "n_levels": 7,
+     "top_levels": [
+      [
+       "",
+       30
+      ],
+      [
+       "Non-targeting shRNA",
+       3
+      ],
+      [
+       "p63 shRNA",
+       3
+      ],
+      [
+       "Non-targeting siRNA",
+       3
+      ],
+      [
+       "STAT3 siRNA",
+       3
+      ],
+      [
+       "rosiglitazone treated (1\u03bcM, 24hours)",
+       3
+      ],
+      [
+       "control",
+       3
+      ]
+     ]
+    }
+   },
+   "candidate_keys_by_variable": {
+    "stage": [],
+    "grade": [],
+    "age": [],
+    "sex": [],
+    "time": [],
+    "event": []
+   }
+  },
+  "GSE48277-GPL14951_series_matrix.txt.gz": {
+   "platform": "GPL14951",
+   "samples": 159,
+   "probes": 29377,
+   "characteristics": {
+    "cstage": {
+     "present": 159,
+     "n_levels": 18,
+     "top_levels": [
+      [
+       "T2N0M0",
+       78
+      ],
+      [
+       "T3N0M0",
+       36
+      ],
+      [
+       "T3bN0M0",
+       11
+      ],
+      [
+       "T1N0M0",
+       8
+      ],
+      [
+       "T4N0M0",
+       4
+      ],
+      [
+       "T4aN0M0",
+       4
+      ],
+      [
+       "T2N0M1",
+       2
+      ],
+      [
+       "T1bN0M0",
+       2
+      ],
+      [
+       "T4NxM0",
+       2
+      ],
+      [
+       "T2N1M0",
+       2
+      ]
+     ]
+    },
+    "tissue type": {
+     "present": 23,
+     "n_levels": 2,
+     "top_levels": [
+      [
+       "",
+       136
+      ],
+      [
+       "muscle-invasive bladder cancer (MIBC)",
+       23
+      ]
+     ]
+    },
+    "histology tur": {
+     "present": 73,
+     "n_levels": 9,
+     "top_levels": [
+      [
+       "",
+       86
+      ],
+      [
+       "urothelial",
+       54
+      ],
+      [
+       "squamous diff",
+       11
+      ],
+      [
+       "micropapillary",
+       3
+      ],
+      [
+       "sarcomatoid diff",
+       1
+      ],
+      [
+       "focal glandular",
+       1
+      ],
+      [
+       "urothelial focal glandular",
+       1
+      ],
+      [
+       "urothelial- focal micropapillary",
+       1
+      ],
+      [
+       "urothelial with focal micropapillary",
+       1
+      ]
+     ]
+    },
+    "response to mvac (downstaged to p0 or t1 w/ nac)": {
+     "present": 23,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "",
+       136
+      ],
+      [
+       "no",
+       17
+      ],
+      [
+       "yes",
+       6
+      ]
+     ]
+    },
+    "sample procured": {
+     "present": 20,
+     "n_levels": 2,
+     "top_levels": [
+      [
+       "",
+       139
+      ],
+      [
+       "Cystectomy (post treatment)",
+       20
+      ]
+     ]
+    },
+    "pstage": {
+     "present": 96,
+     "n_levels": 24,
+     "top_levels": [
+      [
+       "",
+       63
+      ],
+      [
+       "pT3bN2M0",
+       15
+      ],
+      [
+       "pT2bN0M0",
+       11
+      ],
+      [
+       "pT0N0M0",
+       10
+      ],
+      [
+       "pT3aN0M0",
+       9
+      ],
+      [
+       "pT3bN0M0",
+       8
+      ],
+      [
+       "pT3bN1M0",
+       6
+      ],
+      [
+       "pT3aN2M0",
+       5
+      ],
+      [
+       "pT4aN0M0",
+       5
+      ],
+      [
+       "pT4aN2M0",
+       4
+      ]
+     ]
+    },
+    "subset type": {
+     "present": 23,
+     "n_levels": 4,
+     "top_levels": [
+      [
+       "",
+       136
+      ],
+      [
+       "basal",
+       10
+      ],
+      [
+       "luminal",
+       7
+      ],
+      [
+       "p53-like",
+       6
+      ]
+     ]
+    },
+    "treatment": {
+     "present": 20,
+     "n_levels": 2,
+     "top_levels": [
+      [
+       "",
+       139
+      ],
+      [
+       "dose-dense (dd) MVAC",
+       20
+      ]
+     ]
+    },
+    "cystectomy histology": {
+     "present": 73,
+     "n_levels": 16,
+     "top_levels": [
+      [
+       "",
+       86
+      ],
+      [
+       "urothelial",
+       47
+      ],
+      [
+       "squamous diff",
+       6
+      ],
+      [
+       "no tumor identified",
+       6
+      ],
+      [
+       "sarcomatoid diff",
+       2
+      ],
+      [
+       "urothelial focal glandular",
+       2
+      ],
+      [
+       "urothelial ?sarc diff",
+       1
+      ],
+      [
+       "lymphoepithelioma, focal glandular",
+       1
+      ],
+      [
+       "micropapillary",
+       1
+      ],
+      [
+       "urothelial, focal glandular",
+       1
+      ]
+     ]
+    },
+    "nac": {
+     "present": 53,
+     "n_levels": 4,
+     "top_levels": [
+      [
+       "",
+       86
+      ],
+      [
+       "no",
+       37
+      ],
+      [
+       "na",
+       20
+      ],
+      [
+       "yes-MVAC/A",
+       16
+      ]
+     ]
+    },
+    "age (at diagnosis)": {
+     "present": 73,
+     "n_levels": 63,
+     "top_levels": [
+      [
+       "",
+       86
+      ],
+      [
+       "62.6",
+       3
+      ],
+      [
+       "69.1",
+       3
+      ],
+      [
+       "41.0",
+       2
+      ],
+      [
+       "62.4",
+       2
+      ],
+      [
+       "67.6",
+       2
+      ],
+      [
+       "68.9",
+       2
+      ],
+      [
+       "68.8",
+       2
+      ],
+      [
+       "58.7",
+       2
+      ],
+      [
+       "73.0",
+       2
+      ]
+     ]
+    },
+    "race": {
+     "present": 73,
+     "n_levels": 6,
+     "top_levels": [
+      [
+       "",
+       86
+      ],
+      [
+       "Caucasian",
+       64
+      ],
+      [
+       "Hispanic",
+       4
+      ],
+      [
+       "Black",
+       3
+      ],
+      [
+       "Asian",
+       1
+      ],
+      [
+       "White",
+       1
+      ]
+     ]
+    },
+    "gender": {
+     "present": 73,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "",
+       86
+      ],
+      [
+       "M",
+       59
+      ],
+      [
+       "F",
+       14
+      ]
+     ]
+    },
+    "os censor": {
+     "present": 73,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "",
+       86
+      ],
+      [
+       "censored",
+       39
+      ],
+      [
+       "uncensored",
+       34
+      ]
+     ]
+    },
+    "dss censor": {
+     "present": 73,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "",
+       86
+      ],
+      [
+       "censored",
+       48
+      ],
+      [
+       "uncensored",
+       25
+      ]
+     ]
+    },
+    "survival (mo)": {
+     "present": 73,
+     "n_levels": 72,
+     "top_levels": [
+      [
+       "",
+       86
+      ],
+      [
+       "31.9",
+       2
+      ],
+      [
+       "43.5",
+       2
+      ],
+      [
+       "23.5",
+       1
+      ],
+      [
+       "24.2",
+       1
+      ],
+      [
+       "180.0",
+       1
+      ],
+      [
+       "105.9",
+       1
+      ],
+      [
+       "15.5",
+       1
+      ],
+      [
+       "125.1",
+       1
+      ],
+      [
+       "72.9",
+       1
+      ]
+     ]
+    }
+   },
+   "candidate_keys_by_variable": {
+    "stage": [],
+    "grade": [],
+    "age": [
+     "age (at diagnosis)"
+    ],
+    "sex": [
+     "gender"
+    ],
+    "time": [],
+    "event": [
+     "dss censor",
+     "os censor"
+    ]
+   }
+  },
+  "GSE48277-GPL6947_series_matrix.txt.gz": {
+   "platform": "GPL14951",
+   "samples": 142,
+   "probes": 48803,
+   "characteristics": {
+    "cstage": {
+     "present": 142,
+     "n_levels": 25,
+     "top_levels": [
+      [
+       "cT2N0M0",
+       36
+      ],
+      [
+       "cT1N0M0",
+       25
+      ],
+      [
+       "cTaN0M0",
+       24
+      ],
+      [
+       "cT3bN0M0",
+       12
+      ],
+      [
+       "cT1",
+       4
+      ],
+      [
+       "cT3bN+M0",
+       4
+      ],
+      [
+       "cTaN0",
+       4
+      ],
+      [
+       "cTa",
+       3
+      ],
+      [
+       "cT4bN0M0",
+       3
+      ],
+      [
+       "cT4aN0M0",
+       3
+      ]
+     ]
+    },
+    "fgfr3 mutation (1;yes, 0;no)": {
+     "present": 66,
+     "n_levels": 4,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "0",
+       54
+      ],
+      [
+       "1",
+       12
+      ],
+      [
+       "NA",
+       7
+      ]
+     ]
+    },
+    "gender": {
+     "present": 69,
+     "n_levels": 5,
+     "top_levels": [
+      [
+       "",
+       73
+      ],
+      [
+       "male",
+       32
+      ],
+      [
+       "Male",
+       20
+      ],
+      [
+       "Female",
+       13
+      ],
+      [
+       "female",
+       4
+      ]
+     ]
+    },
+    "ras mutation (1;yes, 0;no)": {
+     "present": 66,
+     "n_levels": 4,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "0",
+       63
+      ],
+      [
+       "NA",
+       7
+      ],
+      [
+       "1",
+       3
+      ]
+     ]
+    },
+    "rb1 mutation (1;yes, 0;no)": {
+     "present": 66,
+     "n_levels": 4,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "0",
+       59
+      ],
+      [
+       "NA",
+       7
+      ],
+      [
+       "1",
+       7
+      ]
+     ]
+    },
+    "p53 mutation (1;yes, 0;no)": {
+     "present": 66,
+     "n_levels": 4,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "0",
+       43
+      ],
+      [
+       "1",
+       23
+      ],
+      [
+       "NA",
+       7
+      ]
+     ]
+    },
+    "age (at specimen collection)": {
+     "present": 73,
+     "n_levels": 66,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "83.1",
+       2
+      ],
+      [
+       "69.1",
+       2
+      ],
+      [
+       "65.4",
+       2
+      ],
+      [
+       "72.1",
+       2
+      ],
+      [
+       "63.3",
+       2
+      ],
+      [
+       "67.7",
+       2
+      ],
+      [
+       "57.5",
+       2
+      ],
+      [
+       "71.4",
+       2
+      ],
+      [
+       "74.6",
+       1
+      ]
+     ]
+    },
+    "os censor": {
+     "present": 73,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "uncensored",
+       45
+      ],
+      [
+       "censored",
+       28
+      ]
+     ]
+    },
+    "dss censor": {
+     "present": 73,
+     "n_levels": 3,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "censored",
+       38
+      ],
+      [
+       "uncensored",
+       35
+      ]
+     ]
+    },
+    "survival (mo)": {
+     "present": 73,
+     "n_levels": 72,
+     "top_levels": [
+      [
+       "",
+       69
+      ],
+      [
+       "3.4",
+       2
+      ],
+      [
+       "8.0",
+       2
+      ],
+      [
+       "37.2",
+       1
+      ],
+      [
+       "60.0",
+       1
+      ],
+      [
+       "2.9",
+       1
+      ],
+      [
+       "7.6",
+       1
+      ],
+      [
+       "20.4",
+       1
+      ],
+      [
+       "68.1",
+       1
+      ],
+      [
+       "7.9",
+       1
+      ]
+     ]
+    }
+   },
+   "candidate_keys_by_variable": {
+    "stage": [],
+    "grade": [],
+    "age": [
+     "age (at specimen collection)"
+    ],
+    "sex": [
+     "gender"
+    ],
+    "time": [],
+    "event": [
+     "dss censor",
+     "os censor"
+    ]
+   }
+  }
+ }
+}

@@ -1,9 +1,10 @@
 import numpy as np, pickle, glob
 import os
-BASE = os.environ.get("BLCA_SURVPATH_RESULTS")
-if not BASE:
-    raise SystemExit("Set BLCA_SURVPATH_RESULTS to the SurvPath results directory")
-R = os.path.join(BASE, "tcga_blca__nll_surv_a0.5_lr5e-04_l2Weight_0.0001_5foldcv_b1_survival_months_dss_"
+# default is where this ran on the compute host; override with $BLCA_SURVPATH_RESULTS
+R = os.environ.get(
+    "BLCA_SURVPATH_RESULTS",
+    "/data1/guanxing/bladder_cancer/experiments/20260816-survpath-blca-repro/results/"
+) + ("tcga_blca__nll_surv_a0.5_lr5e-04_l2Weight_0.0001_5foldcv_b1_survival_months_dss_"
      "dim1_768_patches_4096_wsiDim_256_epochs_5_fusion_None_modality_survpath_pathT_combine")
 v = [0.5875, 0.7834, 0.5328, 0.5222, 0.6475]
 print("MY REPRODUCTION : %.4f +/- %.4f  (5 folds)" % (np.mean(v), np.std(v, ddof=1)))
