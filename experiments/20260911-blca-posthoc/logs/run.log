@@ -1,0 +1,25 @@
+cohort 359 cases, 113 events; blocks slide 768 omics 275 clinical 6
+  seed 0 arms fitted (34 s)
+  seed 1 arms fitted (34 s)
+  seed 2 arms fitted (34 s)
+  seed 3 arms fitted (34 s)
+  seed 4 arms fitted (34 s)
+  known answer clinical_grade_seed0                     0.5666 (want 0.5666)
+  known answer clinical_stage_seed0                     0.6638 (want 0.6638)
+  known answer ours_grade_seed0                         0.6856 (want 0.6856)
+  known answer ours_seed0                               0.7225 (want 0.7225)
+  known answer primary_five_seed_mean                   0.7212 (want 0.7212)
+  known answer ours_canonical                           0.7237 (want 0.7237)
+  known answer survpath_plus_clinical_canonical         0.6897 (want 0.6897)
+  known answer pibd_plus_clinical_best_val_canonical    0.6989 (want 0.6989)
+  concatenation fitted (74 s)
+  seed 0 stacking and gate done (89 s)
+  seed 1 stacking and gate done (104 s)
+  seed 2 stacking and gate done (119 s)
+  seed 3 stacking and gate done (135 s)
+  seed 4 stacking and gate done (150 s)
+  added value ours           over weak +0.1204, over stage +0.0594, D +0.0610
+  added value survpath       over weak +0.0670, over stage +0.0253, D +0.0417
+  added value pibd_best_val  over weak +0.0841, over stage +0.0345, D +0.0496
+  added value pibd_final     over weak +0.0405, over stage -0.0004, D +0.0409
+wrote experiments/20260911-blca-posthoc/results (166 s)

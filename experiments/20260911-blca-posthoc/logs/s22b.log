@@ -1,0 +1,56 @@
+known answer on the released folds: {'ours': 0.7225, 'concat': 0.691, 'stacked': 0.7132} want {'ours': 0.7225, 'concat': 0.691, 'stacked': 0.7132}
+  resplit  1/24  ours 0.7040  concat 0.6656  stacked 0.6957  (53 s)
+  resplit  2/24  ours 0.7253  concat 0.6848  stacked 0.7066  (79 s)
+  resplit  3/24  ours 0.7153  concat 0.6888  stacked 0.6881  (106 s)
+  resplit  4/24  ours 0.7067  concat 0.6623  stacked 0.7015  (133 s)
+  resplit  5/24  ours 0.7028  concat 0.6740  stacked 0.6897  (159 s)
+  resplit  6/24  ours 0.7247  concat 0.6633  stacked 0.7211  (186 s)
+  resplit  7/24  ours 0.7114  concat 0.6674  stacked 0.7042  (214 s)
+  resplit  8/24  ours 0.7288  concat 0.6898  stacked 0.7147  (241 s)
+  resplit  9/24  ours 0.6980  concat 0.6666  stacked 0.6916  (268 s)
+  resplit 10/24  ours 0.7229  concat 0.6852  stacked 0.7182  (294 s)
+  resplit 11/24  ours 0.7174  concat 0.6504  stacked 0.7137  (321 s)
+  resplit 12/24  ours 0.7161  concat 0.6802  stacked 0.6952  (347 s)
+  resplit 13/24  ours 0.7227  concat 0.6625  stacked 0.7053  (374 s)
+  resplit 14/24  ours 0.7145  concat 0.6633  stacked 0.7107  (400 s)
+  resplit 15/24  ours 0.7091  concat 0.6480  stacked 0.6952  (427 s)
+  resplit 16/24  ours 0.7323  concat 0.6908  stacked 0.7132  (453 s)
+  resplit 17/24  ours 0.7163  concat 0.6877  stacked 0.6997  (480 s)
+  resplit 18/24  ours 0.7140  concat 0.6571  stacked 0.7093  (506 s)
+  resplit 19/24  ours 0.7164  concat 0.6434  stacked 0.7122  (533 s)
+  resplit 20/24  ours 0.7212  concat 0.6356  stacked 0.7078  (560 s)
+  resplit 21/24  ours 0.7104  concat 0.6758  stacked 0.6984  (586 s)
+  resplit 22/24  ours 0.7110  concat 0.6591  stacked 0.7022  (614 s)
+  resplit 23/24  ours 0.7076  concat 0.6843  stacked 0.6959  (703 s)
+  resplit 24/24  ours 0.7291  concat 0.6783  stacked 0.7210  (729 s)
+{
+ "ours_minus_concat": {
+  "mean": 0.0464,
+  "sd": 0.0158,
+  "min": 0.0233,
+  "max": 0.0856,
+  "fraction_positive": 1.0
+ },
+ "ours_minus_stacked": {
+  "mean": 0.0111,
+  "sd": 0.0065,
+  "min": 0.0036,
+  "max": 0.0272,
+  "fraction_positive": 1.0
+ },
+ "ours_minus_clinical": {
+  "mean": 0.0549,
+  "sd": 0.0083,
+  "min": 0.0363,
+  "max": 0.0679,
+  "fraction_positive": 1.0
+ },
+ "D_added_value_inflation": {
+  "mean": 0.0628,
+  "sd": 0.0086,
+  "min": 0.0457,
+  "max": 0.0804,
+  "fraction_positive": 1.0
+ }
+}
+site-grouped pooled: {'slide': 0.6312, 'omics': 0.673, 'clinical': 0.6568, 'grade': 0.5636, 'ours': 0.721, 'ours_grade': 0.679, 'concat': 0.6487, 'stacked': 0.6855}

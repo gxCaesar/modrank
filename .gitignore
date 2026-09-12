@@ -7,5 +7,13 @@ __pycache__/
 *.out
 *.bbl
 *.blg
+# except the run logs this release ships: they are the record of the runs that
+# produced the reported numbers, and the verifier checks for them by name.
+!experiments/20260817-blca-confirm/logs/confirm.log
+!experiments/20260818-selection-null/run.log
+!experiments/20260911-blca-posthoc/logs/run.log
+!experiments/20260911-blca-posthoc/logs/s22.log
+!experiments/20260911-blca-posthoc/logs/s22b.log
+!experiments/20260911-blca-posthoc/logs/s23.log
 # inputs are public releases, pointed at rather than redistributed
 data/

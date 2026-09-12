@@ -1,0 +1,2 @@
+ours      slope 0.770 | 24m pred 0.342 obs 0.341 Brier 0.1908 IPA 0.1516
+clinical  slope 0.849 | 24m pred 0.337 obs 0.341 Brier 0.2072 IPA 0.0788
