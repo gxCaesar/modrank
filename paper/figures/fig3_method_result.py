@@ -28,6 +28,7 @@ import os
 import sys
 
 import matplotlib.pyplot as plt
+import matplotlib.transforms as mtransforms
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -86,14 +87,18 @@ axa.set_xlabel("difference in concordance, cases resampled", fontsize=6.4)
 axa.set_ylim(-1.0, len(items) - 0.1)
 axa.text(0.128, len(items) - 0.45, "$p$ / Holm $q$", fontsize=6.0, va="center", fontweight="bold")
 n_surv = sum(1 for _, v in items if v["survives_at_0.05"])
-axa.set_title("six prespecified comparisons under Holm (%d of %d survive)"
+axa.set_title("six prespecified comparisons under Holm, %d of %d survive (filled)"
               % (n_surv, len(items)), fontsize=6.4, pad=6)
-axa.text(-0.028, -0.85, "filled = survives Holm at $\\alpha$=0.05,  open = does not", fontsize=5.9,
-         color="#5A6273", ha="left", va="center")
+# the filled/open key is in the title: as a note it crossed the delta=0 line inside the axes, and
+# below them it collided with the x label and panel b's title (2026-09-27); the caption defines it
 
 # =========================================================================== b, c  Kaplan-Meier
 KM = FSD["F1_kaplan_meier"]
 GRID = KM["ours"]["groups"]["low"]["at_risk_grid"]
+# the palest ladder step ("low") is a fill-only colour and was nearly invisible as a line on white;
+# a second channel -- linestyle, dark(high)=solid through pale(low)=dotted -- keeps the three
+# tertiles separable by more than colour in every panel that draws them, and in the legend.
+LS_RISK = {"high": "-", "middle": "--", "low": ":"}
 
 
 def draw_km(ax, arm, title, risk_table=True, ylab=True):
@@ -101,7 +106,7 @@ def draw_km(ax, arm, title, risk_table=True, ylab=True):
     for lab in ("low", "middle", "high"):
         g = d["groups"][lab]
         ax.step(g["times"], g["survival"], where="post", color=RISK[lab], lw=1.3,
-                label="%s (%d ev/%d)" % (lab, g["events"], g["n"]))
+                linestyle=LS_RISK[lab], label="%s (%d ev/%d)" % (lab, g["events"], g["n"]))
     ax.set_xlim(0, 96)
     ax.set_ylim(0, 1.02)
     ax.set_xticks([0, 24, 48, 72, 96])
@@ -121,9 +126,18 @@ def draw_km(ax, arm, title, risk_table=True, ylab=True):
             for x, v in zip(GRID, ar):
                 ax.annotate(str(v), (x, 0), xycoords=("data", "axes fraction"),
                             textcoords="offset points", xytext=(0, -32 - j * 8),
-                            ha="center", fontsize=5.4, color=RISK[lab], annotation_clip=False)
+                            ha="center", fontsize=5.4, color=INK, annotation_clip=False)
+            # a short line in the tertile's own colour and linestyle, at the start of its own row,
+            # so the row stays identifiable now the numbers themselves are printed in one ink
+            # -63pt landed off the LEFT EDGE OF THE PAGE (the axes' own left margin is only ~51pt
+            # on this panel, and clip_on=False disables axes clipping, not figure clipping) --
+            # -48 to -42 sits inside that margin, left of "at risk" (-34 to -13)
+            key_trans = mtransforms.offset_copy(ax.transAxes, fig=ax.figure, x=-30,
+                                                y=-32 - j * 8, units="points")
+            ax.plot([0.0, 0.035], [0, 0], transform=key_trans, color=RISK[lab], lw=1.3,
+                    linestyle=LS_RISK[lab], solid_capstyle="round", clip_on=False, zorder=5)
         ax.annotate("at risk", (0, 0), xycoords=("axes fraction", "axes fraction"),
-                    textcoords="offset points", xytext=(-34, -32), ha="left", fontsize=5.4,
+                    textcoords="offset points", xytext=(-34, -24), ha="left", fontsize=5.4,
                     color=INK, annotation_clip=False)
     return d
 
@@ -135,7 +149,7 @@ axb.annotate("median %.1f mo" % med[2], (med[2], 0.5), textcoords="offset points
 axb.text(0.97, 0.60, "low and middle:\nmedian not reached", transform=axb.transAxes, ha="right",
          va="top", fontsize=5.7, color="#5A6273", linespacing=1.3)
 
-for ax, arm, ttl, yl in ((axc1, "survpath_as_released", "incumbent,\nas released", True),
+for ax, arm, ttl, yl in ((axc1, "survpath_as_released", "SurvPath,\nas released", True),
                          (axc2, "survpath_plus_clinical", "the same, given\nthe same stage", False)):
     dd = draw_km(ax, arm, ttl, risk_table=False, ylab=yl)
     ax.set_ylabel("disease-specific survival" if yl else "", fontsize=6.6)
@@ -195,7 +209,7 @@ for yi, (k, v) in zip(ye, rows):
     # a mark of one colour per subset would need seven colours for an unordered variable; instead
     # the modalities present are shown as dots, which is what the panel is actually about
     for j, role in enumerate(("slide", "omics", "clinical")):
-        axe.scatter([0.5595 + j * 0.0095], [yi], s=9, zorder=4,
+        axe.scatter([0.5595 + j * 0.0095], [yi], s=9, zorder=4, marker=style.ROLE_MARKER[role],
                     color=C[role] if role in parts else "#FFFFFF",
                     edgecolor=C[role] if role in parts else "#C9CFD8", linewidth=0.7)
     axe.text(v + 0.0035, yi, "%.4f" % v, va="center", ha="left", fontsize=5.8,
@@ -226,11 +240,17 @@ MEASURED = [("ours", PC["ours"]["parameters"],
              C["competitor"]),
             ("PIBD", PC["pibd"]["parameters"],
              [e for e in PUB["entries"] if e["method"] == "PIBD"][0]["cindex"], C["competitor"])]
+# SurvPath and PIBD sit close together in both x (24.7M vs 26.9M parameters, barely separable on a
+# log axis) and y, so the default "9 pt straight up" offset that works for the other two points
+# lands the SurvPath label on its own marker. Given its own offset, up and to the left, into the
+# clear space below the PIBD label and left of the PIBD marker.
+LABEL_OFFSET = {"SurvPath": (-15, 15)}
 for name, p, c, col in MEASURED:
     axf.scatter([p], [c], s=46, color=col, edgecolor="none", zorder=3)
+    dx, dy = LABEL_OFFSET.get(name, (0, 9))
     axf.annotate("%s\n%s params" % (name, "{:,}".format(p)), (p, c), textcoords="offset points",
-                 xytext=(0, 9), ha="center", fontsize=5.9, color=col, fontweight="bold",
-                 linespacing=1.25)
+                 xytext=(dx, dy), ha="right" if dx else "center", fontsize=5.9, color=col,
+                 fontweight="bold", linespacing=1.25)
 axf.set_xscale("log")
 axf.set_xlim(3e2, 1.2e8)
 axf.set_ylim(0.575, 0.755)

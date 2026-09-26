@@ -176,8 +176,41 @@ paper rather than averaged over.
   pathologic staging.
 - **Not an audit paper.** The stage finding is evidence for the method's design, not the
   contribution. The contribution is the method and its number.
-- **Not externally validated.** This benchmark has no unopened held-out split and neither does any
-  published entrant. The four non-bladder TCGA cohorts serve as replication of the stage finding,
-  not as external validation of the bladder number.
+- **Not externally validated** *(amended 2026-09-12, see below)*. This benchmark has no unopened
+  held-out split and neither does any published entrant. The four non-bladder TCGA cohorts serve as
+  replication of the stage finding, not as external validation of the bladder number.
+
+### Amendment, 2026-09-12: the four non-bladder cohorts are promoted to validation
+
+**What changed.** The clause above scoped the four non-bladder TCGA studies to replication of the
+stage finding. They are now also reported as validation of the method, on the strength of a
+three-modality arm that was run during the S5 campaign and whose intervals were computed on this
+date (`experiments/20260912-five-cohort-intervals/`).
+
+**Who decided, and when.** The user, on 2026-09-12, in response to an adversarial review of the two
+Nature Communications PDFs that recommended desk rejection on the ground that "the proposed
+prediction method has no independent validation with all three modalities". The instruction was to
+promote the five cohorts to validation, strengthen the work, and submit only at best quality.
+
+**What was known at the time, in full, including what weakens it.** The point estimates existed
+before the decision; the intervals did not, and they were computed before any manuscript text was
+written, precisely so the decision could not be made on point estimates. Against the corrected
+clinical reference the method separates from zero in **three of the five** cohorts, not five:
+BLCA $+0.0774$ $[+0.0284, +0.1264]$, BRCA $+0.1208$ $[+0.0525, +0.1904]$, HNSC $+0.0726$
+$[+0.0206, +0.1231]$; STAD $+0.0495$ $[-0.0127, +0.1122]$ and COADREAD $+0.0236$
+$[-0.0686, +0.1197]$ do not. Three further limits were known and are not to be discovered later:
+the three-modality arm is **not** separable from the two-modality arm in any cohort, and is negative
+in BRCA; the one-column swap is positive in all five by point estimate but separable in only two;
+and clearing SurvPath's released-fold value per cohort is not clearing the best published value
+under any protocol, which on BRCA is 0.794 and on COADREAD 0.832, both far above these arms.
+
+**Why this is not a lane change.** The contribution stays the method. These cohorts test the same
+frozen recipe on patients it was never developed on, which is what validation is; they do not
+introduce a new claim type. The bladder cohort remains the lead and the only one carrying the
+primary number.
+
+**What would have made this illegitimate**, and did not happen: computing the intervals after
+writing the text, reporting the three significant cohorts without the two that are not, or quietly
+widening the released-fold comparison into a claim about the best published value.
 - **Not a prospective or clinical-utility claim.** No decision-curve analysis, no net benefit, no
   deployment.

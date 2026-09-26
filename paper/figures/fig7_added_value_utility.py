@@ -101,7 +101,8 @@ for key, lab, col, mk in (("ours", "ModRank", C["ours"], "o"), ("clinical", "cli
     g = CAL[key]["grouped_24m"]
     x = [q["predicted"] for q in g]
     y = [q["observed_km"] for q in g]
-    axc.plot(x, y, "-", color=col, lw=1.0, marker=mk, ms=4.5, label=lab)
+    axc.plot(x, y, color=col, lw=1.0, marker=mk, linestyle=style.ROLE_LINESTYLE[key], ms=4.5,
+             label=lab)
     src["c"][key] = g
 lim = [0.0, 0.75]
 axc.plot(lim, lim, color=INK, lw=0.7, ls=":")
@@ -118,12 +119,15 @@ panel("c", 0.005, 0.49)
 # ---------------------------------------------------------------- d  decision curve, 24 months
 axd = fig.add_axes([0.70, 0.09, 0.28, 0.36])
 th = sorted(float(k) for k in CAL["ours"]["net_benefit_24m"])
-series = [("ModRank", [CAL["ours"]["net_benefit_24m"][str(round(x, 2))] for x in th], C["ours"], "o", "-"),
-          ("clinical", [CAL["clinical"]["net_benefit_24m"][str(round(x, 2))] for x in th], C["clinical"], "s", "-"),
-          ("treat all", [CAL["treat_all_net_benefit_24m"][str(round(x, 2))] for x in th], C["published"], "^", "--")]
+series = [("ModRank", [CAL["ours"]["net_benefit_24m"][str(round(x, 2))] for x in th], C["ours"], "o",
+           style.ROLE_LINESTYLE["ours"]),
+          ("clinical", [CAL["clinical"]["net_benefit_24m"][str(round(x, 2))] for x in th],
+           C["clinical"], "s", style.ROLE_LINESTYLE["clinical"]),
+          ("treat all", [CAL["treat_all_net_benefit_24m"][str(round(x, 2))] for x in th],
+           C["published"], "^", style.ROLE_LINESTYLE["published"])]
 src["d"] = {"thresholds": th}
 for lab, v, col, mk, ls in series:
-    axd.plot(th, v, ls, color=col, marker=mk, ms=3.8, lw=1.1, label=lab)
+    axd.plot(th, v, color=col, marker=mk, linestyle=ls, ms=3.8, lw=1.1, label=lab)
     src["d"][lab] = v
 axd.axhline(0, color=INK, lw=0.7, ls=":", label="treat none")
 axd.set_ylim(-0.12, 0.33)

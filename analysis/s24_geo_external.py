@@ -31,6 +31,10 @@ from s5_omics_arm import pathway_matrix                                   # noqa
 EXT = ALPHAS + (32768.0,)
 REPEATS, K, REPS, BOOT_SEED = 5, 5, 6000, 20260911
 UNKNOWN = {"", "na", "nan", "unknown", "gx", "tx", "nx", "none", "not available"}
+# Per-case repeat-averaged scores, filled by evaluate() and written only when --percase-out is given,
+# so that the reported D can be recomputed from rows. Output only: no computation reads it, and the
+# summary JSON is unchanged by it.
+PERCASE = []
 
 
 def strat_folds(e, k, rng):
@@ -160,7 +164,7 @@ def holm(p):
     return adj
 
 
-def evaluate(name, P, clin_stage, clin_weak, t, e):
+def evaluate(name, P, clin_stage, clin_weak, t, e, ids=None):
     ii, jj = cpairs(t, e)
     rng = np.random.default_rng(0)
     splits = [strat_folds(e, K, rng) for _ in range(REPEATS)]
@@ -180,6 +184,10 @@ def evaluate(name, P, clin_stage, clin_weak, t, e):
             per[k_].append(cidx(v, ii, jj))
             vec[k_].append(v)
     avg = {k_: np.mean(np.vstack(v), 0) for k_, v in vec.items()}
+    if ids is not None:
+        for i, sid in enumerate(ids):
+            PERCASE.append({"analysis": name, "sample": str(sid), "months": float(t[i]),
+                            "event": int(e[i]), **{k_: float(v[i]) for k_, v in sorted(avg.items())}})
     res = {"n": int(len(t)), "events": int(e.sum()), "comparable_pairs": int(len(ii)),
            "cv": {k_: {"mean": round(float(np.mean(v)), 4), "sd": round(float(np.std(v)), 4),
                        "repeat_averaged_vector_c": round(cidx(avg[k_], ii, jj), 4)}
@@ -221,6 +229,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     for f in ("protocol", "geo-dir", "signatures", "out"):
         ap.add_argument("--" + f, required=True)
+    ap.add_argument("--percase-out", default=None)
     a = ap.parse_args()
     t0 = time.time()
     rep = {"artifact_type": "s24_geo_external", "phase_of_origin": "post_freeze_2026-09-11",
@@ -253,12 +262,13 @@ def main():
     rep["cohorts"]["GSE31684"] = {"genes_mapped": ng, "pathways_kept": len(kept),
                                   "grade_levels": glv, "stage_levels": slv, "excluded_incomplete": int((~ok).sum()),
                                   **evaluate("GSE31684", P[ok], np.hstack([age, fem, stage])[ok],
-                                             np.hstack([age, fem, grade])[ok], t[ok], e[ok])}
+                                             np.hstack([age, fem, grade])[ok], t[ok], e[ok],
+                                             ids=np.array(s)[ok])}
     chemo = np.array([ch["prerc_chemo"].get(x, "").lower() == "yes" for x in s])
     ok2 = ok & ~chemo
     rep["cohorts"]["GSE31684"]["sensitivity_without_pre_cystectomy_chemotherapy"] = evaluate(
         "GSE31684 no pre-RC chemo", P[ok2], np.hstack([age, fem, stage])[ok2],
-        np.hstack([age, fem, grade])[ok2], t[ok2], e[ok2])
+        np.hstack([age, fem, grade])[ok2], t[ok2], e[ok2], ids=np.array(s)[ok2])
 
     # ---- GSE32894, secondary
     s, ch, P, kept, ng = prep("GSE32894_series_matrix.txt.gz", "GPL6947")
@@ -273,7 +283,7 @@ def main():
     stage, slv = onehot([ch["tumor_stage"].get(x, "") for x in s])
     ok &= np.isfinite(age[:, 0])
     res = evaluate("GSE32894", P[ok], np.hstack([age, fem, stage])[ok], np.hstack([age, fem, grade])[ok],
-                   t[ok], e[ok])
+                   t[ok], e[ok], ids=np.array(s)[ok])
     rule = evaluate("GSE32894 rule block", P[ok], np.hstack([age, fem, stage, grade])[ok], None, t[ok], e[ok])
     rep["cohorts"]["GSE32894"] = {"genes_mapped": ng, "pathways_kept": len(kept), "grade_levels": glv,
                                   "stage_levels": slv, **res, "with_the_rule_block": rule["cv"]}
@@ -292,9 +302,15 @@ def main():
     tst, tlv = onehot([tcat(ch["cstage"].get(x, "")) for x in s])
     ok = np.isfinite(t) & (t > 0) & np.array([c in ("censored", "uncensored") for c in cen]) & np.isfinite(age[:, 0])
     rep["cohorts"]["GSE48075"] = {"genes_mapped": ng, "pathways_kept": len(kept), "t_levels": tlv,
-                                  **evaluate("GSE48075", P[ok], np.hstack([age, fem, tst])[ok], None, t[ok], e[ok])}
+                                  **evaluate("GSE48075", P[ok], np.hstack([age, fem, tst])[ok], None, t[ok], e[ok],
+                                             ids=np.array(s)[ok])}
     rep["runtime_seconds"] = round(time.time() - t0, 1)
     json.dump(rep, open(a.out, "w"), indent=1)
+    if a.percase_out:
+        with open(a.percase_out, "w") as fh:
+            for row in PERCASE:
+                fh.write(json.dumps(row, sort_keys=True) + "\n")
+        print("wrote %d per-case rows to %s" % (len(PERCASE), a.percase_out), file=sys.stderr)
     print("wrote %s (%.0f s)" % (a.out, time.time() - t0), file=sys.stderr)
     return 0
 

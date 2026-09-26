@@ -15,5 +15,12 @@ __pycache__/
 !experiments/20260911-blca-posthoc/logs/s22.log
 !experiments/20260911-blca-posthoc/logs/s22b.log
 !experiments/20260911-blca-posthoc/logs/s23.log
+!experiments/20260912-decomp-emitter/logs/run.log
+!experiments/20260912-five-cohort-floors/logs/run.log
+!experiments/20260912-five-cohort-intervals/logs/run.log
+!experiments/20260912-subgroup-fairness/logs/run.log
+!experiments/20260913-encoder-sensitivity/logs/run.log
+!experiments/20260913-five-cohort-fusion/logs/run.log
+!experiments/20260927-geo-percase/logs/run.log
 # inputs are public releases, pointed at rather than redistributed
 data/

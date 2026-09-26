@@ -1,0 +1,4 @@
+A  clinical 0.6856  full 0.7291   committed [0.6863, 0.7285]   [7 s]
+B  clinical 0.6638  full 0.7225   committed [0.6638, 0.7225]   [7 s]
+D  clinical 0.5666  full 0.6856   committed [0.5666, 0.6856]   [7 s]
+wrote experiments/20260912-decomp-emitter/results/clinical-block-decomposition.json

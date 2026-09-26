@@ -1,0 +1,10 @@
+sex      men                                n=269 ev= 82 | clinical 0.7015  ours 0.7406 | ours-clinical +0.0396 [-0.0143, 0.0936]
+sex      women                              n= 90 ev= 31 | clinical 0.5652  ours 0.6616 | ours-clinical +0.0963 [-0.0031, 0.1964]
+age      at or below the median (68 years)  n=180 ev= 58 | clinical 0.6578  ours 0.7285 | ours-clinical +0.0699 [0.0072, 0.1335]
+age      above the median                   n=179 ev= 55 | clinical 0.6749  ours 0.7213 | ours-clinical +0.0464 [-0.0309, 0.1189]
+race     Unknown                            n=  5 ev=  1  SKIPPED
+race     asian                              n= 41 ev=  5  SKIPPED
+race     black or african american          n= 20 ev=  9  SKIPPED
+race     not reported                       n=  8 ev=  5  SKIPPED
+race     white                              n=285 ev= 93 | clinical 0.6539  ours 0.7122 | ours-clinical +0.0588 [0.0043, 0.1132]
+wrote experiments/20260912-subgroup-fairness/results/subgroup-fairness.json

@@ -1,0 +1,6 @@
+blca      n= 359 ev=113 | OURS 0.6992 vs grade-ctrl 0.6861  d=+0.0132 [-0.0136, 0.0396] p=0.318 | vs stage-arm d=+0.0774 [0.0284, 0.1264] p=0.001  [16 s]
+brca      n= 871 ev= 60 | OURS 0.6892 vs grade-ctrl 0.6614  d=+0.0283 [-0.0155, 0.0723] p=0.202 | vs stage-arm d=+0.1208 [0.0525, 0.1904] p=0.000  [36 s]
+coadread  n= 298 ev= 37 | OURS 0.7141 vs grade-ctrl 0.6231  d=+0.0911 [0.0451, 0.1449] p=0.000 | vs stage-arm d=+0.0236 [-0.0686, 0.1197] p=0.640  [42 s]
+hnsc      n= 394 ev=117 | OURS 0.6179 vs grade-ctrl 0.6015  d=+0.0164 [-0.0181, 0.0496] p=0.334 | vs stage-arm d=+0.0726 [0.0206, 0.1231] p=0.007  [60 s]
+stad      n= 319 ev= 84 | OURS 0.6311 vs grade-ctrl 0.6125  d=+0.0184 [-0.0162, 0.0529] p=0.299 | vs stage-arm d=+0.0495 [-0.0127, 0.1122] p=0.113  [72 s]
+wrote experiments/20260912-five-cohort-intervals/results/five-cohort-intervals.json

@@ -36,8 +36,10 @@ style.apply()
 C, INK = style.ROLE, style.INK
 W, H = 7.087, 3.05
 fig = plt.figure(figsize=(W, H))
-CONS = [("ours", "ModRank", C["ours"], "o"), ("stacked", "stacked (learned weights)", C["omics"], "s"),
-        ("concat", "concatenated Cox", C["competitor"], "D"), ("clinical", "clinical (stage)", C["clinical"], "^")]
+CONS = [("ours", "ModRank", C["ours"], "o", style.ROLE_LINESTYLE["ours"]),
+        ("stacked", "stacked (learned weights)", C["omics"], "s", style.ROLE_LINESTYLE["omics"]),
+        ("concat", "concatenated Cox", C["competitor"], "D", style.ROLE_LINESTYLE["competitor"]),
+        ("clinical", "clinical (stage)", C["clinical"], "^", style.ROLE_LINESTYLE["clinical"])]
 src = {}
 
 
@@ -51,7 +53,7 @@ seeds = {"ours": FU["ours_equal_weight_rank_average"]["per_seed"],
          "stacked": FU["stacked_learned_weights"]["per_seed"],
          "concat": FU["concatenated_ridge_cox"]["per_seed"]}
 src["a"] = seeds
-for x, (key, lab, col, mk) in enumerate(CONS[:3]):
+for x, (key, lab, col, mk, _ls) in enumerate(CONS[:3]):
     v = seeds[key]
     axa.scatter(np.full(len(v), x) + np.linspace(-0.12, 0.12, len(v)), v, s=16, marker=mk, color=col,
                 zorder=3)
@@ -71,7 +73,7 @@ JIT = {k: np.random.default_rng(x).uniform(-0.09, 0.09, len(per[k])) for x, k in
 for j in range(len(per["ours"])):                  # each line joins one partition's own points
     axb.plot([x + JIT[k][j] for x, k in enumerate(keys)], [per[k][j] for k in keys],
              color="#D5DAE2", lw=0.6, zorder=1)
-for x, (key, lab, col, mk) in enumerate(CONS):
+for x, (key, lab, col, mk, _ls) in enumerate(CONS):
     axb.scatter(x + JIT[key], per[key], s=11, marker=mk, color=col, zorder=3, linewidths=0)
 axb.set_xticks(range(4))
 axb.set_xticklabels(["ModRank", "stacked", "concat.", "clinical"], fontsize=7)
@@ -85,16 +87,17 @@ panel("b", 0.305)
 axc = fig.add_axes([0.745, 0.27, 0.24, 0.60])
 SC = RS["site_grouped_cv"]
 src["c"] = SC
-for key, lab, col, mk in CONS:
+for key, lab, col, mk, ls in CONS:
     v = [f[key] for f in SC["folds"]]
-    axc.plot(range(1, len(v) + 1), v, "-", color=col, marker=mk, ms=3.8, lw=0.9, label=lab)
+    axc.plot(range(1, len(v) + 1), v, color=col, marker=mk, linestyle=ls, ms=3.8, lw=0.9, label=lab)
     axc.scatter([len(v) + 1.2], [SC["pooled"][key]], s=30, marker=mk, color=col, zorder=3)
 axc.set_xticks(list(range(1, len(SC["folds"]) + 1)) + [len(SC["folds"]) + 1.2])
 axc.set_xticklabels([str(i) for i in range(1, len(SC["folds"]) + 1)] + ["pooled"], fontsize=7)
 axc.set_xlabel("site-grouped fold")
 axc.set_title("%d hospitals held out whole" % SC["sites_total"], fontsize=8, fontweight="bold")
 # one legend for all three panels, under them, so no panel carries a key over its data
-hs = [plt.Line2D([], [], color=col, marker=mk, lw=0.9, ms=4.5, label=lab) for _, lab, col, mk in CONS]
+hs = [plt.Line2D([], [], color=col, marker=mk, linestyle=ls, lw=0.9, ms=4.5, label=lab)
+      for _, lab, col, mk, ls in CONS]
 fig.legend(handles=hs, loc="lower center", ncol=4, fontsize=7, bbox_to_anchor=(0.5, 0.0),
            handletextpad=0.4, columnspacing=1.6)
 panel("c", 0.69)

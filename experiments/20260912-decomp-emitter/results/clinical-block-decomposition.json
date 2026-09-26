@@ -1,0 +1,53 @@
+{
+ "artifact_type": "s31_clinical_block_decomposition",
+ "phase_of_origin": "post_freeze_2026-09-12",
+ "replaces": "development/s5-results/decomp.json, which had no committed producer",
+ "recipe": "released folds, ridge Cox with the protocol alpha grid at seed 0, within-fold percentiles, equal-weight rank average of slide, transcriptome and clinical",
+ "not_rebuilt": {
+  "row": "C corrected: GDC TNM+stage, right diagnosis",
+  "committed_values": [
+   0.6992,
+   0.7335
+  ],
+  "why": "the rule that chose one diagnosis per case was never recorded. The amendment queried GDC directly for four of the disagreeing cases to diagnose the defect, not for all 359 to build a corrected block. Re-querying would mean inventing a selection rule and testing whether the invention reproduces the committed pair, which would establish nothing. The row is dropped from the figure rather than reconstructed by guess."
+ },
+ "constructions": {
+  "A": {
+   "what": "the frozen block: age, sex and one-hot T, N, M and AJCC stage from the cached GDC query, which selected the first diagnosis record per case",
+   "columns": 23,
+   "clinical_alone": 0.6856,
+   "with_both_modalities": 0.7291,
+   "previous_file": [
+    0.6863,
+    0.7285
+   ],
+   "agrees_with_previous_file": false,
+   "is_a_known_answer": false
+  },
+  "B": {
+   "what": "the amended block: age, sex and one-hot stage from the incumbent's released split files",
+   "columns": 6,
+   "clinical_alone": 0.6638,
+   "with_both_modalities": 0.7225,
+   "previous_file": [
+    0.6638,
+    0.7225
+   ],
+   "agrees_with_previous_file": true,
+   "is_a_known_answer": true
+  },
+  "D": {
+   "what": "the amended block with histological grade in place of stage",
+   "columns": 4,
+   "clinical_alone": 0.5666,
+   "with_both_modalities": 0.6856,
+   "previous_file": [
+    0.5666,
+    0.6856
+   ],
+   "agrees_with_previous_file": true,
+   "is_a_known_answer": true
+  }
+ },
+ "runtime_seconds": 7.0
+}

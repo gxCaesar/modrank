@@ -39,7 +39,11 @@ M = json.load(open(os.path.join(ROOT, "development", "s5-results", "multi.json")
 style.apply()
 C, INK, LAD = style.ROLE, style.INK, style.LADDER
 
-FIGW, FIGH = 6.30, 6.45
+FIGW, FIGH = 6.30, 6.75   # width back to 160 mm (PI correction 2026-09-27: the SI text block is
+# 453.6 pt / 160 mm and every figure must insert at scale 1.0000, so 180 mm is wrong here even
+# though it is a valid Nature artwork width in the abstract). Height +0.30 in stays: it gives the
+# six stacked panel-row legends genuine clearance from the panel titles directly below them
+# (a pre-existing collision, independent of width) instead of a 1-2 px margin.
 fig = plt.figure(figsize=(FIGW, FIGH))
 # TWO across, not three. The panels carry long row labels (component names, study names, encoder
 # names) and three columns on a 6.3 in canvas leaves 2.1 in each, of which the labels alone want
@@ -74,29 +78,40 @@ axa.set_xlabel("effect on concordance", fontsize=6.4)
 axa.scatter([], [], s=22, facecolor="#FFFFFF", edgecolor="#6B7280", linewidth=0.9,
             label="predicted, fixed before the run")
 axa.scatter([], [], s=26, color=C["competitor"], label="observed")
-axa.legend(fontsize=5.9, loc="upper center", bbox_to_anchor=(0.5, -0.155), ncol=2,
-           handletextpad=0.4, columnspacing=1.4, borderpad=0.15)
-axa.text(0.0, 0.35, "$\\pm$%.4f bar" % BAR_1, fontsize=5.9, color="#5A6273",
-         ha="center", va="center", rotation=90)
+axa.legend(fontsize=5.5, loc="upper center", bbox_to_anchor=(0.5, -0.21), ncol=2,
+           handletextpad=0.25, columnspacing=0.8, borderpad=0.08, labelspacing=0.15)
+# The shaded band's own width used to be a floating annotation (mathtext "\pm" first, Cmsy10 per
+# Gate G47; then rotated inside the plot, where its seven rows and their connecting lines leave no
+# position it does not sit on top of at this axis's scale). Folded into the title instead -- the one
+# place already known to be clear of every row -- rather than re-fought as a fourth position.
 n_clear_1 = sum(1 for c in comps_1 if c["observed"] > BAR_1)
-axa.set_title("components against their bar (%d of %d)" % (n_clear_1, len(comps_1)), fontsize=6.4, pad=3)
+axa.set_title("components against their ±%.4f bar (%d of %d)" % (BAR_1, n_clear_1,
+                                                                      len(comps_1)),
+              fontsize=6.1, pad=3)
 
 # =========================================================================== b  the controls
 withc_1 = [c for c in comps_1 if c["control"] is not None]
 yb_1 = np.arange(len(withc_1))
 for yi, c in zip(yb_1, withc_1):
-    axb.barh([yi + 0.18], [c["observed"]], height=0.32, color=C["ours"], edgecolor="none")
-    axb.barh([yi - 0.18], [c["control"]], height=0.32, color=C["competitor"], edgecolor="none")
+    axb.barh([yi + 0.18], [c["observed"]], height=0.32, facecolor=C["ours"],
+             hatch=style.ROLE_HATCH["ours"], edgecolor=style.ROLE_EDGE["ours"], linewidth=0.4)
+    axb.barh([yi - 0.18], [c["control"]], height=0.32, facecolor=C["competitor"],
+             hatch=style.ROLE_HATCH["competitor"], edgecolor=style.ROLE_EDGE["competitor"],
+             linewidth=0.4)
 axb.axvline(0, color=INK, lw=0.8)
 axb.set_yticks(yb_1)
 axb.set_yticklabels([c["id"] for c in withc_1], fontsize=6.2)
 axb.set_xlabel("effect", fontsize=6.4)
 axb.set_xlim(-0.048, 0.030)   # room on the right for the void annotation
 import matplotlib.patches as mpatches
-axb.legend(handles=[mpatches.Patch(color=C["ours"], label="component"),
-                    mpatches.Patch(color=C["competitor"], label="matched control")],
-           fontsize=5.8, loc="upper center", bbox_to_anchor=(0.5, -0.155), ncol=2,
-           handlelength=1.0, handletextpad=0.4, columnspacing=1.0, borderpad=0.15)
+axb.legend(handles=[mpatches.Patch(facecolor=C["ours"], hatch=style.ROLE_HATCH["ours"],
+                                   edgecolor=style.ROLE_EDGE["ours"], linewidth=0.4,
+                                   label="component"),
+                    mpatches.Patch(facecolor=C["competitor"], hatch=style.ROLE_HATCH["competitor"],
+                                   edgecolor=style.ROLE_EDGE["competitor"], linewidth=0.4,
+                                   label="matched control")],
+           fontsize=5.3, loc="upper center", bbox_to_anchor=(0.5, -0.21), ncol=2,
+           handlelength=1.0, handletextpad=0.25, columnspacing=0.8, borderpad=0.08, labelspacing=0.15)
 # a control above a NEGATIVE effect is a component that simply failed, not a void. Only a
 # positive effect that its own control beats is void, and `status` is what the gate assigned.
 void_on_control = [c for c in withc_1
@@ -104,7 +119,7 @@ void_on_control = [c for c in withc_1
 assert void_on_control, "panel b exists to show a control beating its component; none does"
 for c in void_on_control:
     yi = list(withc_1).index(c)
-    axb.annotate("the control\nwins $\\Rightarrow$ void", (c["control"], yi),
+    axb.annotate("the control\nwins → void", (c["control"], yi),
                  textcoords="offset points", xytext=(5, 13), fontsize=5.7, ha="left",
                  va="center", color=C["competitor"], fontweight="bold", linespacing=1.25)
 axb.set_title("matched controls (%d)" % len(withc_1), fontsize=6.4, pad=3)
@@ -131,19 +146,22 @@ for yi, k in zip(y_2, order_2):
     beat = ours > best
     won_2 += beat
     axc.plot([best, ours], [yi, yi], color="#C9CFD8", lw=1.3, zorder=1, solid_capstyle="round")
-    axc.scatter([best], [yi], s=24, color=C["published"], zorder=3, edgecolor="none")
-    axc.scatter([ours], [yi], s=28, zorder=4, edgecolor=C["ours"], linewidth=1.1,
-                color=C["ours"] if beat else "#FFFFFF")
+    axc.scatter([best], [yi], s=24, color=C["published"], marker=style.ROLE_MARKER["published"],
+                zorder=3, edgecolor="none")
+    axc.scatter([ours], [yi], s=28, zorder=4, marker=style.ROLE_MARKER["ours"],
+                edgecolor=C["ours"], linewidth=1.1, color=C["ours"] if beat else "#FFFFFF")
     axc.text(max(ours, best) + 0.006, yi, "%+.3f" % (ours - best), va="center", fontsize=5.9,
              color=INK if beat else C["competitor"], fontweight="bold" if beat else "normal")
 axc.set_yticks(y_2)
 axc.set_yticklabels([NAME_2[k] for k in order_2], fontsize=6.4)
 axc.set_xlim(0.55, 0.79)
 axc.set_xlabel("concordance", fontsize=6.4)
-axc.scatter([], [], s=24, color=C["published"], label="best published, verified folds")
-axc.scatter([], [], s=28, color=C["ours"], label="ours (filled = we win)")
-axc.legend(fontsize=5.9, loc="upper center", bbox_to_anchor=(0.5, -0.20), ncol=2,
-           handletextpad=0.4, columnspacing=1.2, borderpad=0.15)
+axc.scatter([], [], s=24, color=C["published"], marker=style.ROLE_MARKER["published"],
+            label="best published, verified folds")
+axc.scatter([], [], s=28, color=C["ours"], marker=style.ROLE_MARKER["ours"],
+            label="ours (filled = we win)")
+axc.legend(fontsize=5.5, loc="upper center", bbox_to_anchor=(0.5, -0.21), ncol=2,
+           handletextpad=0.25, columnspacing=0.8, borderpad=0.08, labelspacing=0.15)
 axc.set_title("method, per study (%d of %d)" % (won_2, len(order_2)), fontsize=6.4, pad=3,
               color=C["competitor"] if won_2 < len(order_2) else INK)
 
@@ -154,17 +172,21 @@ for yi, k in zip(y_2, order_2):
     g, s = co["c_age_sex_grade"], co["c_age_sex_stage"]
     swon_2 += s > g
     axd.plot([g, s], [yi, yi], color="#C9CFD8", lw=1.3, zorder=1, solid_capstyle="round")
-    axd.scatter([g], [yi], s=24, color=C["competitor"], zorder=3, edgecolor="none")
-    axd.scatter([s], [yi], s=24, color=C["clinical"], zorder=3, edgecolor="none")
+    axd.scatter([g], [yi], s=24, color=C["competitor"], marker=style.ROLE_MARKER["competitor"],
+                zorder=3, edgecolor="none")
+    axd.scatter([s], [yi], s=24, color=C["clinical"], marker=style.ROLE_MARKER["clinical"],
+                zorder=3, edgecolor="none")
     axd.text(s + 0.008, yi, "+%.3f" % (s - g), va="center", fontsize=5.9, color=INK)
 axd.set_yticks(y_2)
 axd.set_yticklabels([])
 axd.set_xlim(0.43, 0.79)
 axd.set_xlabel("concordance", fontsize=6.4)
-axd.scatter([], [], s=24, color=C["competitor"], label="age + sex + grade")
-axd.scatter([], [], s=24, color=C["clinical"], label="age + sex + stage")
-axd.legend(fontsize=5.9, loc="upper center", bbox_to_anchor=(0.5, -0.20), ncol=2,
-           handletextpad=0.4, columnspacing=1.2, borderpad=0.15)
+axd.scatter([], [], s=24, color=C["competitor"], marker=style.ROLE_MARKER["competitor"],
+            label="age + sex + grade")
+axd.scatter([], [], s=24, color=C["clinical"], marker=style.ROLE_MARKER["clinical"],
+            label="age + sex + stage")
+axd.legend(fontsize=5.5, loc="upper center", bbox_to_anchor=(0.5, -0.21), ncol=2,
+           handletextpad=0.25, columnspacing=0.8, borderpad=0.08, labelspacing=0.15)
 axd.set_title("grade to stage, per study (%d of %d)" % (swon_2, len(order_2)), fontsize=6.4, pad=3)
 
 PRETTY_3 = {"wsi_titan": "TITAN", "wsi_provgigapath": "Prov-GigaPath",

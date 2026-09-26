@@ -80,12 +80,15 @@ axa.set_ylabel("concordance", fontsize=6.4)
 axa.set_ylim(0.48, 0.82)
 axa.legend(fontsize=5.6, loc="upper left", handlelength=1.8, borderpad=0.15, labelspacing=0.28)
 top = titan[-1]
-axa.annotate("pure noise reaches\n%.4f at $d$=%d" % (top["corrected_null"], top["d"]),
-             (top["d"], top["corrected_null"]), textcoords="offset points", xytext=(-8, -40),
-             ha="right", fontsize=6.0, color=C["competitor"], fontweight="bold", linespacing=1.3)
+# floated in the empty lower-right corner (every series sits above concordance 0.60 for d >= 8)
+# rather than anchored to the d=16 point itself, which put the text on top of the lines it describes
+axa.text(0.98, 0.03, "pure noise reaches\n%.4f at $d$=%d" % (top["corrected_null"], top["d"]),
+         transform=axa.transAxes, ha="right", va="bottom", fontsize=6.0, color=C["competitor"],
+         fontweight="bold", linespacing=1.3)
+EXCESS_OFFSET = {8: (18, -11), 16: (6, 7)}   # d=8's default offset sat on the fitted in-sample line
 for r in titan[-2:]:
     axa.annotate("%+.4f" % r["excess"], (r["d"], (r["in_sample"] + r["corrected_null"]) / 2),
-                 textcoords="offset points", xytext=(6, 6), fontsize=5.9, va="center",
+                 textcoords="offset points", xytext=EXCESS_OFFSET[r["d"]], fontsize=5.9, va="center",
                  color=C["ours"], fontweight="bold")
 axa.set_title("in-sample inflation against capacity", fontsize=6.4, pad=3)
 
@@ -142,21 +145,22 @@ lo, hi = P["published_consecutive_gap_range"]
 axd.axvspan(lo, hi, color=C["published"], alpha=0.22, lw=0, zorder=0)
 axd.axhline(0.80, color="#9AA1AE", lw=0.7, ls=(0, (2, 2)))
 axd.axvline(P["detectable_at_80pc"], color="#9AA1AE", lw=0.7, ls=(0, (2, 2)))
-for key, lab, col in (("ours_vs_pibd", "vs PIBD", C["competitor"]),
-                      ("ours_vs_survpath", "vs SurvPath", C["competitor"]),
-                      ("ours_vs_incumbent_table", "vs table incumbent", C["ours"])):
+for key, lab, role in (("ours_vs_pibd", "vs PIBD", "competitor"),
+                      ("ours_vs_survpath", "vs SurvPath", "competitor"),
+                      ("ours_vs_incumbent_table", "vs table incumbent", "ours")):
     m = P["marked"][key]
-    axd.scatter([m["margin"]], [m["power"]], s=26, color=col, zorder=4, edgecolor="none")
+    axd.scatter([m["margin"]], [m["power"]], s=26, color=C[role], marker=style.ROLE_MARKER[role],
+                zorder=4, edgecolor="none")
 axd.text(P["marked"]["ours_vs_incumbent_table"]["margin"] + 0.003,
          P["marked"]["ours_vs_incumbent_table"]["power"],
          "our three margins\ncarry %.2f, %.2f, %.2f" % tuple(
              P["marked"][k]["power"] for k in ("ours_vs_pibd", "ours_vs_survpath",
                                                "ours_vs_incumbent_table")),
          fontsize=5.8, va="center", linespacing=1.3)
-axd.text((lo + hi) / 2, 0.93, "all eight published\nconsecutive gaps", fontsize=5.7, ha="center",
-         va="top", color="#5A6273", linespacing=1.3)
-axd.text(P["detectable_at_80pc"] + 0.004, 0.845, "80%% power\nat %.4f" % P["detectable_at_80pc"],
-         fontsize=5.8, va="bottom", color="#5A6273", linespacing=1.3)
+axd.text((lo + hi) / 2, 1.00, "all eight published\nconsecutive gaps", fontsize=5.7, ha="center",
+         va="top", color="#5A6273", linespacing=1.15)
+axd.text(P["detectable_at_80pc"] + 0.006, 0.845, "80%% power\nat %.4f" % P["detectable_at_80pc"],
+         fontsize=5.8, ha="left", va="bottom", color="#5A6273", linespacing=1.3)
 axd.set_xlim(0, 0.09)
 axd.set_ylim(0, 1.02)
 axd.set_xlabel("true difference in concordance", fontsize=6.4)

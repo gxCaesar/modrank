@@ -56,7 +56,7 @@ SCOL = {"Stage I": LAD[5], "Stage II": LAD[4], "Stage III": LAD[1], "Stage IV": 
 # lightness may carry the meaning. Checked here rather than assumed.
 assert all(s in SCOL for s in set(stage)), "an unmapped stage level would render as nothing"
 
-FIGW, FIGH = 6.785, 5.60
+FIGW, FIGH = 6.785, 5.60   # 172.3 mm (PI correction 2026-09-27: left as is; do not widen to 180 mm)
 fig = plt.figure(figsize=(FIGW, FIGH))
 L, W = 0.088, 0.892
 panel = lambda t, x, y: fig.text(x, y, t, fontsize=7.5, fontweight="bold", color=INK,   # noqa
@@ -87,7 +87,7 @@ panel("a", 0.010, 0.972)
 
 # =========================================================================== b  transcriptome
 axb = fig.add_axes([L, 0.478, W, 0.290])
-cmap = LinearSegmentedColormap.from_list("bwr", ["#3CAC9C", "#FFFFFF", "#BC6A79"])
+cmap = LinearSegmentedColormap.from_list("bwr", ["#4C72B0", "#FFFFFF", "#C44E52"])
 axb.imshow(np.clip(Z, -2.5, 2.5), aspect="auto", cmap=cmap, vmin=-2.5, vmax=2.5,
            interpolation="nearest")
 axb.set_xticks([]); axb.set_yticks([])
@@ -115,11 +115,13 @@ panel("c", 0.010, 0.452)
 
 # =========================================================================== d  the arms
 axd = fig.add_axes([L, 0.140, W, 0.195])
-for key, lab, col in (("clinical", "clinical", C["clinical"]), ("wsi_titan", "slide", C["slide"]),
-                      ("omics_combine", "transcriptome", C["omics"])):
+for key, lab, role in (("clinical", "clinical", "clinical"), ("wsi_titan", "slide", "slide"),
+                      ("omics_combine", "transcriptome", "omics")):
     v = np.array([c["seed_mean"][key] for c in cases])
-    axd.scatter(np.arange(n), v, s=2.2, color=col, alpha=0.55, edgecolor="none", label=lab)
-axd.plot(np.arange(n), risk, color=C["ours"], lw=1.4, zorder=5, label="ModRank")
+    axd.scatter(np.arange(n), v, s=2.2, marker=style.ROLE_MARKER[role], color=C[role], alpha=0.55,
+                edgecolor="none", label=lab)
+axd.plot(np.arange(n), risk, color=C["ours"], lw=1.4, linestyle=style.ROLE_LINESTYLE["ours"],
+         zorder=5, label="ModRank")
 axd.set_xlim(0, n); axd.set_ylim(-0.02, 1.02)
 axd.set_ylabel("out-of-fold percentile", fontsize=6.4)
 axd.set_xticks([])

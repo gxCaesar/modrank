@@ -634,29 +634,49 @@
    }
   }
  },
- "e_four_clinical_constructions": {
-  "description": "four constructions of the clinical block, alone and with the other two modalities",
-  "source_file": "development/s5-results/decomp.json",
-  "field": "",
+ "e_three_clinical_constructions": {
+  "description": "three constructions of the clinical block, alone and with the other two modalities",
+  "source_file": "experiments/20260912-decomp-emitter/results/clinical-block-decomposition.json",
+  "field": "constructions",
   "values": {
-   "A frozen: GDC TNM+stage, FIRST-diagnosis defect": [
-    0.6863,
-    0.7285
-   ],
-   "B amended: DIMAF file, age+sex+stage only": [
-    0.6638,
-    0.7225
-   ],
-   "C corrected: GDC TNM+stage, right diagnosis": [
-    0.6992,
-    0.7335
-   ],
-   "D corrected, grade instead of stage": [
-    0.5666,
-    0.6856
-   ]
+   "A": {
+    "what": "the frozen block: age, sex and one-hot T, N, M and AJCC stage from the cached GDC query, which selected the first diagnosis record per case",
+    "columns": 23,
+    "clinical_alone": 0.6856,
+    "with_both_modalities": 0.7291,
+    "previous_file": [
+     0.6863,
+     0.7285
+    ],
+    "agrees_with_previous_file": false,
+    "is_a_known_answer": false
+   },
+   "B": {
+    "what": "the amended block: age, sex and one-hot stage from the incumbent's released split files",
+    "columns": 6,
+    "clinical_alone": 0.6638,
+    "with_both_modalities": 0.7225,
+    "previous_file": [
+     0.6638,
+     0.7225
+    ],
+    "agrees_with_previous_file": true,
+    "is_a_known_answer": true
+   },
+   "D": {
+    "what": "the amended block with histological grade in place of stage",
+    "columns": 4,
+    "clinical_alone": 0.5666,
+    "with_both_modalities": 0.6856,
+    "previous_file": [
+     0.5666,
+     0.6856
+    ],
+    "agrees_with_previous_file": true,
+    "is_a_known_answer": true
+   }
   },
-  "provenance_note": "This is the one panel in the figure set whose values have no committed emitter: the file was written on 2026-08-17 by a script that was never committed. Two of its four rows (the amended block, and grade in place of stage) reproduce exactly in amendment-A1-clinical-provenance.json; the other two use a GDC record that the amendment replaced."
+  "provenance_note": "Until 2026-09-12 this panel read a file with no committed emitter and drew four constructions. Rebuilding them found that two rows, not one, could not be reproduced: the amended block and the grade block match exactly, the frozen block does not (0.6856 and 0.7291 rebuilt against 0.6863 and 0.7285 in that file, with the rebuild agreeing with the frozen run's own clinical arm), and the corrected-GDC row cannot be attempted because the rule that chose one diagnosis per case was never recorded. The panel now draws the three a script regenerates."
  },
  "f_within_stage_strata": {
   "description": "concordance inside strata where the clinical variable carries little information",

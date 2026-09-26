@@ -76,9 +76,21 @@ def main():
         "c_protocol_and_falsifiers": panel(
             "development/s5-results/leakage.json", "falsifiers",
             "the five leakage falsifiers, two of which rejected"),
-        "d_grade_and_stage_composition": panel(
+        "d_grade_and_stage_composition": dict(panel(
             "experiments/20260817-blca-confirm/results/why-grade-fails.json", "cohorts/blca",
-            "level composition and normalised entropy of grade and stage"),
+            "level composition and normalised entropy of grade and stage, in the clinical file "
+            "released with the benchmark"),
+            provenance_note="Two released files carry a stage field for these patients. This panel "
+                            "draws the benchmark's own clinical file, five levels over 334 valued "
+                            "cases, because it is the only clinical source common to all five "
+                            "studies and so is what the five-study comparison can use. The arms in "
+                            "panel a, and every concordance in the paper, read the incumbent's "
+                            "split files instead: four AJCC stage groups over 357 valued cases, "
+                            "whose composition is the next entry and is what Figure 7a draws."),
+        "d_stage_groups_the_model_reads": panel(
+            "experiments/20260817-blca-confirm/results/per-stage-subgroup.json", "strata",
+            "the four AJCC stage groups of the incumbent's split files, the field every arm in "
+            "this paper actually reads, with the patients and events in each"),
     }
     fig2 = {
         "figure": "Figure 2",
@@ -94,14 +106,18 @@ def main():
         "d_gain_against_grade_entropy": panel(
             "experiments/20260817-blca-confirm/results/why-grade-fails.json", "cohorts",
             "each study's grade entropy and the gain from swapping grade for stage"),
-        "e_four_clinical_constructions": dict(panel(
-            "development/s5-results/decomp.json", "",
-            "four constructions of the clinical block, alone and with the other two modalities"),
-            provenance_note="This is the one panel in the figure set whose values have no committed "
-                            "emitter: the file was written on 2026-08-17 by a script that was never "
-                            "committed. Two of its four rows (the amended block, and grade in place "
-                            "of stage) reproduce exactly in amendment-A1-clinical-provenance.json; "
-                            "the other two use a GDC record that the amendment replaced."),
+        "e_three_clinical_constructions": dict(panel(
+            "experiments/20260912-decomp-emitter/results/clinical-block-decomposition.json",
+            "constructions",
+            "three constructions of the clinical block, alone and with the other two modalities"),
+            provenance_note="Until 2026-09-12 this panel read a file with no committed emitter and "
+                            "drew four constructions. Rebuilding them found that two rows, not one, "
+                            "could not be reproduced: the amended block and the grade block match "
+                            "exactly, the frozen block does not (0.6856 and 0.7291 rebuilt against "
+                            "0.6863 and 0.7285 in that file, with the rebuild agreeing with the "
+                            "frozen run's own clinical arm), and the corrected-GDC row cannot be "
+                            "attempted because the rule that chose one diagnosis per case was never "
+                            "recorded. The panel now draws the three a script regenerates."),
         "f_within_stage_strata": panel(
             "experiments/20260817-blca-confirm/results/biology.json", "B5_within_molecular_subtype",
             "concordance inside strata where the clinical variable carries little information"),
@@ -143,8 +159,18 @@ def main():
             "experiments/20260817-blca-confirm/results/parameter-counts.json", "",
             "the two measured parameter counts against concordance"),
     }
+    # Figure 7 is the five-study validation, added 2026-09-12. The modalities figure, which was
+    # Figure 7 until then, moves to 8: display items are numbered in order of first citation and the
+    # validation subsection is cited before the slide-contribution one.
     fig7 = {
         "figure": "Figure 7",
+        "title": "The same recipe on the benchmark's five studies, with intervals",
+        "a_vs_corrected_clinical": panel(
+            "experiments/20260912-five-cohort-intervals/results/five-cohort-intervals.json",
+            "cohorts", "every arm, every paired difference and its interval, per study"),
+    }
+    fig8 = {
+        "figure": "Figure 8",
         "title": "The three modalities: what each is, and what each carries",
         "b_seven_representations": panel(
             "development/s5-results/c6.json", "single_arms",
@@ -161,7 +187,7 @@ def main():
     }
 
     for name, obj in (("Figure_1", fig1), ("Figure_2", fig2), ("Figure_3", fig3),
-                      ("Figure_4", fig4), ("Figure_7", fig7)):
+                      ("Figure_4", fig4), ("Figure_7", fig7), ("Figure_8", fig8)):
         with open(os.path.join(OUT, name + ".json"), "w") as fh:
             json.dump(obj, fh, indent=1)
         written.append(name + ".json")
@@ -184,6 +210,62 @@ def main():
     print("wrote %d Source Data files to %s" % (len(written), os.path.relpath(OUT, ROOT)))
     for w in sorted(written):
         print("  %s  %d bytes" % (w, os.path.getsize(os.path.join(OUT, w))))
+    return write_workbook(sorted(written))
+
+
+def flatten(obj, path=""):
+    """Every scalar under obj as (path, value), lists indexed, in document order."""
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            yield from flatten(v, "%s/%s" % (path, k) if path else str(k))
+    elif isinstance(obj, list):
+        for i, v in enumerate(obj):
+            yield from flatten(v, "%s[%d]" % (path, i))
+    else:
+        yield path, obj
+
+
+def panels(obj, name=""):
+    """(panel name, source file, field, values) for every panel in a Source Data object."""
+    if isinstance(obj, dict) and "values" in obj and "source_file" in obj:
+        if not name:                        # a builder-written file: one panel per key of values
+            for pk, pv in obj["values"].items():
+                yield pk, obj["source_file"], "", pv
+        else:
+            yield name, obj["source_file"], obj.get("field", ""), obj["values"]
+    elif isinstance(obj, dict):
+        for k, v in obj.items():
+            if k not in ("figure", "title", "description"):
+                yield from panels(v, "%s/%s" % (name, k) if name else k)
+
+
+def write_workbook(names):
+    """The journal's form of the same files (added 2026-09-27): one Excel workbook, one sheet per
+    figure, each panel flattened losslessly to rows of panel, source file, field and value. The JSON
+    files stay the canonical copy and the workbook is rebuilt from them on every run."""
+    from openpyxl import Workbook
+    wb = Workbook()
+    wb.remove(wb.active)
+    for name in names:
+        obj = load(os.path.join(OUT, name))
+        ws = wb.create_sheet(name.replace(".json", ""))
+        ws.append([obj.get("figure", ""), obj.get("title", "")])
+        ws.append(["Each row is one plotted or reported value: the figure panel, the committed result "
+                   "file it was read from, the field inside that file, and the value."])
+        ws.append([])
+        ws.append(["panel", "source file", "field", "value"])
+        n = 0
+        for pname, src, field, values in panels(obj):
+            for sub, value in flatten(values):
+                ws.append([pname, src, "/".join(x for x in (field, sub) if x), value])
+                n += 1
+        if n == 0:
+            print("workbook sheet %s has no values" % name, file=sys.stderr)
+            return 2
+        print("  %-10s %5d rows" % (name.replace(".json", ""), n))
+    path = os.path.join(OUT, "SourceData.xlsx")
+    wb.save(path)
+    print("  SourceData.xlsx  %d sheets, %d bytes" % (len(names), os.path.getsize(path)))
     return 0
 
 

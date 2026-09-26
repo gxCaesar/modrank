@@ -1,0 +1,20 @@
+{
+ "artifact_type": "s30_gdc_demographics_counts",
+ "phase_of_origin": "post_freeze_2026-09-12",
+ "source": "Genomic Data Commons cases endpoint, TCGA-BLCA, fields submitter_id, demographic.race and demographic.ethnicity",
+ "patient_level_map": "written to the gitignored frozen-inputs tree and not redistributed; this file carries counts only",
+ "project_cases": 412,
+ "cohort_cases": 359,
+ "race": {
+  "white": 285,
+  "asian": 41,
+  "black or african american": 20,
+  "not reported": 8,
+  "Unknown": 5
+ },
+ "ethnicity": {
+  "not hispanic or latino": 325,
+  "not reported": 26,
+  "hispanic or latino": 8
+ }
+}

@@ -1,0 +1,171 @@
+{
+ "artifact_type": "s32_five_cohort_fusion_alternatives",
+ "phase_of_origin": "post_freeze_2026-09-13",
+ "answers": "whether 'fitting the fusion adds nothing' holds beyond the development cohort",
+ "protocol": "the five-study protocol: released folds, benchmark clinical file, seed 0, concatenation on the extended grid, stacking from inner out-of-fold percentiles",
+ "bootstrap": {
+  "replicates": 6000,
+  "unit": "cases",
+  "seed": 0
+ },
+ "cohorts": {
+  "blca": {
+   "n": 359,
+   "events": 113,
+   "points": {
+    "ModRank": 0.6992,
+    "concatenated": 0.6801,
+    "stacked": 0.6932
+   },
+   "ModRank_minus_concatenated": {
+    "mean": 0.0191,
+    "se": 0.0172,
+    "ci95": [
+     -0.015,
+     0.0534
+    ],
+    "p_two_sided": 0.2607,
+    "reps": 6000
+   },
+   "ModRank_minus_stacked": {
+    "mean": 0.0059,
+    "se": 0.0104,
+    "ci95": [
+     -0.0143,
+     0.0267
+    ],
+    "p_two_sided": 0.568,
+    "reps": 6000
+   },
+   "fitting_the_fusion_beats_the_rank_average": false
+  },
+  "brca": {
+   "n": 871,
+   "events": 60,
+   "points": {
+    "ModRank": 0.6892,
+    "concatenated": 0.7571,
+    "stacked": 0.718
+   },
+   "ModRank_minus_concatenated": {
+    "mean": -0.0679,
+    "se": 0.0363,
+    "ci95": [
+     -0.1384,
+     0.0029
+    ],
+    "p_two_sided": 0.061,
+    "reps": 6000
+   },
+   "ModRank_minus_stacked": {
+    "mean": -0.0286,
+    "se": 0.0241,
+    "ci95": [
+     -0.0754,
+     0.0202
+    ],
+    "p_two_sided": 0.2413,
+    "reps": 6000
+   },
+   "fitting_the_fusion_beats_the_rank_average": false
+  },
+  "coadread": {
+   "n": 298,
+   "events": 37,
+   "points": {
+    "ModRank": 0.7141,
+    "concatenated": 0.653,
+    "stacked": 0.6919
+   },
+   "ModRank_minus_concatenated": {
+    "mean": 0.0611,
+    "se": 0.0423,
+    "ci95": [
+     -0.0206,
+     0.1442
+    ],
+    "p_two_sided": 0.1473,
+    "reps": 6000
+   },
+   "ModRank_minus_stacked": {
+    "mean": 0.0219,
+    "se": 0.0281,
+    "ci95": [
+     -0.0329,
+     0.0776
+    ],
+    "p_two_sided": 0.432,
+    "reps": 6000
+   },
+   "fitting_the_fusion_beats_the_rank_average": false
+  },
+  "hnsc": {
+   "n": 394,
+   "events": 117,
+   "points": {
+    "ModRank": 0.6179,
+    "concatenated": 0.5966,
+    "stacked": 0.6171
+   },
+   "ModRank_minus_concatenated": {
+    "mean": 0.0217,
+    "se": 0.0194,
+    "ci95": [
+     -0.017,
+     0.0594
+    ],
+    "p_two_sided": 0.257,
+    "reps": 6000
+   },
+   "ModRank_minus_stacked": {
+    "mean": 0.0009,
+    "se": 0.011,
+    "ci95": [
+     -0.0206,
+     0.0228
+    ],
+    "p_two_sided": 0.937,
+    "reps": 6000
+   },
+   "fitting_the_fusion_beats_the_rank_average": false
+  },
+  "stad": {
+   "n": 319,
+   "events": 84,
+   "points": {
+    "ModRank": 0.6311,
+    "concatenated": 0.6073,
+    "stacked": 0.5862
+   },
+   "ModRank_minus_concatenated": {
+    "mean": 0.0242,
+    "se": 0.0269,
+    "ci95": [
+     -0.0281,
+     0.0779
+    ],
+    "p_two_sided": 0.3757,
+    "reps": 6000
+   },
+   "ModRank_minus_stacked": {
+    "mean": 0.0458,
+    "se": 0.0313,
+    "ci95": [
+     -0.0152,
+     0.1081
+    ],
+    "p_two_sided": 0.1373,
+    "reps": 6000
+   },
+   "fitting_the_fusion_beats_the_rank_average": false
+  }
+ },
+ "summary": {
+  "cohorts_scored": 5,
+  "studies_where_a_fitted_fusion_beats_the_rank_average": [],
+  "studies_where_the_rank_average_beats_concatenation_with_an_interval_excluding_zero": [],
+  "studies_where_the_rank_average_beats_stacking_with_an_interval_excluding_zero": [],
+  "reading": "the title's second clause needs the first list to be empty. The other two say how much stronger than that the evidence is, and are reported whatever they are"
+ },
+ "runtime_seconds": 149.4
+}

@@ -1,0 +1,181 @@
+{
+ "artifact_type": "s28_subgroup_fairness",
+ "phase_of_origin": "post_freeze_2026-09-12",
+ "answers": "TRIPOD+AI items 3c (health inequalities) and 14 (fairness)",
+ "refits_nothing": "reads the committed seed-averaged out-of-fold scores",
+ "axes_available": [
+  "sex",
+  "age",
+  "contributing site (reported separately as grouped CV)"
+ ],
+ "axes_not_available": "race, ethnicity, insurance status and socioeconomic position are absent from the released files, so this is subgroup performance on the axes the data supports, not a full fairness audit",
+ "bootstrap": {
+  "replicates": 6000,
+  "unit": "cases",
+  "seed": 0
+ },
+ "floors": {
+  "min_cases": 25,
+  "min_pairs": 100
+ },
+ "pooled": {
+  "clinical_stage": 0.6644,
+  "slide": 0.6535,
+  "omics": 0.6648,
+  "ours": 0.7237
+ },
+ "splits": {
+  "sex": {
+   "men": {
+    "n": 269,
+    "events": 82,
+    "comparable_pairs": 13326,
+    "clinical_stage": 0.7015,
+    "slide": 0.6613,
+    "omics": 0.6637,
+    "ours": 0.7406,
+    "ours_minus_clinical": {
+     "mean": 0.0396,
+     "se": 0.0276,
+     "ci95": [
+      -0.0143,
+      0.0936
+     ],
+     "p_two_sided": 0.1523,
+     "reps": 6000,
+     "resampled": "cases, not comparable pairs"
+    }
+   },
+   "women": {
+    "n": 90,
+    "events": 31,
+    "comparable_pairs": 1603,
+    "clinical_stage": 0.5652,
+    "slide": 0.6298,
+    "omics": 0.6631,
+    "ours": 0.6616,
+    "ours_minus_clinical": {
+     "mean": 0.0963,
+     "se": 0.0506,
+     "ci95": [
+      -0.0031,
+      0.1964
+     ],
+     "p_two_sided": 0.059,
+     "reps": 6000,
+     "resampled": "cases, not comparable pairs"
+    }
+   },
+   "ours_men_minus_women": {
+    "mean": 0.0811,
+    "se": 0.0544,
+    "ci95": [
+     -0.0231,
+     0.19
+    ],
+    "p_two_sided": 0.1323,
+    "reps": 6000,
+    "resampled": "the two strata independently, being disjoint"
+   }
+  },
+  "age": {
+   "at or below the median (68 years)": {
+    "n": 180,
+    "events": 58,
+    "comparable_pairs": 6242,
+    "clinical_stage": 0.6578,
+    "slide": 0.6817,
+    "omics": 0.6308,
+    "ours": 0.7285,
+    "ours_minus_clinical": {
+     "mean": 0.0699,
+     "se": 0.0323,
+     "ci95": [
+      0.0072,
+      0.1335
+     ],
+     "p_two_sided": 0.0293,
+     "reps": 6000,
+     "resampled": "cases, not comparable pairs"
+    }
+   },
+   "above the median": {
+    "n": 179,
+    "events": 55,
+    "comparable_pairs": 5842,
+    "clinical_stage": 0.6749,
+    "slide": 0.6272,
+    "omics": 0.6962,
+    "ours": 0.7213,
+    "ours_minus_clinical": {
+     "mean": 0.0464,
+     "se": 0.038,
+     "ci95": [
+      -0.0309,
+      0.1189
+     ],
+     "p_two_sided": 0.226,
+     "reps": 6000,
+     "resampled": "cases, not comparable pairs"
+    }
+   },
+   "ours_at_minus_above": {
+    "mean": 0.0065,
+    "se": 0.0471,
+    "ci95": [
+     -0.0849,
+     0.0996
+    ],
+    "p_two_sided": 0.8857,
+    "reps": 6000,
+    "resampled": "the two strata independently, being disjoint"
+   }
+  },
+  "race": {
+   "Unknown": {
+    "n": 5,
+    "events": 1,
+    "comparable_pairs": 2,
+    "skipped": "below the reporting floor of 25 patients and 100 pairs"
+   },
+   "asian": {
+    "n": 41,
+    "events": 5,
+    "comparable_pairs": 50,
+    "skipped": "below the reporting floor of 25 patients and 100 pairs"
+   },
+   "black or african american": {
+    "n": 20,
+    "events": 9,
+    "comparable_pairs": 108,
+    "skipped": "below the reporting floor of 25 patients and 100 pairs"
+   },
+   "not reported": {
+    "n": 8,
+    "events": 5,
+    "comparable_pairs": 18,
+    "skipped": "below the reporting floor of 25 patients and 100 pairs"
+   },
+   "white": {
+    "n": 285,
+    "events": 93,
+    "comparable_pairs": 16454,
+    "clinical_stage": 0.6539,
+    "slide": 0.6505,
+    "omics": 0.6544,
+    "ours": 0.7122,
+    "ours_minus_clinical": {
+     "mean": 0.0588,
+     "se": 0.0282,
+     "ci95": [
+      0.0043,
+      0.1132
+     ],
+     "p_two_sided": 0.0357,
+     "reps": 6000,
+     "resampled": "cases, not comparable pairs"
+    }
+   }
+  }
+ }
+}

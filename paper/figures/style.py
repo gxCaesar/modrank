@@ -24,9 +24,14 @@ from __future__ import annotations
 import matplotlib as mpl
 import numpy as np
 
-# -- nominal: method family, arm, cohort. Chroma fixed at C* 35, lightness free, hues spread wide,
-#    plus exactly one pure neutral for the baseline category.
-NOMINAL = ["#6D98D3", "#BC6A79", "#C98E66", "#89A467", "#3CAC9C"]
+# -- nominal: method family, arm, cohort. Since 2026-09-27 the house
+#    palette of 2026-09-23: seaborn deep blue, purple and pink, extended in seaborn-deep order with
+#    green skipped. The index order is the old one (ours, competitor, slide, clinical, omics), so a
+#    builder that indexes NOMINAL keeps its role. Blue against purple measures CIEDE2000 2.04 for a
+#    dichromat, so colour never carries a category alone here: every categorical mark also takes its
+#    role's marker and linestyle (lines, points) or hatch (bars, fills), from the dicts below.
+#    Replaced: #6D98D3 #BC6A79 #C98E66 #89A467 #3CAC9C, two of them green.
+NOMINAL = ["#4C72B0", "#C44E52", "#DA8BC3", "#8172B3", "#DD8452"]
 NEUTRAL = "#8C8C8C"
 
 # -- ordered ladder: anything with a direction. CIELCh, chroma near-constant, lightness alone makes
@@ -38,11 +43,38 @@ INK = "#28303F"
 # Risk tertiles are an ORDERED quantity, so they take three entries from the ladder -- chosen by
 # maximising the minimum adjacent luminance gap rather than by eye. Computed in
 # figure-source-data.json -> F4; the gap is 0.272, five times the 0.05 greyscale floor.
-RISK = {"high": "#667DB8", "middle": "#CAAEDF", "low": "#DEEFFF"}
+#
+# REVISED 2026-09-27: the previous triple ("#667DB8", "#CAAEDF", "#DEEFFF") put the low tertile at
+# the ladder's palest entry, which the ladder's own rule reserves for fills only -- the low-risk KM
+# curve and its at-risk row rendered as a near-invisible line on white. The three entries below are
+# darker steps of the same ladder (LADDER[0:3]), keeping min adjacent luminance gap 0.089 (still
+# above the 0.05 floor) and monotone dark(high) -> pale(low).
+RISK = {"high": "#667DB8", "middle": "#CB7F9F", "low": "#A4A8B6"}
 
 # Named roles, so a colour is never chosen at a call site.
-ROLE = {"ours": "#6D98D3", "clinical": "#89A467", "slide": "#C98E66",
-        "omics": "#3CAC9C", "competitor": "#BC6A79", "published": "#8C8C8C"}
+ROLE = {"ours": "#4C72B0", "clinical": "#8172B3", "slide": "#DA8BC3",
+        "omics": "#DD8452", "competitor": "#C44E52", "published": "#8C8C8C"}
+
+# The second channel, bound to the same roles so a builder takes colour and channel from one key and
+# the two cannot drift apart. Lines and points take MARKER and LINESTYLE; bars, fills, box bodies and
+# any patch take HATCH, drawn in the edge colour, so a hatched patch needs edgecolor=ROLE_EDGE[...].
+ROLE_MARKER = {"ours": "o", "clinical": "s", "slide": "^", "omics": "D", "competitor": "v",
+               "published": "P"}
+ROLE_LINESTYLE = {"ours": "-", "clinical": "--", "slide": ":", "omics": "-.",
+                  "competitor": (0, (5, 1.5)), "published": (0, (1, 1.2))}
+ROLE_HATCH = {"ours": "", "clinical": "////", "slide": "....", "omics": "\\\\\\\\",
+              "competitor": "xxxx", "published": "----"}
+ROLE_EDGE = {k: INK for k in ROLE}
+
+
+def role_line(role):
+    """Keyword arguments for a line or a line-with-markers in a role."""
+    return {"color": ROLE[role], "marker": ROLE_MARKER[role], "linestyle": ROLE_LINESTYLE[role]}
+
+
+def role_patch(role):
+    """Keyword arguments for a bar, fill or box body in a role: colour plus hatch in the ink."""
+    return {"facecolor": ROLE[role], "hatch": ROLE_HATCH[role], "edgecolor": ROLE_EDGE[role]}
 
 
 def _luminance(hexes):
@@ -84,6 +116,15 @@ def assert_palettes():
     assert np.abs(np.diff(tl)).min() >= 0.05, (
         "risk triple fails greyscale: min gap %.4f" % np.abs(np.diff(tl)).min())
     assert (np.diff(tl) > 0).all(), "risk must run dark (high) to pale (low), monotonically"
+
+    # 4. every role carries a second channel, and no two roles share one. The palette's own worst
+    #    pair is not separable under deuteranopia, so these are what separates the categories.
+    for d in (ROLE_MARKER, ROLE_LINESTYLE, ROLE_HATCH, ROLE_EDGE):
+        assert set(d) == set(ROLE), "second-channel dict does not cover exactly the roles"
+    for d in (ROLE_MARKER, ROLE_LINESTYLE, ROLE_HATCH):
+        vals = [str(v) for v in d.values()]
+        assert len(set(vals)) == len(vals), "two roles share a second channel: %s" % vals
+    assert all(c.upper() != "#55A868" for c in NOMINAL + list(ROLE.values())), "no green"
 
 
 def apply():

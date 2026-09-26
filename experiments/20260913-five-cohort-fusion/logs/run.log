@@ -1,0 +1,6 @@
+blca      ModRank 0.6992 | concat 0.6801 d=+0.0191 [-0.015, 0.0534] | stacked 0.6932 d=+0.0059 [-0.0143, 0.0267]  [31 s]
+brca      ModRank 0.6892 | concat 0.7571 d=-0.0679 [-0.1384, 0.0029] | stacked 0.7180 d=-0.0286 [-0.0754, 0.0202]  [75 s]
+coadread  ModRank 0.7141 | concat 0.6530 d=+0.0611 [-0.0206, 0.1442] | stacked 0.6919 d=+0.0219 [-0.0329, 0.0776]  [88 s]
+hnsc      ModRank 0.6179 | concat 0.5966 d=+0.0217 [-0.017, 0.0594] | stacked 0.6171 d=+0.0009 [-0.0206, 0.0228]  [120 s]
+stad      ModRank 0.6311 | concat 0.6073 d=+0.0242 [-0.0281, 0.0779] | stacked 0.5862 d=+0.0458 [-0.0152, 0.1081]  [149 s]
+wrote experiments/20260913-five-cohort-fusion/results/five-cohort-fusion.json

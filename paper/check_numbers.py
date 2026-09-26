@@ -174,7 +174,8 @@ def main():
             os.path.join(ROOT, "paper", "bib-submission", "main.tex"),
             os.path.join(ROOT, "paper", "bib-submission", "supplementary.tex"),
             os.path.join(ROOT, "paper", "nc-submission", "main.tex"),
-            os.path.join(ROOT, "paper", "nc-submission", "supplementary.tex"))
+            os.path.join(ROOT, "paper", "nc-submission", "supplementary.tex"),
+            os.path.join(ROOT, "paper", "nc-submission", "cover_letter.tex"))
     # --- STALE CLAIMS, banned as phrases. Found by an external review on 2026-09-11: after the
     # selection correction was shown to be mis-specified (0.0397, not 0.0073), four sentences still
     # said the result "clears the selection-inflation term", and the Limitations quoted a p that
@@ -197,6 +198,46 @@ def main():
         "roughly six times the largest gap": "0.0709 is 2.4 times the largest gap and 7 times the median",
         "cannot resolve concordance differences": "a power statement, not an impossibility",
         "two-centroid rule": "the sign-split table had no committed emitter; the median split does",
+        # --- the 2026-09-12 desk-reject review. Each of these overstated what was measured, and the
+        # replacement is in the same sentence. A later edit may not restore any of them.
+        "the pathology report holds nothing that separates them":
+            "the staging variables do not separate them; the report holds morphology the slide arm reads",
+        "and neither has been examined":
+            "we examined the method papers reported on the benchmark, which is a narrower claim",
+        "ModRank leads the benchmark":
+            "it has the highest reported concordance and cannot be distinguished from two competitors",
+        "the added value of every multimodal model":
+            "three constructions were measured, not every model",
+        "both input-parity comparisons":
+            "parity is in the clinical variables only; ModRank reads a slide encoder they do not",
+        "The three arms are close to independent":
+            "0.2445 and 0.1924 are weak correlations, not independence",
+        "correlated in exactly the way the real search was":
+            "they share folds, features and estimator; 'exactly' was not measured",
+        "It cannot make a combination exceed":
+            "in the Lund cohort the combination reaches 0.8779 against its best arm's 0.8672",
+        # --- Phase A4 claim scoping, 2026-09-27. A sign count over 24 re-partitions measures
+        # stability, not superiority; the margin over stacking (+0.0111) is under the 0.0145 bar; and
+        # across the five studies no fitted fusion separates in either direction (breast leans the
+        # other way, p=0.061). None of these may return.
+        "beat concatenated and learned fusion":
+            "the margin over stacking does not clear 0.0145, and five studies show no separation",
+        "the strongest construction on identical inputs":
+            "a point-estimate ranking by less than the benchmark resolves against stacking",
+        "exceeds concatenated and learned fusion on identical inputs in every one of 24":
+            "a sign count presented as superiority",
+        "The simplest combination wins here":
+            "it is not separable from stacking on bladder and from either fusion in five studies",
+        "fitting the combination buys nothing":
+            "breast: concatenation ahead by 0.0679, p=0.061; the title that said so was retired",
+        "method beats a correctly specified clinical reference outside the development cohort":
+            "two of the four other studies separate, two do not",
+        "a property of the recipe rather than of the encoder":
+            "two encoders agree on which studies separate; that is all it shows",
+        "three published multimodal constructions":
+            "ModRank is one of the three and is not published",
+        "the encoder's contribution near 0.022":
+            "0.7225 and 0.7009 are the two values on the shared seed, a difference of 0.0216",
     }
     for _doc in SCAN:
         _raw = open(_doc).read()
@@ -1155,6 +1196,86 @@ def check_nc(fails):
     dtt = dt["transcriptome_and_clinically_tied_q40"]["amended_clinical_block"]
     g32, g31, g48 = geo["GSE32894"], geo["GSE31684"], geo["GSE48075"]
     bh = why["cohorts"]["blca"]
+    abl = load("ablation-generalisation.json")["B_ablation_bladder"]["paired_vs_full"]
+    # the five-study validation, promoted from replication by the dated charter amendment
+    fc = j(ROOT, "experiments", "20260912-five-cohort-intervals", "results",
+           "five-cohort-intervals.json")
+    fcc, fcs = fc["cohorts"], fc["summary"]
+    sg = j(ROOT, "experiments", "20260912-subgroup-fairness", "results", "subgroup-fairness.json")
+    fl = j(ROOT, "experiments", "20260912-five-cohort-floors", "results",
+           "five-cohort-floors.json")["cohorts"]
+    enc = j(ROOT, "experiments", "20260913-encoder-sensitivity", "results",
+            "five-cohort-gigassl.json")["cohorts"]
+    fus = j(ROOT, "experiments", "20260913-five-cohort-fusion", "results",
+            "five-cohort-fusion.json")["cohorts"]
+    # ten comparisons, none separating. The manuscript rests a contrast on that, so it is asserted
+    # rather than described: if any interval ever excludes zero the sentence has to change.
+    _sepf = [(c, k) for c, v in fus.items()
+             for k in ("ModRank_minus_concatenated", "ModRank_minus_stacked")
+             if v[k]["ci95"][0] > 0 or v[k]["ci95"][1] < 0]
+    if _sepf:
+        fails.append("NC says none of the ten fusion comparisons separates from zero; these do: %s"
+                     % _sepf)
+    # the claim is that the SAME three separate and the SAME two do not, so both halves are asserted
+    _sep = {k for k, v in enc.items()
+            if v["differences"]["ours_minus_clinical_stage"]["ci95"][0] > 0}
+    if _sep != {"blca", "brca", "hnsc"}:
+        fails.append("NC says the same three studies separate under the second encoder; the run "
+                     "gives %s" % sorted(_sep))
+    # every study's paired difference is positive in all 24 re-partitions; the manuscript says so in
+    # two places and the claim is worth an assertion rather than a bound literal
+    if any(v["floor"]["partitions_with_a_positive_delta"] != 24 for v in fl.values()):
+        fails.append("NC says the difference is positive in 24 of 24 partitions in every study; "
+                     "the run says %s" % {k: v["floor"]["partitions_with_a_positive_delta"]
+                                          for k, v in fl.items()})
+
+    # the Discussion says both the sex gap and the age split have intervals covering zero
+    for _k, _v in (("sex", sg["splits"]["sex"]["ours_men_minus_women"]),
+                   ("age", sg["splits"]["age"]["ours_at_minus_above"])):
+        if not _v["ci95"][0] < 0 < _v["ci95"][1]:
+            fails.append("NC says the %s difference's interval covers zero; it is %s" % (_k, _v["ci95"]))
+
+    # published entries below the stage-based clinical arm: stated in Results and, since
+    # 2026-09-27, in the Discussion as the consequence of the correction. Neither was bound before.
+    _pub = load("published-benchmark-table.json")["entries"]
+    _ver = [e_ for e_ in _pub if e_["folds"].startswith(("verified", "definitional", "as reported in SurvPath"))]
+    _stage = a1["arms_seed0"]["clinical_age_sex_stage_from_DIMAF_file"]
+    _nv, _na = sum(e_["cindex"] < _stage for e_ in _ver), sum(e_["cindex"] < _stage for e_ in _pub)
+    if (len(_ver), _nv, len(_pub), _na) != (4, 2, 9, 5):
+        fails.append("NC says 2 of 4 verified and 5 of 9 published entries fall below the stage arm; "
+                     "the table gives %d of %d and %d of %d" % (_nv, len(_ver), _na, len(_pub)))
+    for _ph in ("exceeds two of the four published entries on verified folds and five of all nine",
+                "Two of the four published entries on verified folds, and five of all nine,"):
+        if _ph not in " ".join(nc.split()):
+            fails.append("NC no longer carries %r" % _ph)
+
+    # the one-column swap's range across the five studies, stated in Results as point estimates,
+    # the same values SI Table 2 prints (stage5.json). It said +0.2212, the bootstrap mean from the
+    # interval run, beside a table printing +0.2208, until 2026-09-27.
+    _s5 = j(ROOT, "development", "s5-results", "stage5.json")["cohorts"]
+    _sw = sorted(v["stage_minus_grade_same_pipeline"] for v in _s5.values())
+    _want = "by $+%.4f$ to $+%.4f$" % (_sw[0], _sw[-1])
+    if len(_sw) != 5 or _want not in " ".join(nc.split()):
+        fails.append("NC's one-column-swap range should read %r (stage5.json)" % _want)
+
+    # the second encoder covers all but nine of the five studies' patients (breast 8, stomach 1)
+    _gg = j(ROOT, "experiments", "20260913-encoder-sensitivity", "results", "five-cohort-gigassl.json")["cohorts"]
+    if fcs["total_cases"] - sum(v["n_cases"] for v in _gg.values()) != 9 or \
+            "(all but nine of the 2,241)" not in " ".join(nc.split()):
+        fails.append("NC says the second encoder covers all but nine of 2,241 patients; the run covers %d"
+                     % sum(v["n_cases"] for v in _gg.values()))
+
+    # Figure 1b's legend states what the transcriptome glyph lights (2026-09-27); the glyph itself
+    # recomputes and asserts the same count in paper/figures/pathway_glyph.py
+    _b3 = j(ROOT, "experiments", "20260817-blca-confirm", "results", "biology.json")
+    _ph = "lights the %d of %d pathway groups" % (
+        _b3["B3_what_the_image_arm_tracks"]["pathways_with_BH_q_below_0.05"],
+        _b3["B2_survival_association"]["pathways_tested"])
+    if _ph not in " ".join(nc.split()):
+        fails.append("NC Figure 1 legend should say %r (biology.json)" % _ph)
+
+    def fcd(cohort, key):
+        return fcc[cohort]["differences"][key]
 
     ROWS = [
         # the clinical reference
@@ -1171,8 +1292,7 @@ def check_nc(fails):
          "raised its concordance from 0.567 to 0.664"),
         ("abstract: stage reference", a1["arms_seed0"]["clinical_age_sex_stage_from_DIMAF_file"], "0.664",
          "raised its concordance from 0.567 to 0.664"),
-        ("abstract: primary", a1["primary"]["value"], "0.721", "It reached 0.721, the highest value"),
-        ("abstract: re-partitions", rs["resplits"]["partitions"], "24", "in all 24 re-partitions"),
+        ("abstract: primary", a1["primary"]["value"], "0.721", "It reached 0.721, the highest"),
         ("clinical with grade", a1["arms_seed0"]["clinical_age_sex_GRADE_from_DIMAF_file"], "0.5666",
          "The grade construction reaches 0.5666"),
         ("clinical with stage", a1["arms_seed0"]["clinical_age_sex_stage_from_DIMAF_file"], "0.6638",
@@ -1186,11 +1306,166 @@ def check_nc(fails):
         ("fusion oracle", rg["fusion"]["linear_fusion_oracle"]["value"], "0.7268", "(0.7268 against 0.7191)"),
         ("equal weight, deployed", rg["fusion"]["deployed_equal_weight"], "0.7191", "(0.7268 against 0.7191)"),
         ("what the oracle buys", rg["fusion"]["linear_fusion_oracle"]["value"]
-         - rg["fusion"]["deployed_equal_weight"], "+0.008", "is worth only $+0.008$ over equal weighting"),
+         - rg["fusion"]["deployed_equal_weight"], "+0.008", "improves on equal weighting by only $+0.008$"),
         ("gated fusion", c2["gated_on_clinical_tertile"], "0.7493", "(0.7493 against 0.7502)"),
         ("its permuted control", c2["gated_on_PERMUTED_tertile_CONTROL"], "0.7502", "(0.7493 against 0.7502)"),
         ("split-reseed SD", unc["paired_split_reseed_sd"], "0.0073", "a standard deviation of 0.0073"),
-        ("split-reseed bar", unc["reseed_bar_2sd"], "0.0145", "a margin must exceed 0.0145"),
+        ("split-reseed bar", unc["reseed_bar_2sd"], "0.0145", "twice that, 0.0145, is the margin"),
+        # The leave-one-out ablation, added 2026-09-12 after an external review found the subset
+        # panel's numbers stated nowhere in the prose. The keys of paired_vs_full name the subset
+        # that is KEPT, so "omics + clin" is the slide's removal; getting that backwards is the
+        # error this comment exists to prevent.
+        # the prose states each removal as the signed change in concordance (since 2026-09-27; it
+        # said "costs 0.0218" beside a negative interval before), so the bound quantity is the difference
+        ("drop the slide", abl["omics + clin"]["mean"], "-0.0218", "by\n$-0.0218$ for the slide"),
+        ("drop the slide, CI", abl["omics + clin"]["ci95"][0], "-0.0481", "$[-0.0481, +0.0038]$"),
+        ("drop the slide, p", abl["omics + clin"]["p_two_sided"], "0.105", "$p=0.105$"),
+        ("drop the transcriptome", abl["wsi + clin"]["mean"], "-0.0222",
+         "$-0.0222$ for the transcriptome"),
+        ("drop the transcriptome, CI", abl["wsi + clin"]["ci95"][0], "-0.0489", "$[-0.0489, +0.0060]$"),
+        ("drop the transcriptome, p", abl["wsi + clin"]["p_two_sided"], "0.110", "$p=0.110$"),
+        ("drop the clinical block", abl["wsi + omics"]["mean"], "-0.0385",
+         "$-0.0385$ for the clinical block"),
+        ("drop the clinical block, CI", abl["wsi + omics"]["ci95"][1], "-0.0084",
+         "$[-0.0687, -0.0084]$"),
+        ("drop the clinical block, p", abl["wsi + omics"]["p_two_sided"], "0.010", "$p=0.010$"),
+        # --- the five studies, promoted to validation by the 2026-09-12 charter amendment. Three of
+        # five separate from the corrected clinical arm and two do not, and the rows below bind both
+        # halves: a later edit that keeps the three and drops the two fails here.
+        ("five studies, cases", fcs["total_cases"], "2,241", "Across 2,241 patients and 411 events"),
+        ("five studies, events", fcs["total_events"], "411", "2,241 patients and 411 events"),
+        ("blca vs clinical", fcd("blca", "ours_minus_clinical_stage")["mean"], "+0.0774",
+         "In bladder the margin is $+0.0774$"),
+        ("blca vs clinical, CI low", fcd("blca", "ours_minus_clinical_stage")["ci95"][0], "+0.0284",
+         "$[+0.0284, +0.1264]$"),
+        ("blca vs clinical, CI high", fcd("blca", "ours_minus_clinical_stage")["ci95"][1], "+0.1264",
+         "$[+0.0284, +0.1264]$"),
+        ("blca vs clinical, p", fcd("blca", "ours_minus_clinical_stage")["p_two_sided"], "0.001",
+         "($[+0.0284, +0.1264]$, $p=0.001$)"),
+        ("brca vs clinical", fcd("brca", "ours_minus_clinical_stage")["mean"], "+0.1208",
+         "In breast it is $+0.1208$ ($[+0.0525, +0.1904]$, $p<0.001$)"),
+        ("brca vs clinical, CI low", fcd("brca", "ours_minus_clinical_stage")["ci95"][0], "+0.0525",
+         "$[+0.0525, +0.1904]$"),
+        ("brca vs clinical, CI high", fcd("brca", "ours_minus_clinical_stage")["ci95"][1], "+0.1904",
+         "$[+0.0525, +0.1904]$"),
+        ("hnsc vs clinical", fcd("hnsc", "ours_minus_clinical_stage")["mean"], "+0.0726",
+         "in head and neck $+0.0726$ ($[+0.0206, +0.1231]$, $p=0.007$)"),
+        ("hnsc vs clinical, CI low", fcd("hnsc", "ours_minus_clinical_stage")["ci95"][0], "+0.0206",
+         "$[+0.0206, +0.1231]$"),
+        ("hnsc vs clinical, CI high", fcd("hnsc", "ours_minus_clinical_stage")["ci95"][1], "+0.1231",
+         "$[+0.0206, +0.1231]$"),
+        ("hnsc vs clinical, p", fcd("hnsc", "ours_minus_clinical_stage")["p_two_sided"], "0.007",
+         "($[+0.0206, +0.1231]$, $p=0.007$)"),
+        # the two that do NOT separate, bound so they cannot quietly leave the paragraph
+        ("stad vs clinical", fcd("stad", "ours_minus_clinical_stage")["mean"], "+0.0495",
+         "Stomach reaches $+0.0495$"),
+        ("stad vs clinical, CI low", fcd("stad", "ours_minus_clinical_stage")["ci95"][0], "-0.0127",
+         "$[-0.0127, +0.1122]$"),
+        ("coadread vs clinical", fcd("coadread", "ours_minus_clinical_stage")["mean"], "+0.0236",
+         "colorectal $+0.0236$ ($[-0.0686, +0.1197]$)"),
+        ("coadread vs clinical, CI low", fcd("coadread", "ours_minus_clinical_stage")["ci95"][0],
+         "-0.0686", "$[-0.0686, +0.1197]$"),
+        ("coadread events", fcc["coadread"]["events"], "37", "the study with 37 events"),
+        ("coadread grade control", fcd("coadread", "ours_minus_grade_control")["mean"], "+0.0911",
+         "zero, at $+0.0911$ with an interval of $[+0.0451, +0.1449]$"),
+        ("coadread grade control, CI low", fcd("coadread", "ours_minus_grade_control")["ci95"][0],
+         "+0.0451", "$[+0.0451, +0.1449]$"),
+        ("brca three minus two modalities", fcd("brca", "ours_minus_wsi_omics")["mean"], "-0.0211",
+         "negative in breast ($-0.0211$, $[-0.0727, +0.0296]$)"),
+        ("brca three minus two, CI low", fcd("brca", "ours_minus_wsi_omics")["ci95"][0], "-0.0727",
+         "$[-0.0727, +0.0296]$"),
+        ("brca best published, any protocol", fcc["brca"]["published_best_any_protocol"][1], "0.794",
+         "0.794 for breast and 0.832 for colorectal"),
+        ("coadread best published, any protocol",
+         fcc["coadread"]["published_best_any_protocol"][1], "0.832",
+         "0.794 for breast and 0.832 for colorectal"),
+        ("brca ModRank", fcc["brca"]["points"]["OURS_wsi_omics_age_sex_stage"], "0.6892",
+         "against 0.6892 and\n0.7141 here"),
+        ("coadread ModRank", fcc["coadread"]["points"]["OURS_wsi_omics_age_sex_stage"], "0.7141",
+         "0.6892 and\n0.7141 here"),
+        ("blca under the five-study protocol",
+         fcc["blca"]["points"]["OURS_wsi_omics_age_sex_stage"], "0.6992",
+         "Under it bladder reaches 0.6992, against 0.7212"),
+        # --- the same five studies under a second slide encoder. The three that separate are bound
+        # here; that the other two still cover zero is asserted below, because an edit that kept the
+        # three and quietly dropped the two would otherwise pass.
+        ("second encoder, blca", enc["blca"]["differences"]["ours_minus_clinical_stage"]["mean"],
+         "+0.0569", "$+0.0569$ ($[+0.0034, +0.1099]$) in bladder"),
+        ("second encoder, blca CI low",
+         enc["blca"]["differences"]["ours_minus_clinical_stage"]["ci95"][0], "+0.0034",
+         "$[+0.0034, +0.1099]$"),
+        ("second encoder, brca", enc["brca"]["differences"]["ours_minus_clinical_stage"]["mean"],
+         "+0.0847", "$+0.0847$ ($[+0.0164, +0.1527]$) in\nbreast"),
+        ("second encoder, brca CI low",
+         enc["brca"]["differences"]["ours_minus_clinical_stage"]["ci95"][0], "+0.0164",
+         "$[+0.0164, +0.1527]$"),
+        ("second encoder, hnsc", enc["hnsc"]["differences"]["ours_minus_clinical_stage"]["mean"],
+         "+0.0580", "$+0.0580$ ($[+0.0078, +0.1101]$) in head and neck"),
+        ("second encoder, hnsc CI low",
+         enc["hnsc"]["differences"]["ours_minus_clinical_stage"]["ci95"][0], "+0.0078",
+         "$[+0.0078, +0.1101]$"),
+        # the fusion alternatives. Breast is the one the main text names, because it is the study
+        # where the rank average trails and the reason the title does not claim otherwise.
+        ("breast concatenation", fus["brca"]["points"]["concatenated"], "0.7571",
+         "the concatenated model reaches 0.7571 against 0.6892"),
+        ("breast, ModRank minus concatenation", fus["brca"]["ModRank_minus_concatenated"]["mean"],
+         "-0.0679", "($-0.0679$, $[-0.1384, +0.0029]$, $p=0.061$)"),
+        ("breast, that CI low", fus["brca"]["ModRank_minus_concatenated"]["ci95"][0], "-0.1384",
+         "$[-0.1384, +0.0029]$"),
+        ("breast, that CI high", fus["brca"]["ModRank_minus_concatenated"]["ci95"][1], "+0.0029",
+         "$[-0.1384, +0.0029]$"),
+        ("breast, that p", fus["brca"]["ModRank_minus_concatenated"]["p_two_sided"], "0.061",
+         "$p=0.061$)"),
+        # The five "from X to Y" sentences are in the Supplementary Note, so they are checked
+        # against that document in check_nc_si. Binding them here was the same error made earlier
+        # today with the re-partition floors: every row in this list is matched against main.tex
+        # alone, and text that lives in the supplementary fails as "no longer carried".
+        # --- subgroup performance, the two TRIPOD rows that read "Not addressed" until 2026-09-12.
+        # The men-minus-women difference is bound alongside its interval on purpose: the point
+        # estimate alone would read as a finding, and the interval is what says it is not one.
+        ("women, ModRank", sg["splits"]["sex"]["women"]["ours"], "0.6616",
+         "(0.6616 against 0.7406)"),
+        ("men, ModRank", sg["splits"]["sex"]["men"]["ours"], "0.7406", "(0.6616 against 0.7406)"),
+        ("women, clinical arm", sg["splits"]["sex"]["women"]["clinical_stage"], "0.5652",
+         "(0.5652 against 0.7015)"),
+        ("men, clinical arm", sg["splits"]["sex"]["men"]["clinical_stage"], "0.7015",
+         "(0.5652 against 0.7015)"),
+        ("women in the cohort", sg["splits"]["sex"]["women"]["n"], "90", "with 90\nwomen and 31 events"),
+        ("events among women", sg["splits"]["sex"]["women"]["events"], "31", "90\nwomen and 31 events"),
+        # Since 2026-09-27 the Discussion states only the interval of the sex gap: the reported
+        # difference is the bootstrap mean (+0.0811), which next to 0.7406 and 0.6616 reads as an
+        # arithmetic slip (their difference is 0.0790). Full values stay in SI Table 11.
+        ("ModRank sex gap, CI low", sg["splits"]["sex"]["ours_men_minus_women"]["ci95"][0], "-0.0231",
+         "$[-0.0231, +0.1900]$"),
+        ("ModRank sex gap, CI high", sg["splits"]["sex"]["ours_men_minus_women"]["ci95"][1], "+0.1900",
+         "$[-0.0231, +0.1900]$"),
+        # the age split is now stated as "small and its interval covers zero"; asserted below
+        # race: obtained from the archive, and only one stratum clears the floors. The count is
+        # bound because it is the reason no comparison is reported, not a descriptive aside.
+        ("white patients", sg["splits"]["race"]["white"]["n"], "285",
+         "Of the 359 patients, 285 are white"),
+        ("white stratum, ModRank over clinical",
+         sg["splits"]["race"]["white"]["ours_minus_clinical"]["mean"], "+0.0588",
+         "$+0.0588$ ($[+0.0043, +0.1132]$)"),
+        ("white stratum, CI low",
+         sg["splits"]["race"]["white"]["ours_minus_clinical"]["ci95"][0], "+0.0043",
+         "$[+0.0043, +0.1132]$"),
+        ("white stratum, CI high",
+         sg["splits"]["race"]["white"]["ours_minus_clinical"]["ci95"][1], "+0.1132",
+         "$[+0.0043, +0.1132]$"),
+        # --- per-study re-partition floors. The two that disagree with the bootstrap are bound
+        # explicitly: colorectal fails this bar and stomach clears it while its interval covers
+        # zero, and an edit that keeps one and drops the other fails here.
+        ("coadread margin", fl["coadread"]["released_folds"]["margin"], "+0.0243",
+         "$+0.0243$ against a bar of 0.0270"),
+        ("coadread bar", fl["coadread"]["floor"]["bar_2sd"], "0.0270", "against a bar of 0.0270"),
+        ("stad margin", fl["stad"]["released_folds"]["margin"], "+0.0491",
+         "$+0.0491$ against 0.0323"),
+        ("stad bar", fl["stad"]["floor"]["bar_2sd"], "0.0323", "$+0.0491$ against 0.0323"),
+        # The five floors themselves are written in the Supplementary Note, not here, so they are
+        # checked by check_nc_si against that document. Binding them in this list was an error:
+        # every row here is compared against main.tex alone, and eight rows failed as "no longer
+        # carried" when the text had never been there.
         # the confirmatory result
         ("primary", a1["primary"]["value"], "0.7212", "ModRank reaches 0.7212 concordance"),
         ("primary SD", a1["primary"]["sd_over_seeds"], "0.0048", "standard deviation 0.0048"),
@@ -1242,6 +1517,14 @@ def check_nc(fails):
         ("resplits vs clinical, SD", rs["resplits"]["ours_minus_clinical"]["sd"], "0.0083",
          "($+0.0549 \\pm 0.0083$) in 24 of 24"),
         ("site-grouped sites", rs["site_grouped_cv"]["sites_total"], "33", "(33 sites, five folds)"),
+        # the Discussion restates the two re-partition margins and the breast lean in prose (A4,
+        # 2026-09-27), so each restatement is bound where it is written, not only where it first appears
+        ("Discussion: resplits vs stacked", rs["resplits"]["ours_minus_stacked"]["mean"], "0.0111",
+         "the stacking by a mean of 0.0111, which the benchmark cannot resolve"),
+        ("Discussion: resplits vs concatenated", rs["resplits"]["ours_minus_concat"]["mean"], "0.0464",
+         "the concatenation by 0.0464, which it can"),
+        ("Discussion: breast concatenation lead", -fus["brca"]["ModRank_minus_concatenated"]["mean"],
+         "0.0679", "the concatenation leads it by 0.0679 without separating"),
         ("site-grouped ModRank", rs["site_grouped_cv"]["pooled"]["ours"], "0.7210",
          "ModRank holds 0.7210 while the stacking falls to 0.6855 and the concatenation to 0.6487"),
         ("site-grouped stacked", rs["site_grouped_cv"]["pooled"]["stacked"], "0.6855",
@@ -1250,8 +1533,12 @@ def check_nc(fails):
          "the concatenation to 0.6487"),
         ("encoder parity", ep["chief"]["full_method"], "0.7009",
          "SurvPath itself consumed, ModRank reaches 0.7009"),
-        ("encoder contribution", a1["arms_seed0"]["OURS"] - ep["chief"]["full_method"], "0.022",
-         "the encoder's contribution near 0.022"),
+        # Both values are seed 0, which is the only seed the CHIEF parity run scored, so the
+        # difference is stated on that seed rather than against the 5-seed primary. Written as
+        # "near 0.022" until 2026-09-12, which rounded 0.0216 up and collided with the slide's
+        # leave-one-out cost of 0.0218, a different quantity that happens to look the same.
+        ("encoder contribution", a1["arms_seed0"]["OURS"] - ep["chief"]["full_method"], "0.0216",
+         "the encoder's contribution at 0.0216 on the seed both values share"),
         ("corrected bar", sn["A_selection_null"]["bars"]["empirical_max_q95"]["bar"], "0.7716",
          "the correctly measured bar of 0.7716"),
         # added value and its inflation
@@ -1317,9 +1604,9 @@ def check_nc(fails):
          "($[+0.0006, +0.0915]$)"),
         # the modalities
         ("slide-clinical Spearman", am["redundancy"]["spearman_titan_vs_clinical"], "0.2445",
-         "slide and clinical scores is 0.2445"),
+         "weakly correlated (Spearman 0.2445)"),
         ("incumbent-clinical Spearman", am["redundancy"]["spearman_survpath_vs_clinical"], "0.1924",
-         "and the clinical score 0.1924"),
+         "and the clinical score (0.1924)"),
         ("clinically tied pairs", tie["pairs"], "1,213", "(1,213 of 24,219)"),
         ("comparable pairs", tie["pairs_total"], "24,219", "(1,213 of 24,219)"),
         ("clinical arm on the tied pairs", tie["arms"]["clinical"], "0.4959", "at chance (0.4959)"),
@@ -1336,8 +1623,8 @@ def check_nc(fails):
          "axes (Spearman 0.3595, $-0.372$ and 0.3672)"),
         ("slide arm, largest axis correlation", max(abs(v["spearman"]) for v in b3.values()), "0.2245",
          "is at most 0.2245 in magnitude"),
-        ("ModRank, basal-leaning half", bio["basal_leaning"]["OURS"], "0.7109", "(0.7109 and 0.6997"),
-        ("ModRank, luminal-leaning half", bio["luminal_leaning"]["OURS"], "0.6997", "(0.7109 and 0.6997"),
+        ("ModRank, basal-leaning half", bio["basal_leaning"]["OURS"], "0.7109", "(0.7109 in the basal-leaning half and 0.6997"),
+        ("ModRank, luminal-leaning half", bio["luminal_leaning"]["OURS"], "0.6997", "(0.7109 in the basal-leaning half and 0.6997"),
         # the external cohorts
         ("GSE32894 n", g32["n"], "224", "a Swedish cohort of 224 patients with 25 deaths"),
         ("GSE32894 events", g32["events"], "25", "224 patients with 25 deaths"),
@@ -1475,13 +1762,39 @@ def check_nc(fails):
         EXPECT = {"Supplementary Note~1": "note:census", "Supplementary Table~1": "tab:census",
                   "Supplementary Table~2": "tab:entropy", "Supplementary Note~2": "note:protocol",
                   "Supplementary Table~3": "tab:components", "Supplementary Fig.~1": "fig:campaign",
-                  "Supplementary Table~4": "tab:perseed", "Supplementary Note~5": "note:calibration",
-                  "Supplementary Table~8": "tab:calibration", "Supplementary Table~5": "tab:ties",
+                  "Supplementary Table~4": "tab:perseed", "Supplementary Table~5": "tab:ties",
                   "Supplementary Note~3": "note:arms", "Supplementary Fig.~2": "fig:landscape",
                   "Supplementary Table~6": "tab:subtype", "Supplementary Fig.~3": "fig:biology",
                   "Supplementary Figs.~4": "fig:cohort", "and~5 draw": "fig:cases",
-                  "Supplementary Note~4": "note:geo", "Supplementary Table~7": "tab:geo",
-                  "Supplementary Table~9": "tab:tripod"}
+                  # Everything from here was inserted during 2026-09-12 and 13 and moved the numbers
+                  # after it, twice for the tables. This half is written in LABEL order with the
+                  # rendered number beside each, because the previous layout was in insertion order
+                  # and that is how "Supplementary Table~7" came to appear twice in one dict, once
+                  # for the five-study table and once for the fusion table. A dict keeps the last,
+                  # so the first pointer stopped being checked and nothing said so. Sorted by label,
+                  # a repeated number is visible on the page.
+                  "Supplementary Note~4": "note:fivecohort",     # note 4
+                  "Supplementary Note~5": "note:geo",            # note 5
+                  "Supplementary Note~6": "note:calibration",    # note 6
+                  "Supplementary Note~7": "note:subgroup",       # note 7
+                  "Supplementary Table~7": "tab:fusion",         # table 7
+                  "Supplementary Table~8": "tab:fivecohort",     # table 8
+                  "Supplementary Table~9": "tab:geo",            # table 9
+                  "Supplementary Table~10": "tab:calibration",   # table 10
+                  "Supplementary Table~11": "tab:subgroup",      # table 11
+                  "Supplementary Table~12": "tab:tripod"}        # table 12
+        # A duplicated KEY cannot be caught by inspecting this dict, because Python collapses it
+        # before anything runs: writing "Supplementary Table~7" twice silently drops the first
+        # pointer, which is what happened on 2026-09-13. What can be caught is the consequence.
+        # Every note and table the Supplementary defines must be pointed at by exactly one phrase,
+        # so a collapsed entry shows up as a label nobody checks.
+        _si_items = {k for k in rs_si if k.startswith(("note:", "tab:"))}
+        _unchecked = _si_items - set(EXPECT.values())
+        if _unchecked:
+            fails.append("NC: the Supplementary defines %s, which no main-text pointer is checked "
+                         "against" % sorted(_unchecked))
+        if len(set(EXPECT.values())) != len(EXPECT):
+            fails.append("NC: two phrases in the pointer table map to the same label")
         for phrase, label in EXPECT.items():
             want = re.search(r"(\d+)", phrase).group(1)
             if rs_si.get(label) != want:
@@ -1511,9 +1824,13 @@ def check_nc(fails):
     n += check_nc_si(fails)
 
     # FIGURE WIDTH, G45: every figure the NC build includes is 180 mm wide (510.2 pt, tolerance
-    # 0.2 mm), resolved through the manuscript's own graphicspath order.
-    _gp = re.search(r"\\graphicspath\{((?:\{[^}]*\})+)\}", open(NC_TEX).read()).group(1)
-    _dirs = [os.path.normpath(os.path.join(os.path.dirname(NC_TEX), d_)) for d_ in re.findall(r"\{([^}]*)\}", _gp)]
+    # 0.2 mm). Since 2026-09-27 the main text names each figure by its path relative to the .tex
+    # (the kit's figure gates do not read \\graphicspath); a graphicspath, if one returns, is still
+    # honoured, and the .tex's own directory is always tried first.
+    _gpm = re.search(r"\\graphicspath\{((?:\{[^}]*\})+)\}", open(NC_TEX).read())
+    _dirs = [os.path.dirname(NC_TEX)] + (
+        [os.path.normpath(os.path.join(os.path.dirname(NC_TEX), d_))
+         for d_ in re.findall(r"\{([^}]*)\}", _gpm.group(1))] if _gpm else [])
     for _doc in (NC_TEX, os.path.join(ROOT, "paper", "nc-submission", "supplementary.tex")):
         for _m in re.finditer(r"\\includegraphics\[[^\]]*\]\{([^}]+)\}", open(_doc).read()):
             if _doc != NC_TEX:
@@ -1521,7 +1838,7 @@ def check_nc(fails):
             _hit = next((os.path.join(d_, _m.group(1)) for d_ in _dirs
                          if os.path.isfile(os.path.join(d_, _m.group(1)))), None)
             if _hit is None:
-                fails.append("NC includes %s, which exists in no graphicspath directory" % _m.group(1))
+                fails.append("NC includes %s, which does not resolve to a file" % _m.group(1))
                 continue
             _o = subprocess.run(["pdfinfo", _hit], capture_output=True, text=True).stdout
             _w = float([l_ for l_ in _o.split("\n") if "Page size" in l_][0].split()[2])
@@ -1653,6 +1970,52 @@ def check_nc_si(fails):
                     ["%+.4f" % geo[c]["D"]["point"] if geo[c].get("D") else "not defined" for c in C])
     expect("tab:geo", geo_rows)
 
+    # The five-study table was hand-written on 2026-09-12 and every cell was checked against its
+    # source by hand, once. That is exactly the check this file exists to replace: a hand check
+    # passes at the moment it is made and says nothing about the next edit. Rebuilt here from the
+    # run's own output so a changed cell fails.
+    fcj = json.load(open(os.path.join(ROOT, "experiments", "20260912-five-cohort-intervals",
+                                      "results", "five-cohort-intervals.json")))["cohorts"]
+    fc_rows = []
+    for key, lab in (("blca", "bladder"), ("brca", "breast"), ("coadread", "colorectal"),
+                     ("hnsc", "head and neck"), ("stad", "stomach")):
+        v, p, d = fcj[key], fcj[key]["points"], fcj[key]["differences"]
+        fc_rows.append([lab, str(v["n_cases"]), str(v["events"]),
+                        "%.4f" % p["age_sex_stage"], "%.4f" % p["OURS_wsi_omics_age_sex_stage"],
+                        "%+.4f" % d["ours_minus_clinical_stage"]["mean"],
+                        "%+.4f" % d["ours_minus_grade_control"]["mean"],
+                        "%+.4f" % d["ours_minus_wsi_omics"]["mean"]])
+    expect("tab:fivecohort", fc_rows)
+
+    sgj = json.load(open(os.path.join(ROOT, "experiments", "20260912-subgroup-fairness",
+                                      "results", "subgroup-fairness.json")))["splits"]
+    # Every row of the table, the race row included. It was added by hand on 2026-09-12 with two
+    # cells that had never been printed anywhere, and this list did not cover it, so nothing would
+    # have caught them. A rebuilt row is only a check for the rows it is given.
+    sg_rows = []
+    for axis, key, lab in (("sex", "men", "men"), ("sex", "women", "women"),
+                           ("age", "at or below", "age at or below 68"),
+                           ("age", "above the median", "age above 68"),
+                           ("race", "white", "recorded white")):
+        k = key if key in sgj[axis] else next(x for x in sgj[axis] if x.startswith(key))
+        v = sgj[axis][k]
+        sg_rows.append([lab, str(v["n"]), str(v["events"]), "%.4f" % v["clinical_stage"],
+                        "%.4f" % v["slide"], "%.4f" % v["omics"], "%.4f" % v["ours"]])
+    expect("tab:subgroup", sg_rows)
+
+    fusj = json.load(open(os.path.join(ROOT, "experiments", "20260913-five-cohort-fusion",
+                                       "results", "five-cohort-fusion.json")))["cohorts"]
+    fu_rows = []
+    for key, lab in (("blca", "bladder"), ("brca", "breast"), ("coadread", "colorectal"),
+                     ("hnsc", "head and neck"), ("stad", "stomach")):
+        v = fusj[key]
+        fu_rows.append([lab, "%.4f" % v["points"]["ModRank"],
+                        "%.4f" % v["points"]["concatenated"],
+                        "%+.4f" % v["ModRank_minus_concatenated"]["mean"],
+                        "%.4f" % v["points"]["stacked"],
+                        "%+.4f" % v["ModRank_minus_stacked"]["mean"]])
+    expect("tab:fusion", fu_rows)
+
     cal = json.load(open(os.path.join(PH, "calibration-and-decision-curve.json")))
     cal_rows = []
     for h, lab in (("12.0", "12 months"), ("24.0", "24 months"), ("36.0", "36 months")):
@@ -1668,6 +2031,49 @@ def check_nc_si(fails):
         n += 1
         if frag not in " ".join(src.split()):
             fails.append("NC SI: %r does not match the calibration file" % frag)
+    # the five per-study re-partition floors, which live in the Supplementary Note rather than the
+    # main text, with the sentence that reports each pair rebuilt from the run's own output
+    flo = json.load(open(os.path.join(ROOT, "experiments", "20260912-five-cohort-floors",
+                                      "results", "five-cohort-floors.json")))["cohorts"]
+    NAMES = (("blca", "bladder"), ("brca", "breast"), ("coadread", "colorectal"),
+             ("hnsc", "head and neck"), ("stad", "stomach"))
+    frag = "are %s and %s in %s, %s and %s in %s, %s and %s in %s, %s and %s in %s, and %s and %s in %s." % tuple(
+        x for k, lab in NAMES
+        for x in ("%.4f" % flo[k]["floor"]["sd_of_paired_delta"],
+                  "%.4f" % flo[k]["floor"]["bar_2sd"], lab))
+    n += 1
+    if frag not in " ".join(src.split()):
+        fails.append("NC SI: the five re-partition floors do not read %r" % frag)
+    n += 1
+    if not all(v["floor"]["partitions_with_a_positive_delta"] == 24 for v in flo.values()):
+        fails.append("NC SI claims 24 of 24 partitions positive in every study; the run disagrees")
+
+    # The second encoder: three studies fall and two rise. Both halves of that sentence are rebuilt
+    # from the two runs, because the first draft claimed all five fell and nothing was watching.
+    t5 = json.load(open(os.path.join(ROOT, "experiments", "20260912-five-cohort-intervals",
+                                     "results", "five-cohort-intervals.json")))["cohorts"]
+    g5 = json.load(open(os.path.join(ROOT, "experiments", "20260913-encoder-sensitivity",
+                                     "results", "five-cohort-gigassl.json")))["cohorts"]
+
+    def pair(c):
+        return ("%.4f" % t5[c]["points"]["OURS_wsi_omics_age_sex_stage"],
+                "%.4f" % g5[c]["points"]["OURS_wsi_omics_age_sex_stage"])
+    frag = ("bladder from %s to %s, breast from %s to %s and head and neck from %s to %s, and it "
+            "rises slightly in the two that do not, stomach from %s to %s and colorectal from "
+            "%s to %s." % (pair("blca") + pair("brca") + pair("hnsc") + pair("stad")
+                           + pair("coadread")))
+    n += 1
+    if frag not in " ".join(src.split()):
+        fails.append("NC SI: the second-encoder values do not read %r" % frag)
+    n += 1
+    _fell = [c for c in ("blca", "brca", "hnsc") if g5[c]["points"]["OURS_wsi_omics_age_sex_stage"]
+             < t5[c]["points"]["OURS_wsi_omics_age_sex_stage"]]
+    _rose = [c for c in ("stad", "coadread") if g5[c]["points"]["OURS_wsi_omics_age_sex_stage"]
+             > t5[c]["points"]["OURS_wsi_omics_age_sex_stage"]]
+    if len(_fell) != 3 or len(_rose) != 2:
+        fails.append("NC SI says three studies fall and two rise under the second encoder; the runs "
+                     "give fell=%s rose=%s" % (_fell, _rose))
+
     ui = json.load(open(os.path.join(PH, "utility-intervals.json")))
     flat = " ".join(src.split())
 

@@ -90,7 +90,7 @@
   }
  },
  "d_grade_and_stage_composition": {
-  "description": "level composition and normalised entropy of grade and stage",
+  "description": "level composition and normalised entropy of grade and stage, in the clinical file released with the benchmark",
   "source_file": "experiments/20260817-blca-confirm/results/why-grade-fails.json",
   "field": "cohorts/blca",
   "values": {
@@ -121,6 +121,51 @@
    "c_age_sex_grade": 0.5658,
    "c_age_sex_stage": 0.6218,
    "stage_minus_grade": 0.056
+  },
+  "provenance_note": "Two released files carry a stage field for these patients. This panel draws the benchmark's own clinical file, five levels over 334 valued cases, because it is the only clinical source common to all five studies and so is what the five-study comparison can use. The arms in panel a, and every concordance in the paper, read the incumbent's split files instead: four AJCC stage groups over 357 valued cases, whose composition is the next entry and is what Figure 7a draws."
+ },
+ "d_stage_groups_the_model_reads": {
+  "description": "the four AJCC stage groups of the incumbent's split files, the field every arm in this paper actually reads, with the patients and events in each",
+  "source_file": "experiments/20260817-blca-confirm/results/per-stage-subgroup.json",
+  "field": "strata",
+  "values": {
+   "Stage I": {
+    "n": 2,
+    "skipped": "fewer than 25 cases"
+   },
+   "Stage II": {
+    "n": 116,
+    "events": 21,
+    "pairs": 1369,
+    "clinical": 0.6227,
+    "wsi_titan": 0.6318,
+    "omics": 0.6702,
+    "survpath_plus_clinical": 0.7104,
+    "OURS": 0.7151,
+    "OURS_median_split_logrank_p": 0.0541
+   },
+   "Stage III": {
+    "n": 121,
+    "events": 28,
+    "pairs": 2112,
+    "clinical": 0.4403,
+    "wsi_titan": 0.6674,
+    "omics": 0.6991,
+    "survpath_plus_clinical": 0.5419,
+    "OURS": 0.6709,
+    "OURS_median_split_logrank_p": 0.0707
+   },
+   "Stage IV": {
+    "n": 118,
+    "events": 64,
+    "pairs": 4217,
+    "clinical": 0.5739,
+    "wsi_titan": 0.6001,
+    "omics": 0.5663,
+    "survpath_plus_clinical": 0.5869,
+    "OURS": 0.6227,
+    "OURS_median_split_logrank_p": 0.0883
+   }
   }
  }
 }

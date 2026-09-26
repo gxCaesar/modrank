@@ -144,8 +144,8 @@ reselected now.
 
 | | why | needs |
 |---|---|---|
-| **PIBD rerun, folds 1–4** | crashed after fold 0 (`FileNotFoundError` on `splits_1.csv`, exit 1); the file is present and readable from that working directory, so the cause is not configuration. Finishing it would put PIBD at input parity too, taking the paired comparisons from one competitor to two | **GPU launch — explicit confirmation** |
-| SurvPath at five seeds | our primary is a five-seed mean and SurvPath's rerun is seed 1 only, which is an asymmetry a reviewer can name | **GPU launch — explicit confirmation** |
+| ~~**PIBD rerun, folds 1–4**~~ | **DONE, and this row was stale from 2026-08-17 until 2026-09-12.** The rerun completed: `experiments/20260817-pibd-folds1to4-v3` logs folds 1, 2 and 3 building their datasets, and `pibd-parity.json` records five per-fold values, `[0.6038, 0.698, 0.6256, 0.6147, 0.7626]`. The crash described here was the first attempt | — |
+| ~~SurvPath at five seeds~~ | **DONE, and stale in the same way.** `pibd-parity.json` records `arms_averaged_over_seeds: [0, 1, 2, 3, 4]`, and the canonical construction states that both sides of every comparison get the identical seed-averaging, which is why the manuscript calls it a competitor averaged over five retrainings | — |
 | T/N/M for the four non-bladder cohorts | would let the richer clinical block be five-cohort rather than bladder-only | **data download — explicit confirmation** |
 | external validation on an independent bladder WSI cohort | none exists in this project's approved data, and none exists on this benchmark for any entrant | a new data route |
 

@@ -38,7 +38,7 @@ BIO = json.load(open(os.path.join(ROOT, "experiments", "20260817-blca-confirm", 
 style.apply()
 C, INK, LAD = style.ROLE, style.INK, style.LADDER
 
-FIGW, FIGH = 6.785, 6.45
+FIGW, FIGH = 6.785, 6.45   # 172.3 mm (PI correction 2026-09-27: left as is; do not widen to 180 mm)
 fig = plt.figure(figsize=(FIGW, FIGH))
 axa = fig.add_axes([0.175, 0.735, 0.310, 0.215])
 axb = fig.add_axes([0.640, 0.735, 0.325, 0.215])
@@ -63,8 +63,10 @@ rows.sort(key=lambda r: r[1])
 y = np.arange(len(rows))
 for yi, (k, z, q) in zip(y, rows):
     sig = q < 0.05
-    axa.barh([yi], [z], color=C["ours"] if z > 0 else C["omics"], height=0.62,
-             alpha=1.0 if sig else 0.30, edgecolor="none")
+    role = "ours" if z > 0 else "omics"
+    axa.barh([yi], [z], facecolor=C[role], hatch=style.ROLE_HATCH[role],
+             edgecolor=style.ROLE_EDGE[role], height=0.62, alpha=1.0 if sig else 0.30,
+             linewidth=0.4)
     axa.text(z + (0.12 if z > 0 else -0.12), yi, "%.3f" % q, va="center",
              ha="left" if z > 0 else "right", fontsize=5.6,
              fontweight="bold" if sig else "normal", color=INK if sig else "#6B7280")
@@ -89,8 +91,10 @@ yb = np.arange(len(keys))
 for yi, k in zip(yb, keys):
     im, om = SBS[k]["image"], SBS[k]["omics"]
     axb.plot([im, om], [yi, yi], color="#B8BEC9", lw=1.2, zorder=1, solid_capstyle="round")
-    axb.scatter([im], [yi], s=24, color=C["slide"], zorder=3, edgecolor="none")
-    axb.scatter([om], [yi], s=24, color=C["omics"], zorder=3, edgecolor="none")
+    axb.scatter([im], [yi], s=24, color=C["slide"], marker=style.ROLE_MARKER["slide"], zorder=3,
+                edgecolor="none")
+    axb.scatter([om], [yi], s=24, color=C["omics"], marker=style.ROLE_MARKER["omics"], zorder=3,
+                edgecolor="none")
 axb.axvline(0, color=INK, lw=0.8)
 axb.set_yticks(yb)
 axb.set_yticklabels([])
@@ -98,8 +102,8 @@ axb.text(1.0, -0.30, "rows as in a", transform=axb.transAxes, fontsize=5.4,
          color="#6B7280", ha="right", va="top")
 axb.set_xlim(-0.46, 0.46)
 axb.set_xlabel("Spearman $\\rho$ with the arm's out-of-fold score", fontsize=6.4)
-axb.scatter([], [], s=24, color=C["slide"], label="slide arm")
-axb.scatter([], [], s=24, color=C["omics"], label="omics arm")
+axb.scatter([], [], s=24, color=C["slide"], marker=style.ROLE_MARKER["slide"], label="slide arm")
+axb.scatter([], [], s=24, color=C["omics"], marker=style.ROLE_MARKER["omics"], label="omics arm")
 axb.legend(fontsize=6.0, loc="lower right", handletextpad=0.35, borderpad=0.2)
 rho = BIO["B4b_contrast"]["spearman_image_vs_omics_arm"]
 axb.set_title("subtype association per arm ($\\rho$ "
@@ -117,11 +121,12 @@ for j, (key, role) in enumerate(ARMS):
     # The fourth panel in this package to carry that defect, and the last.
     xx = xc + (j - 1.5) * w
     for x, v in zip(xx, vals):
-        axc.plot([x, x], [0.508, v], color=C[role], lw=1.1, solid_capstyle="round", zorder=1)
+        axc.plot([x, x], [0.508, v], color=C[role], lw=1.1, linestyle=style.ROLE_LINESTYLE[role],
+                 solid_capstyle="round", zorder=1)
         axc.text(x, v + 0.006, "%.2f" % v, ha="center", va="bottom", fontsize=5.0, rotation=90,
                  color=C[role], fontweight="bold")
-    axc.plot(xx, vals, "o", color=C[role], ms=3.2, markeredgecolor="none", zorder=3,
-             label={"OURS": "ours"}.get(key, key))
+    axc.plot(xx, vals, marker=style.ROLE_MARKER[role], linestyle="none", color=C[role], ms=3.2,
+             markeredgecolor="none", zorder=3, label={"OURS": "ours"}.get(key, key))
 axc.axhline(0.5, color="#9AA1AE", lw=0.7, ls=(0, (2, 2)))
 axc.set_xticks(xc)
 axc.set_xticklabels(["%s\n$n$=%d, %d events" % (g[0], g[1]["n"], g[1]["events"]) for g in groups],
@@ -138,9 +143,10 @@ TOP = BIO["B3_what_the_image_arm_tracks"]["top_12_pathways_by_absolute_correlati
 TOP = sorted(TOP, key=lambda r: r["spearman"])
 yd = np.arange(len(TOP))
 for yi, r in zip(yd, TOP):
+    role = "slide" if r["spearman"] > 0 else "omics"
     axd.plot([0, r["spearman"]], [yi, yi], color="#B8BEC9", lw=1.0, zorder=1)
-    axd.scatter([r["spearman"]], [yi], s=20, zorder=3, edgecolor="none",
-                color=C["slide"] if r["spearman"] > 0 else C["omics"])
+    axd.scatter([r["spearman"]], [yi], s=20, zorder=3, edgecolor="none", marker=style.ROLE_MARKER[role],
+                color=C[role])
 axd.axvline(0, color=INK, lw=0.8)
 axd.set_yticks(yd)
 def short(name, n=34):
@@ -159,32 +165,35 @@ axd.set_title("the %d of %d pathways at BH $q<0.05$, ten strongest" % (n_q, n_te
 # =========================================================================== e  case studies
 CS = BIO["B6_case_studies"]
 cases = CS["cases"]
-GROUP = [("highest full-method score in the band", "revised UP by the model", C["competitor"]),
-         ("lowest full-method score in the band", "revised DOWN by the model", C["ours"]),
-         ("image arm far ABOVE omics arm", "slide arm far above omics", C["slide"]),
-         ("omics arm far ABOVE image arm", "omics arm far above slide", C["omics"])]
+GROUP = [("highest full-method score in the band", "revised UP by the model", "competitor"),
+         ("lowest full-method score in the band", "revised DOWN by the model", "ours"),
+         ("image arm far ABOVE omics arm", "slide arm far above omics", "slide"),
+         ("omics arm far ABOVE image arm", "omics arm far above slide", "omics")]
 ordered, bands = [], []
-for sel, lab, col in GROUP:
+for sel, lab, role in GROUP:
     grp = [c for c in cases if c["selected_as"] == sel]
-    bands.append((len(ordered), len(grp), lab, col))
-    ordered += [(c, col) for c in grp]
+    bands.append((len(ordered), len(grp), lab, role))
+    ordered += [(c, role) for c in grp]
 assert len(ordered) == len(cases), "the grouping dropped %d of %d cases the rule admitted" % (
     len(cases) - len(ordered), len(cases))
 
 ye = np.arange(len(ordered))[::-1]
-for yi, (c, col) in zip(ye, ordered):
+for yi, (c, role) in zip(ye, ordered):
     t = c["observed_months"]
-    axe.plot([0, t], [yi, yi], color=col, lw=2.6, solid_capstyle="butt", alpha=0.85, zorder=2)
+    col = C[role]
+    axe.plot([0, t], [yi, yi], color=col, lw=2.6, linestyle=style.ROLE_LINESTYLE[role],
+             solid_capstyle="butt", alpha=0.85, zorder=2)
     axe.scatter([t], [yi], s=30, zorder=4, color=col if c["event"] else "#FFFFFF",
-                edgecolor=col, linewidth=1.1, marker="o" if c["event"] else "o")
+                edgecolor=col, linewidth=1.1, marker=style.ROLE_MARKER[role])
     axe.text(-1.6, yi, "%s   %s" % (c["case_id"], c["stage"]), ha="right", va="center",
              fontsize=5.5, color=INK)
     axe.text(t + 1.6, yi, "%.1f mo" % t, ha="left", va="center", fontsize=5.4, color="#5A6273")
 seen = []
-for start, n, lab, col in bands:
+for start, n, lab, role in bands:
     if lab not in [t for t, _ in seen]:
-        seen.append((lab, col))
-handles = [plt.Line2D([], [], color=c, lw=2.6, label=t) for t, c in seen]
+        seen.append((lab, role))
+handles = [plt.Line2D([], [], color=C[role], lw=2.6, linestyle=style.ROLE_LINESTYLE[role], label=t)
+           for t, role in seen]
 axe.set_yticks([])
 axe.set_xlim(0, 78)
 axe.set_ylim(-0.8, len(ordered) - 0.2)

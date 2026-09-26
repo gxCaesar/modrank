@@ -44,10 +44,24 @@ C, INK, LAD = style.ROLE, style.INK, style.LADDER
 
 CENSUS = json.load(open(os.path.abspath(os.path.join(HERE, "..", "..", "development",
                                                      "clinical-baseline-census.json"))))
-DECOMP = json.load(open(os.path.abspath(os.path.join(HERE, "..", "..", "development",
-                                                    "s5-results", "decomp.json"))))
+# Panel e used to read development/s5-results/decomp.json, which had no committed producer. Two of
+# its four rows turned out to be unprovenanced rather than one: B and D reproduce exactly from
+# committed code, A does not (0.6856/0.7291 rebuilt against 0.6863/0.7285 in that file, with the
+# rebuild agreeing with the frozen run's own clinical arm), and C cannot be attempted because the
+# rule that chose one diagnosis per case was never recorded. The panel now draws the three
+# constructions a script regenerates and drops the one it cannot.
+DECOMP = json.load(open(os.path.abspath(os.path.join(
+    HERE, "..", "..", "experiments", "20260912-decomp-emitter", "results",
+    "clinical-block-decomposition.json"))))["constructions"]
 STRATA = load("per-stage-subgroup.json")["strata"]
 CPM = load("cold-panel-round1-measurements.json")
+# The five-study swap carried only point estimates until 2026-09-12. Panel c now draws the interval
+# beside each one, because the main text was corrected the same day to say that the swap is positive
+# in all five studies and separable from zero in two, and a figure showing five bare gaps would be
+# making the stronger claim the text had just given up.
+IV = json.load(open(os.path.abspath(os.path.join(
+    HERE, "..", "..", "experiments", "20260912-five-cohort-intervals", "results",
+    "five-cohort-intervals.json"))))["cohorts"]
 
 fig = plt.figure(figsize=(style.width(6.785), 6.45))
 # THREE ROWS OF TWO rather than four rows of one-and-two. Panels a and d are both eleven-row
@@ -126,17 +140,28 @@ for yi, k in zip(yb, order):
     co = WG["cohorts"][k]
     g, s = co["c_age_sex_grade"], co["c_age_sex_stage"]
     axb.plot([g, s], [yi, yi], color="#B8BEC9", lw=1.4, zorder=1, solid_capstyle="round")
-    axb.scatter([g], [yi], s=26, color=C["competitor"], zorder=3, edgecolor="none")
-    axb.scatter([s], [yi], s=26, color=C["clinical"], zorder=3, edgecolor="none")
-    axb.text(s + 0.008, yi, "+%.3f" % (s - g), va="center", fontsize=6.0, color=INK)
+    axb.scatter([g], [yi], s=26, color=C["competitor"], marker=style.ROLE_MARKER["competitor"],
+                zorder=3, edgecolor="none")
+    axb.scatter([s], [yi], s=26, color=C["clinical"], marker=style.ROLE_MARKER["clinical"],
+                zorder=3, edgecolor="none")
+    d = IV[k]["differences"]["stage_minus_grade"]
+    excl = d["ci95"][0] > 0
+    axb.text(s + 0.010, yi, "+%.3f%s" % (s - g, "" if excl else " (n.s.)"), va="center",
+             fontsize=6.0, color=INK if excl else "#6B7280")
 axb.set_yticks(yb)
 axb.set_yticklabels([NAME[k] for k in order], fontsize=6.5)
 axb.set_xlim(0.43, 0.79)
 axb.set_xlabel("concordance", fontsize=6.4)
-axb.set_title("grade $\\rightarrow$ stage, five studies", fontsize=6.4, pad=4)
-axb.scatter([], [], s=26, color=C["competitor"], label="age + sex + grade")
-axb.scatter([], [], s=26, color=C["clinical"], label="age + sex + stage")
-axb.legend(fontsize=6.2, loc="upper right", handletextpad=0.35, borderpad=0.2)
+axb.scatter([], [], s=26, color=C["competitor"], marker=style.ROLE_MARKER["competitor"],
+            label="age + sex + grade")
+axb.scatter([], [], s=26, color=C["clinical"], marker=style.ROLE_MARKER["clinical"],
+            label="age + sex + stage")
+# an in-axes legend at "upper right" sat on top of the BLCA row's markers and its "+0.056" label.
+# One row above the axes, carrying the panel's own title as the legend title, collides with nothing.
+_lgb = axb.legend(fontsize=6.1, loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=2,
+                  handletextpad=0.35, borderpad=0.2, columnspacing=1.1,
+                  title="grade $\\rightarrow$ stage, five studies", title_fontsize=6.4)
+_lgb.get_title().set_fontweight("normal")
 
 
 # =========================================================================== d  the mechanism (lettered c before 2026-09-11)
@@ -213,25 +238,30 @@ axd.set_title("the eleven-paper census", fontsize=6.4, pad=19, fontweight="bold"
 assert n_stage == 0, "the claim of this panel is that NO paper uses stage; %d do" % n_stage
 
 # =========================================================================== e  four constructions
-KEYS = list(DECOMP.keys())
-assert len(KEYS) == 4, "four clinical constructions were scored; found %d" % len(KEYS)
-SHORT = {"A": "as frozen", "B": "amended", "C": "corrected", "D": "grade for stage"}
+KEYS = ["A", "B", "D"]
+assert set(KEYS) == set(DECOMP), "the emitter scored %s; the panel draws %s" % (set(DECOMP), KEYS)
+SHORT = {"A": "before amendment", "B": "amended", "D": "grade for stage"}
 ye = np.arange(len(KEYS))[::-1]
 for yi, k in zip(ye, KEYS):
-    alone, combined = DECOMP[k]
-    col = C["competitor"] if k.startswith("D") else C["clinical"]
+    alone, combined = DECOMP[k]["clinical_alone"], DECOMP[k]["with_both_modalities"]
+    role_alone = "competitor" if k == "D" else "clinical"
+    col = C[role_alone]
     axe.plot([alone, combined], [yi, yi], color="#B8BEC9", lw=1.4, zorder=1, solid_capstyle="round")
-    axe.scatter([alone], [yi], s=26, color=col, zorder=3, edgecolor="none")
-    axe.scatter([combined], [yi], s=26, color=C["ours"], zorder=3, edgecolor="none")
+    axe.scatter([alone], [yi], s=26, color=col, marker=style.ROLE_MARKER[role_alone], zorder=3,
+                edgecolor="none")
+    axe.scatter([combined], [yi], s=26, color=C["ours"], marker=style.ROLE_MARKER["ours"], zorder=3,
+                edgecolor="none")
 axe.set_yticks(ye)
-axe.set_yticklabels([SHORT[k[0]] for k in KEYS], fontsize=6.2)
+axe.set_yticklabels([SHORT[k] for k in KEYS], fontsize=6.2)
 axe.set_xlim(0.54, 0.76)
 axe.set_xlabel("concordance", fontsize=6.3)
-axe.scatter([], [], s=26, color=C["clinical"], label="clinical block alone")
-axe.scatter([], [], s=26, color=C["ours"], label="with slide and transcriptome")
+axe.scatter([], [], s=26, color=C["clinical"], marker=style.ROLE_MARKER["clinical"],
+            label="clinical block alone")
+axe.scatter([], [], s=26, color=C["ours"], marker=style.ROLE_MARKER["ours"],
+            label="with slide and transcriptome")
 axe.legend(fontsize=5.7, loc="upper center", bbox_to_anchor=(0.5, -0.42), ncol=2,
            handletextpad=0.35, columnspacing=1.1, borderpad=0.15)
-axe.set_title("four clinical constructions",
+axe.set_title("three clinical constructions",
               fontsize=6.3, pad=4)
 
 # =========================================================================== f  inside one stage
@@ -245,16 +275,28 @@ for i, (key, fam) in enumerate(ARMS_F):
     xx = xf + (i - 1.5) * w
     vv = [v[key] for _, v in SHOWN]
     for x_, v_ in zip(xx, vv):
-        axf.plot([x_, x_], [0.405, v_], color=MODF[fam], lw=1.1, solid_capstyle="round",
-                 zorder=1)
-    axf.plot(xx, vv, "o", color=MODF[fam], ms=3.4, markeredgecolor="none", zorder=3)
+        axf.plot([x_, x_], [0.405, v_], color=MODF[fam], lw=1.1, linestyle=style.ROLE_LINESTYLE[fam],
+                 solid_capstyle="round", zorder=1)
+    axf.plot(xx, vv, marker=style.ROLE_MARKER[fam], linestyle="none", color=MODF[fam], ms=3.4,
+             markeredgecolor="none", zorder=3)
 axf.axhline(0.5, color=INK, lw=0.7, ls=":", zorder=3)
+# the four stems were identified only by colour, marker and linestyle, with no legend anywhere in
+# the figure. Proxy handles carry all three, in the same corner every stage's tallest stem clears
+# (Stage IV's cluster, nearest this corner, tops out well below 0.65).
+NAME_F = {"clinical": "clinical", "slide": "slide", "omics": "transcriptome", "ours": "ModRank"}
+for key, fam in ARMS_F:
+    axf.plot([], [], color=MODF[fam], marker=style.ROLE_MARKER[fam],
+             linestyle=style.ROLE_LINESTYLE[fam], lw=1.1, ms=3.4, markeredgecolor="none",
+             label=NAME_F[fam])
+# one row above the axes: inside, it sat on the Stage III stems (2026-09-27)
+axf.legend(fontsize=5.3, loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=4, handlelength=1.6,
+           handletextpad=0.35, columnspacing=0.8, borderpad=0.15, frameon=False)
 axf.set_xticks(xf)
 axf.set_xticklabels(["%s\n$n=%d$, %d ev" % (k.replace("Stage ", "Stage\u2009"), v["n"],
                                             v["events"]) for k, v in SHOWN], fontsize=5.9)
 axf.set_ylim(0.40, 0.76)
 axf.set_ylabel("concordance", fontsize=6.3)
-axf.set_title("within stage strata", fontsize=6.3, pad=4)
+axf.set_title("within the incumbent's stage groups", fontsize=6.3, pad=13)
 worst = min(v["clinical"] for _, v in SHOWN)
 axf.text(0.5, -0.40, "clinical falls to %.3f, below chance, in Stage III" % worst,
          transform=axf.transAxes, ha="center", va="top", fontsize=5.6, color="#6B7280")

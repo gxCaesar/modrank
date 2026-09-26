@@ -65,7 +65,7 @@ assert len(hi) == 5 and len(lo) == 5, "the rule admits five of each; got %d and 
 hi.sort(key=lambda c: -c["our_score_percentile"])
 lo.sort(key=lambda c: c["our_score_percentile"])
 
-FIGW, FIGH = 6.785, 5.45
+FIGW, FIGH = 6.785, 5.45   # 172.3 mm (PI correction 2026-09-27: left as is; do not widen to 180 mm)
 fig = plt.figure(figsize=(FIGW, FIGH))
 
 L, R, TOPY = 0.052, 0.988, 0.905
@@ -117,7 +117,10 @@ for row, (lab, sub) in enumerate((("Five highest", "ModRank risk percentile 0.93
     fig.text(L + 0.115, ROWY[row] + IMH + 0.053, sub, ha="left", va="bottom", fontsize=5.6,
              color=GREY)
 
-fig.text(L, 0.030, "Descriptive. Ten cases cannot resolve an association and none of this fed "
+# at 0.030 this line sat under the bottom row's own stage/outcome text (y - 0.104 with the bottom
+# row's y around 0.150 puts that text's own bottom edge at almost the same height); lower still
+# clears it without crowding the figure's own bottom edge.
+fig.text(L, 0.006, "Descriptive. Ten cases cannot resolve an association and none of this fed "
          "back into the method.", ha="left", va="bottom", fontsize=5.4, color=GREY)
 
 n_died_hi = sum(c["event"] for c in hi)

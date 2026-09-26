@@ -1,24 +1,27 @@
 # ModRank
 
-Code and frozen results for *ModRank: parameter-free fusion of histology, transcriptome and
-pathologic stage for bladder cancer survival*.
+Code, prespecified protocols and results for *Parameter-free multimodal fusion with ModRank and a
+corrected clinical reference for bladder cancer survival*.
 
 Two findings, of different kinds.
 
-**A fact about a literature.** On the TCGA bladder whole-slide survival benchmark, every method
-paper that reports a clinical-variable baseline builds it from tumour grade, none uses pathologic
-stage, and half the papers whose text could be read report no clinical baseline at all. The
-variable was never missing from the data: it ships in the released files. Supplying it lifts the
-clinical arm from 0.5666 to 0.6638 on identical cases, above five of the nine published entries.
-The mechanism is specific to this disease and checkable: muscle-invasive urothelial carcinoma is
-94.4% one grade level, so the covariate the field compares against cannot separate the patients it
-does not distinguish.
+**A measurement.** On the TCGA bladder whole-slide survival benchmark, every method paper we could
+read that reports a clinical-variable baseline builds it from tumour grade, none uses pathologic
+stage, and half the papers whose text could be read report no clinical baseline at all. Stage is in
+the released files. Rebuilding the clinical reference with it raises its concordance from 0.5666 to
+0.6638 on identical cases, above five of the nine published entries, and more than halves the
+apparent added value of three multimodal constructions. Muscle-invasive urothelial carcinoma is
+94.4% one grade level in this cohort, so a grade-based reference separates few patients. The
+inflation replicated in an independent GEO cohort under a protocol fixed before its outcomes were
+analysed.
 
 **A method.** At 359 patients and 113 events an in-sample fit at sixteen parameters reaches 0.7474
 on pure noise, so ModRank spends its events on one penalised Cox model per modality and none on the
 combination, which is an equal-weight rank average. It reaches 0.7212 with 1,049 coefficients
-against two competitors' 25 million, the highest value reported on these folds by the point-estimate
-convention every entry is ranked by.
+against two competitors' 25 million, the highest value reported on these folds by point estimate,
+and does not separate from either competitor. Across the benchmark's five studies, neither
+concatenated nor stacked fusion of the same inputs significantly improves on it, and it exceeds the
+corrected clinical reference in three of the five.
 
 **And one thing this repository reports against itself.** The study's pre-registered decision rule
 used the standard deviation of a paired between-arm difference where a maximum-of-N correction needs

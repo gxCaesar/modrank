@@ -55,7 +55,9 @@ ro = np.array([p["rho_omics"] for p in P])
 names = [p["pathway"].replace("_", " ") for p in P]
 n_bh = int((qval < 0.10).sum())
 
-FIGW, FIGH = 6.30, 4.60
+FIGW, FIGH = 6.30, 4.60   # 160 mm (PI correction 2026-09-27: this is the SI text block width,
+# 453.6 pt, and every figure must insert at scale 1.0000 -- 180 mm is a valid Nature artwork width
+# in the abstract but wrong for this document)
 fig = plt.figure(figsize=(FIGW, FIGH))
 axa = fig.add_axes([0.098, 0.575, 0.520, 0.345])
 axb = fig.add_axes([0.740, 0.575, 0.235, 0.345])
@@ -78,7 +80,11 @@ axa.text(0.02, -np.log10(bh_line), "BH $q<0.10$ needs $p<%.1g$" % bh_line,
          transform=axa.get_yaxis_transform(), fontsize=5.2, color=C["competitor"],
          va="bottom", ha="left")
 idx = k[0]
-axa.annotate(names[idx][:34], (score[idx], y[idx]), textcoords="offset points",
+# 34 was calibrated for the 160 mm build and, for this pathway's name, truncated mid-parenthesis
+# ("Epidermal Growth Factor Receptor ("). The 180 mm build has more room; rstrip so a future run's
+# longest name cannot land on a dangling "(" or trailing space either.
+label_name = names[idx][:40].rstrip(" (")
+axa.annotate(label_name, (score[idx], y[idx]), textcoords="offset points",
              xytext=(-7, -1), fontsize=5.2, color=INK, ha="right", va="center")
 axa.text(0.98, 0.06, "strongest of 275, and it still\ndoes not clear the correction",
          transform=axa.transAxes, ha="right", va="bottom", fontsize=5.2, color=GREY,
@@ -107,8 +113,12 @@ panel("b", 0.655, 0.980)
 
 # =========================================================================== c  ranked |rho|
 order = np.argsort(-np.abs(rs))
-axc.plot(np.arange(len(P)), np.abs(rs)[order], lw=1.1, color=C["slide"], label="slide arm")
-axc.plot(np.arange(len(P)), np.sort(np.abs(ro))[::-1], lw=1.1, color=C["omics"], label="omics arm")
+axc.plot(np.arange(len(P)), np.abs(rs)[order], lw=1.1, color=C["slide"],
+         linestyle=style.ROLE_LINESTYLE["slide"], marker=style.ROLE_MARKER["slide"], markevery=20,
+         ms=3.0, label="slide arm")
+axc.plot(np.arange(len(P)), np.sort(np.abs(ro))[::-1], lw=1.1, color=C["omics"],
+         linestyle=style.ROLE_LINESTYLE["omics"], marker=style.ROLE_MARKER["omics"], markevery=20,
+         ms=3.0, label="omics arm")
 axc.set_xlabel("pathways, ranked by $|\\rho|$ with that arm", fontsize=6.4)
 axc.set_ylabel("$|\\rho|$", fontsize=6.4)
 axc.set_xlim(0, len(P))
@@ -118,7 +128,12 @@ panel("c", 0.010, 0.470)
 
 # =========================================================================== d  the same, binned
 bins = np.linspace(0, max(np.abs(rs).max(), np.abs(ro).max()) * 1.02, 13)
-axd.hist([np.abs(rs), np.abs(ro)], bins=bins, color=[C["slide"], C["omics"]], edgecolor="none")
+_, _, _hist_patches = axd.hist([np.abs(rs), np.abs(ro)], bins=bins, color=[C["slide"], C["omics"]])
+for _patches, _role in zip(_hist_patches, ("slide", "omics")):
+    for _p in _patches:
+        _p.set_hatch(style.ROLE_HATCH[_role])
+        _p.set_edgecolor(style.ROLE_EDGE[_role])
+        _p.set_linewidth(0.4)
 axd.set_xlabel("$|\\rho|$", fontsize=6.4)
 axd.set_ylabel("pathways", fontsize=6.4)
 axd.set_title("distribution of $|\\rho|$", fontsize=6.4, pad=3)

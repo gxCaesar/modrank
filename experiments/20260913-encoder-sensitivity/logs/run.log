@@ -1,0 +1,6 @@
+blca      n= 359 ev=113 | OURS 0.6788 vs grade-ctrl 0.6605  d=+0.0184 [-0.0104, 0.0469] p=0.210 | vs stage-arm d=+0.0569 [0.0034, 0.1099] p=0.036  [13 s]
+brca      n= 863 ev= 60 | OURS 0.6533 vs grade-ctrl 0.6240  d=+0.0298 [-0.017, 0.077] p=0.202 | vs stage-arm d=+0.0847 [0.0164, 0.1527] p=0.014  [31 s]
+coadread  n= 298 ev= 37 | OURS 0.7210 vs grade-ctrl 0.6377  d=+0.0835 [0.0356, 0.1411] p=0.000 | vs stage-arm d=+0.0301 [-0.0665, 0.1283] p=0.547  [37 s]
+hnsc      n= 394 ev=117 | OURS 0.6032 vs grade-ctrl 0.5784  d=+0.0249 [-0.0129, 0.0623] p=0.183 | vs stage-arm d=+0.0580 [0.0078, 0.1101] p=0.026  [53 s]
+stad      n= 318 ev= 84 | OURS 0.6366 vs grade-ctrl 0.6139  d=+0.0227 [-0.0147, 0.0612] p=0.241 | vs stage-arm d=+0.0501 [-0.0093, 0.1138] p=0.106  [64 s]
+wrote experiments/20260913-encoder-sensitivity/results/five-cohort-gigassl.json

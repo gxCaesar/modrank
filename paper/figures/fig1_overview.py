@@ -178,16 +178,20 @@ def glyph(role, gx, gy, gw, gh):
     fw, fh = gw * bb.width, gh * bb.height
     a = fig.add_axes([fx, fy, fw, fh]); a.axis("off")
     if role == "slide":
+        # Histology must never be stretched to fill a cell: aspect="equal" keeps the image's own
+        # ratio and pads within the glyph box instead of distorting the tissue.
         img = plt.imread(os.path.join(HERE, "assets", "blca_slide_thumb.png"))[..., :3]
-        a.imshow(img, interpolation="lanczos", aspect="auto")
+        a.imshow(img, interpolation="lanczos", aspect="equal")
     elif role == "omics":
-        rng = np.random.default_rng(3)
-        dark = set(rng.choice(275, size=59, replace=False).tolist())
+        # the 59 pathways the slide arm tracks (BH q < 0.05), recomputed and count-checked in
+        # pathway_glyph.py, in the reporting dump's pathway order
+        from pathway_glyph import slide_tracked
+        dark = set(np.flatnonzero(slide_tracked()).tolist())
         a.set_xlim(0, 55); a.set_ylim(0, 5); a.invert_yaxis()
         for j in range(275):
             r, c_ = divmod(j, 55)
             a.add_patch(mpatches.Rectangle((c_ + 0.12, r + 0.12), 0.76, 0.76,
-                                           facecolor=C["omics"] if j in dark else "#C6E2DE",
+                                           facecolor=C["omics"] if j in dark else "#F6DDCC",
                                            edgecolor="none"))
     else:
         lev = WG["cohorts"]["blca"]["stage"]["levels"]
@@ -220,7 +224,9 @@ for role, yc, src, rep, dim in LANES:
     y = yc - BH / 2
     b_in = Box(ax, XS["in"][0], y, XS["in"][1], BH, facecolor=C[role], alpha=0.14, edgecolor="none")
     Box(ax, XS["in"][0], y, XS["in"][1], BH, facecolor="none", edgecolor=C[role], lw=1.0)
-    label(ax, XS["in"][0] + XS["in"][1] / 2, yc + 0.058, src.replace(" ", "\n", 1), size=5.8)
+    # one line, not forced onto two: at this box width the full lane title fits, and the forced
+    # wrap pushed the top line across the box's own top border
+    label(ax, XS["in"][0] + XS["in"][1] / 2, yc + 0.058, src, size=5.8)
     glyph(role, XS["in"][0] + 0.014, y + 0.012, XS["in"][1] - 0.028, BH * 0.44)
 
     b_rep = Box(ax, XS["rep"][0], y, XS["rep"][1], BH, facecolor="#FFFFFF", edgecolor=C[role],
@@ -233,7 +239,7 @@ for role, yc, src, rep, dim in LANES:
                 edgecolor="none")
     Box(ax, XS["cox"][0], y, XS["cox"][1], BH, facecolor="none", edgecolor=C[role], lw=1.0)
     label(ax, XS["cox"][0] + XS["cox"][1] / 2, yc + 0.030, "ridge Cox", size=6.8, weight="bold")
-    label(ax, XS["cox"][0] + XS["cox"][1] / 2, yc - 0.048, r"$\alpha$ by inner 3-fold CV", size=5.9,
+    label(ax, XS["cox"][0] + XS["cox"][1] / 2, yc - 0.048, "α by inner 3-fold CV", size=5.9,
           colour="#5A6273")
 
     b_pct = Box(ax, XS["pct"][0], y, XS["pct"][1], BH, facecolor="#FFFFFF", edgecolor="#9AA1AE",
@@ -243,16 +249,18 @@ for role, yc, src, rep, dim in LANES:
 
     for a, b in ((b_in, b_rep), (b_rep, b_cox), (b_cox, b_pct)):
         arrow(ax, a.right, b.left, colour=C[role], lw=0.9)
-    arrow(ax, b_pct.right, (0.775, 0.470), colour=C[role], lw=0.9,
+    arrow(ax, b_pct.right, (0.745, 0.470), colour=C[role], lw=0.9,
           rad=0.0 if role == "omics" else (-0.16 if role == "slide" else 0.16))
     allboxes += [b_in, b_rep, b_cox, b_pct]
 
-# -- the combination, which is the contribution and has nothing in it
-comb = Box(ax, 0.782, 0.352, 0.118, 0.236, facecolor=C["ours"], alpha=0.16, edgecolor="none")
-Box(ax, 0.782, 0.352, 0.118, 0.236, facecolor="none", edgecolor=C["ours"], lw=1.2)
-label(ax, 0.841, 0.512, "equal-weight", size=6.5, weight="bold", colour=C["ours"])
-label(ax, 0.841, 0.455, "rank average", size=6.5, weight="bold", colour=C["ours"])
-label(ax, 0.841, 0.393, "%d fitted\nparameters" % N["p_fitted"], size=6.0, colour="#5A6273")
+# -- the combination, which is the contribution and has nothing in it. Widened (left edge only;
+# the right edge that meets the risk box is unchanged) so its three stacked labels -- including the
+# one that used to spill below the box's bottom border -- fit as single lines instead of wrapping.
+comb = Box(ax, 0.750, 0.352, 0.150, 0.236, facecolor=C["ours"], alpha=0.16, edgecolor="none")
+Box(ax, 0.750, 0.352, 0.150, 0.236, facecolor="none", edgecolor=C["ours"], lw=1.2)
+label(ax, 0.825, 0.512, "equal-weight", size=6.5, weight="bold", colour=C["ours"])
+label(ax, 0.825, 0.455, "rank average", size=6.5, weight="bold", colour=C["ours"])
+label(ax, 0.825, 0.390, "%d fitted parameters" % N["p_fitted"], size=6.0, colour="#5A6273")
 
 risk = Box(ax, 0.926, 0.383, 0.062, 0.174, facecolor="#FFFFFF", edgecolor=INK, lw=1.0)
 label(ax, 0.957, 0.470, "risk\nscore", size=6.5, weight="bold")
@@ -272,12 +280,15 @@ panel_letter(ax, "c")
 label(ax, 0.055, 0.985, "How the number was produced, and what was fixed before it existed",
       size=8.2, weight="bold", ha="left")
 
+# Plain Arial text, not mathtext, for every symbol below: mathtext's operator glyphs (here "in"
+# and "times") fall back to Cmsy10 regardless of the custom Arial fontset (Gate G47), while the
+# Unicode characters themselves -- alpha, times, plus-minus -- are all in Arial's own character set.
 STEPS = [
     (0.015, 0.150, "5-fold case-ID splits\nas released", None),
-    (0.196, 0.163, "inner 3-fold CV picks\n" + r"$\alpha \in \{1,8,64,512,4096\}$", None),
+    (0.196, 0.163, "inner 3-fold CV picks\n\u03b1 from {1, 8, 64, 512, 4096}", None),
     (0.390, 0.150, "out-of-fold score\nfor all %d cases" % N["n_cases"], None),
-    (0.571, 0.150, "$\\times$ 5 seeds\n1\u20134 never run before", None),
-    (0.752, 0.233, "primary = mean concordance\n%.4f $\\pm$ %.4f" % (N["primary"], N["sd"]), "ours"),
+    (0.571, 0.150, "\u00d7 5 seeds\n1\u20134 never run before", None),
+    (0.752, 0.233, "primary = mean concordance\n%.4f \u00b1 %.4f" % (N["primary"], N["sd"]), "ours"),
 ]
 prev = None
 for x, w, txt, role in STEPS:
@@ -291,10 +302,10 @@ for x, w, txt, role in STEPS:
     prev = b
 
 bracket(ax, 0.015, 0.721, 0.700,
-        "frozen before the run: arm, estimator, $\\alpha$ grid, combination rule, comparators, "
+        "fixed before the run: arm, estimator, $\\alpha$ grid, combination rule, comparators, "
         "seeds, decision rule", size=6.3, above=True)
 
-label(ax, 0.015, 0.145, "five leakage falsifiers executed first, and two of them rejected:",
+label(ax, 0.015, 0.145, "five leakage checks ran first, and the two built to reject did so:",
       size=6.3, ha="left", weight="bold")
 label(ax, 0.015, 0.055,
       "per-fold planted label $%+.4f$  ·  permuted feature-to-case assignment $%.4f$  ·  "
@@ -304,7 +315,7 @@ label(ax, 0.015, 0.055,
 # =========================================================================== d  THE MECHANISM
 ax = AX["d"]
 panel_letter(ax, "d")
-label(ax, 0.055, 0.985, "Why a grade baseline cannot work in this disease", size=8.2,
+label(ax, 0.055, 0.985, "Why grade separates few patients in this disease", size=8.2,
       weight="bold", ha="left")
 
 LAD = style.LADDER

@@ -1,0 +1,136 @@
+{
+ "artifact_type": "s29_five_cohort_noise_floors",
+ "phase_of_origin": "post_freeze_2026-09-12",
+ "construction": "s5_step0_headroom.reseeded_folds, rng 1000 + r, estimator seed 0, the five-study protocol (benchmark clinical file, one seed)",
+ "floor_is": "the standard deviation across re-partitions of C(ModRank) - C(clinical arm)",
+ "not_the_same_as": "the main text's bladder floor of 0.0073, which uses the incumbent's clinical block and five seeds. The bladder row here measures the same quantity under the other protocol and is not expected to equal it",
+ "reseeds": 24,
+ "cohorts": {
+  "blca": {
+   "n": 359,
+   "events": 113,
+   "released_folds": {
+    "ModRank": 0.6992,
+    "clinical": 0.6218,
+    "margin": 0.0774
+   },
+   "floor": {
+    "sd_of_paired_delta": 0.0117,
+    "bar_2sd": 0.0233,
+    "mean_delta": 0.0896,
+    "min_delta": 0.0657,
+    "max_delta": 0.1187,
+    "partitions_with_a_positive_delta": 24
+   },
+   "ModRank_spread": {
+    "sd": 0.01,
+    "min": 0.6728,
+    "max": 0.7178
+   },
+   "margin_clears_its_own_bar": true
+  },
+  "brca": {
+   "n": 871,
+   "events": 60,
+   "released_folds": {
+    "ModRank": 0.6892,
+    "clinical": 0.5686,
+    "margin": 0.1206
+   },
+   "floor": {
+    "sd_of_paired_delta": 0.0237,
+    "bar_2sd": 0.0473,
+    "mean_delta": 0.1256,
+    "min_delta": 0.0884,
+    "max_delta": 0.1704,
+    "partitions_with_a_positive_delta": 24
+   },
+   "ModRank_spread": {
+    "sd": 0.0245,
+    "min": 0.6764,
+    "max": 0.7757
+   },
+   "margin_clears_its_own_bar": true
+  },
+  "coadread": {
+   "n": 298,
+   "events": 37,
+   "released_folds": {
+    "ModRank": 0.7141,
+    "clinical": 0.6898,
+    "margin": 0.0243
+   },
+   "floor": {
+    "sd_of_paired_delta": 0.0135,
+    "bar_2sd": 0.027,
+    "mean_delta": 0.0697,
+    "min_delta": 0.0433,
+    "max_delta": 0.0917,
+    "partitions_with_a_positive_delta": 24
+   },
+   "ModRank_spread": {
+    "sd": 0.0121,
+    "min": 0.7509,
+    "max": 0.8063
+   },
+   "margin_clears_its_own_bar": false
+  },
+  "hnsc": {
+   "n": 394,
+   "events": 117,
+   "released_folds": {
+    "ModRank": 0.6179,
+    "clinical": 0.545,
+    "margin": 0.0729
+   },
+   "floor": {
+    "sd_of_paired_delta": 0.0132,
+    "bar_2sd": 0.0263,
+    "mean_delta": 0.0698,
+    "min_delta": 0.0396,
+    "max_delta": 0.0923,
+    "partitions_with_a_positive_delta": 24
+   },
+   "ModRank_spread": {
+    "sd": 0.0111,
+    "min": 0.6144,
+    "max": 0.662
+   },
+   "margin_clears_its_own_bar": true
+  },
+  "stad": {
+   "n": 319,
+   "events": 84,
+   "released_folds": {
+    "ModRank": 0.6311,
+    "clinical": 0.5819,
+    "margin": 0.0491
+   },
+   "floor": {
+    "sd_of_paired_delta": 0.0162,
+    "bar_2sd": 0.0323,
+    "mean_delta": 0.0635,
+    "min_delta": 0.0327,
+    "max_delta": 0.1034,
+    "partitions_with_a_positive_delta": 24
+   },
+   "ModRank_spread": {
+    "sd": 0.0139,
+    "min": 0.6259,
+    "max": 0.6804
+   },
+   "margin_clears_its_own_bar": true
+  }
+ },
+ "summary": {
+  "cohorts_scored": 5,
+  "cohorts_whose_margin_clears_twice_their_own_re-partition_sd": [
+   "blca",
+   "brca",
+   "hnsc",
+   "stad"
+  ],
+  "reading": "a margin below its own bar is partition luck at this size and is reported as such, whatever its bootstrap interval says"
+ },
+ "runtime_seconds": 796.4
+}

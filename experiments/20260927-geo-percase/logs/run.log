@@ -1,0 +1,8 @@
+  GSE31684: n 93 events 38 | modrank 0.5898 stage 0.6590 omics 0.4742 concat 0.4895 stacked 0.6317 | D +0.0253
+  GSE31684 no pre-RC chemo: n 90 events 36 | modrank 0.5623 stage 0.6174 omics 0.4743 concat 0.4848 stacked 0.5649 | D +0.1094
+  GSE32894: n 224 events 25 | modrank 0.8779 stage 0.8672 omics 0.8163 concat 0.8216 stacked 0.8747 | D +0.0581
+  GSE32894 rule block: n 224 events 25 | modrank 0.8651 stage 0.8458 omics 0.8163 concat 0.8235 stacked 0.8598
+  GSE48075: n 73 events 35 | modrank 0.6384 stage 0.6322 omics 0.5683 concat 0.5864 stacked 0.6201
+wrote 480 per-case rows to experiments/20260927-geo-percase/results/geo-percase.jsonl
+wrote experiments/20260927-geo-percase/results/geo-external-rerun.json (323 s)
+exit 0

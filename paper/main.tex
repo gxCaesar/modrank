@@ -315,7 +315,7 @@ three transcriptomic representations 0.069 (Fig.~\ref{fig:modalities}b). A multi
 that fixes one representation per modality and reports the difference is therefore reporting a
 choice as much as a modality.
 
-The scores the three arms produce are close to independent. Spearman between the slide arm and the
+The scores the three arms produce are weakly correlated. Spearman between the slide arm and the
 clinical arm is 0.2445, and between the incumbent's joint score and the clinical arm 0.1924
 (Fig.~\ref{fig:modalities}c). An equal-weight rank average over three nearly orthogonal scores is
 doing what an average of independent estimates does, which is the reason a rule with no fitted
@@ -597,7 +597,8 @@ MMP~\citep{song2024mmp}          & ICML 2024 & 0.635 & own site-stratified proto
 \includegraphics[width=\textwidth]{fig3_method_result.pdf}
 \caption{\textbf{The confirmatory result, and the comparisons that do not survive correction.}
 \textbf{(a)} All six prespecified comparisons under Holm. Filled survives at $\alpha=0.05$, open
-does not, and \textbf{both input-parity comparisons are among the four that do not}.
+does not, and \textbf{both comparisons at parity in the clinical variables are among the four that do
+not}. Parity here is in those variables, not in the slide encoder.
 \textbf{(b)} Kaplan--Meier by risk tertile with the numbers at risk. \textbf{(c)} The incumbent as
 published, beside the same predictions given the same clinical block. \textbf{(d)} IPCW
 time-dependent AUC. \textbf{(e)} All seven modality subsets. \textbf{(f)} Cost against benefit. Two parameter counts are measured and the other seven entries sit on a labelled strip because no
@@ -858,8 +859,8 @@ not only to ours.
 Six paired comparisons are prespecified against ModRank, and Holm's step-down procedure is applied
 across all six (Fig.~\ref{fig:result}a) (Table~\ref{tab:holm}). Two survive at $\alpha=0.05$ and four do not. The
 two that survive are the ones the paper's claim actually rests on, that combining the three
-modalities beats either molecular modality alone. The four that do not include both input-parity
-comparisons and the comparison against the clinical arm, which is precisely the resolution limit
+modalities beats either molecular modality alone. The four that do not include both comparisons at
+parity in the clinical variables and the comparison against the clinical arm, which is precisely the resolution limit
 described above arriving as arithmetic. The family grew from five to six when PIBD became scoreable
 and Holm was recomputed over all six rather than left at the five it was first applied to. Keeping the old adjustment after adding a comparison would be the cheapest possible way to retain a result.
 

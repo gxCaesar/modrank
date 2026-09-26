@@ -11,7 +11,9 @@ of those measurements were sitting unused.
   a  the three modalities as they enter the model: what is measured, how it is represented, how
      many dimensions that representation carries, and what it is worth alone. The strip beside the
      transcriptome is the real thing -- 275 pathway groups, the 59 the slide arm tracks at
-     BH q<0.05 drawn dark -- and the stage bar beside the clinical block is the real composition.
+     BH q<0.05 drawn dark -- and the stage bar beside the clinical block is the composition of the
+     field the model actually reads, the incumbent's four AJCC stage groups over 357 valued cases.
+     The five-level composition in Figure 1d is a different released file and is labelled as one.
   b  seven representations across the three families, on identical cases and identical folds.
      Choosing WITHIN a modality moves the number as much as choosing between modalities, which is
      the fact that makes a single-representation multimodal comparison hard to interpret.
@@ -89,6 +91,10 @@ GREY, FAINT = "#8C8C8C", "#C9CFD8"
 # One colour per modality family, held for the whole figure. A reader who learns the mapping in a
 # must not have to relearn it in g.
 MOD = {"slide": C["slide"], "omics": C["omics"], "clinical": C["clinical"], "ours": C["ours"]}
+# the second channel, held for the whole figure alongside MOD so a role's marker and linestyle
+# never drift from its colour (CIEDE2000 2.04 between ours and clinical under simulated CVD)
+MK = {fam: style.ROLE_MARKER[fam] for fam in MOD}
+LS = {fam: style.ROLE_LINESTYLE[fam] for fam in MOD}
 
 FIGW, FIGH = style.width(6.785), 6.45
 fig = plt.figure(figsize=(FIGW, FIGH))
@@ -106,7 +112,7 @@ axa.axis("off")
 
 N_PATH = BIO["B2_survival_association"]["pathways_tested"]
 N_TRACKED = BIO["B3_what_the_image_arm_tracks"]["pathways_with_BH_q_below_0.05"]
-STAGE = WG["cohorts"]["blca"]["stage"]["levels"]
+STAGE = {k: v["n"] for k, v in load(RES, "per-stage-subgroup.json")["strata"].items()}
 ALONE = {"slide": C6["single_arms"]["wsi_titan"], "omics": C6["single_arms"]["omics_combine"],
          "clinical": CLIN_AMENDED}
 
@@ -155,9 +161,10 @@ for i, (key, title, body, dims) in enumerate(CARDS):
                  ha="center", va="top", fontsize=5.4, color=GREY, style="italic",
                  transform=axa.transAxes, zorder=5)
     elif key == "omics":
-        # 275 real ticks; the 59 the slide arm tracks at BH q<0.05 are the dark ones.
-        rng = np.random.default_rng(3)
-        dark = set(rng.choice(N_PATH, size=N_TRACKED, replace=False).tolist())
+        # the pathways the slide arm tracks (BH q < 0.05), recomputed and count-checked in
+        # pathway_glyph.py; the count printed under the glyph is the same N_TRACKED
+        from pathway_glyph import slide_tracked
+        dark = set(np.flatnonzero(slide_tracked()).tolist())
         per = 25
         rows = int(np.ceil(N_PATH / per))
         for j in range(N_PATH):
@@ -165,14 +172,20 @@ for i, (key, title, body, dims) in enumerate(CARDS):
             gx = tx + 0.004 + c_ * (tw - 0.008) / per
             gy = ty + th * 0.90 - (r + 1) * (th * 0.86) / rows
             axa.add_patch(Rectangle((gx, gy), (tw - 0.008) / per * 0.82, (th * 0.86) / rows * 0.74,
-                                    facecolor=MOD[key] if j in dark else "#BFDCD7",
+                                    facecolor=MOD[key] if j in dark else "#F6DDCC",
                                     edgecolor="none", transform=axa.transAxes, zorder=4))
         axa.text(tx + tw / 2, ty - 0.022, "%d pathway groups, %d tracked by the slide arm"
                  % (N_PATH, N_TRACKED), ha="center", va="top", fontsize=5.4, color=GREY,
                  style="italic", transform=axa.transAxes, zorder=5)
     else:
-        # the real stage composition, which is what the clinical block actually holds
-        order = ["0", "I", "II", "III", "IV"]
+        # The stage composition the clinical block ACTUALLY holds, which is not the one the
+        # five-study entropy table uses. Two released files carry a stage field for these patients:
+        # the benchmark's own clinical file (five levels including a stage 0, 334 valued) and the
+        # incumbent's split files (four AJCC stage groups, 357 valued). The amendment rebuilt every
+        # clinical variable from the SECOND, so this panel, which shows what enters the model, reads
+        # the second as well. Drawing the first here labelled "what the clinical block holds" is the
+        # defect an external review found on 2026-09-12.
+        order = ["Stage I", "Stage II", "Stage III", "Stage IV"]
         tot = sum(STAGE.values())
         cx = tx
         for j, lev in enumerate([o for o in order if o in STAGE]):
@@ -181,11 +194,12 @@ for i, (key, title, body, dims) in enumerate(CARDS):
                                     edgecolor="#FFFFFF", linewidth=0.5,
                                     transform=axa.transAxes, zorder=4))
             if w > 0.030:
-                axa.text(cx + w / 2, ty + th * 0.57, lev, ha="center", va="center", fontsize=5.8,
-                         color=INK, transform=axa.transAxes, zorder=5)
+                axa.text(cx + w / 2, ty + th * 0.57, lev.replace("Stage ", ""), ha="center",
+                         va="center", fontsize=5.8, color=INK, transform=axa.transAxes, zorder=5)
             cx += w
-        axa.text(tx + tw / 2, ty - 0.022, "pathologic stage, five levels, %d%% in the largest"
-                 % round(100 * max(STAGE.values()) / tot), ha="center", va="top", fontsize=5.4,
+        axa.text(tx + tw / 2, ty - 0.022,
+                 "pathologic stage, four groups, %d%% in the largest" % round(100 * max(
+                     STAGE.values()) / tot), ha="center", va="top", fontsize=5.4,
                  color=GREY, style="italic", transform=axa.transAxes, zorder=5)
 
     axa.text(x + CW / 2, 0.400, body, ha="center", va="top", fontsize=6.2, color=INK,
@@ -214,7 +228,7 @@ y = np.arange(len(vals))
 # a dot plot: the axis starts at 0.50, and a bar drawn from there would overstate every gap
 for yi, (_, v, fam) in zip(y, vals):
     axb.plot([0.50, v], [yi, yi], color="#E3E6EC", lw=0.8, zorder=1)
-    axb.scatter([v], [yi], s=26, color=MOD[fam], edgecolor="none", zorder=3)
+    axb.scatter([v], [yi], s=26, color=MOD[fam], marker=MK[fam], edgecolor="none", zorder=3)
 for yi, (lab, v, fam) in zip(y, vals):
     axb.text(v + 0.005, yi, "%.4f" % v, va="center", fontsize=5.9, color=INK)
 axb.axvline(0.5, color=INK, lw=0.7, zorder=3)
@@ -237,7 +251,7 @@ R = ATLAS["redundancy"]
 # NOTE the middle row is the INCUMBENT's joint score, not a transcriptome-only arm: the frozen
 # redundancy measurement was taken against SurvPath, which reads slide and transcriptome together.
 # Labelling it "omics" would be a quiet misstatement of what was correlated with what.
-NAMES = ["slide", "incumbent", "clinical"]
+NAMES = ["slide", "SurvPath", "clinical"]
 NCOL = [MOD["slide"], C["competitor"], MOD["clinical"]]
 RHO = np.array([[1.0, R["spearman_titan_vs_survpath"], R["spearman_titan_vs_clinical"]],
                 [R["spearman_titan_vs_survpath"], 1.0, R["spearman_survpath_vs_clinical"]],
@@ -254,7 +268,7 @@ axc.set_yticklabels(NAMES, fontsize=6.0)
 for k in range(3):
     axc.get_xticklabels()[k].set_color(NCOL[k]); axc.get_yticklabels()[k].set_color(NCOL[k])
 axc.set_title("Spearman between the arms", fontsize=6.3, pad=11)
-axc.text(0.5, 1.015, "incumbent = slide and transcriptome read jointly", transform=axc.transAxes,
+axc.text(0.5, 1.015, "SurvPath = slide and transcriptome read jointly", transform=axc.transAxes,
          ha="center", va="bottom", fontsize=5.5, color=GREY)
 axc.text(0.5, -0.20, "%.3f between image and clinical:\nnearly orthogonal"
          % R["spearman_titan_vs_clinical"], transform=axc.transAxes, ha="center", va="top",
@@ -268,14 +282,14 @@ CP = ATLAS["conditional_probe"]
 KEYS = ["clinically_tied_q05", "clinically_tied_q10", "clinically_tied_q20",
         "clinically_tied_q40", "all_pairs"]
 xs = np.arange(len(KEYS))
-SERIES = [("clinical", "clinical", "clinical alone", "o", "-"),
-          ("titan", "slide", "slide alone", "s", "-"),
-          ("survpath", "omics", "slide + transcriptome, the incumbent", "^", "--"),
-          ("titan+clinical", "ours", "slide + clinical, rank-averaged", "D", "-")]
-for arm, fam, lab, mk, ls in SERIES:
+SERIES = [("clinical", "clinical", "clinical alone"),
+          ("titan", "slide", "slide alone"),
+          ("survpath", "omics", "slide + transcriptome, SurvPath"),
+          ("titan+clinical", "ours", "slide + clinical, rank-averaged")]
+for arm, fam, lab in SERIES:
     v = [CP[k]["arms"][arm] for k in KEYS]
-    axd.plot(xs, v, ls, color=MOD[fam], marker=mk, ms=3.6, lw=1.3, label=lab, zorder=3,
-             markeredgecolor="none")
+    axd.plot(xs, v, color=MOD[fam], marker=MK[fam], linestyle=LS[fam], ms=3.6, lw=1.3, label=lab,
+             zorder=3, markeredgecolor="none")
 axd.axhline(0.5, color=INK, lw=0.7, ls=":", zorder=1)
 axd.text(xs[0] - 0.34, 0.502, "chance", fontsize=5.5, color=INK, va="bottom", ha="left")
 tie = CP["clinically_tied_q05"]["arms"]
@@ -295,7 +309,9 @@ axd.set_xlabel("comparable pairs retained, ordered by how far apart the CLINICAL
                "patients", fontsize=6.3, labelpad=2)
 axd.legend(fontsize=5.9, loc="upper left", ncol=2, handletextpad=0.5, columnspacing=1.4,
            borderpad=0.2, handlelength=1.8)
-axd.set_title("concordance on clinically tied pairs", fontsize=6.4, pad=13,
+# pad=13 put this title level with panel b's x-axis label, in the narrow gap between the two panel
+# rows -- pad=4 keeps it above panel d's own axes instead, clear of the row above.
+axd.set_title("concordance on clinically tied pairs", fontsize=6.4, pad=4,
               fontweight="bold")
 panel("d", 0.010, 0.486)
 
@@ -305,8 +321,9 @@ axk.set_xlim(0, 1); axk.set_ylim(0, 1)
 for i, (lab, fam) in enumerate([("clinical", "clinical"), ("slide", "slide"),
                                 ("transcriptome", "omics"), ("all three", "ours")]):
     xk = 0.300 + i * 0.115
-    axk.plot([xk, xk + 0.020], [0.5, 0.5], color=MOD[fam], lw=1.6, solid_capstyle="round")
-    axk.plot([xk + 0.010], [0.5], "o", color=MOD[fam], ms=3.0, markeredgecolor="none")
+    axk.plot([xk, xk + 0.020], [0.5, 0.5], color=MOD[fam], lw=1.6, linestyle=LS[fam],
+             solid_capstyle="round")
+    axk.plot([xk + 0.010], [0.5], marker=MK[fam], color=MOD[fam], ms=3.0, markeredgecolor="none")
     axk.text(xk + 0.026, 0.5, lab, va="center", ha="left", fontsize=6.0, color=INK)
 
 # ============================================================ e  discrimination over time
@@ -315,9 +332,8 @@ HOR = SM["horizons_months"]
 ARMS_E = [("clinical", "clinical"), ("wsi_titan", "slide"), ("omics", "omics"), ("OURS", "ours")]
 for key, fam in ARMS_E:
     a = SM["arms"][key]
-    axe.plot(HOR, [a["td_auc_8m"], a["td_auc_14m"], a["td_auc_22m"]], "-o", color=MOD[fam], ms=3.0,
-             lw=1.2, markeredgecolor="none",
-             )
+    axe.plot(HOR, [a["td_auc_8m"], a["td_auc_14m"], a["td_auc_22m"]], color=MOD[fam],
+             marker=MK[fam], linestyle=LS[fam], ms=3.0, lw=1.2, markeredgecolor="none")
 axe.set_xticks(HOR)
 axe.set_xticklabels(["%.0f" % h for h in HOR], fontsize=6.0)
 axe.set_xlabel("horizon (months)", fontsize=6.6)
@@ -330,7 +346,8 @@ axf = fig.add_axes([0.435, 0.088, 0.195, 0.130])
 DIMS = [2, 4, 8, 16]
 for fam, pre in (("slide", "titan"), ("clinical", "clinical")):
     real = [OF["blocks"]["%s_d%d" % (pre, d)]["real_minus_corrected_null"] for d in DIMS]
-    axf.plot(DIMS, real, "-o", color=MOD[fam], ms=3.2, lw=1.3, markeredgecolor="none", label=fam)
+    axf.plot(DIMS, real, color=MOD[fam], marker=MK[fam], linestyle=LS[fam], ms=3.2, lw=1.3,
+             markeredgecolor="none", label=fam)
 axf.axhline(0.0, color=INK, lw=0.7, ls=":")
 axf.set_xscale("log", base=2)
 axf.set_xticks(DIMS)
