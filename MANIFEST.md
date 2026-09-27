@@ -1,6 +1,6 @@
 # Manifest
 
-448 files. Every one of them is listed here, and every file listed here is in the tree; the builder asserts both directions and refuses to write this file otherwise.
+452 files. Every one of them is listed here, and every file listed here is in the tree; the builder asserts both directions and refuses to write this file otherwise.
 
 | directory | files | what it holds |
 |---|---|---|
@@ -8,7 +8,7 @@
 | `development/` | 33 | the frozen protocol, the split manifest it binds, the ledger of all 269 scored candidates, the error atlas, and the component pre-registrations |
 | `experiments/20260817-blca-confirm/` | 29 | the confirmatory run: command, environment, log, code and result files |
 | `experiments/20260818-selection-null/` | 4 | the 200 outcome-permuted runs behind the corrected selection bar, and the encoder swap |
-| `experiments/20260818-reporting-dump/` | 2 | the reporting dump the manuscript's tables read from |
+| `experiments/20260818-reporting-dump/` | 3 | the reporting dump the manuscript's tables read from |
 | `paper/` | 54 | the manuscript sources, the figure builders and their source data, and the number-consistency checker |
 | `docs/` | 2 | data card and model card |
 
@@ -48,6 +48,7 @@
 | `experiments/20260911-five-study-repro/results/stage5.json` |  |
 | `experiments/20260911-five-study-repro/run.sh` |  |
 | `experiments/20260911-geo-external/README.md` |  |
+| `experiments/20260911-geo-external/amendment-01-public.md` |  |
 | `experiments/20260911-geo-external/protocol.json` |  |
 | `experiments/20260911-geo-external/results/geo-external.json` |  |
 | `experiments/20260911-geo-external/results/geo-gated.json` |  |
@@ -272,5 +273,7 @@
 | `experiments/20260928-amendment-a2/legacy-checks/s7b_why_grade_fails.txt` |  |
 | `experiments/20260928-amendment-a2/protocol.md` |  |
 | `experiments/20260928-amendment-a2/results/before-after.json` |  |
+| `experiments/20260928-amendment-a2/run_jobs.py` |  |
+| `tests/test_a2_survival_primitives.py` |  |
 | `verify_release.py` | recomputes the manuscript's load-bearing numbers from these files |
 

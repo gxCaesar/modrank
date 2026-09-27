@@ -1,0 +1,16 @@
+{
+ "artifact_type": "s14_metric_parity",
+ "phase_of_origin": "frozen_post_hoc",
+ "why": "cold panel round 2 asked whether every row of the published table is the same estimand. Ours is a pooled out-of-fold C-index; the convention on these folds is generally a mean of per-fold values. Both are reported here from one set of predictions so a reader can convert.",
+ "pooled_out_of_fold": 0.7235,
+ "mean_of_per_fold": 0.7276,
+ "per_fold": [
+  0.6798,
+  0.7803,
+  0.7662,
+  0.7087,
+  0.7029
+ ],
+ "sd_across_folds": 0.0433,
+ "difference_mean_minus_pooled": 0.0041
+}

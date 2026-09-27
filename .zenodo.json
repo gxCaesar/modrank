@@ -4,7 +4,7 @@
   "license": "mit",
   "language": "eng",
   "title": "ModRank: code and results for Parameter-free multimodal fusion with ModRank and a corrected clinical reference for bladder cancer survival",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "creators": [
     {
       "name": "Chen, Guanxing",

@@ -168,6 +168,10 @@ def main():
         "a_vs_corrected_clinical": panel(
             "experiments/20260912-five-cohort-intervals/results/five-cohort-intervals.json",
             "cohorts", "every arm, every paired difference and its interval, per study"),
+        "c_best_published_same_folds": panel(
+            "experiments/20260817-blca-confirm/results/ablation-generalisation.json", "A_generalisation",
+            "per study, the values published on the released folds and best_published_verified_folds, "
+            "the value marked in panel c (PIBD outside bladder, DIMAF in bladder)"),
     }
     fig8 = {
         "figure": "Figure 8",

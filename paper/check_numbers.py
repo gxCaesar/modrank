@@ -200,6 +200,11 @@ def main():
         "correctly measured bar": "the same",
         "gives calibrated two-year risks": "calibrated in the large, slope 0.770",
         "The only development cohort with slides": "the other four studies' slide embeddings were used in a rejected candidate",
+        # cold panel round 3: prose that survived amendment A2 unchanged while its result reversed
+        "moved toward the stage": "after A2 the screened variant fell below the stage block in GSE48075",
+        "moved the average toward the stage block": "the same",
+        "exceeded the stage block by less than the bar in both": "the same",
+        "only published number computed on this partition": "PIBD's released split files are the same, and it reports higher values outside bladder",
         "replicated in an independent cohort": "D against zero is passed by a score without information; see SI Note 8",
         "The inflation replicates": "the same",
         "The inflation is significant for all three": "D was tested against zero; the benchmark is a score without information",
@@ -1149,6 +1154,34 @@ def check_nc(fails):
             fails.append("NC's external reference-gap sentence should carry %r" % _ph)
     if not (gs["external_only"]["n"] == 6 and gs["external_only"]["gap_positive"] == 6 and gs["n"] == 9):
         fails.append("NC says six external cohorts, all positive, nine in all; the summary says %s" % gs)
+    # cold panel round 3. Two statements survived amendment A2 while the results under them moved,
+    # because nothing bound their DIRECTION. Each is now derived from its result file: the screened
+    # variant's position against the stage block and ModRank, and the best value published on the
+    # released folds outside bladder (PIBD ships the same split files) against ModRank.
+    _gg = j(ROOT, "experiments", "20260911-geo-external", "results", "geo-gated.json")["cohorts"]
+    _g48 = _gg["GSE48075"]
+    _gx48 = geo["GSE48075"]["cv"]
+    _dir = ("fell below both the stage block and ModRank"
+            if _g48["cv"]["gated"]["mean"] < min(_gx48["clinical_stage"]["mean"], _gx48["modrank"]["mean"])
+            else None)
+    if _dir is None:
+        fails.append("NC says the screened variant fell below the stage block and ModRank in GSE48075; "
+                     "geo-gated.json no longer says so")
+    _abl = load("ablation-generalisation.json")["A_generalisation"]["cohorts"]
+    _s5p = j(ROOT, "development", "s5-results", "stage5.json")["cohorts"]
+    _above = [c_ for c_ in ("blca", "brca", "coadread", "hnsc", "stad")
+              if _s5p[c_]["OURS_wsi_omics_age_sex_stage"] > _abl[c_]["best_published_verified_folds"]]
+    if _above != ["blca"]:
+        fails.append("NC says ModRank is above the best value published on the released folds only in "
+                     "bladder; the files say %s" % _above)
+    _mp = j(ROOT, "experiments", "20260818-reporting-dump", "results", "metric-parity.json")
+    for _ph in ("%s (%.4f against %.4f and %.4f)" % (_dir or "?", _g48["cv"]["gated"]["mean"],
+                                                   _gx48["clinical_stage"]["mean"], _gx48["modrank"]["mean"]),
+                "(%.3f in breast, %.3f in colorectal, %.3f in head and neck and %.3f in stomach)"
+                % tuple(_abl[c_]["best_published_verified_folds"] for c_ in ("brca", "coadread", "hnsc", "stad")),
+                "the two conventions give %.4f and %.4f" % (_mp["mean_of_per_fold"], _mp["pooled_out_of_fold"])):
+        if _ph not in " ".join(nc.split()):
+            fails.append("NC should carry %r" % _ph)
     # amendment A2 (Methods, SI Note 10): the chain frozen -> A1 -> A2 is read from the before-after
     # table, whose before column is the last commit with pre-A2 results, and from the A1 file
     _ba = j(ROOT, "experiments", "20260928-amendment-a2", "results", "before-after.json")

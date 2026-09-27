@@ -61,9 +61,9 @@ wrong and is reported as written.
 
 ## Amendment 01 in the public archive
 
-`amendment-01.md` is withheld from the public archive while a publication embargo on another cohort
-holds, because its motivating paragraph refers to a result from that cohort. Its operative text,
-reproduced here unchanged in substance:
+`amendment-01.md` refers to a result from another cohort whose results are under a publication
+embargo, so the public archive carries `amendment-01-public.md`, the same text with those two
+references withheld as marked. Its operative content, in brief:
 
 - **When.** Recorded 2026-09-11 (commit 0d89861), after the GSE31684 results of `s24` were read and
   before any GSE32894 or GSE48075 result was inspected.

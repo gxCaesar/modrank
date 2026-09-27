@@ -337,5 +337,150 @@
     }
    }
   }
+ },
+ "c_best_published_same_folds": {
+  "description": "per study, the values published on the released folds and best_published_verified_folds, the value marked in panel c (PIBD outside bladder, DIMAF in bladder)",
+  "source_file": "experiments/20260817-blca-confirm/results/ablation-generalisation.json",
+  "field": "A_generalisation",
+  "values": {
+   "cohorts": {
+    "blca": {
+     "n_cases": 359,
+     "events": 113,
+     "clinical_stage_source": "SurvPath datasets_csv/clinical_data (the DIMAF-file variant used for the headline is bladder-only)",
+     "per_seed": [
+      0.7003,
+      0.7076,
+      0.6979,
+      0.7094,
+      0.7045
+     ],
+     "primary_mean_over_seeds": 0.7039,
+     "sd_over_seeds": 0.0048,
+     "published": {
+      "MOAD-FNet": 0.691,
+      "DIMAF": 0.679,
+      "APL": 0.677,
+      "PIBD": 0.667,
+      "DSCASurv": 0.646,
+      "OTSurv": 0.637,
+      "MMP": 0.635,
+      "SurvPath": 0.625
+     },
+     "best_published_any_protocol": 0.691,
+     "best_published_verified_folds": 0.679,
+     "beats_best_any": true,
+     "beats_best_verified": true
+    },
+    "brca": {
+     "n_cases": 871,
+     "events": 60,
+     "clinical_stage_source": "SurvPath datasets_csv/clinical_data",
+     "per_seed": [
+      0.6881,
+      0.6915,
+      0.6997,
+      0.7034,
+      0.7017
+     ],
+     "primary_mean_over_seeds": 0.6969,
+     "sd_over_seeds": 0.0067,
+     "published": {
+      "APL": 0.794,
+      "DSCASurv": 0.765,
+      "DIMAF": 0.759,
+      "MMP": 0.738,
+      "PIBD": 0.736,
+      "SurvPath": 0.655
+     },
+     "best_published_any_protocol": 0.794,
+     "best_published_verified_folds": 0.736,
+     "beats_best_any": false,
+     "beats_best_verified": false
+    },
+    "coadread": {
+     "n_cases": 298,
+     "events": 37,
+     "clinical_stage_source": "SurvPath datasets_csv/clinical_data",
+     "per_seed": [
+      0.714,
+      0.7352,
+      0.7333,
+      0.7276,
+      0.7303
+     ],
+     "primary_mean_over_seeds": 0.7281,
+     "sd_over_seeds": 0.0084,
+     "published": {
+      "DSCASurv": 0.832,
+      "APL": 0.812,
+      "PIBD": 0.768,
+      "SurvPath": 0.673,
+      "OTSurv": 0.667,
+      "MMP": 0.63
+     },
+     "best_published_any_protocol": 0.832,
+     "best_published_verified_folds": 0.768,
+     "beats_best_any": false,
+     "beats_best_verified": false
+    },
+    "hnsc": {
+     "n_cases": 394,
+     "events": 117,
+     "clinical_stage_source": "SurvPath datasets_csv/clinical_data",
+     "per_seed": [
+      0.6179,
+      0.6222,
+      0.6031,
+      0.6075,
+      0.6212
+     ],
+     "primary_mean_over_seeds": 0.6144,
+     "sd_over_seeds": 0.0086,
+     "published": {
+      "DSCASurv": 0.666,
+      "APL": 0.653,
+      "PIBD": 0.64,
+      "SurvPath": 0.6
+     },
+     "best_published_any_protocol": 0.666,
+     "best_published_verified_folds": 0.64,
+     "beats_best_any": false,
+     "beats_best_verified": false
+    },
+    "stad": {
+     "n_cases": 319,
+     "events": 84,
+     "clinical_stage_source": "SurvPath datasets_csv/clinical_data",
+     "per_seed": [
+      0.629,
+      0.6418,
+      0.6377,
+      0.6489,
+      0.6466
+     ],
+     "primary_mean_over_seeds": 0.6408,
+     "sd_over_seeds": 0.0079,
+     "published": {
+      "DSCASurv": 0.698,
+      "APL": 0.686,
+      "PIBD": 0.684,
+      "MMP": 0.598,
+      "SurvPath": 0.592
+     },
+     "best_published_any_protocol": 0.698,
+     "best_published_verified_folds": 0.684,
+     "beats_best_any": false,
+     "beats_best_verified": false
+    }
+   },
+   "beats_best_verified_in": [
+    "blca"
+   ],
+   "beats_best_any_in": [
+    "blca"
+   ],
+   "caveat": "the four non-bladder cohorts use SurvPath's own single `stage` column, because DIMAF publishes split files for bladder only. They are a generalisation arm for the METHOD, not external validation of the bladder number -- there is no held-out bladder cohort anywhere in this benchmark."
+  }
  }
 }

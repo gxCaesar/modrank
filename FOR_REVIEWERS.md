@@ -11,7 +11,13 @@ between consecutive published entries, the capacity sweep's excess over its matc
 components' arithmetic against their controls, and the six-comparison family's deltas against the
 canonical arm table, the selection bar under an outcome-permuted null, and the rank of the frozen
 arm re-executed from the ledger. Every one of those is a number the manuscript quotes, and the bar
-is one the reported result does not clear.
+is one the reported result does not clear. `python3 paper/check_numbers.py` then binds every number
+in the manuscript's LaTeX sources to the result file it comes from, and
+`python3 tests/test_a2_survival_primitives.py` tests the corrected survival functions.
+
+These checks read the deposited results and the manuscript sources. They do not retrain any model
+from the raw inputs, check the rendered PDFs or the cover letter, or establish that a public deposit
+exists.
 
 ## What is here
 
@@ -24,6 +30,8 @@ is one the reported result does not clear.
 | `development/contribution-design.md` | the seven components as pre-registered, each with its falsifier and matched control |
 | `experiments/20260817-blca-confirm/` | the confirmatory run: command, environment, and 20 result files |
 | `experiments/20260818-selection-null/` | the 200 outcome-permuted runs behind the selection bar, and the rank of the frozen arm |
+| `experiments/20260928-amendment-a2/` | amendment A2 (Breslow risk sets, average ranks): its protocol, the reproduction of every earlier file under the original functions, the driver and the before-after table |
+| `tests/test_a2_survival_primitives.py` | the corrected Cox objective and ranks against exhaustive and hand-computed answers |
 | `paper/figures/` | the figure builders and their source data |
 
 ## What is deliberately NOT here
@@ -41,14 +49,14 @@ review trace can reach it.
 **The pre-registered selection correction was mis-specified, and the paper reports that rather than
 the version that passes.** The rule used the standard deviation of a paired between-arm difference
 where the maximum-of-N formula needs the standard deviation of a candidate's own absolute score. An
-outcome-permuted null measures the second quantity at 0.0397 against the 0.0073 assumed, and under
-either correct construction the reported 0.7212 does not clear the bar. `verify_release.py`
+outcome-permuted null measures the second quantity at 0.0398 against the 0.0073 assumed, and under
+either correct construction the reported 0.7214 does not clear the bar. `verify_release.py`
 recomputes both bars and asserts the failure.
 
 **The protocol's freeze predates the confirmatory run**, and that is the claim everything else rests
 on. `development/benchmark-protocol.json` carries its own timestamps and amendment A1 is recorded in
 it rather than applied silently.
 
-**Two of the three self-reported corrections moved the headline number down.** They are in the
-manuscript's supplementary and the code that produced both the before and the after is in
-`analysis/`.
+**Both amendments to the confirmatory result are reported with their effect.** A1 moved the primary
+from 0.7260 to 0.7212 and A2 to 0.7214; the manuscript's Supplementary Notes 2 and 10 give both, and
+the code that produced the before and the after is in `analysis/`.

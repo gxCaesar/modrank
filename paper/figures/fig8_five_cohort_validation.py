@@ -13,8 +13,8 @@ separate are as visible as the three where it does.
      five exclude zero. The two that do not are drawn identically, not faded.
   b  the same arm minus itself with grade substituted for stage. Only COADREAD excludes zero, and
      the panel says so rather than leaning on the four positive point estimates.
-  c  every arm's concordance per cohort, against the value SurvPath reports on these same released
-     folds. The best published value under ANY protocol is drawn as a separate open marker, because
+  c  ModRank per cohort, against the value SurvPath reports on these same released folds and the
+     best value published on them (PIBD, which ships the same split files, and DIMAF in bladder). The best published value under ANY protocol is drawn as a separate open marker, because
      on BRCA and COADREAD it is far above everything here and a reader must not be able to mistake
      the narrow comparison for the wide one.
 
@@ -41,6 +41,11 @@ from schematic import panel_letter                                      # noqa: 
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 IV = json.load(open(os.path.join(ROOT, "experiments", "20260912-five-cohort-intervals",
                                  "results", "five-cohort-intervals.json")))
+# The best value published on these same released folds: PIBD ships split files byte-identical to
+# SurvPath's in all five studies, and DIMAF's are verified in bladder only (the per-study rule of
+# analysis/s7_ablation_and_generalisation.py, whose result file carries the value).
+ABL = json.load(open(os.path.join(ROOT, "experiments", "20260817-blca-confirm", "results",
+                                  "ablation-generalisation.json")))["A_generalisation"]["cohorts"]
 
 style.apply()
 C, INK = style.ROLE, style.INK
@@ -106,8 +111,12 @@ for yi, k in zip(yb, ORDER):
     p = IV["cohorts"][k]["points"]
     rel = IV["cohorts"][k]["published_best_verified_released_folds"][1]
     any_ = IV["cohorts"][k]["published_best_any_protocol"][1]
-    axc.plot([rel, p["OURS_wsi_omics_age_sex_stage"]], [yi, yi], color="#B8BEC9", lw=1.3,
+    same = ABL[k]["best_published_verified_folds"]
+    axc.plot([min(rel, same, p["OURS_wsi_omics_age_sex_stage"]),
+              max(rel, same, p["OURS_wsi_omics_age_sex_stage"])], [yi, yi], color="#B8BEC9", lw=1.3,
              solid_capstyle="round", zorder=1)
+    axc.scatter([same], [yi], s=24, color=C["published"], marker=style.ROLE_MARKER["published"],
+                zorder=3, edgecolor="none")
     axc.scatter([rel], [yi], s=24, color=C["competitor"], marker=style.ROLE_MARKER["competitor"],
                 zorder=3, edgecolor="none")
     axc.scatter([p["OURS_wsi_omics_age_sex_stage"]], [yi], s=26, color=C["ours"],
@@ -120,6 +129,8 @@ axc.set_xlim(0.55, 0.90)          # room on the right for the legend, which sat 
 axc.set_xlabel("concordance", fontsize=6.4)
 axc.scatter([], [], s=24, color=C["competitor"], marker=style.ROLE_MARKER["competitor"],
             label="SurvPath, these folds")
+axc.scatter([], [], s=24, color=C["published"], marker=style.ROLE_MARKER["published"],
+            label="best published, these folds")
 axc.scatter([], [], s=26, color=C["ours"], marker=style.ROLE_MARKER["ours"], label="ModRank")
 axc.scatter([], [], s=26, facecolor="none", edgecolor=INK, linewidths=0.8,
             label="best published, any protocol")
@@ -127,9 +138,12 @@ axc.scatter([], [], s=26, facecolor="none", edgecolor=INK, linewidths=0.8,
 # in-axes corner sits close to a full-width row of data at some y. Above the axes, one row, in the
 # gap the title used to have to itself -- the title's own words fold into the legend's title, as in
 # panel c of Figure 2 -- is the placement that touches no row's markers.
-axc.legend(fontsize=5.1, loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=1,
-           handletextpad=0.3, borderpad=0.2, labelspacing=0.2,
-           title="against two references", title_fontsize=6.3)
+_leg = axc.legend(fontsize=5.0, loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=1,
+                  handletextpad=0.3, borderpad=0.15, labelspacing=0.12, frameon=False)
+# four entries since the same-fold published value was added: measured, not estimated
+fig.canvas.draw()
+_bb = _leg.get_window_extent().transformed(fig.transFigure.inverted())
+assert _bb.y1 <= 1.0 and _bb.x0 >= 0.0 and _bb.x1 <= 1.0, "panel c legend leaves the canvas: %s" % _bb
 
 style.save(fig, style.out(HERE, "fig8_five_cohort_validation.pdf"))
 print("wrote fig8_five_cohort_validation.pdf   %.3f x %.3f in" % tuple(fig.get_size_inches()))

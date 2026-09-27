@@ -316,6 +316,30 @@ check("the run log records the frozen rule at the protocol's own selection term"
       "0.679 + 0.0239 = 0.7029" in _log,
       "the executed rule, printed by the confirmatory run before any of this was written up")
 
+# --- 13. amendment A2 and the GEO amendment: every file their READMEs point a reviewer at is here,
+#         and the corrected survival functions pass their own tests in this tree. Cold panel round 3
+#         found the A2 README naming a test file and a driver the release did not carry, while
+#         check 12 still read "7 of 7": a promise made in a README is a promise too.
+A2_PROMISED = [
+    ("amendment A2's protocol", "experiments/20260928-amendment-a2/protocol.md"),
+    ("amendment A2's README", "experiments/20260928-amendment-a2/README.md"),
+    ("amendment A2's driver", "experiments/20260928-amendment-a2/run_jobs.py"),
+    ("amendment A2's before-after table", "experiments/20260928-amendment-a2/results/before-after.json"),
+    ("amendment A2's legacy reproduction record", "experiments/20260928-amendment-a2/legacy-checks/README.md"),
+    ("the corrected primitives' tests", "tests/test_a2_survival_primitives.py"),
+    ("the GEO amendment geo-gated.json cites (public copy)", "experiments/20260911-geo-external/amendment-01-public.md"),
+]
+a2_missing = [t for t, rel in A2_PROMISED if not os.path.isfile(os.path.join(HERE, rel))]
+check("the amendments' promised files are all present", not a2_missing,
+      "%d of %d present" % (len(A2_PROMISED) - len(a2_missing), len(A2_PROMISED))
+      + ("" if not a2_missing else "; MISSING: " + "; ".join(a2_missing)))
+_tp = os.path.join(HERE, "tests", "test_a2_survival_primitives.py")
+if os.path.isfile(_tp):
+    _tr = subprocess.run([sys.executable, _tp], cwd=HERE, capture_output=True, text=True)
+    _tl = (_tr.stdout.strip().splitlines() or [""])[-1]
+    check("the corrected Cox objective and ranks pass their tests", _tr.returncode == 0 and "tests passed" in _tl,
+          _tl or (_tr.stderr.strip().splitlines() or ["no output"])[-1])
+
 print("recomputed from the bundle's own result files:\n")
 for n, d in ok:
     print("  ok    %-48s %s" % (n, d))
