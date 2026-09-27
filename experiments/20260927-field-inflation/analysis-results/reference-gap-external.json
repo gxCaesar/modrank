@@ -1,0 +1,127 @@
+{
+ "artifact_type": "s36_reference_gap_external",
+ "phase_of_origin": "post_freeze_2026-09-27",
+ "protocol": "experiments/20260927-field-inflation/protocol-c.md",
+ "bootstrap": {
+  "replicates": 6000,
+  "seed": 20260911,
+  "unit": "cases"
+ },
+ "known_answers_geo": {
+  "GSE31684": {
+   "n": 93,
+   "events": 38,
+   "grade_entropy": 0.345,
+   "C_stage_model": 0.659,
+   "C_grade_model": 0.5066,
+   "gap": 0.1523,
+   "gap_boot": {
+    "mean": 0.1613,
+    "ci95": [
+     0.0581,
+     0.266
+    ],
+    "p_two_sided": 0.0017
+   }
+  },
+  "GSE32894": {
+   "n": 224,
+   "events": 25,
+   "grade_entropy": 0.961,
+   "C_stage_model": 0.8672,
+   "C_grade_model": 0.7255,
+   "gap": 0.1417,
+   "gap_boot": {
+    "mean": 0.1414,
+    "ci95": [
+     0.0782,
+     0.2054
+    ],
+    "p_two_sided": 0.0
+   }
+  }
+ },
+ "cohorts": {
+  "GSE19915": {
+   "admitted": true,
+   "endpoint": "disease-specific survival",
+   "n": 85,
+   "events": 25,
+   "age_and_sex_in_models": false,
+   "grade_entropy": 0.767,
+   "stage_entropy": 0.889,
+   "C_stage_model": 0.6795,
+   "C_grade_model": 0.5505,
+   "gap": 0.129,
+   "gap_boot": {
+    "mean": 0.1055,
+    "ci95": [
+     -0.0303,
+     0.2522
+    ],
+    "p_two_sided": 0.1413
+   }
+  },
+  "E-MTAB-1803": {
+   "admitted": true,
+   "endpoint": "overall survival",
+   "n": 146,
+   "events": 86,
+   "age_and_sex_in_models": true,
+   "grade_entropy": 0.306,
+   "stage_entropy": 0.987,
+   "C_stage_model": 0.6827,
+   "C_grade_model": 0.4365,
+   "gap": 0.2461,
+   "gap_boot": {
+    "mean": 0.2543,
+    "ci95": [
+     0.1776,
+     0.3314
+    ],
+    "p_two_sided": 0.0
+   }
+  },
+  "GSE13507": {
+   "admitted": true,
+   "endpoint": "cancer-specific survival",
+   "n": 165,
+   "events": 32,
+   "age_and_sex_in_models": true,
+   "grade_entropy": 0.946,
+   "stage_entropy": 0.854,
+   "C_stage_model": 0.8599,
+   "C_grade_model": 0.782,
+   "gap": 0.0779,
+   "gap_boot": {
+    "mean": 0.0781,
+    "ci95": [
+     -0.0121,
+     0.164
+    ],
+    "p_two_sided": 0.0897
+   }
+  },
+  "E-MTAB-4321": {
+   "admitted": true,
+   "endpoint": "progression-free survival (progression to T2+)",
+   "n": 462,
+   "events": 31,
+   "age_and_sex_in_models": true,
+   "grade_entropy": 0.676,
+   "stage_entropy": 0.482,
+   "C_stage_model": 0.8217,
+   "C_grade_model": 0.7334,
+   "gap": 0.0883,
+   "gap_boot": {
+    "mean": 0.088,
+    "ci95": [
+     0.0351,
+     0.1438
+    ],
+    "p_two_sided": 0.0003
+   }
+  }
+ },
+ "runtime_seconds": 28.8
+}

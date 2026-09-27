@@ -92,9 +92,31 @@ orders the concordance of seed-0 ModRank ranges 0.7203-0.7229 (sd 0.00043, commi
 mid-rank 0.7215, `diagnostics/tiespread.txt`). Tie order is unrelated to outcome, so this is noise,
 not bias, but the fourth decimal reproduces only under the builds that produced the values.
 
+## C. The stage-versus-grade reference gap in external cohorts
+
+`protocol-c.md` (written after the search, before any download; amended before any download when the
+PI enabled GSE13507 and E-MTAB-4321; gate 0 recorded before any outcome). Downloads, 2026-09-27, to
+sysu `data/geo-c/`: `GSE5479_clinical_information.txt`, `GSE1827_series_matrix.txt.gz`,
+`GSE19915-GPL5186_series_matrix.txt.gz`, `E-MTAB-1803.sdrf.txt` and `.idf.txt`, 12 MB in all.
+GSE13507 and E-MTAB-4321 were read from the copies already on sysu. Commands: `run_c.sh`.
+
+```
+known GSE31684  stage 0.6590 grade 0.5066 (committed 0.6590 0.5066)
+known GSE32894  stage 0.8672 grade 0.7255 (committed 0.8672 0.7255)
+GSE19915     n 85 ev 25 | stage 0.6795 grade 0.5505 | gap +0.1290 [-0.0303, 0.2522] | grade entropy 0.767
+E-MTAB-1803  n 146 ev 86 | stage 0.6827 grade 0.4365 | gap +0.2461 [0.1776, 0.3314] | grade entropy 0.306
+GSE13507     n 165 ev 32 | stage 0.8599 grade 0.7820 | gap +0.0779 [-0.0121, 0.164] | grade entropy 0.946
+E-MTAB-4321  n 462 ev 31 | stage 0.8217 grade 0.7334 | gap +0.0883 [0.0351, 0.1438] | grade entropy 0.676
+positive 9 of 9, interval excluding zero 5; Spearman rho -0.100 (p 0.798)
+```
+
+Predictions: (1) held, the largest gap is in the muscle-invasive cohort where 94.5% of tumours share
+one grade; (2) the non-muscle-invasive cohort's gap is smaller than that, and positive; (3) the sign
+is as predicted but the relation is negligible (Spearman -0.10 over nine cohorts). GSE5479 and GSE1827
+were not admitted: their deposited files carry no time or event field.
+
 ## Not run
 
 - MOTCat: no implementation in the released code base. Fetching the official MOTCat code needs a
   download approval; it was not requested.
-- C (external cohorts): the search is running; no protocol written and nothing downloaded.
 - No manuscript, claim-registry or release change has been made on the basis of anything here.

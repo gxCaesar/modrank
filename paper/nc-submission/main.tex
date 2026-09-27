@@ -128,7 +128,9 @@ replicates) on identical cases through an identical pipeline. The stage-based re
 arm in all five studies the benchmark covers, by $+0.0423$ to $+0.2208$, and in two of the five the
 interval excludes zero (Fig.~\ref{fig:missing}c). In two of them the released
 files carry no usable grade, so there the comparison is with age and sex alone (Supplementary
-Table~2).
+Table~2). Outside the benchmark, stage outperformed grade as the clinical reference in all six
+independent bladder cohorts that record both (1,175 patients), with intervals excluding zero in four. The largest gap, $+0.2461$, was in a muscle-invasive cohort in which
+94.5\% of tumours share one grade (Supplementary Note~9 and Supplementary Table~14).
 
 \subsection*{Constraints on a method at 359 patients}
 
@@ -193,8 +195,7 @@ A clinical reference fixes the zero point of every claim about what histology an
 add, so we measured how far the reference moves it. For three multimodal constructions (ModRank, and
 SurvPath and PIBD each given the clinical block), we computed the added value over each reference,
 $C(\text{model} + \text{reference}) - C(\text{reference})$, and the inflation $D$, the difference
-between the added value over grade and over stage, with all four concordances recomputed on each of
-6,000 case resamples.
+between the added value over grade and over stage.
 
 Against the grade-based reference every construction appears to add substantially, $+0.1204$
 ($[+0.0684, +0.1708]$) for ModRank, $+0.0670$ for SurvPath and $+0.0841$ for PIBD. Against the stage-based
@@ -331,9 +332,9 @@ histology.
 
 \subsection*{External cohorts}
 
-The benchmark has no held-out bladder cohort, and its other four studies are a different disease
-each, so we tested the reference inflation and the combination rule in independent public bladder
-cohorts, under protocols fixed before their outcomes were analysed. The public cohorts that combine
+The benchmark has no held-out bladder cohort, so we tested the reference inflation and the
+combination rule in independent public bladder cohorts under protocols fixed before their outcomes
+were analysed. The public cohorts that combine
 survival with bulk expression carry no slides, so these tests concern the transcriptome and clinical
 arms. The recipe was refitted inside each cohort by repeated cross-validation.
 
@@ -541,12 +542,13 @@ stage-based one. A score that carries no information, combined by the same rank 
 more than half of that difference, and four weaker architectures show no more. The remainder is an
 excess that appears only with a model that carries signal. Its interval excludes zero for ModRank
 and PIBD, for bladder under the five-study protocol and in the Swedish cohort, and not for SurvPath,
-head and neck, stomach or the cystectomy cohort (Supplementary Note~8). The gain from swapping grade
-for stage tracks how uninformative grade is across the five studies (Fig.~\ref{fig:missing}d). In
-the external cohorts, against the protocol's prediction, $D$ was larger where grade varied, so the
-determinants of the excess are not settled.
+head and neck, stomach or the cystectomy cohort (Supplementary Note~8). In the external cohorts,
+against the protocol's prediction, $D$ was larger where grade varied, so the determinants of the
+excess are not settled.
 
-The consequence for published comparisons does not depend on this decomposition. Two of the four published entries on verified folds, and five of all
+Across the three benchmark studies with a usable grade, the gain from swapping grade for stage tracks
+how uninformative grade is (Fig.~\ref{fig:missing}d). Across nine cohorts it does not (Spearman
+$-0.10$), because stage outperformed grade in all nine, non-muscle-invasive cohorts included. The consequence for published comparisons does not depend on this decomposition. Two of the four published entries on verified folds, and five of all
 nine, fall below a clinical model of age, sex and stage (Fig.~\ref{fig:missing}a), so a gain
 reported over grade alone cannot be read as a gain over what the clinic knows. Multimodal survival
 models for bladder cancer should report their added value over a clinical reference that contains
@@ -637,7 +639,7 @@ specimen. The inputs are therefore available only after surgery, so a model buil
 inform adjuvant treatment and follow-up once anchored at the date of surgery (Discussion), and cannot
 inform the decision to give neoadjuvant chemotherapy, which precedes the specimen. The study uses
 public, de-identified data only and required no ethical approval. Reporting follows the TRIPOD+AI
-statement~\citep{collins2024tripodai} (Supplementary Table~14).
+statement~\citep{collins2024tripodai} (Supplementary Table~15).
 
 \subsection*{Folds, representations and estimator}
 
@@ -763,6 +765,17 @@ re-partitions. A variant that admits an arm only when it clears a permutation nu
 fold was defined before any of these cohorts was downloaded, and an amendment added it before the
 results of two of the three cohorts were inspected (Supplementary Note~5).
 
+Four further cohorts were assembled for the reference comparison alone, which needs grade, stage and
+an outcome but no expression. They were chosen by a systematic search of the Gene Expression Omnibus,
+ArrayExpress and cBioPortal under a protocol written before any download. Each was admitted by a count,
+made before any outcome was analysed, of at least 50 patients with grade, stage, a time and an event
+indicator, at least 20 events, and two or more levels of both grade and stage. GSE19915,
+E-MTAB-1803, GSE13507 and E-MTAB-4321 were admitted, and two series whose deposited files carry no time
+or event field were not. The grade and stage models are fitted by the recipe above with age and sex
+where the cohort records them, each cohort on its own endpoint. Before any new cohort was scored, the
+same code reproduced the two earlier cohorts' stage-block and grade-block concordances
+(Supplementary Note~9).
+
 \subsection*{Software and use of language models}
 
 Every ModRank analysis ran on CPU. The confirmatory run and the development-cohort analyses used
@@ -776,15 +789,17 @@ All analyses, results and claims were designed, run and verified by the author.
 
 All data are public. The benchmark's splits, pathway definitions and clinical files are those
 released with SurvPath (\url{https://github.com/mahmoodlab/SurvPath}). TCGA bladder data are from
-the Genomic Data Commons~\citep{heath2021gdc}, and the external cohorts from the Gene Expression
-Omnibus (GSE31684, GSE32894, GSE48075). Source data are provided with this paper.
+the Genomic Data Commons~\citep{heath2021gdc}. The external cohorts are from the Gene Expression
+Omnibus (GSE31684, GSE32894, GSE48075, GSE19915~\citep{lindgren2010combined} and
+GSE13507~\citep{kim2010progression, lee2010e2f1}) and ArrayExpress
+(E-MTAB-1803~\citep{rebouissou2014egfr} and E-MTAB-4321~\citep{hedegaard2016uromol}). Source data are provided with this paper.
 
 \section*{Code availability}
 
 All analysis code, the prespecified protocols with their amendments, the record of every candidate
 scored during development, the confirmatory run, the outcome-permuted selection null and the external
 analyses are publicly available at \url{https://github.com/gxCaesar/modrank} and archived on Zenodo as
-version 1.3.0 (\TODO{version DOI, written when the deposit is published}). All archived versions
+version 1.3.1 (\TODO{version DOI, written when the deposit is published}). All archived versions
 resolve from \url{https://doi.org/10.5281/zenodo.22025756}. The archive includes a script that recomputes the
 reported numbers from the deposited result files rather than reading them from this manuscript.
 

@@ -1,0 +1,93 @@
+{
+ "artifact_type": "s36_gate0",
+ "phase_of_origin": "post_freeze_2026-09-27",
+ "rule": "admit with >= 50 complete patients, >= 20 events, >= 2 levels of grade and of stage",
+ "cohorts": {
+  "GSE19915": {
+   "endpoint": "disease-specific survival",
+   "age_and_sex_in_models": false,
+   "patients_parsed": 91,
+   "patients_complete": 85,
+   "events": 25,
+   "grade_levels": {
+    "G2": 19,
+    "G3": 66
+   },
+   "stage_levels": {
+    "T1": 31,
+    "T2": 19,
+    "T3": 21,
+    "T4": 3,
+    "Ta": 11
+   },
+   "grade_entropy": 0.767,
+   "stage_entropy": 0.889,
+   "admitted": true
+  },
+  "E-MTAB-1803": {
+   "endpoint": "overall survival",
+   "age_and_sex_in_models": true,
+   "patients_parsed": 170,
+   "patients_complete": 146,
+   "events": 86,
+   "grade_levels": {
+    "G2": 8,
+    "G3": 138
+   },
+   "stage_levels": {
+    "T2": 50,
+    "T3": 58,
+    "T4": 38
+   },
+   "grade_entropy": 0.306,
+   "stage_entropy": 0.987,
+   "admitted": true
+  },
+  "GSE13507": {
+   "endpoint": "cancer-specific survival",
+   "age_and_sex_in_models": true,
+   "patients_parsed": 165,
+   "patients_complete": 165,
+   "events": 32,
+   "grade_levels": {
+    "high": 60,
+    "low": 105
+   },
+   "stage_levels": {
+    "T1": 80,
+    "T2": 31,
+    "T3": 19,
+    "T4": 11,
+    "Ta": 24
+   },
+   "grade_entropy": 0.946,
+   "stage_entropy": 0.854,
+   "admitted": true
+  },
+  "E-MTAB-4321": {
+   "endpoint": "progression-free survival (progression to T2+)",
+   "age_and_sex_in_models": true,
+   "patients_parsed": 476,
+   "patients_complete": 462,
+   "events": 31,
+   "grade_levels": {
+    "PUNLMP": 7,
+    "high grade": 183,
+    "low grade": 272
+   },
+   "stage_levels": {
+    "CIS": 3,
+    "T1": 110,
+    "T2": 8,
+    "Ta": 341
+   },
+   "grade_entropy": 0.676,
+   "stage_entropy": 0.482,
+   "admitted": true
+  }
+ },
+ "not_admissible_from_deposited_files": {
+  "GSE5479": "GSE5479_clinical_information.txt carries stage, grade, sex and age and no time or event field; the series has no matrix",
+  "GSE1827": "the series matrix carries stage and some grade in free-text descriptions and no characteristics, time or event field"
+ }
+}

@@ -1,0 +1,107 @@
+{
+ "artifact_type": "s36_reference_gap_summary",
+ "rows": [
+  {
+   "cohort": "TCGA-BLCA",
+   "source": "benchmark, five-study protocol",
+   "gap": 0.056,
+   "ci95": [
+    0.0042,
+    0.1087
+   ],
+   "grade_entropy": 0.311
+  },
+  {
+   "cohort": "TCGA-HNSC",
+   "source": "benchmark, five-study protocol",
+   "gap": 0.0423,
+   "ci95": [
+    -0.0265,
+    0.1113
+   ],
+   "grade_entropy": 0.643
+  },
+  {
+   "cohort": "TCGA-STAD",
+   "source": "benchmark, five-study protocol",
+   "gap": 0.0461,
+   "ci95": [
+    -0.0191,
+    0.1091
+   ],
+   "grade_entropy": 0.623
+  },
+  {
+   "cohort": "GSE31684",
+   "source": "external, analysed before",
+   "gap": 0.1523,
+   "ci95": [
+    0.0581,
+    0.266
+   ],
+   "grade_entropy": 0.345
+  },
+  {
+   "cohort": "GSE32894",
+   "source": "external, analysed before",
+   "gap": 0.1417,
+   "ci95": [
+    0.0782,
+    0.2054
+   ],
+   "grade_entropy": 0.961
+  },
+  {
+   "cohort": "GSE19915",
+   "source": "external, analysis C",
+   "gap": 0.129,
+   "ci95": [
+    -0.0303,
+    0.2522
+   ],
+   "grade_entropy": 0.767
+  },
+  {
+   "cohort": "E-MTAB-1803",
+   "source": "external, analysis C",
+   "gap": 0.2461,
+   "ci95": [
+    0.1776,
+    0.3314
+   ],
+   "grade_entropy": 0.306
+  },
+  {
+   "cohort": "GSE13507",
+   "source": "external, analysis C",
+   "gap": 0.0779,
+   "ci95": [
+    -0.0121,
+    0.164
+   ],
+   "grade_entropy": 0.946
+  },
+  {
+   "cohort": "E-MTAB-4321",
+   "source": "external, analysis C",
+   "gap": 0.0883,
+   "ci95": [
+    0.0351,
+    0.1438
+   ],
+   "grade_entropy": 0.676
+  }
+ ],
+ "n": 9,
+ "gap_positive": 9,
+ "interval_excludes_zero": 5,
+ "spearman_gap_vs_grade_entropy": {
+  "rho": -0.1,
+  "p": 0.798
+ },
+ "external_only": {
+  "n": 6,
+  "gap_positive": 6,
+  "interval_excludes_zero": 4
+ }
+}

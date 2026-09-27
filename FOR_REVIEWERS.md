@@ -17,7 +17,7 @@ is one the reported result does not clear.
 
 | | |
 |---|---|
-| `analysis/` | 63 scripts, the code that produced every reported number. `analysis/README.md` maps each to what it establishes |
+| `analysis/` | 64 scripts, the code that produced every reported number. `analysis/README.md` maps each to what it establishes |
 | `development/benchmark-protocol.json` | the protocol, frozen before the confirmatory run, with amendment A1 recorded in it |
 | `development/split-manifest.json` | the split manifest whose SHA-256 the protocol binds |
 | `development/iteration-ledger.md` | all 269 scored candidates, which is what the selection-inflation term is computed over |

@@ -139,6 +139,17 @@ def inflation_excess_over_no_signal():
     return "%+.4f" % nb["excess_over_no_signal"]["mean"]
 
 
+def reference_gap_external():
+    # external bladder cohorts in which the stage-based clinical model exceeds the grade-based one
+    # (analysis/s36_reference_gap_external.py); every row must carry its own interval
+    g = load(os.path.join(FI, "reference-gap-summary.json"))
+    ext = [r for r in g["rows"] if r["source"].startswith("external")]
+    if len(ext) != g["external_only"]["n"] or any(len(r["ci95"]) != 2 for r in ext):
+        print("emit_claim: the reference-gap summary is inconsistent", file=sys.stderr)
+        sys.exit(2)
+    return str(sum(1 for r in ext if r["gap"] > 0))
+
+
 def export_jsonl():
     cases = load(PERCASE_JSON)["cases"]
     with open(PERCASE_JSONL, "w") as fh:
@@ -150,7 +161,7 @@ def export_jsonl():
 CLAIMS = {f.__name__: f for f in (modrank_tcga_benchmark, stage_reference_correction,
                                   clinical_reference_inflation, geo_inflation_replication,
                                   five_study_validation, fusion_null_five_studies,
-                                  inflation_excess_over_no_signal)}
+                                  inflation_excess_over_no_signal, reference_gap_external)}
 
 
 def main(argv):

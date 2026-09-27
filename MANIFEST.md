@@ -1,10 +1,10 @@
 # Manifest
 
-418 files. Every one of them is listed here, and every file listed here is in the tree; the builder asserts both directions and refuses to write this file otherwise.
+424 files. Every one of them is listed here, and every file listed here is in the tree; the builder asserts both directions and refuses to write this file otherwise.
 
 | directory | files | what it holds |
 |---|---|---|
-| `analysis/` | 64 | the code that produced every reported number, one script per question |
+| `analysis/` | 65 | the code that produced every reported number, one script per question |
 | `development/` | 33 | the frozen protocol, the split manifest it binds, the ledger of all 269 scored candidates, the error atlas, and the component pre-registrations |
 | `experiments/20260817-blca-confirm/` | 29 | the confirmatory run: command, environment, log, code and result files |
 | `experiments/20260818-selection-null/` | 4 | the 200 outcome-permuted runs behind the corrected selection bar, and the encoder swap |
@@ -87,6 +87,9 @@
 | `experiments/20260927-field-inflation/analysis-results/inflation-null-blca.json` |  |
 | `experiments/20260927-field-inflation/analysis-results/inflation-null-five.json` |  |
 | `experiments/20260927-field-inflation/analysis-results/inflation-null-geo.json` |  |
+| `experiments/20260927-field-inflation/analysis-results/reference-gap-external.json` |  |
+| `experiments/20260927-field-inflation/analysis-results/reference-gap-gate0.json` |  |
+| `experiments/20260927-field-inflation/analysis-results/reference-gap-summary.json` |  |
 | `experiments/20260927-field-inflation/diagnostics/excessD.py` |  |
 | `experiments/20260927-field-inflation/diagnostics/excessD.txt` |  |
 | `experiments/20260927-field-inflation/diagnostics/nullD.py` |  |
@@ -101,6 +104,7 @@
 | `experiments/20260927-field-inflation/diagnostics/tiespread.py` |  |
 | `experiments/20260927-field-inflation/diagnostics/tiespread.txt` |  |
 | `experiments/20260927-field-inflation/env.txt` |  |
+| `experiments/20260927-field-inflation/protocol-c.md` |  |
 | `experiments/20260927-field-inflation/protocol.md` |  |
 | `experiments/20260927-field-inflation/results/abmil_wsi_pathways.attempt1/seed1/tcga_blca__nll_surv_a0.5_lr1e-03_l2Weight_0.0001_5foldcv_b1_survival_months_dss_dim1_768_patches_4096_wsiDim_256_epochs_2_fusion_concat_modality_abmil_wsi_pathways_pathT_combine/experiment_tcga_blca__nll_surv_a0.5_lr1e-03_l2Weight_0.0001_5foldcv_b1_survival_months_dss_dim1_768_patches_4096_wsiDim_256_epochs_2_fusion_concat_modality_abmil_wsi_pathways_pathT_combine.txt` |  |
 | `experiments/20260927-field-inflation/results/abmil_wsi_pathways.attempt1/seed2/tcga_blca__nll_surv_a0.5_lr1e-03_l2Weight_0.0001_5foldcv_b1_survival_months_dss_dim1_768_patches_4096_wsiDim_256_epochs_2_fusion_concat_modality_abmil_wsi_pathways_pathT_combine/experiment_tcga_blca__nll_surv_a0.5_lr1e-03_l2Weight_0.0001_5foldcv_b1_survival_months_dss_dim1_768_patches_4096_wsiDim_256_epochs_2_fusion_concat_modality_abmil_wsi_pathways_pathT_combine.txt` |  |
@@ -249,6 +253,7 @@
 | `experiments/20260927-field-inflation/results/transmil_wsi_pathways/seed5/tcga_blca__nll_surv_a0.5_lr1e-03_l2Weight_0.0001_5foldcv_b1_survival_months_dss_dim1_768_patches_4096_wsiDim_256_epochs_2_fusion_concat_modality_transmil_wsi_pathways_pathT_combine/split_4_results.pkl` |  |
 | `experiments/20260927-field-inflation/run_a.sh` |  |
 | `experiments/20260927-field-inflation/run_analysis.sh` |  |
+| `experiments/20260927-field-inflation/run_c.sh` |  |
 | `experiments/20260927-field-inflation/survpath-baselines.patch` |  |
 | `experiments/20260927-geo-percase/README.md` |  |
 | `experiments/20260927-geo-percase/env.txt` |  |

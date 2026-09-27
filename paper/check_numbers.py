@@ -1255,6 +1255,24 @@ def check_nc(fails):
             fails.append("NC's description of %s in SI Note 8 no longer matches the run" % _m)
     if max(fa[_m]["D_p_holm"] for _m in ARCH) != 0.02:
         fails.append("SI Note 8 says the largest Holm q over the four architectures is 0.02")
+    # analysis C: the reference gap in external cohorts (Results, Discussion, SI Note 9)
+    gs = j(FI, "reference-gap-summary.json")
+    gx = j(FI, "reference-gap-external.json")
+    _ext_n = sum(v["n"] for v in gx["known_answers_geo"].values()) + sum(
+        v["n"] for v in gx["cohorts"].values() if v.get("admitted"))
+    _big = max(gs["rows"], key=lambda r_: r_["gap"])
+    _g0 = j(FI, "reference-gap-gate0.json")["cohorts"][_big["cohort"]]["grade_levels"]
+    _share = 100.0 * max(_g0.values()) / sum(_g0.values())
+    for _ph in ("all six independent bladder cohorts that record both (%s patients)" % format(_ext_n, ","),
+                "with intervals excluding zero in %s" % {4: "four"}[gs["external_only"]["interval_excludes_zero"]],
+                "The largest gap, $%+.4f$, was in a muscle-invasive cohort" % _big["gap"],
+                "%.1f\\%% of tumours share one grade" % _share,
+                "(Spearman $%.2f$)" % gs["spearman_gap_vs_grade_entropy"]["rho"],
+                "outperformed grade in all %s" % {9: "nine"}[gs["gap_positive"]]):
+        if _ph.replace("\\%", "\\%") not in " ".join(nc.split()):
+            fails.append("NC's external reference-gap sentence should carry %r" % _ph)
+    if not (gs["external_only"]["n"] == 6 and gs["external_only"]["gap_positive"] == 6 and gs["n"] == 9):
+        fails.append("NC says six external cohorts, all positive, nine in all; the summary says %s" % gs)
     # tie order: the Methods sentence reads its numbers from the committed diagnostics
     _td = open(os.path.join(ROOT, "experiments", "20260927-field-inflation", "diagnostics",
                             "tiespread.txt")).read()
@@ -1858,6 +1876,7 @@ def check_nc(fails):
                   "Supplementary Note~6": "note:calibration",    # note 6
                   "Supplementary Note~7": "note:subgroup",       # note 7
                   "Supplementary Note~8": "note:nulld",          # note 8, 2026-09-27
+                  "Supplementary Note~9": "note:gapext",         # note 9, 2026-09-27
                   "Supplementary Table~7": "tab:fusion",         # table 7
                   "Supplementary Table~8": "tab:fivecohort",     # table 8
                   "Supplementary Table~9": "tab:geo",            # table 9
@@ -1865,7 +1884,8 @@ def check_nc(fails):
                   "Supplementary Table~11": "tab:subgroup",      # table 11
                   "Supplementary Tables~12": "tab:architectures",  # table 12, 2026-09-27
                   "and~13)": "tab:nulld",                        # table 13, 2026-09-27
-                  "Supplementary Table~14": "tab:tripod"}        # table 14
+                  "Supplementary Table~14": "tab:gapext",        # table 14, 2026-09-27
+                  "Supplementary Table~15": "tab:tripod"}        # table 15
         # A duplicated KEY cannot be caught by inspecting this dict, because Python collapses it
         # before anything runs: writing "Supplementary Table~7" twice silently drops the first
         # pointer, which is what happened on 2026-09-13. What can be caught is the consequence.
@@ -2133,6 +2153,27 @@ def check_nc_si(fails):
         nd_rows.append([lab, "$%+.4f$" % v["D"], "$%+.4f$" % v["no_signal_D"]["mean"],
                         "$[%+.4f, %+.4f]$" % tuple(q), "$%+.4f$" % x["mean"], "$[%+.4f, %+.4f]$" % tuple(x["ci95"])])
     expect("tab:nulld", [[c.replace("$", "") for c in r_] for r_ in nd_rows])
+
+    gs = _jl("reference-gap-summary.json")
+    gx = _jl("reference-gap-external.json")
+    s5c = json.load(open(os.path.join(ROOT, "experiments", "20260911-five-study-repro", "results",
+                                      "stage5.json")))["cohorts"]
+    SET = {"TCGA-BLCA": ("benchmark", "DSS"), "TCGA-HNSC": ("benchmark", "DSS"), "TCGA-STAD": ("benchmark", "DSS"),
+           "GSE31684": ("cystectomy", "DSS"), "GSE32894": ("mixed", "DSS"), "GSE19915": ("mixed", "DSS"),
+           "E-MTAB-1803": ("MIBC", "OS"), "GSE13507": ("mixed", "CSS"), "E-MTAB-4321": ("NMIBC", "PFS")}
+    gx_rows = []
+    for r_ in gs["rows"]:
+        c_ = r_["cohort"]
+        if c_.startswith("TCGA-"):
+            v_ = s5c[c_[5:].lower()]
+            n_, ev_, cs_, cg_ = v_["n_cases"], v_["events"], v_["arms"]["age_sex_stage"], v_["arms"]["age_sex_grade"]
+        else:
+            v_ = gx["known_answers_geo"].get(c_) or gx["cohorts"][c_]
+            n_, ev_, cs_, cg_ = v_["n"], v_["events"], v_["C_stage_model"], v_["C_grade_model"]
+        gx_rows.append([c_, SET[c_][0], SET[c_][1], "n / events".replace("n", "%d" % n_, 1).replace("events", "%d" % ev_),
+                        "%.3f" % r_["grade_entropy"], "%.4f" % cs_, "%.4f" % cg_, "%+.4f" % r_["gap"],
+                        "[%+.4f, %+.4f]" % tuple(r_["ci95"])])
+    expect("tab:gapext", gx_rows)
 
     cal = json.load(open(os.path.join(PH, "calibration-and-decision-curve.json")))
     cal_rows = []
