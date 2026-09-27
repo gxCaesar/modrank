@@ -3,8 +3,8 @@
  "phase_of_origin": "post_freeze_2026-09-11",
  "reportable": true,
  "known_answer": {
-  "ours_seed0": 0.7225,
-  "clinical_seed0": 0.6638
+  "ours_seed0": 0.7224,
+  "clinical_seed0": 0.6637
  },
  "horizons_months": [
   12.0,
@@ -23,43 +23,43 @@
  },
  "recalibration_slopes_per_fold": {
   "ours": [
-   3.1966,
-   2.0795,
-   2.0382,
-   2.1784,
-   2.4327
+   3.1997,
+   2.0818,
+   2.0412,
+   2.1802,
+   2.4271
   ],
   "clinical": [
-   2.0761,
-   1.8474,
-   1.8101,
+   2.0749,
+   1.8471,
+   1.8094,
    1.8614,
-   2.3108
+   2.311
   ]
  },
  "ours": {
-  "calibration_slope": 0.7704,
+  "calibration_slope": 0.7707,
   "by_horizon": {
    "12.0": {
-    "mean_predicted_risk": 0.1472,
+    "mean_predicted_risk": 0.1473,
     "observed_km_risk": 0.1439,
     "brier": 0.1112,
     "brier_null_km": 0.1233,
     "ipa": 0.098
    },
    "24.0": {
-    "mean_predicted_risk": 0.3423,
+    "mean_predicted_risk": 0.3424,
     "observed_km_risk": 0.3411,
-    "brier": 0.1908,
+    "brier": 0.1909,
     "brier_null_km": 0.2249,
-    "ipa": 0.1516
+    "ipa": 0.1515
    },
    "36.0": {
-    "mean_predicted_risk": 0.414,
+    "mean_predicted_risk": 0.4141,
     "observed_km_risk": 0.4151,
     "brier": 0.2185,
     "brier_null_km": 0.2441,
-    "ipa": 0.1048
+    "ipa": 0.1049
    }
   },
   "grouped_24m": [
@@ -67,36 +67,36 @@
     "quintile": 1,
     "n": 72,
     "events": 9,
-    "predicted": 0.1292,
-    "observed_km": 0.137
+    "predicted": 0.1294,
+    "observed_km": 0.1375
    },
    {
     "quintile": 2,
     "n": 72,
-    "events": 18,
-    "predicted": 0.2077,
-    "observed_km": 0.2057
+    "events": 19,
+    "predicted": 0.2076,
+    "observed_km": 0.2205
    },
    {
     "quintile": 3,
     "n": 71,
-    "events": 18,
-    "predicted": 0.3099,
-    "observed_km": 0.2635
+    "events": 17,
+    "predicted": 0.3101,
+    "observed_km": 0.2481
    },
    {
     "quintile": 4,
     "n": 72,
     "events": 30,
-    "predicted": 0.4462,
-    "observed_km": 0.5085
+    "predicted": 0.4464,
+    "observed_km": 0.5049
    },
    {
     "quintile": 5,
     "n": 72,
     "events": 38,
-    "predicted": 0.618,
-    "observed_km": 0.6394
+    "predicted": 0.6183,
+    "observed_km": 0.639
    }
   ],
   "net_benefit_24m": {
@@ -104,39 +104,39 @@
    "0.1": 0.2642,
    "0.15": 0.2209,
    "0.2": 0.1785,
-   "0.25": 0.164,
-   "0.3": 0.1444,
-   "0.35": 0.1222,
-   "0.4": 0.1356,
+   "0.25": 0.1624,
+   "0.3": 0.1483,
+   "0.35": 0.1195,
+   "0.4": 0.1375,
    "0.45": 0.093,
    "0.5": 0.0712,
-   "0.55": 0.0347,
+   "0.55": 0.0419,
    "0.6": 0.0136
   }
  },
  "clinical": {
-  "calibration_slope": 0.8488,
+  "calibration_slope": 0.8479,
   "by_horizon": {
    "12.0": {
     "mean_predicted_risk": 0.1459,
     "observed_km_risk": 0.1439,
     "brier": 0.1176,
     "brier_null_km": 0.1233,
-    "ipa": 0.0468
+    "ipa": 0.0467
    },
    "24.0": {
-    "mean_predicted_risk": 0.3372,
+    "mean_predicted_risk": 0.3374,
     "observed_km_risk": 0.3411,
     "brier": 0.2072,
     "brier_null_km": 0.2249,
-    "ipa": 0.0788
+    "ipa": 0.0787
    },
    "36.0": {
-    "mean_predicted_risk": 0.4075,
+    "mean_predicted_risk": 0.4077,
     "observed_km_risk": 0.4151,
     "brier": 0.2184,
     "brier_null_km": 0.2441,
-    "ipa": 0.1052
+    "ipa": 0.1051
    }
   },
   "grouped_24m": [
@@ -144,35 +144,35 @@
     "quintile": 1,
     "n": 72,
     "events": 16,
-    "predicted": 0.1546,
+    "predicted": 0.1547,
     "observed_km": 0.2168
    },
    {
     "quintile": 2,
     "n": 72,
     "events": 16,
-    "predicted": 0.2236,
+    "predicted": 0.2237,
     "observed_km": 0.2395
    },
    {
     "quintile": 3,
     "n": 71,
     "events": 9,
-    "predicted": 0.3132,
+    "predicted": 0.3134,
     "observed_km": 0.155
    },
    {
     "quintile": 4,
     "n": 72,
     "events": 34,
-    "predicted": 0.4275,
+    "predicted": 0.4277,
     "observed_km": 0.4901
    },
    {
     "quintile": 5,
     "n": 72,
     "events": 38,
-    "predicted": 0.5669,
+    "predicted": 0.5672,
     "observed_km": 0.5489
    }
   ],

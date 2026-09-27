@@ -16,35 +16,35 @@
     "G1",
     "G2"
    ],
-   "C_ModRank_with_grade": 0.6861,
-   "C_age_sex_grade": 0.5658,
-   "C_ModRank": 0.6992,
-   "C_age_sex_stage": 0.6218,
-   "added_over_grade": 0.1203,
-   "added_over_stage": 0.0774,
-   "D": 0.0429,
+   "C_ModRank_with_grade": 0.6859,
+   "C_age_sex_grade": 0.5642,
+   "C_ModRank": 0.7003,
+   "C_age_sex_stage": 0.6219,
+   "added_over_grade": 0.1216,
+   "added_over_stage": 0.0784,
+   "D": 0.0433,
    "added_over_grade_boot": {
     "ci95": [
-     0.0667,
-     0.1743
+     0.0683,
+     0.1757
     ],
     "p_two_sided": 0.0,
     "reps": 6000
    },
    "added_over_stage_boot": {
     "ci95": [
-     0.0284,
-     0.1264
+     0.0298,
+     0.1267
     ],
     "p_two_sided": 0.0013,
     "reps": 6000
    },
    "D_boot": {
     "ci95": [
-     0.0099,
+     0.0108,
      0.0767
     ],
-    "p_two_sided": 0.0087,
+    "p_two_sided": 0.007,
     "reps": 6000
    }
   },
@@ -58,19 +58,19 @@
     "G4",
     "GX"
    ],
-   "C_ModRank_with_grade": 0.6015,
-   "C_age_sex_grade": 0.5027,
+   "C_ModRank_with_grade": 0.6008,
+   "C_age_sex_grade": 0.5042,
    "C_ModRank": 0.6179,
    "C_age_sex_stage": 0.545,
-   "added_over_grade": 0.0988,
+   "added_over_grade": 0.0965,
    "added_over_stage": 0.0729,
-   "D": 0.0259,
+   "D": 0.0236,
    "added_over_grade_boot": {
     "ci95": [
-     0.0451,
-     0.1528
+     0.0427,
+     0.1508
     ],
-    "p_two_sided": 0.001,
+    "p_two_sided": 0.0013,
     "reps": 6000
    },
    "added_over_stage_boot": {
@@ -78,15 +78,15 @@
      0.0206,
      0.1231
     ],
-    "p_two_sided": 0.0073,
+    "p_two_sided": 0.008,
     "reps": 6000
    },
    "D_boot": {
     "ci95": [
-     -0.0155,
-     0.0667
+     -0.0178,
+     0.0643
     ],
-    "p_two_sided": 0.214,
+    "p_two_sided": 0.2557,
     "reps": 6000
    }
   },
@@ -99,35 +99,35 @@
     "G3",
     "GX"
    ],
-   "C_ModRank_with_grade": 0.6125,
-   "C_age_sex_grade": 0.5358,
-   "C_ModRank": 0.6311,
-   "C_age_sex_stage": 0.5819,
+   "C_ModRank_with_grade": 0.613,
+   "C_age_sex_grade": 0.5364,
+   "C_ModRank": 0.629,
+   "C_age_sex_stage": 0.5841,
    "added_over_grade": 0.0767,
-   "added_over_stage": 0.0491,
-   "D": 0.0275,
+   "added_over_stage": 0.0449,
+   "D": 0.0318,
    "added_over_grade_boot": {
     "ci95": [
-     0.0197,
-     0.1363
+     0.0195,
+     0.1365
     ],
-    "p_two_sided": 0.007,
+    "p_two_sided": 0.008,
     "reps": 6000
    },
    "added_over_stage_boot": {
     "ci95": [
-     -0.0127,
-     0.1122
+     -0.0155,
+     0.107
     ],
-    "p_two_sided": 0.113,
+    "p_two_sided": 0.1417,
     "reps": 6000
    },
    "D_boot": {
     "ci95": [
-     -0.0082,
-     0.0628
+     -0.003,
+     0.0657
     ],
-    "p_two_sided": 0.1343,
+    "p_two_sided": 0.0697,
     "reps": 6000
    }
   }
@@ -137,11 +137,11 @@
    "n": 359,
    "events": 113,
    "points": {
-    "ModRank": 0.6992,
-    "stacked_known_answer": 0.6932,
-    "simplex": 0.6954,
+    "ModRank": 0.7003,
+    "stacked_known_answer": 0.6946,
+    "simplex": 0.6952,
     "interaction": 0.6917,
-    "gated": 0.6715
+    "gated": 0.683
    },
    "per_fold": [
     {
@@ -152,28 +152,28 @@
       0.2
      ],
      "interaction_coefficients": [
-      0.5814,
-      0.8743,
-      0.3407,
-      1.309,
-      -0.5184,
-      0.4536
+      0.5865,
+      0.8708,
+      0.3422,
+      1.3065,
+      -0.5141,
+      0.4525
      ],
      "gated_weights_by_clinical_tertile": [
       [
-       0.8,
-       0.1,
-       0.1
+       0.6,
+       0.0,
+       0.4
       ],
       [
        0.4,
-       0.6,
-       0.0
+       0.4,
+       0.2
       ],
       [
        0.0,
-       0.6,
-       0.4
+       0.4,
+       0.6
       ]
      ],
      "gated_tertile_had_comparable_pairs": [
@@ -183,8 +183,8 @@
      ],
      "validation_cases_per_tertile": [
       24,
-      23,
-      23
+      22,
+      24
      ]
     },
     {
@@ -195,12 +195,12 @@
       0.4
      ],
      "interaction_coefficients": [
-      0.2081,
-      0.8491,
-      0.4578,
-      0.0533,
-      0.4305,
-      0.3795
+      0.208,
+      0.8441,
+      0.4612,
+      0.0578,
+      0.4322,
+      0.3823
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -214,8 +214,8 @@
        0.3
       ],
       [
-       0.3,
-       0.6,
+       0.2,
+       0.7,
        0.1
       ]
      ],
@@ -238,18 +238,18 @@
       0.3
      ],
      "interaction_coefficients": [
-      0.4438,
-      0.94,
-      0.5165,
-      0.3406,
-      -0.1648,
-      -0.0679
+      0.4463,
+      0.9417,
+      0.5179,
+      0.3395,
+      -0.163,
+      -0.0724
      ],
      "gated_weights_by_clinical_tertile": [
       [
-       0.0,
-       0.5,
-       0.5
+       0.1,
+       0.6,
+       0.3
       ],
       [
        0.5,
@@ -257,9 +257,9 @@
        0.3
       ],
       [
-       0.1,
+       0.3,
        0.7,
-       0.2
+       0.0
       ]
      ],
      "gated_tertile_had_comparable_pairs": [
@@ -281,28 +281,28 @@
       0.4
      ],
      "interaction_coefficients": [
-      0.0532,
-      0.7553,
-      0.7134,
-      0.7331,
-      -0.1242,
-      0.3611
+      0.0762,
+      0.7325,
+      0.6143,
+      0.7166,
+      -0.1305,
+      0.4707
      ],
      "gated_weights_by_clinical_tertile": [
       [
-       0.4,
        0.6,
+       0.4,
        0.0
       ],
       [
-       0.1,
-       0.3,
-       0.6
+       0.2,
+       0.4,
+       0.4
       ],
       [
-       0.4,
        0.2,
-       0.4
+       0.1,
+       0.7
       ]
      ],
      "gated_tertile_had_comparable_pairs": [
@@ -312,8 +312,8 @@
      ],
      "validation_cases_per_tertile": [
       24,
-      23,
-      24
+      24,
+      23
      ]
     },
     {
@@ -324,12 +324,12 @@
       0.3
      ],
      "interaction_coefficients": [
-      0.2163,
-      0.6362,
-      0.5591,
-      0.7268,
-      -0.0015,
-      0.4469
+      0.2171,
+      0.6403,
+      0.5501,
+      0.7387,
+      -0.0099,
+      0.4451
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -338,14 +338,14 @@
        0.4
       ],
       [
-       0.2,
-       0.8,
-       0.0
+       0.1,
+       0.5,
+       0.4
       ],
       [
-       0.3,
+       0.2,
        0.1,
-       0.6
+       0.7
       ]
      ],
      "gated_tertile_had_comparable_pairs": [
@@ -355,70 +355,70 @@
      ],
      "validation_cases_per_tertile": [
       24,
-      23,
-      24
+      24,
+      23
      ]
     }
    ],
    "ModRank_minus_simplex": {
-    "mean": 0.0037,
-    "se": 0.008,
+    "mean": 0.005,
+    "se": 0.0081,
     "ci95": [
-     -0.012,
-     0.0195
+     -0.0108,
+     0.021
     ],
-    "p_two_sided": 0.645,
+    "p_two_sided": 0.5433,
     "reps": 6000,
     "p_holm_over_15": 1.0
    },
    "ModRank_minus_interaction": {
-    "mean": 0.0074,
+    "mean": 0.0084,
     "se": 0.0112,
     "ci95": [
-     -0.0145,
-     0.0298
+     -0.0136,
+     0.0311
     ],
-    "p_two_sided": 0.5127,
+    "p_two_sided": 0.4557,
     "reps": 6000,
     "p_holm_over_15": 1.0
    },
    "ModRank_minus_gated": {
-    "mean": 0.0275,
-    "se": 0.0146,
+    "mean": 0.017,
+    "se": 0.0152,
     "ci95": [
-     -0.0002,
-     0.0567
+     -0.0121,
+     0.0465
     ],
-    "p_two_sided": 0.053,
+    "p_two_sided": 0.265,
     "reps": 6000,
-    "p_holm_over_15": 0.795
+    "p_holm_over_15": 1.0
    }
   },
   "brca": {
    "n": 871,
    "events": 60,
    "points": {
-    "ModRank": 0.6892,
-    "stacked_known_answer": 0.718,
-    "simplex": 0.7184,
-    "interaction": 0.7092,
-    "gated": 0.7071
+    "ModRank": 0.6881,
+    "stacked_known_answer": 0.7176,
+    "simplex": 0.7186,
+    "interaction": 0.7087,
+    "gated": 0.6892
    },
    "per_fold": [
     {
      "fold": 0,
      "simplex_weights": [
-      0.7,
-      0.2,
+      0.6,
+      0.3,
       0.1
      ],
      "interaction_coefficients": [
-      1.4394,
-      0.4426,
-      0.045,
-      0.3015,
-      0.8204,
-      0.1242
+      1.4378,
+      0.4439,
+      0.0551,
+      0.2983,
+      0.8218,
+      0.1218
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -443,8 +443,8 @@
       true
      ],
      "validation_cases_per_tertile": [
-      59,
       58,
+      59,
       59
      ]
     },
@@ -456,23 +456,23 @@
       0.3
      ],
      "interaction_coefficients": [
-      1.0954,
-      -0.125,
-      0.4209,
-      0.58,
-      0.7658,
-      -0.1077
+      1.0966,
+      -0.1222,
+      0.4206,
+      0.5782,
+      0.7665,
+      -0.1108
      ],
      "gated_weights_by_clinical_tertile": [
       [
-       0.8,
-       0.0,
-       0.2
+       0.9,
+       0.1,
+       0.0
       ],
       [
-       0.0,
+       0.2,
        0.5,
-       0.5
+       0.3
       ],
       [
        0.2,
@@ -487,8 +487,8 @@
      ],
      "validation_cases_per_tertile": [
       56,
-      56,
-      56
+      58,
+      54
      ]
     },
     {
@@ -499,18 +499,18 @@
       0.3
      ],
      "interaction_coefficients": [
-      0.7505,
-      0.3553,
-      0.1833,
-      0.5059,
-      0.2064,
-      0.2463
+      0.7513,
+      0.3514,
+      0.1734,
+      0.5055,
+      0.2041,
+      0.2513
      ],
      "gated_weights_by_clinical_tertile": [
       [
-       0.6,
+       0.5,
        0.0,
-       0.4
+       0.5
       ],
       [
        0.2,
@@ -529,9 +529,9 @@
       true
      ],
      "validation_cases_per_tertile": [
-      61,
-      61,
-      61
+      62,
+      59,
+      62
      ]
     },
     {
@@ -542,18 +542,18 @@
       0.1
      ],
      "interaction_coefficients": [
-      1.5234,
-      -0.0742,
-      -0.1012,
-      1.207,
-      0.4892,
-      0.3927
+      1.5226,
+      -0.0723,
+      -0.0921,
+      1.2087,
+      0.4882,
+      0.3871
      ],
      "gated_weights_by_clinical_tertile": [
       [
-       0.6,
+       0.5,
        0.1,
-       0.3
+       0.4
       ],
       [
        0.6,
@@ -562,8 +562,8 @@
       ],
       [
        0.3,
-       0.3,
-       0.4
+       0.1,
+       0.6
       ]
      ],
      "gated_tertile_had_comparable_pairs": [
@@ -573,8 +573,8 @@
      ],
      "validation_cases_per_tertile": [
       56,
-      55,
-      55
+      52,
+      58
      ]
     },
     {
@@ -585,12 +585,12 @@
       0.0
      ],
      "interaction_coefficients": [
-      1.7806,
-      -0.2801,
-      0.1658,
-      0.3646,
-      0.1642,
-      0.1557
+      1.7869,
+      -0.2825,
+      0.1636,
+      0.3662,
+      0.1565,
+      0.1534
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -599,8 +599,8 @@
        0.0
       ],
       [
-       0.5,
-       0.5,
+       0.2,
+       0.8,
        0.0
       ],
       [
@@ -615,42 +615,42 @@
       true
      ],
      "validation_cases_per_tertile": [
-      60,
       59,
+      60,
       59
      ]
     }
    ],
    "ModRank_minus_simplex": {
-    "mean": -0.029,
+    "mean": -0.0303,
     "se": 0.0268,
     "ci95": [
-     -0.0815,
-     0.0239
+     -0.0825,
+     0.0227
     ],
-    "p_two_sided": 0.2877,
+    "p_two_sided": 0.2643,
     "reps": 6000,
     "p_holm_over_15": 1.0
    },
    "ModRank_minus_interaction": {
-    "mean": -0.0198,
+    "mean": -0.0204,
     "se": 0.0239,
     "ci95": [
-     -0.0657,
+     -0.0666,
      0.0281
     ],
-    "p_two_sided": 0.4067,
+    "p_two_sided": 0.3967,
     "reps": 6000,
     "p_holm_over_15": 1.0
    },
    "ModRank_minus_gated": {
-    "mean": -0.0171,
+    "mean": -0.0005,
     "se": 0.0194,
     "ci95": [
-     -0.0557,
-     0.0217
+     -0.0385,
+     0.0374
     ],
-    "p_two_sided": 0.3737,
+    "p_two_sided": 0.9803,
     "reps": 6000,
     "p_holm_over_15": 1.0
    }
@@ -659,11 +659,11 @@
    "n": 298,
    "events": 37,
    "points": {
-    "ModRank": 0.7141,
-    "stacked_known_answer": 0.6919,
-    "simplex": 0.6954,
-    "interaction": 0.6864,
-    "gated": 0.7309
+    "ModRank": 0.714,
+    "stacked_known_answer": 0.693,
+    "simplex": 0.6904,
+    "interaction": 0.6855,
+    "gated": 0.7354
    },
    "per_fold": [
     {
@@ -674,12 +674,12 @@
       0.6
      ],
      "interaction_coefficients": [
-      0.816,
-      -0.397,
-      1.2033,
-      -0.0967,
-      1.4864,
-      0.5921
+      0.8135,
+      -0.3969,
+      1.2124,
+      -0.098,
+      1.483,
+      0.5938
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -704,25 +704,25 @@
       true
      ],
      "validation_cases_per_tertile": [
-      19,
       20,
+      19,
       19
      ]
     },
     {
      "fold": 1,
      "simplex_weights": [
-      0.7,
+      0.8,
       0.1,
-      0.2
+      0.1
      ],
      "interaction_coefficients": [
-      1.5506,
-      0.1099,
-      0.3896,
-      0.7753,
-      0.7064,
-      0.2989
+      1.5538,
+      0.1135,
+      0.38,
+      0.7787,
+      0.6996,
+      0.2967
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -736,9 +736,9 @@
        0.6
       ],
       [
-       0.3,
+       0.2,
        0.0,
-       0.7
+       0.8
       ]
      ],
      "gated_tertile_had_comparable_pairs": [
@@ -747,8 +747,8 @@
       true
      ],
      "validation_cases_per_tertile": [
-      24,
       23,
+      24,
       24
      ]
     },
@@ -756,16 +756,16 @@
      "fold": 2,
      "simplex_weights": [
       0.5,
-      0.3,
-      0.2
+      0.2,
+      0.3
      ],
      "interaction_coefficients": [
-      1.2451,
-      0.3657,
-      0.5873,
-      0.8305,
-      0.893,
-      0.7328
+      1.2427,
+      0.3663,
+      0.5944,
+      0.8298,
+      0.8998,
+      0.7339
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -779,9 +779,9 @@
        0.5
       ],
       [
-       0.4,
+       0.3,
        0.1,
-       0.5
+       0.6
       ]
      ],
      "gated_tertile_had_comparable_pairs": [
@@ -803,12 +803,12 @@
       0.4
      ],
      "interaction_coefficients": [
-      1.1134,
-      -0.1083,
+      1.1138,
+      -0.1071,
       1.0208,
-      0.5946,
-      0.5374,
-      0.0191
+      0.5954,
+      0.5496,
+      0.0189
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -817,9 +817,9 @@
        0.2
       ],
       [
-       0.6,
-       0.0,
-       0.4
+       0.4,
+       0.1,
+       0.5
       ],
       [
        0.2,
@@ -834,8 +834,8 @@
      ],
      "validation_cases_per_tertile": [
       23,
-      23,
-      23
+      22,
+      24
      ]
     },
     {
@@ -846,12 +846,12 @@
       0.3
      ],
      "interaction_coefficients": [
-      1.0778,
+      1.0792,
       -0.4543,
-      0.9058,
-      0.2609,
-      1.5549,
-      0.2523
+      0.9055,
+      0.2601,
+      1.5486,
+      0.2495
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -883,35 +883,35 @@
     }
    ],
    "ModRank_minus_simplex": {
-    "mean": 0.0184,
-    "se": 0.0311,
+    "mean": 0.0235,
+    "se": 0.0327,
     "ci95": [
-     -0.0434,
-     0.0785
+     -0.0415,
+     0.0862
     ],
-    "p_two_sided": 0.5557,
+    "p_two_sided": 0.4703,
     "reps": 6000,
     "p_holm_over_15": 1.0
    },
    "ModRank_minus_interaction": {
-    "mean": 0.0275,
-    "se": 0.0292,
+    "mean": 0.0284,
+    "se": 0.0289,
     "ci95": [
-     -0.0265,
-     0.0878
+     -0.0254,
+     0.0887
     ],
-    "p_two_sided": 0.339,
+    "p_two_sided": 0.3187,
     "reps": 6000,
     "p_holm_over_15": 1.0
    },
    "ModRank_minus_gated": {
-    "mean": -0.0172,
-    "se": 0.0308,
+    "mean": -0.0219,
+    "se": 0.0314,
     "ci95": [
-     -0.0779,
-     0.0433
+     -0.0834,
+     0.0399
     ],
-    "p_two_sided": 0.572,
+    "p_two_sided": 0.492,
     "reps": 6000,
     "p_holm_over_15": 1.0
    }
@@ -921,10 +921,10 @@
    "events": 117,
    "points": {
     "ModRank": 0.6179,
-    "stacked_known_answer": 0.6171,
-    "simplex": 0.6181,
-    "interaction": 0.6144,
-    "gated": 0.6121
+    "stacked_known_answer": 0.6166,
+    "simplex": 0.6172,
+    "interaction": 0.6132,
+    "gated": 0.6077
    },
    "per_fold": [
     {
@@ -935,12 +935,12 @@
       0.2
      ],
      "interaction_coefficients": [
-      0.7036,
-      0.0287,
-      0.0562,
-      0.7003,
-      0.4849,
-      0.2874
+      0.7027,
+      0.0303,
+      0.0409,
+      0.7006,
+      0.485,
+      0.2827
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -973,17 +973,17 @@
     {
      "fold": 1,
      "simplex_weights": [
-      0.5,
+      0.6,
       0.3,
-      0.2
+      0.1
      ],
      "interaction_coefficients": [
-      0.8581,
-      0.3155,
-      0.3978,
-      0.8367,
-      -0.0775,
-      -0.3953
+      0.859,
+      0.3136,
+      0.4029,
+      0.8374,
+      -0.0697,
+      -0.4108
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -1008,41 +1008,41 @@
       true
      ],
      "validation_cases_per_tertile": [
+      24,
       23,
-      23,
-      24
+      23
      ]
     },
     {
      "fold": 2,
      "simplex_weights": [
-      0.3,
-      0.3,
+      0.4,
+      0.2,
       0.4
      ],
      "interaction_coefficients": [
-      0.505,
-      0.5831,
-      0.7184,
-      -0.2137,
-      0.6651,
-      0.22
+      0.4661,
+      0.581,
+      0.721,
+      -0.1031,
+      0.646,
+      0.188
      ],
      "gated_weights_by_clinical_tertile": [
       [
-       0.3,
+       0.5,
        0.0,
-       0.7
+       0.5
       ],
       [
-       0.2,
        0.8,
+       0.2,
        0.0
       ],
       [
-       0.2,
        0.1,
-       0.7
+       0.1,
+       0.8
       ]
      ],
      "gated_tertile_had_comparable_pairs": [
@@ -1052,24 +1052,24 @@
      ],
      "validation_cases_per_tertile": [
       25,
-      25,
-      25
+      24,
+      26
      ]
     },
     {
      "fold": 3,
      "simplex_weights": [
-      0.6,
-      0.1,
+      0.5,
+      0.2,
       0.3
      ],
      "interaction_coefficients": [
-      0.8156,
-      -0.0343,
-      0.4497,
-      0.6336,
-      0.4758,
-      0.0698
+      0.8093,
+      -0.0255,
+      0.4574,
+      0.6384,
+      0.4823,
+      0.06
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -1103,16 +1103,16 @@
      "fold": 4,
      "simplex_weights": [
       0.4,
-      0.3,
-      0.3
+      0.4,
+      0.2
      ],
      "interaction_coefficients": [
-      0.161,
-      0.0247,
-      0.4915,
-      1.0291,
-      0.3202,
-      -0.2579
+      0.1679,
+      0.084,
+      0.4469,
+      0.9863,
+      0.3135,
+      -0.1411
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -1121,13 +1121,13 @@
        0.6
       ],
       [
-       0.8,
-       0.2,
+       0.6,
+       0.4,
        0.0
       ],
       [
-       0.2,
-       0.0,
+       0.1,
+       0.1,
        0.8
       ]
      ],
@@ -1144,35 +1144,35 @@
     }
    ],
    "ModRank_minus_simplex": {
-    "mean": -0.0,
-    "se": 0.0106,
+    "mean": 0.0008,
+    "se": 0.0107,
     "ci95": [
-     -0.0206,
-     0.021
+     -0.0205,
+     0.0223
     ],
-    "p_two_sided": 0.9947,
+    "p_two_sided": 0.934,
     "reps": 6000,
     "p_holm_over_15": 1.0
    },
    "ModRank_minus_interaction": {
-    "mean": 0.0037,
-    "se": 0.0121,
+    "mean": 0.0048,
+    "se": 0.0117,
     "ci95": [
-     -0.0197,
-     0.0278
+     -0.018,
+     0.028
     ],
-    "p_two_sided": 0.7697,
+    "p_two_sided": 0.6897,
     "reps": 6000,
     "p_holm_over_15": 1.0
    },
    "ModRank_minus_gated": {
-    "mean": 0.006,
-    "se": 0.0163,
+    "mean": 0.0102,
+    "se": 0.0162,
     "ci95": [
-     -0.0257,
-     0.0377
+     -0.0214,
+     0.042
     ],
-    "p_two_sided": 0.709,
+    "p_two_sided": 0.529,
     "reps": 6000,
     "p_holm_over_15": 1.0
    }
@@ -1181,11 +1181,11 @@
    "n": 319,
    "events": 84,
    "points": {
-    "ModRank": 0.6311,
-    "stacked_known_answer": 0.5862,
-    "simplex": 0.6094,
-    "interaction": 0.5782,
-    "gated": 0.618
+    "ModRank": 0.629,
+    "stacked_known_answer": 0.585,
+    "simplex": 0.6088,
+    "interaction": 0.5781,
+    "gated": 0.6201
    },
    "per_fold": [
     {
@@ -1196,12 +1196,12 @@
       0.1
      ],
      "interaction_coefficients": [
-      1.013,
-      0.8894,
-      0.1744,
-      0.3568,
-      -0.4612,
-      0.5136
+      1.0189,
+      0.8925,
+      0.1814,
+      0.356,
+      -0.4735,
+      0.5108
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -1239,12 +1239,12 @@
       0.2
      ],
      "interaction_coefficients": [
-      0.9572,
-      1.0955,
-      0.5955,
-      0.4475,
-      0.4008,
-      0.1376
+      0.9624,
+      1.0849,
+      0.5788,
+      0.4478,
+      0.3955,
+      0.1654
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -1269,8 +1269,8 @@
       true
      ],
      "validation_cases_per_tertile": [
-      19,
       18,
+      19,
       19
      ]
     },
@@ -1282,23 +1282,23 @@
       0.3
      ],
      "interaction_coefficients": [
-      0.9286,
-      0.8718,
-      0.6025,
-      0.131,
-      0.2063,
-      0.011
+      0.9219,
+      0.8613,
+      0.6701,
+      0.0985,
+      0.2033,
+      0.0931
      ],
      "gated_weights_by_clinical_tertile": [
       [
        0.1,
-       0.7,
-       0.2
+       0.8,
+       0.1
       ],
       [
        0.3,
-       0.3,
-       0.4
+       0.2,
+       0.5
       ],
       [
        0.4,
@@ -1325,12 +1325,12 @@
       0.4
      ],
      "interaction_coefficients": [
-      0.3975,
-      0.464,
-      0.7151,
-      -0.3029,
-      0.7046,
-      0.5177
+      0.4002,
+      0.4718,
+      0.7041,
+      -0.3139,
+      0.7064,
+      0.5248
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -1355,8 +1355,8 @@
       true
      ],
      "validation_cases_per_tertile": [
-      15,
-      15,
+      16,
+      14,
       15
      ]
     },
@@ -1368,12 +1368,12 @@
       0.7
      ],
      "interaction_coefficients": [
-      0.6224,
-      -0.3699,
-      0.2374,
-      -1.2031,
-      0.4608,
-      0.2126
+      0.6095,
+      -0.3756,
+      0.2478,
+      -1.193,
+      0.4666,
+      0.2117
      ],
      "gated_weights_by_clinical_tertile": [
       [
@@ -1405,35 +1405,35 @@
     }
    ],
    "ModRank_minus_simplex": {
-    "mean": 0.0222,
-    "se": 0.0184,
+    "mean": 0.0207,
+    "se": 0.0183,
     "ci95": [
-     -0.0124,
-     0.0598
+     -0.014,
+     0.0583
     ],
-    "p_two_sided": 0.2197,
+    "p_two_sided": 0.242,
     "reps": 6000,
     "p_holm_over_15": 1.0
    },
    "ModRank_minus_interaction": {
-    "mean": 0.0539,
-    "se": 0.0331,
+    "mean": 0.0519,
+    "se": 0.0325,
     "ci95": [
-     -0.0099,
-     0.1211
+     -0.0103,
+     0.118
     ],
-    "p_two_sided": 0.1027,
+    "p_two_sided": 0.1077,
     "reps": 6000,
     "p_holm_over_15": 1.0
    },
    "ModRank_minus_gated": {
-    "mean": 0.0141,
-    "se": 0.0229,
+    "mean": 0.01,
+    "se": 0.0223,
     "ci95": [
-     -0.0316,
-     0.0588
+     -0.0343,
+     0.054
     ],
-    "p_two_sided": 0.5267,
+    "p_two_sided": 0.6513,
     "reps": 6000,
     "p_holm_over_15": 1.0
    }
@@ -1441,9 +1441,9 @@
  },
  "summary": {
   "B_D_by_study": {
-   "blca": 0.0429,
-   "hnsc": 0.0259,
-   "stad": 0.0275
+   "blca": 0.0433,
+   "hnsc": 0.0236,
+   "stad": 0.0318
   },
   "B_D_interval_excludes_zero": [
    "blca"
@@ -1452,5 +1452,5 @@
   "D_fitted_fusion_ahead_interval_excluding_zero": [],
   "D_rank_average_ahead_interval_excluding_zero": []
  },
- "runtime_seconds": 111.9
+ "runtime_seconds": 151.9
 }

@@ -121,6 +121,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     for fl in ("root", "titan", "sp-dir", "seed-dir", "pibd-dir", "omics-dir", "dimaf-dir", "out"):
         ap.add_argument("--" + fl, required=True)
+    ap.add_argument("--parity", default="experiments/20260817-blca-confirm/results/pibd-parity.json")
+    ap.add_argument("--a1", default="experiments/20260817-blca-confirm/results/amendment-A1-clinical-provenance.json")
+    ap.add_argument("--published", default="experiments/20260817-blca-confirm/results/published-benchmark-table.json")
     a = ap.parse_args()
 
     co = Cohort(a.root, a.titan, a.sp_dir)
@@ -211,21 +214,37 @@ def main():
     rep["F2_time_dependent_auc"]["_at_risk_at_horizons"] = at_risk_at(co.t, dense)
 
     # ---------------------------------------------------------------- F3 power
+    # The committed block was corrected by hand on 2026-08-17 (the marked margins) and 2026-09-11 (the
+    # published gaps). Since amendment A2 both come from the files they were read from: the paired
+    # deltas of the Holm family in pibd-parity.json, the primary in the amendment-A1 file, and the
+    # published table's own consecutive gaps.
     se = 0.0210
     margins = [round(x, 4) for x in np.linspace(0.0, 0.10, 101)]
     powers = [round(power_at(d, se), 4) for d in margins]
     at80 = next(d for d, p in zip(margins, powers) if p >= 0.80)
+    fam = json.load(open(a.parity))["holm_family_of_six"]["comparisons"]
+    prim = json.load(open(a.a1))["primary"]["value"]
+    pub = json.load(open(a.published))
+    dimaf = next(x["cindex"] for x in pub["entries"] if x["method"] == "DIMAF")
+    gaps = pub["consecutive_gaps"]
+    med = float(np.median(gaps))
+    mk = {"ours_vs_survpath": fam["ours vs SurvPath+clinical (seed-matched)"]["delta"],
+          "ours_vs_pibd": fam["ours vs PIBD+clinical (best-val checkpoint)"]["delta"],
+          "ours_vs_incumbent_table": round(prim - dimaf, 4)}
     rep["F3_power"] = {
         "se": se, "alpha": 0.05, "margins": margins, "power": powers,
         "detectable_at_80pc": round(at80, 4),
-        "published_consecutive_gap_band": [0.002, 0.012],
-        "marked": {"ours_vs_survpath": {"margin": 0.0334, "power": round(power_at(0.0334, se), 4)},
-                   "ours_vs_pibd": {"margin": 0.0243, "power": round(power_at(0.0243, se), 4)},
-                   "ours_vs_incumbent_table": {"margin": 0.0422,
-                                               "power": round(power_at(0.0422, se), 4)}}}
-    # the already-reported figures must sit on this curve
+        "marked": {k: {"margin": v, "power": round(power_at(v, se), 4)} for k, v in mk.items()},
+        "published_consecutive_gaps": gaps,
+        "published_consecutive_gap_median": round(med, 4),
+        "published_consecutive_gap_range": [min(gaps), max(gaps)],
+        "n_gaps_at_or_below_0.012": sum(1 for g_ in gaps if g_ <= 0.012),
+        "power_at_median_gap": round(power_at(med, se), 4),
+        "published_gap_band_power": [round(power_at(min(gaps), se), 4), round(power_at(max(gaps), se), 4)],
+        "note": 'margins updated 2026-08-17 to the canonical seed-averaged arms in pibd-parity.json -> canonical_arms_seed_averaged_scores. The earlier 0.0334/0.0243 came from a mixed construction (our seed-0 arm against a seed-averaged competitor) and is superseded.',
+        "correction_20260817": "an earlier version of this analysis, and of the manuscript, described the consecutive gaps as 0.002-0.012. That is the range over six of the eight pairs; the PIBD->DSCASurv and SurvPath->MOTCat steps are 0.021 and 0.029. Caught when the published table was moved out of the manuscript prose and into a results file whose gap list is recomputed from its own entries. The argument is unchanged in direction and slightly weaker in degree: at this cohort's SE the MEDIAN gap carries 7.6% power and the LARGEST carries 28.2%."}
+    # the curve is the one reported, and each marked point sits on it
     assert abs(rep["F3_power"]["detectable_at_80pc"] - 0.0589) < 0.0015, at80
-    assert abs(rep["F3_power"]["marked"]["ours_vs_survpath"]["power"] - 0.355) < 0.01
 
     # ---------------------------------------------------------------- F4 ladder triple
     triple, gap = pick_triple(LADDER)

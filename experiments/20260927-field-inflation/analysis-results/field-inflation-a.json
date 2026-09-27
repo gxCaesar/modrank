@@ -8,66 +8,66 @@
   "seed": 20260911
  },
  "known_answer_survpath": {
-  "C_alone": 0.6294,
-  "C_weak": 0.5665,
-  "C_stage": 0.6644,
-  "C_M_plus_weak": 0.6335,
-  "C_M_plus_stage": 0.6897,
-  "added_over_weak": 0.067,
-  "added_over_stage": 0.0253,
-  "D": 0.0417,
+  "C_alone": 0.6292,
+  "C_weak": 0.567,
+  "C_stage": 0.6645,
+  "C_M_plus_weak": 0.6326,
+  "C_M_plus_stage": 0.6894,
+  "added_over_weak": 0.0656,
+  "added_over_stage": 0.0249,
+  "D": 0.0407,
   "added_over_weak_boot": {
    "ci95": [
-    0.0249,
-    0.1085
+    0.0232,
+    0.1074
    ],
-   "p_two_sided": 0.0017
+   "p_two_sided": 0.002
   },
   "added_over_stage_boot": {
    "ci95": [
-    -0.0139,
-    0.0634
+    -0.0143,
+    0.0628
    ],
-   "p_two_sided": 0.207
+   "p_two_sided": 0.2187
   },
   "D_boot": {
    "ci95": [
-    0.0196,
-    0.0668
+    0.0181,
+    0.0661
    ],
-   "p_two_sided": 0.0
+   "p_two_sided": 0.0003
   }
  },
  "models": {
   "coattn": {
-   "C_alone": 0.562,
-   "C_weak": 0.5665,
-   "C_stage": 0.6644,
-   "C_M_plus_weak": 0.586,
+   "C_alone": 0.5614,
+   "C_weak": 0.567,
+   "C_stage": 0.6645,
+   "C_M_plus_weak": 0.5868,
    "C_M_plus_stage": 0.6521,
-   "added_over_weak": 0.0195,
-   "added_over_stage": -0.0122,
-   "D": 0.0317,
+   "added_over_weak": 0.0199,
+   "added_over_stage": -0.0124,
+   "D": 0.0323,
    "added_over_weak_boot": {
     "ci95": [
-     -0.0243,
-     0.0634
+     -0.0242,
+     0.0638
     ],
-    "p_two_sided": 0.3753
+    "p_two_sided": 0.368
    },
    "added_over_stage_boot": {
     "ci95": [
-     -0.0573,
-     0.0318
+     -0.0577,
+     0.0322
     ],
-    "p_two_sided": 0.5827
+    "p_two_sided": 0.572
    },
    "D_boot": {
     "ci95": [
-     0.0104,
-     0.054
+     0.011,
+     0.055
     ],
-    "p_two_sided": 0.003
+    "p_two_sided": 0.0023
    },
    "seeds": [
     "seed1",
@@ -80,43 +80,46 @@
     0.5168,
     0.5295,
     0.5212,
-    0.553,
-    0.5091
+    0.5529,
+    0.5092
    ],
+   "retraining_fold_pairs": 25,
+   "retraining_fold_pairs_with_constant_risk": 0,
+   "retraining_fold_pairs_with_fewer_than_half_distinct_risks": 0,
    "D_p_holm": 0.0092
   },
   "coattn_motcat": {
    "status": "not run"
   },
   "abmil_wsi_pathways": {
-   "C_alone": 0.593,
-   "C_weak": 0.5665,
-   "C_stage": 0.6644,
-   "C_M_plus_weak": 0.6122,
-   "C_M_plus_stage": 0.6799,
-   "added_over_weak": 0.0457,
-   "added_over_stage": 0.0155,
-   "D": 0.0302,
+   "C_alone": 0.5932,
+   "C_weak": 0.567,
+   "C_stage": 0.6645,
+   "C_M_plus_weak": 0.6146,
+   "C_M_plus_stage": 0.6796,
+   "added_over_weak": 0.0476,
+   "added_over_stage": 0.0151,
+   "D": 0.0325,
    "added_over_weak_boot": {
     "ci95": [
-     -0.0026,
-     0.0938
+     -0.0002,
+     0.0953
     ],
-    "p_two_sided": 0.0613
+    "p_two_sided": 0.0507
    },
    "added_over_stage_boot": {
     "ci95": [
-     -0.0292,
-     0.0597
+     -0.0296,
+     0.059
     ],
-    "p_two_sided": 0.497
+    "p_two_sided": 0.507
    },
    "D_boot": {
     "ci95": [
-     0.0072,
-     0.0551
+     0.0093,
+     0.0577
     ],
-    "p_two_sided": 0.01
+    "p_two_sided": 0.0047
    },
    "seeds": [
     "seed1",
@@ -132,37 +135,40 @@
     0.6066,
     0.5551
    ],
-   "D_p_holm": 0.02
+   "retraining_fold_pairs": 25,
+   "retraining_fold_pairs_with_constant_risk": 0,
+   "retraining_fold_pairs_with_fewer_than_half_distinct_risks": 0,
+   "D_p_holm": 0.0141
   },
   "transmil_wsi_pathways": {
-   "C_alone": 0.5964,
-   "C_weak": 0.5665,
-   "C_stage": 0.6644,
-   "C_M_plus_weak": 0.6085,
-   "C_M_plus_stage": 0.678,
-   "added_over_weak": 0.042,
-   "added_over_stage": 0.0136,
-   "D": 0.0284,
+   "C_alone": 0.5963,
+   "C_weak": 0.567,
+   "C_stage": 0.6645,
+   "C_M_plus_weak": 0.6096,
+   "C_M_plus_stage": 0.6771,
+   "added_over_weak": 0.0427,
+   "added_over_stage": 0.0126,
+   "D": 0.0301,
    "added_over_weak_boot": {
     "ci95": [
-     -0.0048,
-     0.0878
+     -0.0043,
+     0.0882
     ],
-    "p_two_sided": 0.0777
+    "p_two_sided": 0.0723
    },
    "added_over_stage_boot": {
     "ci95": [
-     -0.0305,
-     0.055
+     -0.0319,
+     0.0544
     ],
-    "p_two_sided": 0.547
+    "p_two_sided": 0.5803
    },
    "D_boot": {
     "ci95": [
-     0.0047,
-     0.0542
+     0.0067,
+     0.0559
     ],
-    "p_two_sided": 0.017
+    "p_two_sided": 0.011
    },
    "seeds": [
     "seed1",
@@ -178,37 +184,40 @@
     0.5629,
     0.5868
    ],
-   "D_p_holm": 0.02
+   "retraining_fold_pairs": 25,
+   "retraining_fold_pairs_with_constant_risk": 0,
+   "retraining_fold_pairs_with_fewer_than_half_distinct_risks": 0,
+   "D_p_holm": 0.022
   },
   "deepmisl_wsi_pathways": {
-   "C_alone": 0.5074,
-   "C_weak": 0.5665,
-   "C_stage": 0.6644,
-   "C_M_plus_weak": 0.5672,
-   "C_M_plus_stage": 0.6311,
-   "added_over_weak": 0.0007,
-   "added_over_stage": -0.0333,
-   "D": 0.034,
+   "C_alone": 0.5156,
+   "C_weak": 0.567,
+   "C_stage": 0.6645,
+   "C_M_plus_weak": 0.5775,
+   "C_M_plus_stage": 0.6696,
+   "added_over_weak": 0.0105,
+   "added_over_stage": 0.0051,
+   "D": 0.0054,
    "added_over_weak_boot": {
     "ci95": [
-     -0.0465,
-     0.0479
+     -0.0147,
+     0.037
     ],
-    "p_two_sided": 0.9813
+    "p_two_sided": 0.439
    },
    "added_over_stage_boot": {
     "ci95": [
-     -0.0766,
-     0.0091
+     -0.0188,
+     0.0308
     ],
-    "p_two_sided": 0.1307
+    "p_two_sided": 0.7053
    },
    "D_boot": {
     "ci95": [
-     0.0111,
-     0.0574
+     -0.0073,
+     0.0182
     ],
-    "p_two_sided": 0.0023
+    "p_two_sided": 0.4163
    },
    "seeds": [
     "seed1",
@@ -218,13 +227,16 @@
     "seed5"
    ],
    "per_seed_C_alone": [
-    0.5116,
-    0.5359,
-    0.4977,
-    0.4981,
-    0.5093
+    0.5076,
+    0.5166,
+    0.5026,
+    0.4877,
+    0.4915
    ],
-   "D_p_holm": 0.0092
+   "retraining_fold_pairs": 25,
+   "retraining_fold_pairs_with_constant_risk": 13,
+   "retraining_fold_pairs_with_fewer_than_half_distinct_risks": 24,
+   "D_p_holm": 0.4163
   }
  },
  "summary": {
@@ -238,7 +250,6 @@
   "D_interval_excludes_zero": [
    "abmil_wsi_pathways",
    "coattn",
-   "deepmisl_wsi_pathways",
    "transmil_wsi_pathways"
   ],
   "added_over_stage_interval_covers_zero": [
@@ -251,5 +262,5 @@
    "coattn_motcat"
   ]
  },
- "runtime_seconds": 12.4
+ "runtime_seconds": 12.2
 }

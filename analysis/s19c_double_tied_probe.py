@@ -129,7 +129,10 @@ def main():
            "clinical_dev_all": round(cidx(z_dev, ii, jj), 4)}
     for k in KNOWN:
         print("  known answer %-16s %s (want %s)" % (k, got[k], KNOWN[k]), file=sys.stderr)
-    if got != KNOWN:
+    import blca_common
+    a2_ok = blca_common.A2 and got["pairs"] == KNOWN["pairs"] and all(
+        abs(got[k] - KNOWN[k]) <= blca_common.A2_SANITY for k in KNOWN if k != "pairs")
+    if got != KNOWN and not a2_ok:
         print(json.dumps({"status": "error", "error_code": "known_answer_not_reproduced"}),
               file=sys.stderr)
         return 2
@@ -148,7 +151,8 @@ def main():
     for k, v in reproduced.items():
         print("  note value   %-16s %s" % (k, "reproduced" if v else "NOT reproduced"),
               file=sys.stderr)
-    if not all(reproduced.values()):
+    # amendment A2: the August note's values are pre-A2 and are checked exactly under BLCA_A2=0 only
+    if not all(reproduced.values()) and not blca_common.A2:
         print(json.dumps({"status": "error", "error_code": "note_not_reproduced"}), file=sys.stderr)
         return 2
 
@@ -161,7 +165,8 @@ def main():
 
     rep = {"artifact_type": "s19c_double_tied_probe", "phase_of_origin": "post_freeze_2026-09-11",
            "reportable": True,
-           "known_answer": {"reproduced": True, **got, "note_values_reproduced": reproduced},
+           "known_answer": {"reproduced": not blca_common.A2, **got, "note_values_reproduced": reproduced,
+                            "amendment": "A2" if blca_common.A2 else None},
            "definitions": {
                "scores": "seed-0 within-fold percentiles",
                "transcriptome_tied": "comparable pairs whose transcriptome-arm gap is at or below "

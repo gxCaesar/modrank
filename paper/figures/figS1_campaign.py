@@ -136,13 +136,12 @@ won_2 = 0
 for yi, k in zip(y_2, order_2):
     g = GEN_2[k]
     # "verified" is PER STUDY: DIMAF ships split files for bladder only, so its value is verified
-    # there and nowhere else. The results file predates that rule, so the best verified entry is
-    # recomputed here from the same file's per-study published values (fixed 2026-09-11).
+    # there and nowhere else (fixed 2026-09-11). The results file carries the corrected value since
+    # amendment A2 regenerated it, so the recomputation must now agree for every study.
     _ok = {"SurvPath", "PIBD", "DIMAF"} if k == "blca" else {"SurvPath", "PIBD"}
     best = max(v for m, v in g["published"].items() if m in _ok)
     ours = g["primary_mean_over_seeds"]
-    if k != "brca":
-        assert abs(best - g["best_published_verified_folds"]) < 1e-9, k
+    assert abs(best - g["best_published_verified_folds"]) < 1e-9, k
     beat = ours > best
     won_2 += beat
     axc.plot([best, ours], [yi, yi], color="#C9CFD8", lw=1.3, zorder=1, solid_capstyle="round")

@@ -20,15 +20,15 @@
     "G2"
    ],
    "arms": {
-    "age_sex": 0.5636,
-    "age_sex_grade": 0.5658,
-    "age_sex_stage": 0.6218,
-    "titan": 0.6596,
-    "omics": 0.651
+    "age_sex": 0.5616,
+    "age_sex_grade": 0.5642,
+    "age_sex_stage": 0.6219,
+    "titan": 0.6595,
+    "omics": 0.6512
    },
-   "WSI_plus_OMICS": 0.6841,
-   "OURS_wsi_omics_age_sex_stage": 0.6992,
-   "control_same_arm_with_GRADE_instead": 0.6861,
+   "WSI_plus_OMICS": 0.6835,
+   "OURS_wsi_omics_age_sex_stage": 0.7003,
+   "control_same_arm_with_GRADE_instead": 0.6859,
    "published_age_sex_grade": 0.57,
    "published_best_any_protocol": [
     "DIMAF",
@@ -38,8 +38,8 @@
     "SurvPath",
     0.625
    ],
-   "our_age_sex_grade_minus_published": -0.0042,
-   "stage_minus_grade_same_pipeline": 0.056
+   "our_age_sex_grade_minus_published": -0.0058,
+   "stage_minus_grade_same_pipeline": 0.0577
   },
   "brca": {
    "n_cases": 871,
@@ -54,15 +54,15 @@
    ],
    "grade_levels": [],
    "arms": {
-    "age_sex": 0.4828,
-    "age_sex_grade": 0.4828,
-    "age_sex_stage": 0.5686,
-    "titan": 0.7442,
-    "omics": 0.5829
+    "age_sex": 0.4853,
+    "age_sex_grade": 0.4853,
+    "age_sex_stage": 0.5683,
+    "titan": 0.7443,
+    "omics": 0.5833
    },
-   "WSI_plus_OMICS": 0.7101,
-   "OURS_wsi_omics_age_sex_stage": 0.6892,
-   "control_same_arm_with_GRADE_instead": 0.6614,
+   "WSI_plus_OMICS": 0.711,
+   "OURS_wsi_omics_age_sex_stage": 0.6881,
+   "control_same_arm_with_GRADE_instead": 0.6638,
    "published_age_sex_grade": 0.563,
    "published_best_any_protocol": [
     "APL",
@@ -72,8 +72,8 @@
     "SurvPath",
     0.655
    ],
-   "our_age_sex_grade_minus_published": -0.0802,
-   "stage_minus_grade_same_pipeline": 0.0858
+   "our_age_sex_grade_minus_published": -0.0777,
+   "stage_minus_grade_same_pipeline": 0.083
   },
   "coadread": {
    "n_cases": 298,
@@ -88,15 +88,15 @@
    ],
    "grade_levels": [],
    "arms": {
-    "age_sex": 0.469,
-    "age_sex_grade": 0.469,
-    "age_sex_stage": 0.6898,
+    "age_sex": 0.4691,
+    "age_sex_grade": 0.4691,
+    "age_sex_stage": 0.6902,
     "titan": 0.6542,
-    "omics": 0.6116
+    "omics": 0.6117
    },
-   "WSI_plus_OMICS": 0.6819,
-   "OURS_wsi_omics_age_sex_stage": 0.7141,
-   "control_same_arm_with_GRADE_instead": 0.6231,
+   "WSI_plus_OMICS": 0.6825,
+   "OURS_wsi_omics_age_sex_stage": 0.714,
+   "control_same_arm_with_GRADE_instead": 0.6247,
    "published_age_sex_grade": 0.655,
    "published_best_any_protocol": [
     "DSCASurv",
@@ -106,8 +106,8 @@
     "SurvPath",
     0.673
    ],
-   "our_age_sex_grade_minus_published": -0.186,
-   "stage_minus_grade_same_pipeline": 0.2208
+   "our_age_sex_grade_minus_published": -0.1859,
+   "stage_minus_grade_same_pipeline": 0.2211
   },
   "hnsc": {
    "n_cases": 394,
@@ -128,15 +128,15 @@
     "GX"
    ],
    "arms": {
-    "age_sex": 0.485,
-    "age_sex_grade": 0.5027,
+    "age_sex": 0.4846,
+    "age_sex_grade": 0.5042,
     "age_sex_stage": 0.545,
-    "titan": 0.6135,
-    "omics": 0.5852
+    "titan": 0.6133,
+    "omics": 0.5848
    },
-   "WSI_plus_OMICS": 0.6169,
+   "WSI_plus_OMICS": 0.616,
    "OURS_wsi_omics_age_sex_stage": 0.6179,
-   "control_same_arm_with_GRADE_instead": 0.6015,
+   "control_same_arm_with_GRADE_instead": 0.6008,
    "published_age_sex_grade": 0.512,
    "published_best_any_protocol": [
     "DSCASurv",
@@ -146,8 +146,8 @@
     "SurvPath",
     0.6
    ],
-   "our_age_sex_grade_minus_published": -0.0093,
-   "stage_minus_grade_same_pipeline": 0.0423
+   "our_age_sex_grade_minus_published": -0.0078,
+   "stage_minus_grade_same_pipeline": 0.0408
   },
   "stad": {
    "n_cases": 319,
@@ -166,15 +166,15 @@
     "GX"
    ],
    "arms": {
-    "age_sex": 0.515,
-    "age_sex_grade": 0.5358,
-    "age_sex_stage": 0.5819,
-    "titan": 0.5858,
+    "age_sex": 0.5153,
+    "age_sex_grade": 0.5364,
+    "age_sex_stage": 0.5841,
+    "titan": 0.5854,
     "omics": 0.5887
    },
    "WSI_plus_OMICS": 0.6108,
-   "OURS_wsi_omics_age_sex_stage": 0.6311,
-   "control_same_arm_with_GRADE_instead": 0.6125,
+   "OURS_wsi_omics_age_sex_stage": 0.629,
+   "control_same_arm_with_GRADE_instead": 0.613,
    "published_age_sex_grade": 0.592,
    "published_best_any_protocol": [
     "DSCASurv",
@@ -184,13 +184,13 @@
     "SurvPath",
     0.592
    ],
-   "our_age_sex_grade_minus_published": -0.0562,
-   "stage_minus_grade_same_pipeline": 0.0461
+   "our_age_sex_grade_minus_published": -0.0556,
+   "stage_minus_grade_same_pipeline": 0.0477
   }
  },
  "summary": {
   "cohorts_scored": 5,
-  "mean_OURS": 0.6703,
+  "mean_OURS": 0.6699,
   "mean_WSI_plus_OMICS": 0.6608,
   "cohorts_where_OURS_beats_best_published_any_protocol": [
    "blca"

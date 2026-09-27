@@ -36,7 +36,7 @@ that of an absolute score. Two hundred outcome-permuted runs put the corrected b
 python3 verify_release.py
 ```
 
-It needs Python 3.9 and numpy, nothing else, and it recomputes 42 quantities from the result
+It needs Python 3.9 and numpy, nothing else, and it recomputes 43 quantities from the result
 files in this repository rather than from anything written down. `FOR_REVIEWERS.md` says what each
 one establishes, and the last two check that every artefact the paper's Availability statement
 promises is actually here.

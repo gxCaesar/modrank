@@ -12,14 +12,14 @@
    "n": 93,
    "events": 38,
    "grade_entropy": 0.345,
-   "C_stage_model": 0.659,
-   "C_grade_model": 0.5066,
-   "gap": 0.1523,
+   "C_stage_model": 0.6591,
+   "C_grade_model": 0.5059,
+   "gap": 0.1532,
    "gap_boot": {
-    "mean": 0.1613,
+    "mean": 0.1615,
     "ci95": [
-     0.0581,
-     0.266
+     0.0586,
+     0.2661
     ],
     "p_two_sided": 0.0017
    }
@@ -29,13 +29,13 @@
    "events": 25,
    "grade_entropy": 0.961,
    "C_stage_model": 0.8672,
-   "C_grade_model": 0.7255,
-   "gap": 0.1417,
+   "C_grade_model": 0.7262,
+   "gap": 0.141,
    "gap_boot": {
-    "mean": 0.1414,
+    "mean": 0.1426,
     "ci95": [
-     0.0782,
-     0.2054
+     0.0799,
+     0.2051
     ],
     "p_two_sided": 0.0
    }
@@ -50,16 +50,16 @@
    "age_and_sex_in_models": false,
    "grade_entropy": 0.767,
    "stage_entropy": 0.889,
-   "C_stage_model": 0.6795,
-   "C_grade_model": 0.5505,
-   "gap": 0.129,
+   "C_stage_model": 0.6956,
+   "C_grade_model": 0.5344,
+   "gap": 0.1612,
    "gap_boot": {
-    "mean": 0.1055,
+    "mean": 0.1526,
     "ci95": [
-     -0.0303,
-     0.2522
+     0.0262,
+     0.2828
     ],
-    "p_two_sided": 0.1413
+    "p_two_sided": 0.0173
    }
   },
   "E-MTAB-1803": {
@@ -70,14 +70,14 @@
    "age_and_sex_in_models": true,
    "grade_entropy": 0.306,
    "stage_entropy": 0.987,
-   "C_stage_model": 0.6827,
-   "C_grade_model": 0.4365,
-   "gap": 0.2461,
+   "C_stage_model": 0.6855,
+   "C_grade_model": 0.4323,
+   "gap": 0.2532,
    "gap_boot": {
-    "mean": 0.2543,
+    "mean": 0.2646,
     "ci95": [
-     0.1776,
-     0.3314
+     0.1868,
+     0.3413
     ],
     "p_two_sided": 0.0
    }
@@ -90,16 +90,16 @@
    "age_and_sex_in_models": true,
    "grade_entropy": 0.946,
    "stage_entropy": 0.854,
-   "C_stage_model": 0.8599,
-   "C_grade_model": 0.782,
-   "gap": 0.0779,
+   "C_stage_model": 0.8604,
+   "C_grade_model": 0.7818,
+   "gap": 0.0787,
    "gap_boot": {
-    "mean": 0.0781,
+    "mean": 0.0785,
     "ci95": [
-     -0.0121,
-     0.164
+     -0.0109,
+     0.1643
     ],
-    "p_two_sided": 0.0897
+    "p_two_sided": 0.0853
    }
   },
   "E-MTAB-4321": {
@@ -110,18 +110,18 @@
    "age_and_sex_in_models": true,
    "grade_entropy": 0.676,
    "stage_entropy": 0.482,
-   "C_stage_model": 0.8217,
-   "C_grade_model": 0.7334,
-   "gap": 0.0883,
+   "C_stage_model": 0.8219,
+   "C_grade_model": 0.7331,
+   "gap": 0.0888,
    "gap_boot": {
-    "mean": 0.088,
+    "mean": 0.0885,
     "ci95": [
-     0.0351,
-     0.1438
+     0.0356,
+     0.1443
     ],
     "p_two_sided": 0.0003
    }
   }
  },
- "runtime_seconds": 28.8
+ "runtime_seconds": 35.0
 }

@@ -120,7 +120,7 @@ def main():
     zr = run_partition(X, co.t, co.e, rel, 0)
     s19 = json.load(open(os.path.join(os.path.dirname(os.path.abspath(a.out)),
                                       "unified-fusion-and-added-value.json")))
-    want = {"ours": 0.7225, "concat": s19["fusion_on_identical_inputs"]["concatenated_ridge_cox"]["per_seed"][0],
+    want = {"ours": s19["known_answers"]["ours_seed0"]["recomputed"], "concat": s19["fusion_on_identical_inputs"]["concatenated_ridge_cox"]["per_seed"][0],
             "stacked": s19["fusion_on_identical_inputs"]["stacked_learned_weights"]["per_seed"][0]}
     got = {k: round(cidx(zr[k], ii, jj), 4) for k in want}
     print("known answer on the released folds:", got, "want", want, file=sys.stderr)

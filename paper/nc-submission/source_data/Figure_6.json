@@ -5,152 +5,152 @@
  "values": {
   "a": {
    "ours_weak": {
-    "point": 0.1204,
+    "point": 0.1225,
     "ci95": [
-     0.0684,
-     0.1708
+     0.0695,
+     0.1733
     ]
    },
    "ours_stage": {
-    "point": 0.0594,
+    "point": 0.0588,
     "ci95": [
-     0.0113,
-     0.1063
+     0.0104,
+     0.1054
     ]
    },
    "survpath_weak": {
-    "point": 0.067,
+    "point": 0.0656,
     "ci95": [
-     0.0249,
-     0.1085
+     0.0232,
+     0.1074
     ]
    },
    "survpath_stage": {
-    "point": 0.0253,
+    "point": 0.0249,
     "ci95": [
-     -0.0139,
-     0.0634
+     -0.0143,
+     0.0628
     ]
    },
    "pibd_best_val_weak": {
-    "point": 0.0841,
+    "point": 0.0842,
     "ci95": [
-     0.0408,
-     0.129
+     0.0406,
+     0.1294
     ]
    },
    "pibd_best_val_stage": {
-    "point": 0.0345,
+    "point": 0.0336,
     "ci95": [
-     -0.0046,
-     0.0745
+     -0.0053,
+     0.0737
     ]
    }
   },
   "b": {
    "ModRank": {
-    "D": 0.061,
+    "D": 0.0637,
     "ci95": [
-     0.0284,
-     0.0955
+     0.0308,
+     0.0983
     ],
-    "no_signal_D_mean": 0.0417,
+    "no_signal_D_mean": 0.0416,
     "no_signal_D_central95": [
-     0.0289,
-     0.0538
+     0.0287,
+     0.0539
     ],
     "excess_over_no_signal": {
-     "point": 0.0193,
-     "mean": 0.0185,
+     "point": 0.0221,
+     "mean": 0.0214,
      "ci95": [
-      0.0022,
-      0.0359
+      0.005,
+      0.0388
      ],
-     "p_two_sided": 0.0263
+     "p_two_sided": 0.009
     }
    },
    "SurvPath + clinical": {
-    "D": 0.0417,
+    "D": 0.0407,
     "ci95": [
-     0.0196,
-     0.0668
+     0.0181,
+     0.0661
     ],
     "no_signal_D_mean": 0.0288,
     "no_signal_D_central95": [
-     0.016,
-     0.0413
+     0.0157,
+     0.0412
     ],
     "excess_over_no_signal": {
-     "point": 0.0129,
-     "mean": 0.0114,
+     "point": 0.0119,
+     "mean": 0.0104,
      "ci95": [
-      -0.0035,
-      0.027
+      -0.0047,
+      0.0261
      ],
-     "p_two_sided": 0.1373
+     "p_two_sided": 0.175
     }
    },
    "PIBD + clinical": {
-    "D": 0.0496,
+    "D": 0.0506,
     "ci95": [
-     0.0238,
-     0.0769
+     0.0245,
+     0.078
     ],
     "no_signal_D_mean": 0.0287,
     "no_signal_D_central95": [
-     0.0154,
+     0.0158,
      0.0406
     ],
     "excess_over_no_signal": {
-     "point": 0.021,
-     "mean": 0.0228,
+     "point": 0.0219,
+     "mean": 0.0235,
      "ci95": [
-      0.0066,
-      0.0393
+      0.0072,
+      0.0404
      ],
-     "p_two_sided": 0.0033
+     "p_two_sided": 0.0017
     }
    },
    "GSE32894, transcriptome": {
-    "D": 0.0581,
+    "D": 0.0586,
     "ci95": [
-     0.0175,
-     0.0971
+     0.0179,
+     0.0984
     ],
-    "no_signal_D_mean": 0.0183,
+    "no_signal_D_mean": 0.0197,
     "no_signal_D_central95": [
-     -0.0069,
-     0.042
+     -0.0047,
+     0.0434
     ],
     "excess_over_no_signal": {
-     "point": 0.0397,
-     "mean": 0.0409,
+     "point": 0.0389,
+     "mean": 0.0397,
      "ci95": [
-      0.004,
-      0.0775
+      0.0011,
+      0.078
      ],
-     "p_two_sided": 0.0317
+     "p_two_sided": 0.0453
     }
    },
    "GSE31684, transcriptome": {
-    "D": 0.0253,
+    "D": 0.0324,
     "ci95": [
-     -0.018,
-     0.0678
+     -0.0112,
+     0.0753
     ],
-    "no_signal_D_mean": 0.015,
+    "no_signal_D_mean": 0.0149,
     "no_signal_D_central95": [
-     -0.0148,
-     0.0436
+     -0.0139,
+     0.0431
     ],
     "excess_over_no_signal": {
-     "point": 0.0103,
-     "mean": 0.0007,
+     "point": 0.0175,
+     "mean": 0.0093,
      "ci95": [
-      -0.0325,
-      0.0335
+      -0.0211,
+      0.039
      ],
-     "p_two_sided": 0.9813
+     "p_two_sided": 0.5423
     }
    }
   },
@@ -160,36 +160,36 @@
      "quintile": 1,
      "n": 72,
      "events": 9,
-     "predicted": 0.1292,
-     "observed_km": 0.137
+     "predicted": 0.1294,
+     "observed_km": 0.1375
     },
     {
      "quintile": 2,
      "n": 72,
-     "events": 18,
-     "predicted": 0.2077,
-     "observed_km": 0.2057
+     "events": 19,
+     "predicted": 0.2076,
+     "observed_km": 0.2205
     },
     {
      "quintile": 3,
      "n": 71,
-     "events": 18,
-     "predicted": 0.3099,
-     "observed_km": 0.2635
+     "events": 17,
+     "predicted": 0.3101,
+     "observed_km": 0.2481
     },
     {
      "quintile": 4,
      "n": 72,
      "events": 30,
-     "predicted": 0.4462,
-     "observed_km": 0.5085
+     "predicted": 0.4464,
+     "observed_km": 0.5049
     },
     {
      "quintile": 5,
      "n": 72,
      "events": 38,
-     "predicted": 0.618,
-     "observed_km": 0.6394
+     "predicted": 0.6183,
+     "observed_km": 0.639
     }
    ],
    "clinical": [
@@ -197,35 +197,35 @@
      "quintile": 1,
      "n": 72,
      "events": 16,
-     "predicted": 0.1546,
+     "predicted": 0.1547,
      "observed_km": 0.2168
     },
     {
      "quintile": 2,
      "n": 72,
      "events": 16,
-     "predicted": 0.2236,
+     "predicted": 0.2237,
      "observed_km": 0.2395
     },
     {
      "quintile": 3,
      "n": 71,
      "events": 9,
-     "predicted": 0.3132,
+     "predicted": 0.3134,
      "observed_km": 0.155
     },
     {
      "quintile": 4,
      "n": 72,
      "events": 34,
-     "predicted": 0.4275,
+     "predicted": 0.4277,
      "observed_km": 0.4901
     },
     {
      "quintile": 5,
      "n": 72,
      "events": 38,
-     "predicted": 0.5669,
+     "predicted": 0.5672,
      "observed_km": 0.5489
     }
    ]
@@ -250,13 +250,13 @@
     0.2642,
     0.2209,
     0.1785,
-    0.164,
-    0.1444,
-    0.1222,
-    0.1356,
+    0.1624,
+    0.1483,
+    0.1195,
+    0.1375,
     0.093,
     0.0712,
-    0.0347,
+    0.0419,
     0.0136
    ],
    "clinical": [

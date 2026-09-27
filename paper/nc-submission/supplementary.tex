@@ -112,11 +112,11 @@ patient in one category can separate few of them, whatever model is fitted on to
 \cmidrule(lr){3-5}\cmidrule(lr){6-8}
 study & $n$ & levels & modal & entropy & levels & modal & entropy & $\Delta$C \\
 \midrule
-bladder & 359 & 2 & 94.4\% & 0.311 & 5 & 50.6\% & 0.665 & $+0.0560$ \\
-breast & 871 & \multicolumn{3}{c}{no usable grade in the released file} & 5 & 60.3\% & 0.631 & $+0.0858$ \\
-colorectal & 298 & \multicolumn{3}{c}{no usable grade in the released file} & 5 & 68.7\% & 0.572 & $+0.2208$ \\
-head and neck & 394 & 5 & 59.7\% & 0.643 & 5 & 37.5\% & 0.884 & $+0.0423$ \\
-stomach & 319 & 4 & 58.9\% & 0.623 & 4 & 47.3\% & 0.835 & $+0.0461$ \\
+bladder & 359 & 2 & 94.4\% & 0.311 & 5 & 50.6\% & 0.665 & $+0.0577$ \\
+breast & 871 & \multicolumn{3}{c}{no usable grade in the released file} & 5 & 60.3\% & 0.631 & $+0.0830$ \\
+colorectal & 298 & \multicolumn{3}{c}{no usable grade in the released file} & 5 & 68.7\% & 0.572 & $+0.2211$ \\
+head and neck & 394 & 5 & 59.7\% & 0.643 & 5 & 37.5\% & 0.884 & $+0.0408$ \\
+stomach & 319 & 4 & 58.9\% & 0.623 & 4 & 47.3\% & 0.835 & $+0.0477$ \\
 \bottomrule
 \end{tabular}}
 \caption{Level composition and normalised Shannon entropy of grade and stage in the five studies.
@@ -124,9 +124,9 @@ $\Delta$C is the concordance of age, sex and stage minus that of age, sex and gr
 patients, a point estimate. It is positive in all five studies, and its interval excludes zero in two
 (Supplementary Table~8). Every row uses the clinical files released
 with the benchmark, the only clinical source common to all five studies. The bladder result in the
-main text (0.6638 against 0.5666) takes every column from the incumbent's own split files instead,
+main text (0.6637 against 0.5664) takes every column from the incumbent's own split files instead,
 which makes it a statement about the incumbent's baseline. On bladder, this table's source gives
-$+0.0560$. Two studies ship no usable grade, so there the grade arm is age and sex alone and the
+$+0.0577$. Two studies ship no usable grade, so there the grade arm is age and sex alone and the
 comparison shows stage improving that baseline. They are marked rather than dropped.}
 \label{tab:entropy}
 \end{table}
@@ -141,7 +141,7 @@ development campaign and the leakage falsifiers, and before the confirmatory run
 primary above $0.679 + 0.0239$, and a standard deviation across seeds of at most 0.0145, where
 0.0239 is $\sigma\sqrt{2\ln N}$ with $\sigma = 0.0073$ and the $N = 211$ candidates the development
 ledger held when the protocol was written. The second condition is a stability requirement and it
-holds (0.0048). The first is mis-specified, as the last paragraph of this note shows.
+holds (0.0048 at amendment A1, 0.0043 after amendment A2). The first is mis-specified, as the last paragraph of this note shows.
 
 \paragraph{Amendment A1, and its two opposite effects.} A cached clinical query had taken the first
 of several diagnosis records per patient, and 61 of 359 patients changed once the correct record was
@@ -149,8 +149,9 @@ chosen. The record itself showed the problem before the check, since it carried 
 which are not American Joint Committee on Cancer (AJCC) bladder stages. On seed 0, fixing the record
 raises ModRank by $+0.0050$, and rebuilding the block from the incumbent's own released columns, which
 drops the T, N and M categories the cached query had supplied, lowers it by 0.0110. Over the five
-seeds the reported primary fell from 0.7260 to 0.7212, a move of $-0.0048$, and the lower value is
-the one reported.
+seeds the primary fell from 0.7260 to 0.7212, a move of $-0.0048$. The values in this paragraph are
+as recorded at the time, and amendment A2 later moved the primary to 0.7214 (Supplementary
+Note~\ref{note:amendA2}).
 
 \paragraph{The leakage checks.} Five leakage checks ran before the confirmatory run, covering fold integrity,
 a mutation test of the standardisation boundary, a per-fold planted label, row permutation and
@@ -200,7 +201,10 @@ an interpretable result below the bar.}
 \textbf{a},~Predicted and observed worth of the seven components, with each prediction fixed
 before the run. The shaded band is the $\pm0.0145$ bar. \textbf{b},~The four components
 that carry a matched control. C5's control beats it, which is what a void looks like.
-\textbf{c},~ModRank against the best published entry with verified folds, per study. ModRank is above it in
+\textbf{c},~ModRank as it stood during development, five-seed means of an earlier configuration
+rather than the values reported in the main text, against the best published entry on the released
+folds, counting PIBD, which ships the released split files for all five studies, and DIMAF in bladder
+only. The main text's five-study comparison counts SurvPath alone. ModRank is above that entry in
 bladder and below it in the four other studies. \textbf{d},~The one-column swap in the same five studies, positive in all five, with an interval
 excluding zero in two.
 \textbf{e},~Seven slide encoders scored as single arms on identical patients and folds.
@@ -214,11 +218,11 @@ own absolute score when no signal is present. The protocol substituted the sprea
 (0.0073), which is the quantity the noise floor measures and a different one. We measured the right
 quantity directly. Across 200 permutations of the survival outcome, with folds, features and the
 estimator untouched, the 14 fusion candidates of the final family score a mean of 0.5011 and a
-standard deviation of 0.0397. The Gaussian bar with that $\sigma$ at $N = 206$ is 0.8087. The
+standard deviation of 0.0398. The Gaussian bar with that $\sigma$ at $N = 206$ is 0.8089. The
 empirical alternative needs no independence assumption, because the permuted candidates are
 correlated through the same folds, features and estimator as the real search. The 95th percentile of the null maximum over the
-family is 0.5926, an inflation of 0.0926 above chance, which sets the bar at 0.7716. The primary
-(0.7212) clears neither, so no selection-corrected claim is made. On these folds ModRank has the
+family is 0.5918, an inflation of 0.0918 above chance, which sets the bar at 0.7708. The primary
+(0.7214) clears neither, so no selection-corrected claim is made. On these folds ModRank has the
 highest reported concordance by point estimate, and its paired comparisons with the two competitors
 that could be rerun are not significant.
 
@@ -228,8 +232,8 @@ that could be rerun are not significant.
 
 \paragraph{Every arm at every seed.} The primary is a mean over five inner-cross-validation seeds, and
 Supplementary Table~\ref{tab:perseed} gives each value. Three distinct quantities follow from them.
-The primary is 0.7212, the seed-0 value 0.7225, and the concordance of the seed-averaged score vector,
-which every paired comparison uses, 0.7237.
+The primary is 0.7214, the seed-0 value 0.7224, and the concordance of the seed-averaged score vector,
+which every paired comparison uses, 0.7233.
 
 \begin{table}[h]
 \centering
@@ -238,14 +242,14 @@ which every paired comparison uses, 0.7237.
 \toprule
 seed & ModRank & slide & transcriptome & clinical \\
 \midrule
-0 & 0.7225 & 0.6596 & 0.6510 & 0.6638 \\
-1 & 0.7248 & 0.6515 & 0.6733 & 0.6657 \\
-2 & 0.7129 & 0.6550 & 0.6470 & 0.6638 \\
-3 & 0.7243 & 0.6553 & 0.6664 & 0.6644 \\
-4 & 0.7216 & 0.6472 & 0.6681 & 0.6666 \\
+0 & 0.7224 & 0.6595 & 0.6512 & 0.6637 \\
+1 & 0.7247 & 0.6517 & 0.6731 & 0.6657 \\
+2 & 0.7143 & 0.6553 & 0.6500 & 0.6638 \\
+3 & 0.7247 & 0.6553 & 0.6665 & 0.6648 \\
+4 & 0.7210 & 0.6471 & 0.6682 & 0.6668 \\
 \midrule
-mean & 0.7212 & & & \\
-standard deviation & 0.0048 & & & \\
+mean & 0.7214 & & & \\
+standard deviation & 0.0043 & & & \\
 \bottomrule
 \end{tabular}}
 \caption{Concordance of each arm at each inner-cross-validation seed on the released folds, under
@@ -255,14 +259,14 @@ the main protocol.}
 
 \paragraph{Pairs the clinical model cannot separate.} Supplementary
 Table~\ref{tab:ties} restricts the comparable pairs to those the clinical model places close
-together, at four widths. As the restriction tightens, the clinical arm falls from 0.6638 to
-0.4959, close to chance as the restriction makes it, while the slide arm stays between 0.6220 and 0.6368. A second restriction asks the same question
+together, at four widths. As the restriction tightens, the clinical arm falls from 0.6637 to
+0.4975, close to chance as the restriction makes it, while the slide arm stays between 0.6214 and 0.6368. A second restriction asks the same question
 of the transcriptome. On the 9,688 pairs whose transcriptome-arm scores are closest (the 40\% with
-the smallest gap) the slide arm reaches 0.6396 while the transcriptome arm is at 0.5604. On the
-3,893 pairs that are that close on the transcriptome arm and also within the closest 40\% on the
-clinical model, the slide arm reaches 0.6212, against 0.5543 and 0.5634 for the two arms that define
+the smallest gap) the slide arm reaches 0.6391 while the transcriptome arm is at 0.5606. On the
+3,892 pairs that are that close on the transcriptome arm and also within the closest 40\% on the
+clinical model, the slide arm reaches 0.6193, against 0.5540 and 0.5633 for the two arms that define
 the restriction. Replacing the clinical model with membership of the same stage group, the
-restriction keeps 3,183 pairs and the slide arm reaches 0.6030. These are statements about two
+restriction keeps 3,182 pairs and the slide arm reaches 0.6010. These are statements about two
 particular scores. They do not show that no transcriptomic model could recover the same information.
 
 \begin{table}[h]
@@ -272,11 +276,11 @@ particular scores. They do not show that no transcriptomic model could recover t
 \toprule
 restriction & pairs & clinical & slide & incumbent \\
 \midrule
-all comparable pairs & 24,219 & 0.6638 & 0.6596 & 0.6118 \\
-closest 40\% on the clinical model & 9,695 & 0.5661 & 0.6368 & 0.5873 \\
-closest 20\% & 4,844 & 0.5319 & 0.6361 & 0.5969 \\
-closest 10\% & 2,423 & 0.5107 & 0.6271 & 0.5999 \\
-closest 5\% & 1,213 & 0.4959 & 0.6220 & 0.5952 \\
+all comparable pairs & 24,219 & 0.6637 & 0.6595 & 0.6118 \\
+closest 40\% on the clinical model & 9,696 & 0.5662 & 0.6368 & 0.5871 \\
+closest 20\% & 4,845 & 0.5320 & 0.6362 & 0.5968 \\
+closest 10\% & 2,423 & 0.5103 & 0.6288 & 0.5999 \\
+closest 5\% & 1,211 & 0.4975 & 0.6214 & 0.5937 \\
 \bottomrule
 \end{tabular}}
 \caption{Concordance on comparable pairs restricted by how close the clinical model places the two
@@ -287,11 +291,11 @@ out-of-fold risk.}
 
 \paragraph{The biology the slide and transcriptome arms track.} Against eight standard axes of
 muscle-invasive bladder cancer biology, the transcriptome arm tracks the molecular-class axes. Its
-Spearman correlation is 0.3595 with the basal axis, $-0.372$ with the luminal axis and 0.3672 with the
+Spearman correlation is 0.3601 with the basal axis, $-0.372$ with the luminal axis and 0.3673 with the
 epithelial--mesenchymal axis, all after Benjamini--Hochberg correction. The slide arm's correlation
-with the basal axis is 0.0438 and does not survive correction. Its largest axis correlation is with
-the FGFR3 axis ($-0.2245$), which carries no univariate prognostic signal in this cohort. Across the
-275 pathway scores, 59 reach $q<0.05$ against the slide arm, and the two strongest are metabolic,
+with the basal axis is 0.0444 and does not survive correction. Its largest axis correlation is with
+the FGFR3 axis ($-0.2236$), which carries no univariate prognostic signal in this cohort. Across the
+275 pathway scores, 58 reach $q<0.05$ against the slide arm, and the two strongest are metabolic,
 fatty acids ($-0.287$) and arachidonate production from diacylglycerol (0.278). These are
 associations between an out-of-fold score and a pathway mean over 275 correlated tests. They say
 what the score varies with, not that the model reads that pathway. No single pathway clears
@@ -312,8 +316,8 @@ clinical arms exchange places, and ModRank moves far less than either
 \toprule
 half & $n$ / events & clinical & slide & transcriptome & ModRank \\
 \midrule
-basal-leaning & 179 / 71 & 0.6472 & 0.6693 & 0.6226 & 0.7109 \\
-luminal-leaning & 180 / 42 & 0.7005 & 0.6197 & 0.6218 & 0.6997 \\
+basal-leaning & 179 / 71 & 0.6472 & 0.6690 & 0.6232 & 0.7109 \\
+luminal-leaning & 180 / 42 & 0.7005 & 0.6197 & 0.6218 & 0.6983 \\
 \bottomrule
 \end{tabular}}
 \caption{Concordance within the two halves of the basal-minus-luminal signature axis, split at its
@@ -389,13 +393,13 @@ varies across partitions of the same patients, which is what the bladder floor i
 measures. Every study was
 therefore re-partitioned 24 times by the construction that built that floor, refitting all three
 arms inside each partition. The paired difference is positive in 24 of 24 partitions in
-every study. The standard deviation of that difference, and twice it as the bar, are 0.0117 and
-0.0233 in bladder, 0.0237 and 0.0473 in breast, 0.0135 and 0.0270 in colorectal, 0.0132 and 0.0263
-in head and neck, and 0.0162 and 0.0323 in stomach. Four margins exceed their own bar. Colorectal
-does not, at $+0.0243$ against 0.0270. Only in stomach do the two criteria disagree. Its margin of
-$+0.0491$ clears the bar of 0.0323, while its bootstrap interval covers zero.
+every study. The standard deviation of that difference, and twice it as the bar, are 0.0116 and
+0.0232 in bladder, 0.0238 and 0.0475 in breast, 0.0133 and 0.0267 in colorectal, 0.0135 and 0.0269
+in head and neck, and 0.0162 and 0.0325 in stomach. Four margins exceed their own bar. Colorectal
+does not, at $+0.0238$ against 0.0267. Only in stomach do the two criteria disagree. Its margin of
+$+0.0449$ clears the bar of 0.0325, while its bootstrap interval covers zero.
 
-The bladder floor here is 0.0117, under the benchmark's released clinical file and one seed, against
+The bladder floor here is 0.0116, under the benchmark's released clinical file and one seed, against
 0.0073 in the main text, under the incumbent's clinical block and five seeds. Having bladder measured both ways is what makes the
 other four floors comparable to a number the paper already carries.
 
@@ -410,13 +414,13 @@ and bootstrap are unchanged, and every comparison within this run uses the same 
 stomach lose 8 and 1 patients for whom the alternative encoder has no features, so their values under
 the two encoders rest on slightly different patient sets.
 
-Concordance falls in the three studies that separate, bladder from 0.6992 to 0.6788, breast from 0.6892 to 0.6533 and head and neck
-from 0.6179 to 0.6032, and it rises slightly in the two that do not, stomach from 0.6311 to 0.6366
-and colorectal from 0.7141 to 0.7210.
+Concordance falls in the three studies that separate, bladder from 0.7003 to 0.6794, breast from 0.6881 to 0.6529 and head and neck
+from 0.6179 to 0.6029, and it rises slightly in the two that do not, stomach from 0.6290 to 0.6357
+and colorectal from 0.7140 to 0.7208.
 
 The margins over the clinical arm fall with them and the same three studies still separate: bladder
-$+0.0569$ $[+0.0034, +0.1099]$, breast $+0.0847$ $[+0.0164, +0.1527]$, head and neck $+0.0580$
-$[+0.0078, +0.1101]$. Stomach and colorectal cover zero under both encoders, and the grade-control
+$+0.0574$ $[+0.0044, +0.1101]$, breast $+0.0849$ $[+0.0163, +0.1531]$, head and neck $+0.0576$
+$[+0.0070, +0.1094]$. Stomach and colorectal cover zero under both encoders, and the grade-control
 comparison agrees under both as well, separating in colorectal alone.
 
 This does not establish that either encoder is adequate, or that a third would agree. It is one
@@ -446,60 +450,67 @@ its committed value.
 \toprule
 study & combination & concordance & ModRank $-$ combination & 95\% interval \\
 \midrule
-bladder & rank average (ModRank) & 0.6992 & & \\
- & concatenated & 0.6801 & $+0.0191$ & $[-0.0150, +0.0534]$ \\
- & stacked & 0.6932 & $+0.0059$ & $[-0.0143, +0.0267]$ \\
- & simplex weights & 0.6954 & $+0.0037$ & $[-0.0120, +0.0195]$ \\
- & stacked with interactions & 0.6917 & $+0.0074$ & $[-0.0145, +0.0298]$ \\
- & weights by clinical tertile & 0.6715 & $+0.0275$ & $[-0.0002, +0.0567]$ \\
+bladder & rank average (ModRank) & 0.7003 & & \\
+ & concatenated & 0.6797 & $+0.0206$ & $[-0.0134, +0.0547]$ \\
+ & stacked & 0.6946 & $+0.0056$ & $[-0.0144, +0.0262]$ \\
+ & simplex weights & 0.6952 & $+0.0050$ & $[-0.0108, +0.0210]$ \\
+ & stacked with interactions & 0.6917 & $+0.0084$ & $[-0.0136, +0.0311]$ \\
+ & weights by clinical tertile & 0.6830 & $+0.0170$ & $[-0.0121, +0.0465]$ \\
+ & stacked, tuned ridge & 0.6958 & $+0.0043$ & $[-0.0126, +0.0210]$ \\
 \addlinespace
-breast & rank average (ModRank) & 0.6892 & & \\
- & concatenated & 0.7571 & $-0.0679$ & $[-0.1384, +0.0029]$ \\
- & stacked & 0.7180 & $-0.0286$ & $[-0.0754, +0.0202]$ \\
- & simplex weights & 0.7184 & $-0.0290$ & $[-0.0815, +0.0239]$ \\
- & stacked with interactions & 0.7092 & $-0.0198$ & $[-0.0657, +0.0281]$ \\
- & weights by clinical tertile & 0.7071 & $-0.0171$ & $[-0.0557, +0.0217]$ \\
+breast & rank average (ModRank) & 0.6881 & & \\
+ & concatenated & 0.7578 & $-0.0696$ & $[-0.1399, +0.0010]$ \\
+ & stacked & 0.7176 & $-0.0292$ & $[-0.0762, +0.0191]$ \\
+ & simplex weights & 0.7186 & $-0.0303$ & $[-0.0825, +0.0227]$ \\
+ & stacked with interactions & 0.7087 & $-0.0204$ & $[-0.0666, +0.0281]$ \\
+ & weights by clinical tertile & 0.6892 & $-0.0005$ & $[-0.0385, +0.0374]$ \\
+ & stacked, tuned ridge & 0.7142 & $-0.0259$ & $[-0.0668, +0.0153]$ \\
 \addlinespace
-colorectal & rank average (ModRank) & 0.7141 & & \\
- & concatenated & 0.6530 & $+0.0611$ & $[-0.0206, +0.1442]$ \\
- & stacked & 0.6919 & $+0.0219$ & $[-0.0329, +0.0776]$ \\
- & simplex weights & 0.6954 & $+0.0184$ & $[-0.0434, +0.0785]$ \\
- & stacked with interactions & 0.6864 & $+0.0275$ & $[-0.0265, +0.0878]$ \\
- & weights by clinical tertile & 0.7309 & $-0.0172$ & $[-0.0779, +0.0433]$ \\
+colorectal & rank average (ModRank) & 0.7140 & & \\
+ & concatenated & 0.6530 & $+0.0610$ & $[-0.0214, +0.1446]$ \\
+ & stacked & 0.6930 & $+0.0208$ & $[-0.0340, +0.0753]$ \\
+ & simplex weights & 0.6904 & $+0.0235$ & $[-0.0415, +0.0862]$ \\
+ & stacked with interactions & 0.6855 & $+0.0284$ & $[-0.0254, +0.0887]$ \\
+ & weights by clinical tertile & 0.7354 & $-0.0219$ & $[-0.0834, +0.0399]$ \\
+ & stacked, tuned ridge & 0.7019 & $+0.0119$ & $[-0.0435, +0.0660]$ \\
 \addlinespace
 head and neck & rank average (ModRank) & 0.6179 & & \\
- & concatenated & 0.5966 & $+0.0217$ & $[-0.0170, +0.0594]$ \\
- & stacked & 0.6171 & $+0.0009$ & $[-0.0206, +0.0228]$ \\
- & simplex weights & 0.6181 & $0.0000$ & $[-0.0206, +0.0210]$ \\
- & stacked with interactions & 0.6144 & $+0.0037$ & $[-0.0197, +0.0278]$ \\
- & weights by clinical tertile & 0.6121 & $+0.0060$ & $[-0.0257, +0.0377]$ \\
+ & concatenated & 0.5969 & $+0.0214$ & $[-0.0173, +0.0591]$ \\
+ & stacked & 0.6166 & $+0.0014$ & $[-0.0195, +0.0228]$ \\
+ & simplex weights & 0.6172 & $+0.0008$ & $[-0.0205, +0.0223]$ \\
+ & stacked with interactions & 0.6132 & $+0.0048$ & $[-0.0180, +0.0280]$ \\
+ & weights by clinical tertile & 0.6077 & $+0.0102$ & $[-0.0214, +0.0420]$ \\
+ & stacked, tuned ridge & 0.6149 & $+0.0030$ & $[-0.0163, +0.0231]$ \\
 \addlinespace
-stomach & rank average (ModRank) & 0.6311 & & \\
- & concatenated & 0.6073 & $+0.0242$ & $[-0.0281, +0.0779]$ \\
- & stacked & 0.5862 & $+0.0458$ & $[-0.0152, +0.1081]$ \\
- & simplex weights & 0.6094 & $+0.0222$ & $[-0.0124, +0.0598]$ \\
- & stacked with interactions & 0.5782 & $+0.0539$ & $[-0.0099, +0.1211]$ \\
- & weights by clinical tertile & 0.6180 & $+0.0141$ & $[-0.0316, +0.0588]$ \\
+stomach & rank average (ModRank) & 0.6290 & & \\
+ & concatenated & 0.6071 & $+0.0224$ & $[-0.0298, +0.0764]$ \\
+ & stacked & 0.5850 & $+0.0448$ & $[-0.0148, +0.1062]$ \\
+ & simplex weights & 0.6088 & $+0.0207$ & $[-0.0140, +0.0583]$ \\
+ & stacked with interactions & 0.5781 & $+0.0519$ & $[-0.0103, +0.1180]$ \\
+ & weights by clinical tertile & 0.6201 & $+0.0100$ & $[-0.0343, +0.0540]$ \\
+ & stacked, tuned ridge & 0.5875 & $+0.0424$ & $[-0.0162, +0.1032]$ \\
 \bottomrule
 \end{tabular}}
 \caption{Five fitted fusions against the equal-weight rank average, on the released folds under the
-five-study protocol. None of the 25 paired differences has a 95\% interval that excludes zero. The
-widest are breast against the concatenation, $[-0.1384, +0.0029]$ at $p=0.061$, and colorectal against
-it, $[-0.0206, +0.1442]$. Each difference is the mean of its 6,000 bootstrap replicates, so it can
-differ in the last digits from the difference of the two concordances. The last three combinations
-were specified after the first two had been scored.}
+five-study protocol. None of the 30 paired differences has a 95\% interval that excludes zero. The
+widest are breast against the concatenation, $[-0.1399, +0.0010]$ at $p=0.054$, and colorectal against
+it, $[-0.0214, +0.1446]$. Each difference is the mean of its 6,000 bootstrap replicates, so it can
+differ in the last digits from the difference of the two concordances. Simplex weights, stacking with
+interactions and weights by clinical tertile were specified after the first two combinations had been
+scored, and the tuned-ridge stacking was added by amendment A2 (Supplementary
+Note~\ref{note:amendA2}).}
 \label{tab:fusion}
 \end{table}
 
 No fitted alternative exceeds the rank average with an interval that excludes zero in any study.
-Nor is the rank average ahead everywhere. In breast a concatenated model is ahead of it by 0.0679,
+Nor is the rank average ahead everywhere. In breast a concatenated model is ahead of it by 0.0696,
 and with 871 patients carrying 60 events that interval still covers zero. Bladder's own margins depend
-on the protocol. Under the main protocol they average $+0.0464$ and $+0.0111$ over 24 re-partitions,
-the second below the bladder bar of 0.0145, and under this one they are $+0.0191$ and $+0.0059$ with
+on the protocol. Under the main protocol they average $+0.0471$ and $+0.0107$ over 24 re-partitions,
+the second below the bladder bar of 0.0145, and under this one they are $+0.0206$ and $+0.0056$ with
 intervals covering zero.
 
 What the ten comparisons do establish is the contrast the main text draws. A correct clinical
-reference is worth $+0.0972$ $[+0.047, +0.149]$ and separates. No difference between one fusion
+reference is worth $+0.0972$ $[+0.047, +0.150]$ and separates. No difference between one fusion
 rule and another is resolved in any of these studies.
 
 \begin{table}[h]
@@ -510,11 +521,11 @@ rule and another is resolved in any of these studies.
 \toprule
 study & $n$ & events & clinical & ModRank & $-$ clinical & $-$ grade arm & $-$ two-modality \\
 \midrule
-bladder & 359 & 113 & 0.6218 & 0.6992 & $+0.0774$ & $+0.0132$ & $+0.0149$ \\
-breast & 871 & 60 & 0.5686 & 0.6892 & $+0.1208$ & $+0.0283$ & $-0.0211$ \\
-colorectal & 298 & 37 & 0.6898 & 0.7141 & $+0.0236$ & $+0.0911$ & $+0.0327$ \\
-head and neck & 394 & 117 & 0.5450 & 0.6179 & $+0.0726$ & $+0.0164$ & $+0.0012$ \\
-stomach & 319 & 84 & 0.5819 & 0.6311 & $+0.0495$ & $+0.0184$ & $+0.0203$ \\
+bladder & 359 & 113 & 0.6219 & 0.7003 & $+0.0784$ & $+0.0144$ & $+0.0166$ \\
+breast & 871 & 60 & 0.5683 & 0.6881 & $+0.1201$ & $+0.0248$ & $-0.0232$ \\
+colorectal & 298 & 37 & 0.6902 & 0.7140 & $+0.0231$ & $+0.0894$ & $+0.0320$ \\
+head and neck & 394 & 117 & 0.5450 & 0.6179 & $+0.0725$ & $+0.0172$ & $+0.0020$ \\
+stomach & 319 & 84 & 0.5841 & 0.6290 & $+0.0452$ & $+0.0157$ & $+0.0183$ \\
 \bottomrule
 \end{tabular}}
 \caption{ModRank, the clinical arm and the paired differences on the benchmark's five studies,
@@ -522,8 +533,8 @@ stomach & 319 & 84 & 0.5819 & 0.6311 & $+0.0495$ & $+0.0184$ & $+0.0203$ \\
 files released with the benchmark. Differences are paired at the patient level, and each is the mean
 of its 6,000 bootstrap replicates, which can differ in the last digits from the difference of the
 printed concordances. Against the clinical arm, the intervals that exclude
-zero are bladder $[+0.0284, +0.1264]$, breast $[+0.0525, +0.1904]$ and head and neck
-$[+0.0206, +0.1231]$. Against the grade arm, colorectal alone does, at $[+0.0451, +0.1449]$. No
+zero are bladder $[+0.0298, +0.1267]$, breast $[+0.0519, +0.1897]$ and head and neck
+$[+0.0206, +0.1231]$. Against the grade arm, colorectal alone does, at $[+0.0437, +0.1429]$. No
 difference against the two-modality arm excludes zero in any study.}
 \label{tab:fivecohort}
 \end{table}
@@ -562,14 +573,14 @@ cystectomy cohort. It was larger.
 setting & cystectomy & mixed & mixed \\
 patients / deaths from the disease & 93 / 38 & 224 / 25 & 73 / 35 \\
 pathway groups kept & 274 & 263 & 274 \\
-two-arm ModRank & 0.5898 & 0.8779 & 0.6384 \\
-clinical stage block & 0.6590 & 0.8672 & 0.6322 \\
-transcriptome & 0.4742 & 0.8163 & 0.5683 \\
-concatenated & 0.4895 & 0.8216 & 0.5864 \\
-stacked & 0.6317 & 0.8747 & 0.6201 \\
-bar (twice the re-partition SD) & 0.0423 & 0.0217 & 0.0540 \\
+two-arm ModRank & 0.5896 & 0.8792 & 0.6389 \\
+clinical stage block & 0.6591 & 0.8672 & 0.6334 \\
+transcriptome & 0.4747 & 0.8164 & 0.5701 \\
+concatenated & 0.4893 & 0.8219 & 0.5872 \\
+stacked & 0.6324 & 0.8748 & 0.6197 \\
+bar (twice the re-partition SD) & 0.0481 & 0.0225 & 0.0524 \\
 ModRank clears every comparator & no & no & no \\
-$D$ from a grade-based reference & $+0.0253$ & $+0.0581$ & not defined \\
+$D$ from a grade-based reference & $+0.0324$ & $+0.0586$ & not defined \\
 \bottomrule
 \end{tabular}}
 \caption{The external cohorts. Concordance is the mean over five repeats of five-fold
@@ -581,23 +592,23 @@ GSE48075 lacks.}
 
 \paragraph{The inflation against zero and against a score without information.} In the Lund cohort
 the transcriptome's added value over a grade-based reference exceeded that over a stage-based one by
-$D=+0.0581$ ($[+0.0175, +0.0971]$, $p=0.0073$). In the cystectomy cohort it was $+0.0253$
-($[-0.018, +0.0678]$, $p=0.258$). The protocol's sensitivity analysis there, without the three
-patients given chemotherapy before cystectomy, gave $+0.1094$ ($[+0.0424, +0.1774]$, $p=0.002$).
+$D=+0.0586$ ($[+0.0179, +0.0984]$, $p=0.009$). In the cystectomy cohort it was $+0.0324$
+($[-0.0112, +0.0753]$, $p=0.150$). The protocol's sensitivity analysis there, without the three
+patients given chemotherapy before cystectomy, gave $+0.1081$ ($[+0.0404, +0.1757]$, $p=0.002$).
 That three patients move the estimate this far says it is fragile, and the all-patient value is the
 primary one.
 
 The protocol tested $D$ against zero. Under the rank rule a score without information
-also has a positive $D$, $+0.0183$ in the Lund cohort and $+0.0150$ in the cystectomy cohort, so
+also has a positive $D$, $+0.0197$ in the Lund cohort and $+0.0149$ in the cystectomy cohort, so
 Supplementary Note~\ref{note:nulld} compares each $D$ with that benchmark. The transcriptome's excess
-is $+0.0409$ ($[+0.0040, +0.0775]$) in the Lund cohort and $+0.0007$ ($[-0.0325, +0.0335]$) in the
+is $+0.0397$ ($[+0.0011, +0.0780]$) in the Lund cohort and $+0.0093$ ($[-0.0211, +0.0390]$) in the
 cystectomy cohort.
 
 \paragraph{The combination rule does not clear the floor.} Supplementary Table~\ref{tab:geo} gives
 every arm. Where the microarray transcriptome arm is informative (Lund, GSE48075), two-arm ModRank has
 the best point estimate but sits inside the bar of the clinical stage block. In the Lund cohort it
-exceeded the transcriptome arm and the concatenated model after Holm correction ($p=0.004$ for both).
-Where the arm is uninformative (the cystectomy cohort, 0.4742), the equal-weight average is pulled
+exceeded the transcriptome arm and the concatenated model after Holm correction ($p=0.003$ and $p=0.006$).
+Where the arm is uninformative (the cystectomy cohort, 0.4747), the equal-weight average is pulled
 below the stage block. An equal-weight rule is exposed to this failure whenever one arm carries
 nothing.
 
@@ -607,12 +618,12 @@ permutations of the training outcomes. Its definition was fixed before any of th
 downloaded. It was added to this analysis by a dated amendment after the cystectomy cohort's results
 had been read and before the other two cohorts' results were opened, so it was tested only on those
 two. In the Lund cohort both arms met the permutation criterion in every fold and the variant
-equalled ModRank (0.8779). In GSE48075 the screen sometimes dropped the transcriptome arm and the variant moved toward
-the stage block (0.6326 against 0.6322 for the block and 0.6384 for ModRank). It did not clear the bar
+equalled ModRank (0.8792). In GSE48075 the screen dropped the transcriptome arm in 16 of 25 folds and the stage block in 8,
+and the variant fell below both (0.6170 against 0.6334 for the block and 0.6389 for ModRank). It did not clear the bar
 in either cohort. On the development cohort all three arms meet the criterion and the variant is
 identical to ModRank. The screen is meant to prevent dilution by an uninformative arm. It removes arms
 and supplies no information of its own. An average of weakly correlated arms can exceed its own best arm, and
-in the Lund cohort it does, 0.8779 against 0.8672 for the stage block. In none of these cohorts did
+in the Lund cohort it does, 0.8792 against 0.8672 for the stage block. In none of these cohorts did
 any combination exceed the clinical stage block by more than the floor.
 
 %% ============================================================================ NOTE 5
@@ -631,8 +642,8 @@ for the clinical model.
 predicted risk is within 0.01 of the Kaplan--Meier observed risk at all three horizons for both
 models. The index of prediction accuracy, the proportional reduction in Brier score against a
 training-fold Kaplan--Meier null, favours ModRank at one and two years and is equal at three, where
-78 patients remain at risk against 261 at one year. The calibration slope is 0.770 for ModRank and
-0.849 for the clinical model, so ModRank's risks are somewhat too spread and would be shrunk by a
+78 patients remain at risk against 261 at one year. The calibration slope is 0.771 for ModRank and
+0.848 for the clinical model, so ModRank's risks are somewhat too spread and would be shrunk by a
 recalibration in a new setting. At two years the point estimate of ModRank's net benefit exceeds
 both the clinical model and treating everyone at every threshold examined from 20 to 60\% (main
 text, Figure~6d).
@@ -640,10 +651,10 @@ text, Figure~6d).
 \paragraph{Uncertainty in the differences.} Holding every prediction fixed and resampling patients
 6,000 times, with the censoring distribution, the Brier scores and the net benefits recomputed in
 each draw, the difference in the index of prediction accuracy between ModRank and the clinical model
-is $+0.0512$ ($[-0.0003, +0.0993]$) at one year, $+0.0724$ ($[-0.0054, +0.1502]$) at two years and
-$-0.0013$ ($[-0.0897, +0.0842]$) at three years. The two-year difference in net benefit is
-$+0.0090$ ($[-0.0235, +0.0413]$) at a threshold of 20\%, $+0.0364$ ($[-0.0038, +0.0768]$) at 30\%,
-$+0.0454$ ($[+0.0006, +0.0915]$) at 40\%, $+0.0482$ ($[-0.0075, +0.1035]$) at 50\% and $+0.0250$
+is $+0.0513$ ($[-0.0002, +0.0993]$) at one year, $+0.0724$ ($[-0.0056, +0.1504]$) at two years and
+$-0.0010$ ($[-0.0893, +0.0841]$) at three years. The two-year difference in net benefit is
+$+0.0090$ ($[-0.0228, +0.0413]$) at a threshold of 20\%, $+0.0403$ ($[-0.0001, +0.0794]$) at 30\%,
+$+0.0474$ ($[+0.0040, +0.0907]$) at 40\%, $+0.0482$ ($[-0.0075, +0.1035]$) at 50\% and $+0.0250$
 ($[-0.0279, +0.0766]$) at 60\%. Only the 40\% interval excludes zero, and it is not corrected for the
 five thresholds. These intervals condition on the fitted models and exclude the variation from
 refitting. The utility advantage is therefore suggestive and not established at this
@@ -658,9 +669,9 @@ cohort size.
 \cmidrule(lr){2-4}\cmidrule(lr){5-7}
 horizon & predicted / observed & Brier & IPA & predicted / observed & Brier & IPA \\
 \midrule
-12 months & 0.1472 / 0.1439 & 0.1112 & 0.098 & 0.1459 / 0.1439 & 0.1176 & 0.047 \\
-24 months & 0.3423 / 0.3411 & 0.1908 & 0.152 & 0.3372 / 0.3411 & 0.2072 & 0.079 \\
-36 months & 0.4140 / 0.4151 & 0.2185 & 0.105 & 0.4075 / 0.4151 & 0.2184 & 0.105 \\
+12 months & 0.1473 / 0.1439 & 0.1112 & 0.098 & 0.1459 / 0.1439 & 0.1176 & 0.047 \\
+24 months & 0.3424 / 0.3411 & 0.1909 & 0.151 & 0.3374 / 0.3411 & 0.2072 & 0.079 \\
+36 months & 0.4141 / 0.4151 & 0.2185 & 0.105 & 0.4077 / 0.4151 & 0.2184 & 0.105 \\
 \bottomrule
 \end{tabular}}
 \caption{Calibration and accuracy at three horizons, pooled over the validation folds. Predicted is
@@ -676,20 +687,20 @@ against a training-fold Kaplan--Meier null. At risk: 261, 127 and 78 patients at
 
 \noindent Two TRIPOD+AI items ask for performance in subgroups. The released metadata records sex
 and age for all 359 patients, and the strata below partition the seed-averaged out-of-fold scores the
-main result is computed from, so nothing was refitted. The pooled values, 0.7237 for ModRank and
-0.6644 for the clinical arm, are reproduced from these scores before any stratum is reported.
+main result is computed from, so nothing was refitted. The pooled values, 0.7233 for ModRank and
+0.6645 for the clinical arm, are reproduced from these scores before any stratum is reported.
 
 \paragraph{Performance by sex and age.} Concordance is lower in women than in men for every arm,
-and most for the clinical arm, 0.5652 against 0.7015, where ModRank falls from 0.7406 to 0.6616.
+and most for the clinical arm, 0.5664 against 0.7014, where ModRank falls from 0.7399 to 0.6638.
 Neither of two possible readings is supported by its interval. ModRank's own gap between the sexes
-is $+0.0811$ (the mean of the bootstrap replicates) with a 95\% interval of $[-0.0231, +0.1900]$, and the difference between the clinical arm's sex gap
-and ModRank's is $+0.0555$ $[-0.0531, +0.1695]$, so this cohort cannot establish either that the
+is $+0.0780$ (the mean of the bootstrap replicates) with a 95\% interval of $[-0.0244, +0.1844]$, and the difference between the clinical arm's sex gap
+and ModRank's is $+0.0572$ $[-0.0500, +0.1711]$, so this cohort cannot establish either that the
 model serves women worse or that it is less sex-dependent than stage alone. Ninety women and 31
-events is the reason. Above and below the median age of 68 years the difference is $+0.0065$
-$[-0.0849, +0.0996]$.
+events is the reason. Above and below the median age of 68 years the difference is $+0.0088$
+$[-0.0820, +0.1024]$.
 
 \paragraph{The molecular and slide arms in women.} In women, where the clinical arm is weakest, the
-slide arm reaches 0.6298 and the transcriptome arm 0.6631, both above the clinical arm's 0.5652. This
+slide arm reaches 0.6294 and the transcriptome arm 0.6663, both above the clinical arm's 0.5664. This
 is consistent with the main finding, but these are point estimates in 90 patients.
 
 \paragraph{Race, from the source archive.} Race is not in the
@@ -700,7 +711,7 @@ both floors this work requires before a stratum is reported, 25 patients and 100
 the asian stratum has 5 events and 50 comparable pairs, and the black stratum has 20 patients. A
 comparison between racial groups is therefore not available in this cohort at all, and reporting one
 would mean abandoning the floors to obtain it. Inside the white stratum the clinical arm reaches
-0.6539 and ModRank 0.7122, a difference of $+0.0588$ $[+0.0043, +0.1132]$.
+0.6539 and ModRank 0.7129, a difference of $+0.0594$ $[+0.0052, +0.1134]$.
 
 That is a fact about the benchmark as much as about this analysis. A public resource on which a
 subfield measures itself cannot support the subgroup check that same subfield's reporting standard
@@ -715,17 +726,17 @@ data, so those axes were never available to examine.
 \toprule
 stratum & $n$ & events & clinical & slide & transcriptome & ModRank \\
 \midrule
-men & 269 & 82 & 0.7015 & 0.6613 & 0.6637 & 0.7406 \\
-women & 90 & 31 & 0.5652 & 0.6298 & 0.6631 & 0.6616 \\
-age at or below 68 & 180 & 58 & 0.6578 & 0.6817 & 0.6308 & 0.7285 \\
-age above 68 & 179 & 55 & 0.6749 & 0.6272 & 0.6962 & 0.7213 \\
-recorded white & 285 & 93 & 0.6539 & 0.6505 & 0.6544 & 0.7122 \\
+men & 269 & 82 & 0.7014 & 0.6616 & 0.6620 & 0.7399 \\
+women & 90 & 31 & 0.5664 & 0.6294 & 0.6663 & 0.6638 \\
+age at or below 68 & 180 & 58 & 0.6584 & 0.6822 & 0.6304 & 0.7298 \\
+age above 68 & 179 & 55 & 0.6746 & 0.6269 & 0.6941 & 0.7204 \\
+recorded white & 285 & 93 & 0.6539 & 0.6504 & 0.6552 & 0.7129 \\
 \bottomrule
 \end{tabular}}
 \caption{Concordance inside each stratum, from the same seed-averaged out-of-fold scores as the main
-result. ModRank exceeds the clinical arm in every stratum, by $+0.0396$ $[-0.0143, +0.0936]$ in men,
-$+0.0963$ $[-0.0031, +0.1964]$ in women, $+0.0699$ $[+0.0072, +0.1335]$ below the median age and
-$+0.0464$ $[-0.0309, +0.1189]$ above it, so only the younger half separates from zero. Intervals are
+result. ModRank exceeds the clinical arm in every stratum, by $+0.0389$ $[-0.0147, +0.0927]$ in men,
+$+0.0973$ $[-0.0006, +0.1979]$ in women, $+0.0706$ $[+0.0086, +0.1334]$ below the median age and
+$+0.0459$ $[-0.0297, +0.1177]$ above it, so only the younger half separates from zero. Intervals are
 95\% from 6,000 patient resamples, paired within a stratum and independent between strata.}
 \label{tab:subgroup}
 \end{table}
@@ -756,7 +767,9 @@ are those of each model's released script, and each model was retrained five tim
 committed before the runs. The released models expect 1,024-dimensional tile features, so their
 constructors were given the feature dimension, the same repair the SurvPath rerun needed. MOTCat is
 not implemented in the released code and was not run. Each model's five retrainings were ranked
-within fold and averaged, and the average was combined with each reference by the rank rule.
+within fold and averaged, and the average was combined with each reference by the rank rule. These
+are implementations of the four architectures under this pipeline, not reproductions of their
+original authors' tuned models or results.
 
 \begin{table}[h]
 \centering
@@ -766,10 +779,10 @@ within fold and averaged, and the average was combined with each reference by th
 \toprule
 model & concordance & per retraining & reported & over grade & over stage \\
 \midrule
-MCAT & 0.5620 & $0.5259 \pm 0.0168$ & 0.598 & $+0.0195$ & $-0.0122$ \\
-ABMIL with pathways & 0.5930 & $0.5775 \pm 0.0210$ & 0.562 & $+0.0457$ & $+0.0155$ \\
-TransMIL with pathways & 0.5964 & $0.5810 \pm 0.0113$ & 0.630 & $+0.0420$ & $+0.0136$ \\
-DeepMISL with pathways & 0.5074 & $0.5105 \pm 0.0155$ & 0.518 & $+0.0007$ & $-0.0333$ \\
+MCAT & 0.5614 & $0.5259 \pm 0.0168$ & 0.598 & $+0.0199$ & $-0.0124$ \\
+ABMIL with pathways & 0.5932 & $0.5775 \pm 0.0210$ & 0.562 & $+0.0476$ & $+0.0151$ \\
+TransMIL with pathways & 0.5963 & $0.5810 \pm 0.0113$ & 0.630 & $+0.0427$ & $+0.0126$ \\
+DeepMISL with pathways & 0.5156 & $0.5012 \pm 0.0118$ & 0.518 & $+0.0105$ & $+0.0051$ \\
 \bottomrule
 \end{tabular}}
 \caption{Four further architectures on the development cohort. Concordance is pooled over
@@ -780,43 +793,51 @@ and the stage-based reference.}
 \label{tab:architectures}
 \end{table}
 
-The reruns reach 0.5074 to 0.5964 on their own, below the reported values for MCAT and TransMIL,
+The reruns reach 0.5156 to 0.5963 on their own, below the reported values for MCAT and TransMIL,
 above it for ABMIL and close to it for DeepMISL, whose slide-only form SurvPath reports at 0.500 in
 bladder. All four add less over the stage-based reference than over the grade-based one, and none has
-an added value over stage whose interval excludes zero. $D$ is positive for all four and its interval
-excludes zero for all four (Holm across the four, largest $q=0.02$), as the protocol predicted, but
-none exceeds the benchmark.
+an added value over stage whose interval excludes zero. For MCAT, ABMIL and TransMIL, $D$ is positive
+with an interval that excludes zero (Holm across the four, largest $q=0.022$), as the protocol
+predicted, and none exceeds the benchmark. DeepMISL returned one risk for the whole validation fold
+in 13 of its 25 retraining--fold pairs, and fewer distinct risks than half the fold in 24. Tied risks
+share their rank, and a score that does not vary, added to the reference, leaves the reference's
+ordering unchanged. Its $D$ of $+0.0054$ ($[-0.0073, +0.0182]$) therefore sits below the benchmark,
+which describes a score that varies without carrying information.
 
 \begin{table}[h]
 \centering
 {\small
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{lrrcrc}
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{lrrcrrc}
 \toprule
-construction & $D$ & benchmark $D$ & central 95\% of draws & excess & 95\% interval \\
+ & & \multicolumn{2}{c}{benchmark $D$} & \multicolumn{3}{c}{excess} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-7}
+construction & $D$ & mean & 95\% of draws & point & mean & 95\% interval \\
 \midrule
-\multicolumn{6}{l}{development cohort, main protocol} \\
-ModRank & $+0.0610$ & $+0.0417$ & $[+0.0289, +0.0538]$ & $+0.0185$ & $[+0.0022, +0.0359]$ \\
-SurvPath + clinical & $+0.0417$ & $+0.0288$ & $[+0.0160, +0.0413]$ & $+0.0114$ & $[-0.0035, +0.0270]$ \\
-PIBD + clinical & $+0.0496$ & $+0.0287$ & $[+0.0154, +0.0406]$ & $+0.0228$ & $[+0.0066, +0.0393]$ \\
-MCAT + clinical & $+0.0317$ & $+0.0287$ & $[+0.0158, +0.0409]$ & $+0.0019$ & $[-0.0122, +0.0149]$ \\
-ABMIL + clinical & $+0.0302$ & $+0.0288$ & $[+0.0165, +0.0412]$ & $+0.0028$ & $[-0.0139, +0.0196]$ \\
-TransMIL + clinical & $+0.0284$ & $+0.0286$ & $[+0.0160, +0.0410]$ & $+0.0023$ & $[-0.0152, +0.0195]$ \\
-DeepMISL + clinical & $+0.0340$ & $+0.0287$ & $[+0.0157, +0.0412]$ & $+0.0081$ & $[-0.0090, +0.0249]$ \\
+\multicolumn{7}{l}{development cohort, main protocol} \\
+ModRank & $+0.0637$ & $+0.0416$ & $[+0.0287, +0.0539]$ & $+0.0221$ & $+0.0214$ & $[+0.0050, +0.0388]$ \\
+SurvPath + clinical & $+0.0407$ & $+0.0288$ & $[+0.0157, +0.0412]$ & $+0.0119$ & $+0.0104$ & $[-0.0047, +0.0261]$ \\
+PIBD + clinical & $+0.0506$ & $+0.0287$ & $[+0.0158, +0.0406]$ & $+0.0219$ & $+0.0235$ & $[+0.0072, +0.0404]$ \\
+MCAT + clinical & $+0.0323$ & $+0.0287$ & $[+0.0159, +0.0409]$ & $+0.0036$ & $+0.0027$ & $[-0.0113, +0.0157]$ \\
+ABMIL + clinical & $+0.0325$ & $+0.0288$ & $[+0.0167, +0.0411]$ & $+0.0037$ & $+0.0050$ & $[-0.0120, +0.0218]$ \\
+TransMIL + clinical & $+0.0301$ & $+0.0286$ & $[+0.0158, +0.0407]$ & $+0.0015$ & $+0.0037$ & $[-0.0139, +0.0209]$ \\
+DeepMISL + clinical & $+0.0054$ & $+0.0287$ & $[+0.0157, +0.0412]$ & $-0.0233$ & $-0.0204$ & $[-0.0399, -0.0021]$ \\
 \midrule
-\multicolumn{6}{l}{five-study protocol, ModRank} \\
-bladder & $+0.0429$ & $+0.0246$ & $[+0.0118, +0.0361]$ & $+0.0181$ & $[+0.0030, +0.0333]$ \\
-head and neck & $+0.0259$ & $+0.0181$ & $[+0.0042, +0.0320]$ & $+0.0099$ & $[-0.0065, +0.0259]$ \\
-stomach & $+0.0275$ & $+0.0221$ & $[+0.0079, +0.0371]$ & $+0.0042$ & $[-0.0113, +0.0192]$ \\
+\multicolumn{7}{l}{five-study protocol, ModRank} \\
+bladder & $+0.0433$ & $+0.0257$ & $[+0.0135, +0.0375]$ & $+0.0175$ & $+0.0176$ & $[+0.0021, +0.0332]$ \\
+head and neck & $+0.0236$ & $+0.0175$ & $[+0.0039, +0.0315]$ & $+0.0062$ & $+0.0084$ & $[-0.0079, +0.0243]$ \\
+stomach & $+0.0318$ & $+0.0234$ & $[+0.0094, +0.0379]$ & $+0.0084$ & $+0.0075$ & $[-0.0075, +0.0220]$ \\
 \midrule
-\multicolumn{6}{l}{external cohorts, transcriptome} \\
-GSE32894 (Lund) & $+0.0581$ & $+0.0183$ & $[-0.0069, +0.0420]$ & $+0.0409$ & $[+0.0040, +0.0775]$ \\
-GSE31684 (cystectomy) & $+0.0253$ & $+0.0150$ & $[-0.0148, +0.0436]$ & $+0.0007$ & $[-0.0325, +0.0335]$ \\
+\multicolumn{7}{l}{external cohorts, transcriptome} \\
+GSE32894 (Lund) & $+0.0586$ & $+0.0197$ & $[-0.0047, +0.0434]$ & $+0.0389$ & $+0.0397$ & $[+0.0011, +0.0780]$ \\
+GSE31684 (cystectomy) & $+0.0324$ & $+0.0149$ & $[-0.0139, +0.0431]$ & $+0.0175$ & $+0.0093$ & $[-0.0211, +0.0390]$ \\
 \bottomrule
 \end{tabular}}
-\caption{The inflation $D$ against a score without information combined by the same rule. The
-excess is the mean of 6,000 bootstrap replicates of $D$ minus the benchmark, which can differ in the
-last digits from the difference of the two printed values. The five-study rows use that protocol's
+\caption{The inflation $D$ against a score without information combined by the same rule. The point
+excess is $D$ minus the benchmark on the full data. The excess is the mean of 6,000 bootstrap
+replicates of $D$ minus the benchmark, averaged in each replicate over 20 random draws. The two differ
+where the bootstrap distribution is not centred on the full-data value, most in the cystectomy
+cohort. The five-study rows use that protocol's
 clinical file and a single penalty selection, as in Supplementary Note~\ref{note:fivecohort}. The
 external cohorts add the transcriptome to each reference.}
 \label{tab:nulld}
@@ -824,8 +845,9 @@ external cohorts add the transcriptome to each reference.}
 
 \paragraph{Where the excess appears.} The excess has an interval that excludes zero for ModRank and
 PIBD on the development cohort, for bladder under the five-study protocol and in the Lund cohort. It
-does not for SurvPath, for any of the four further architectures, for head and neck or stomach, or
-in the cystectomy cohort. Under the five-study protocol it is resolved in bladder, where grade takes
+does not for SurvPath, for three of the four further architectures, for head and neck or stomach,
+or in the cystectomy cohort. DeepMISL's excess is negative, with an interval below zero, for the
+reason given above. Under the five-study protocol it is resolved in bladder, where grade takes
 almost one value, and not in the two studies where grade varies more, in line with the protocol's
 prediction that $D$ would be smaller there. The Lund cohort, where grade varies and the excess is resolved, does not
 fit that account, so its determinants are not settled.
@@ -851,8 +873,8 @@ age or sex, so both of its models omit them.
 The models follow Supplementary Note~\ref{note:geo}, with ridge Cox and the penalty chosen by inner
 cross-validation, five repeats of stratified five-fold cross-validation, and a paired bootstrap of the
 repeat-averaged scores. Before any new cohort was scored, the same code reproduced the stage-block and
-grade-block concordances of the two cohorts analysed there (0.6590 and 0.5066 in GSE31684, 0.8672 and
-0.7255 in GSE32894).
+grade-block concordances of the two cohorts analysed there (0.6591 and 0.5059 in GSE31684, 0.8672 and
+0.7262 in GSE32894).
 
 \begin{table}[h]
 \centering
@@ -862,15 +884,15 @@ grade-block concordances of the two cohorts analysed there (0.6590 and 0.5066 in
 \toprule
 cohort & setting & endpoint & $n$ / events & entropy & C, stage & C, grade & gap & 95\% interval \\
 \midrule
-TCGA-BLCA & benchmark & DSS & 359 / 113 & 0.311 & 0.6218 & 0.5658 & $+0.0560$ & $[+0.0042, +0.1087]$ \\
-TCGA-HNSC & benchmark & DSS & 394 / 117 & 0.643 & 0.5450 & 0.5027 & $+0.0423$ & $[-0.0265, +0.1113]$ \\
-TCGA-STAD & benchmark & DSS & 319 / 84 & 0.623 & 0.5819 & 0.5358 & $+0.0461$ & $[-0.0191, +0.1091]$ \\
-GSE31684 & cystectomy & DSS & 93 / 38 & 0.345 & 0.6590 & 0.5066 & $+0.1523$ & $[+0.0581, +0.2660]$ \\
-GSE32894 & mixed & DSS & 224 / 25 & 0.961 & 0.8672 & 0.7255 & $+0.1417$ & $[+0.0782, +0.2054]$ \\
-GSE19915 & mixed & DSS & 85 / 25 & 0.767 & 0.6795 & 0.5505 & $+0.1290$ & $[-0.0303, +0.2522]$ \\
-E-MTAB-1803 & MIBC & OS & 146 / 86 & 0.306 & 0.6827 & 0.4365 & $+0.2461$ & $[+0.1776, +0.3314]$ \\
-GSE13507 & mixed & CSS & 165 / 32 & 0.946 & 0.8599 & 0.7820 & $+0.0779$ & $[-0.0121, +0.1640]$ \\
-E-MTAB-4321 & NMIBC & PFS & 462 / 31 & 0.676 & 0.8217 & 0.7334 & $+0.0883$ & $[+0.0351, +0.1438]$ \\
+TCGA-BLCA & benchmark & DSS & 359 / 113 & 0.311 & 0.6219 & 0.5642 & $+0.0577$ & $[+0.0060, +0.1098]$ \\
+TCGA-HNSC & benchmark & DSS & 394 / 117 & 0.643 & 0.5450 & 0.5042 & $+0.0408$ & $[-0.0278, +0.1099]$ \\
+TCGA-STAD & benchmark & DSS & 319 / 84 & 0.623 & 0.5841 & 0.5364 & $+0.0477$ & $[-0.0167, +0.1096]$ \\
+GSE31684 & cystectomy & DSS & 93 / 38 & 0.345 & 0.6591 & 0.5059 & $+0.1532$ & $[+0.0586, +0.2661]$ \\
+GSE32894 & mixed & DSS & 224 / 25 & 0.961 & 0.8672 & 0.7262 & $+0.1410$ & $[+0.0799, +0.2051]$ \\
+GSE19915 & mixed & DSS & 85 / 25 & 0.767 & 0.6956 & 0.5344 & $+0.1612$ & $[+0.0262, +0.2828]$ \\
+E-MTAB-1803 & MIBC & OS & 146 / 86 & 0.306 & 0.6855 & 0.4323 & $+0.2532$ & $[+0.1868, +0.3413]$ \\
+GSE13507 & mixed & CSS & 165 / 32 & 0.946 & 0.8604 & 0.7818 & $+0.0787$ & $[-0.0109, +0.1643]$ \\
+E-MTAB-4321 & NMIBC & PFS & 462 / 31 & 0.676 & 0.8219 & 0.7331 & $+0.0888$ & $[+0.0356, +0.1443]$ \\
 \bottomrule
 \end{tabular}}
 \caption{A stage-based against a grade-based clinical model in every cohort with a usable grade. The
@@ -885,13 +907,126 @@ from the difference of the two printed concordances.}
 \end{table}
 
 \paragraph{Result.} Stage outperforms grade in all nine cohorts, and the interval excludes
-zero in five, four of them external. The largest gap, $+0.2461$, is in the muscle-invasive cohort
+zero in six, five of them external. The largest gap, $+0.2532$, is in the muscle-invasive cohort
 E-MTAB-1803, where 94.5\% of tumours share one grade, as the protocol predicted. Stage also leads in
-the non-muscle-invasive cohort E-MTAB-4321 ($+0.0883$), where the protocol allowed the gap to be small
-or negative. Across the nine cohorts the gap does not track grade's entropy (Spearman $-0.10$), so
+the non-muscle-invasive cohort E-MTAB-4321 ($+0.0888$), where the protocol allowed the gap to be small
+or negative. Across the nine cohorts the gap does not track grade's entropy (Spearman $-0.07$), so
 the benchmark's three-point consistency check in the main text's Figure~2d does not extend. The
 direction does extend. These cohorts differ in setting, platform and endpoint, and no pooled
 estimate is formed.
+
+%% ============================================================================ NOTE 10
+\snote{Amendment A2: the Cox risk sets and tied ranks}
+\label{note:amendA2}
+
+\paragraph{The defects.} Review found two defects in the survival functions that every arm passes
+through. The Cox fit indexed each event's risk set by the event's own row in the time-sorted data, so
+patients who shared the event's time but were sorted before it were left out. The objective was
+therefore not the Breslow partial likelihood that the protocol states, and it depended on the order
+of tied rows. The development cohort has 36 tied times, 24 of them with an event, covering 75
+patients. Within-fold percentiles broke exact ties in the order of NumPy's default sort, which is
+unspecified and differs between builds. The corrected fit gives every event all patients whose time
+is at least its own, and tied scores share their average rank. Before use, the corrected objective
+was checked against an exhaustive computation of the Breslow likelihood and shown to be invariant to
+the order of the rows. It equals the original objective when no times tie, and its gradient agrees
+with finite differences.
+
+\paragraph{The procedure.} The amendment's protocol was written before any result was regenerated.
+Each script that produces a reported result was first run with the original functions and had to
+reproduce its committed output, and was then run with the corrected ones. Folds, seeds, penalty
+grids, bootstrap draws and every threshold were unchanged. The development campaign, the
+confirmatory run (0.7260) and the constants of the frozen protocol, including the noise floor of
+0.0073, are reported as recorded. One comparator was added, stacking whose ridge is chosen from
+$\{0.1, 1, 10, 100\}$ by three-fold cross-validation over the inner out-of-fold percentiles. On the
+development cohort it reaches $0.7147 \pm 0.0048$, and ModRank exceeds it by $+0.0055$
+($[-0.0071, +0.0180]$). In none of the five studies does its difference from the rank average have
+an interval that excludes zero (Supplementary Table~\ref{tab:fusion}).
+
+\paragraph{What moved.} Supplementary Table~\ref{tab:amendA2} lists the headline quantities before
+and after. Most moved by less than 0.003. The larger movements follow from ties. DeepMISL's risks were
+constant within the validation fold in 13 of its 25 retraining--fold pairs. Ranked by row order,
+those ties had passed the order of the patients into its concordance, whereas with shared ranks a
+constant fold adds nothing, so its $D$ fell from $+0.034$ to $+0.005$ (Supplementary
+Note~\ref{note:nulld}). The stage and grade models of GSE19915 predict from a few categories, and
+their gap rose from $+0.129$ to $+0.161$.
+
+\paragraph{What changed in the text.} Four statements changed with these values. Five of the six external
+cohorts, not four, now give the stage-based reference an interval that excludes zero. Three of the
+four further architectures, not four, have a $D$ resolved from zero, and DeepMISL's excess is below
+zero. In GSE48075 the permutation-screened variant fell below the stage block instead of approaching
+it. The selection bar moved from 0.7716 to 0.7708, and the primary still does not clear it. No other
+count, ordering or significance statement in the manuscript changed.
+
+\begin{table}[h]
+\centering
+{\small
+\begin{tabular}{lrr}
+\toprule
+quantity & before & after \\
+\midrule
+\multicolumn{3}{l}{\emph{TCGA-BLCA}} \\
+ModRank, mean over five seeds & 0.7212 & 0.7214 \\
+ModRank, SD over seeds & 0.0048 & 0.0043 \\
+clinical reference with grade & 0.5666 & 0.5664 \\
+clinical reference with stage & 0.6638 & 0.6637 \\
+stage minus grade & $+0.0972$ & $+0.0972$ \\
+ModRank minus best verified published & $+0.0422$ & $+0.0424$ \\
+ModRank minus SurvPath + clinical & $+0.0340$ & $+0.0338$ \\
+ModRank minus PIBD + clinical & $+0.0249$ & $+0.0252$ \\
+ModRank minus clinical, Holm p & 0.0652 & 0.0668 \\
+calibration slope & 0.7704 & 0.7707 \\
+IPA at two years & 0.1516 & 0.1515 \\
+selection-null bar & 0.7716 & 0.7708 \\
+inductive variant & 0.7247 & 0.7245 \\
+\midrule
+\multicolumn{3}{l}{\emph{Fusion, TCGA-BLCA}} \\
+concatenation, mean & 0.6864 & 0.6861 \\
+stacking (ridge 1), mean & 0.7106 & 0.7108 \\
+stacking (tuned ridge), mean & new & 0.7147 \\
+ModRank minus concatenation & $+0.0340$ & $+0.0342$ \\
+ModRank minus stacking (ridge 1) & $+0.0108$ & $+0.0097$ \\
+ModRank minus stacking (tuned ridge) & new & $+0.0055$ \\
+re-partitions, minus stacking & $+0.0111$ & $+0.0107$ \\
+re-partitions, minus concatenation & $+0.0464$ & $+0.0471$ \\
+held-out sites, ModRank & 0.7210 & 0.7204 \\
+held-out sites, stacking & 0.6855 & 0.6855 \\
+\midrule
+\multicolumn{3}{l}{\emph{Added value}} \\
+D, ModRank & $+0.0610$ & $+0.0637$ \\
+D, SurvPath & $+0.0417$ & $+0.0407$ \\
+D, PIBD & $+0.0496$ & $+0.0506$ \\
+excess over no signal, ModRank & $+0.0185$ & $+0.0214$ \\
+excess over no signal, SurvPath & $+0.0114$ & $+0.0104$ \\
+excess over no signal, PIBD & $+0.0228$ & $+0.0235$ \\
+D, DeepMISL with pathways & $+0.0340$ & $+0.0054$ \\
+GSE32894, D & $+0.0581$ & $+0.0586$ \\
+GSE32894, excess over no signal & $+0.0409$ & $+0.0397$ \\
+GSE31684, excess over no signal & $+0.0007$ & $+0.0093$ \\
+GSE19915, stage minus grade reference & $+0.1290$ & $+0.1612$ \\
+\midrule
+\multicolumn{3}{l}{\emph{Five studies}} \\
+BLCA, ModRank & 0.6992 & 0.7003 \\
+BLCA, ModRank minus clinical & $+0.0774$ & $+0.0784$ \\
+BLCA, ModRank minus stacking (tuned ridge) & new & $+0.0043$ \\
+BRCA, ModRank & 0.6892 & 0.6881 \\
+BRCA, ModRank minus clinical & $+0.1208$ & $+0.1201$ \\
+BRCA, ModRank minus stacking (tuned ridge) & new & $-0.0259$ \\
+COADREAD, ModRank & 0.7141 & 0.7140 \\
+COADREAD, ModRank minus clinical & $+0.0236$ & $+0.0231$ \\
+COADREAD, ModRank minus stacking (tuned ridge) & new & $+0.0119$ \\
+HNSC, ModRank & 0.6179 & 0.6179 \\
+HNSC, ModRank minus clinical & $+0.0726$ & $+0.0725$ \\
+HNSC, ModRank minus stacking (tuned ridge) & new & $+0.0030$ \\
+STAD, ModRank & 0.6311 & 0.6290 \\
+STAD, ModRank minus clinical & $+0.0495$ & $+0.0452$ \\
+STAD, ModRank minus stacking (tuned ridge) & new & $+0.0424$ \\
+\bottomrule
+\end{tabular}}
+\caption{Headline quantities before and after amendment A2. Before is the value each result file
+held with the original tie handling, after is the regenerated value. The tuned-ridge stacking was
+added by the amendment and has no earlier value. Five-study rows use that protocol.}
+\label{tab:amendA2}
+\end{table}
 
 %% ============================================================================ TRIPOD+AI
 \clearpage

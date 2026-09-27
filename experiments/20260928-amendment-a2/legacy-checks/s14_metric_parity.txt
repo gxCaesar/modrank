@@ -1,0 +1,1 @@
+Legacy check of analysis/s14_metric_parity.py, BLCA_A2=0, reading the committed experiments/20260818-reporting-dump/results/reporting-dump.json: the output equals the committed experiments/20260818-reporting-dump/results/metric-parity.json in every field (identical: True). The committed file predates this script.

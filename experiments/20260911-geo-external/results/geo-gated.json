@@ -9,95 +9,95 @@
    "comparable_pairs": 4186,
    "cv": {
     "transcriptome": {
-     "mean": 0.8163,
-     "sd": 0.0165,
-     "repeat_averaged_vector_c": 0.8267
+     "mean": 0.8164,
+     "sd": 0.0167,
+     "repeat_averaged_vector_c": 0.8269
     },
     "clinical_stage": {
      "mean": 0.8672,
-     "sd": 0.0125,
-     "repeat_averaged_vector_c": 0.8723
+     "sd": 0.0136,
+     "repeat_averaged_vector_c": 0.8729
     },
     "modrank": {
-     "mean": 0.8779,
-     "sd": 0.0072,
-     "repeat_averaged_vector_c": 0.8907
+     "mean": 0.8792,
+     "sd": 0.0074,
+     "repeat_averaged_vector_c": 0.8911
     },
     "concatenated": {
-     "mean": 0.8216,
-     "sd": 0.0263,
-     "repeat_averaged_vector_c": 0.8364
+     "mean": 0.8219,
+     "sd": 0.0261,
+     "repeat_averaged_vector_c": 0.8368
     },
     "stacked": {
-     "mean": 0.8747,
-     "sd": 0.0081,
-     "repeat_averaged_vector_c": 0.8874
+     "mean": 0.8748,
+     "sd": 0.0083,
+     "repeat_averaged_vector_c": 0.8877
     },
     "gated": {
-     "mean": 0.8779,
-     "sd": 0.0072
+     "mean": 0.8792,
+     "sd": 0.0074
     }
    },
    "paired_vs_modrank": {
     "clinical_stage": {
-     "mean": 0.0185,
+     "mean": 0.0182,
      "ci95": [
-      -0.0245,
-      0.0622
+      -0.0237,
+      0.0611
      ],
-     "p_two_sided": 0.381,
-     "p_holm": 0.762
+     "p_two_sided": 0.3807,
+     "p_holm": 0.7614
     },
     "transcriptome": {
-     "mean": 0.0641,
+     "mean": 0.0642,
      "ci95": [
-      0.027,
-      0.1061
+      0.0271,
+      0.1065
      ],
-     "p_two_sided": 0.001,
-     "p_holm": 0.004
+     "p_two_sided": 0.0007,
+     "p_holm": 0.0028
     },
     "concatenated": {
-     "mean": 0.0543,
+     "mean": 0.0541,
      "ci95": [
-      0.0182,
-      0.098
+      0.0183,
+      0.0973
      ],
-     "p_two_sided": 0.0013,
-     "p_holm": 0.004
+     "p_two_sided": 0.002,
+     "p_holm": 0.006
     },
     "stacked": {
      "mean": 0.0034,
      "ci95": [
-      -0.0044,
-      0.0129
+      -0.0041,
+      0.0136
      ],
-     "p_two_sided": 0.44,
-     "p_holm": 0.762
+     "p_two_sided": 0.4633,
+     "p_holm": 0.7614
     }
    },
    "floor": {
-    "sd": 0.0109,
-    "bar": 0.0217
+    "sd": 0.0113,
+    "bar": 0.0225
    },
    "decision": {
     "margins": {
-     "clinical_stage": 0.0107,
-     "transcriptome": 0.0616,
-     "concatenated": 0.0563,
-     "stacked": 0.0032
+     "clinical_stage": 0.012,
+     "transcriptome": 0.0628,
+     "concatenated": 0.0573,
+     "stacked": 0.0044
     },
     "clears_every_comparator": false
    },
    "gated_decision": {
     "margins": {
-     "clinical_stage": 0.0107,
-     "transcriptome": 0.0616,
-     "concatenated": 0.0563,
-     "stacked": 0.0032,
+     "clinical_stage": 0.012,
+     "transcriptome": 0.0628,
+     "concatenated": 0.0573,
+     "stacked": 0.0044,
      "modrank": 0.0
     },
-    "bar": 0.0217,
+    "bar": 0.0225,
     "succeeds": false
    },
    "gate_pass_counts": {
@@ -111,102 +111,102 @@
    "comparable_pairs": 1749,
    "cv": {
     "transcriptome": {
-     "mean": 0.5683,
-     "sd": 0.0232,
-     "repeat_averaged_vector_c": 0.5718
+     "mean": 0.5701,
+     "sd": 0.0225,
+     "repeat_averaged_vector_c": 0.5732
     },
     "clinical_stage": {
-     "mean": 0.6322,
-     "sd": 0.0106,
-     "repeat_averaged_vector_c": 0.6398
+     "mean": 0.6334,
+     "sd": 0.0116,
+     "repeat_averaged_vector_c": 0.6412
     },
     "modrank": {
-     "mean": 0.6384,
-     "sd": 0.0281,
-     "repeat_averaged_vector_c": 0.6584
+     "mean": 0.6389,
+     "sd": 0.0268,
+     "repeat_averaged_vector_c": 0.6664
     },
     "concatenated": {
-     "mean": 0.5864,
-     "sd": 0.0236,
-     "repeat_averaged_vector_c": 0.5952
+     "mean": 0.5872,
+     "sd": 0.0238,
+     "repeat_averaged_vector_c": 0.5941
     },
     "stacked": {
-     "mean": 0.6201,
-     "sd": 0.0318,
-     "repeat_averaged_vector_c": 0.6401
+     "mean": 0.6197,
+     "sd": 0.0288,
+     "repeat_averaged_vector_c": 0.6415
     },
     "gated": {
-     "mean": 0.6326,
-     "sd": 0.0225
+     "mean": 0.617,
+     "sd": 0.0453
     }
    },
    "paired_vs_modrank": {
     "clinical_stage": {
-     "mean": 0.018,
+     "mean": 0.0246,
      "ci95": [
-      -0.0648,
-      0.1021
+      -0.061,
+      0.1103
      ],
-     "p_two_sided": 0.6667,
-     "p_holm": 0.9794
+     "p_two_sided": 0.5677,
+     "p_holm": 0.6874
     },
     "transcriptome": {
-     "mean": 0.0884,
+     "mean": 0.0951,
      "ci95": [
-      -0.0119,
-      0.1866
+      -0.0034,
+      0.1931
      ],
-     "p_two_sided": 0.083,
-     "p_holm": 0.332
+     "p_two_sided": 0.0593,
+     "p_holm": 0.2372
     },
     "concatenated": {
-     "mean": 0.0647,
+     "mean": 0.0739,
      "ci95": [
-      -0.0288,
-      0.1559
+      -0.0165,
+      0.1626
      ],
-     "p_two_sided": 0.166,
-     "p_holm": 0.498
+     "p_two_sided": 0.107,
+     "p_holm": 0.321
     },
     "stacked": {
-     "mean": 0.0182,
+     "mean": 0.0248,
      "ci95": [
-      -0.0361,
-      0.0733
+      -0.0265,
+      0.0777
      ],
-     "p_two_sided": 0.4897,
-     "p_holm": 0.9794
+     "p_two_sided": 0.3437,
+     "p_holm": 0.6874
     }
    },
    "floor": {
-    "sd": 0.027,
-    "bar": 0.054
+    "sd": 0.0262,
+    "bar": 0.0524
    },
    "decision": {
     "margins": {
-     "clinical_stage": 0.0062,
-     "transcriptome": 0.0701,
-     "concatenated": 0.052,
-     "stacked": 0.0183
+     "clinical_stage": 0.0055,
+     "transcriptome": 0.0688,
+     "concatenated": 0.0517,
+     "stacked": 0.0192
     },
     "clears_every_comparator": false
    },
    "gated_decision": {
     "margins": {
-     "clinical_stage": 0.0004,
-     "transcriptome": 0.0643,
-     "concatenated": 0.0462,
-     "stacked": 0.0125,
-     "modrank": -0.0058
+     "clinical_stage": -0.0164,
+     "transcriptome": 0.0469,
+     "concatenated": 0.0298,
+     "stacked": -0.0027,
+     "modrank": -0.0219
     },
-    "bar": 0.054,
+    "bar": 0.0524,
     "succeeds": false
    },
    "gate_pass_counts": {
     "transcriptome_pass": 9,
-    "clinical_stage_pass": 18,
+    "clinical_stage_pass": 17,
     "transcriptome_fail": 16,
-    "clinical_stage_fail": 7
+    "clinical_stage_fail": 8
    }
   }
  },
@@ -225,7 +225,7 @@
    "repeat": 0,
    "fold": 0,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8701,
+   "inner_oof_c": 0.8696,
    "null_q95": 0.6106,
    "passes": true
   },
@@ -234,8 +234,8 @@
    "repeat": 0,
    "fold": 1,
    "arm": "transcriptome",
-   "inner_oof_c": 0.7402,
-   "null_q95": 0.6115,
+   "inner_oof_c": 0.74,
+   "null_q95": 0.6109,
    "passes": true
   },
   {
@@ -243,8 +243,8 @@
    "repeat": 0,
    "fold": 1,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8743,
-   "null_q95": 0.6133,
+   "inner_oof_c": 0.8755,
+   "null_q95": 0.6147,
    "passes": true
   },
   {
@@ -253,7 +253,7 @@
    "fold": 2,
    "arm": "transcriptome",
    "inner_oof_c": 0.7753,
-   "null_q95": 0.6087,
+   "null_q95": 0.6083,
    "passes": true
   },
   {
@@ -261,7 +261,7 @@
    "repeat": 0,
    "fold": 2,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8749,
+   "inner_oof_c": 0.8745,
    "null_q95": 0.6112,
    "passes": true
   },
@@ -270,8 +270,8 @@
    "repeat": 0,
    "fold": 3,
    "arm": "transcriptome",
-   "inner_oof_c": 0.8026,
-   "null_q95": 0.6116,
+   "inner_oof_c": 0.8015,
+   "null_q95": 0.611,
    "passes": true
   },
   {
@@ -279,8 +279,8 @@
    "repeat": 0,
    "fold": 3,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8024,
-   "null_q95": 0.6172,
+   "inner_oof_c": 0.8011,
+   "null_q95": 0.6171,
    "passes": true
   },
   {
@@ -289,7 +289,7 @@
    "fold": 4,
    "arm": "transcriptome",
    "inner_oof_c": 0.7667,
-   "null_q95": 0.604,
+   "null_q95": 0.6038,
    "passes": true
   },
   {
@@ -297,7 +297,7 @@
    "repeat": 0,
    "fold": 4,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8773,
+   "inner_oof_c": 0.8755,
    "null_q95": 0.6039,
    "passes": true
   },
@@ -306,7 +306,7 @@
    "repeat": 1,
    "fold": 0,
    "arm": "transcriptome",
-   "inner_oof_c": 0.7867,
+   "inner_oof_c": 0.7865,
    "null_q95": 0.6081,
    "passes": true
   },
@@ -315,8 +315,8 @@
    "repeat": 1,
    "fold": 0,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8746,
-   "null_q95": 0.61,
+   "inner_oof_c": 0.8758,
+   "null_q95": 0.6087,
    "passes": true
   },
   {
@@ -324,7 +324,7 @@
    "repeat": 1,
    "fold": 1,
    "arm": "transcriptome",
-   "inner_oof_c": 0.7296,
+   "inner_oof_c": 0.7282,
    "null_q95": 0.6128,
    "passes": true
   },
@@ -333,8 +333,8 @@
    "repeat": 1,
    "fold": 1,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8696,
-   "null_q95": 0.6069,
+   "inner_oof_c": 0.8691,
+   "null_q95": 0.6065,
    "passes": true
   },
   {
@@ -342,8 +342,8 @@
    "repeat": 1,
    "fold": 2,
    "arm": "transcriptome",
-   "inner_oof_c": 0.7867,
-   "null_q95": 0.6129,
+   "inner_oof_c": 0.7846,
+   "null_q95": 0.6132,
    "passes": true
   },
   {
@@ -351,8 +351,8 @@
    "repeat": 1,
    "fold": 2,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8448,
-   "null_q95": 0.6023,
+   "inner_oof_c": 0.8442,
+   "null_q95": 0.6019,
    "passes": true
   },
   {
@@ -361,7 +361,7 @@
    "fold": 3,
    "arm": "transcriptome",
    "inner_oof_c": 0.7403,
-   "null_q95": 0.6024,
+   "null_q95": 0.603,
    "passes": true
   },
   {
@@ -370,7 +370,7 @@
    "fold": 3,
    "arm": "clinical_stage",
    "inner_oof_c": 0.8545,
-   "null_q95": 0.6104,
+   "null_q95": 0.6096,
    "passes": true
   },
   {
@@ -387,8 +387,8 @@
    "repeat": 1,
    "fold": 4,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.76,
-   "null_q95": 0.6102,
+   "inner_oof_c": 0.7616,
+   "null_q95": 0.6103,
    "passes": true
   },
   {
@@ -397,7 +397,7 @@
    "fold": 0,
    "arm": "transcriptome",
    "inner_oof_c": 0.8507,
-   "null_q95": 0.6092,
+   "null_q95": 0.6086,
    "passes": true
   },
   {
@@ -405,8 +405,8 @@
    "repeat": 2,
    "fold": 0,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.7857,
-   "null_q95": 0.6088,
+   "inner_oof_c": 0.7845,
+   "null_q95": 0.6095,
    "passes": true
   },
   {
@@ -423,8 +423,8 @@
    "repeat": 2,
    "fold": 1,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8593,
-   "null_q95": 0.6092,
+   "inner_oof_c": 0.8574,
+   "null_q95": 0.6088,
    "passes": true
   },
   {
@@ -432,8 +432,8 @@
    "repeat": 2,
    "fold": 2,
    "arm": "transcriptome",
-   "inner_oof_c": 0.7698,
-   "null_q95": 0.6173,
+   "inner_oof_c": 0.7696,
+   "null_q95": 0.617,
    "passes": true
   },
   {
@@ -441,8 +441,8 @@
    "repeat": 2,
    "fold": 2,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.842,
-   "null_q95": 0.6105,
+   "inner_oof_c": 0.8442,
+   "null_q95": 0.6101,
    "passes": true
   },
   {
@@ -459,8 +459,8 @@
    "repeat": 2,
    "fold": 3,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8434,
-   "null_q95": 0.615,
+   "inner_oof_c": 0.8447,
+   "null_q95": 0.6157,
    "passes": true
   },
   {
@@ -469,7 +469,7 @@
    "fold": 4,
    "arm": "transcriptome",
    "inner_oof_c": 0.7262,
-   "null_q95": 0.6129,
+   "null_q95": 0.6126,
    "passes": true
   },
   {
@@ -477,8 +477,8 @@
    "repeat": 2,
    "fold": 4,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.852,
-   "null_q95": 0.6134,
+   "inner_oof_c": 0.8506,
+   "null_q95": 0.6146,
    "passes": true
   },
   {
@@ -495,8 +495,8 @@
    "repeat": 3,
    "fold": 0,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8667,
-   "null_q95": 0.6112,
+   "inner_oof_c": 0.8651,
+   "null_q95": 0.6104,
    "passes": true
   },
   {
@@ -513,8 +513,8 @@
    "repeat": 3,
    "fold": 1,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8587,
-   "null_q95": 0.6177,
+   "inner_oof_c": 0.8599,
+   "null_q95": 0.6167,
    "passes": true
   },
   {
@@ -522,7 +522,7 @@
    "repeat": 3,
    "fold": 2,
    "arm": "transcriptome",
-   "inner_oof_c": 0.7848,
+   "inner_oof_c": 0.7852,
    "null_q95": 0.6149,
    "passes": true
   },
@@ -531,8 +531,8 @@
    "repeat": 3,
    "fold": 2,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8407,
-   "null_q95": 0.6226,
+   "inner_oof_c": 0.8401,
+   "null_q95": 0.6234,
    "passes": true
   },
   {
@@ -549,8 +549,8 @@
    "repeat": 3,
    "fold": 3,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8654,
-   "null_q95": 0.6128,
+   "inner_oof_c": 0.866,
+   "null_q95": 0.6121,
    "passes": true
   },
   {
@@ -559,7 +559,7 @@
    "fold": 4,
    "arm": "transcriptome",
    "inner_oof_c": 0.7872,
-   "null_q95": 0.6096,
+   "null_q95": 0.6097,
    "passes": true
   },
   {
@@ -567,7 +567,7 @@
    "repeat": 3,
    "fold": 4,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8211,
+   "inner_oof_c": 0.8222,
    "null_q95": 0.6074,
    "passes": true
   },
@@ -576,8 +576,8 @@
    "repeat": 4,
    "fold": 0,
    "arm": "transcriptome",
-   "inner_oof_c": 0.8184,
-   "null_q95": 0.6094,
+   "inner_oof_c": 0.8173,
+   "null_q95": 0.6092,
    "passes": true
   },
   {
@@ -585,8 +585,8 @@
    "repeat": 4,
    "fold": 0,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8321,
-   "null_q95": 0.6139,
+   "inner_oof_c": 0.8307,
+   "null_q95": 0.614,
    "passes": true
   },
   {
@@ -594,8 +594,8 @@
    "repeat": 4,
    "fold": 1,
    "arm": "transcriptome",
-   "inner_oof_c": 0.8281,
-   "null_q95": 0.6049,
+   "inner_oof_c": 0.826,
+   "null_q95": 0.6086,
    "passes": true
   },
   {
@@ -603,8 +603,8 @@
    "repeat": 4,
    "fold": 1,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8503,
-   "null_q95": 0.6057,
+   "inner_oof_c": 0.8492,
+   "null_q95": 0.6059,
    "passes": true
   },
   {
@@ -612,7 +612,7 @@
    "repeat": 4,
    "fold": 2,
    "arm": "transcriptome",
-   "inner_oof_c": 0.8053,
+   "inner_oof_c": 0.8043,
    "null_q95": 0.6165,
    "passes": true
   },
@@ -621,8 +621,8 @@
    "repeat": 4,
    "fold": 2,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8508,
-   "null_q95": 0.6061,
+   "inner_oof_c": 0.8495,
+   "null_q95": 0.6069,
    "passes": true
   },
   {
@@ -630,8 +630,8 @@
    "repeat": 4,
    "fold": 3,
    "arm": "transcriptome",
-   "inner_oof_c": 0.751,
-   "null_q95": 0.5992,
+   "inner_oof_c": 0.7516,
+   "null_q95": 0.5993,
    "passes": true
   },
   {
@@ -639,8 +639,8 @@
    "repeat": 4,
    "fold": 3,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8884,
-   "null_q95": 0.6105,
+   "inner_oof_c": 0.8879,
+   "null_q95": 0.6099,
    "passes": true
   },
   {
@@ -649,7 +649,7 @@
    "fold": 4,
    "arm": "transcriptome",
    "inner_oof_c": 0.7821,
-   "null_q95": 0.6137,
+   "null_q95": 0.6132,
    "passes": true
   },
   {
@@ -657,8 +657,8 @@
    "repeat": 4,
    "fold": 4,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.8892,
-   "null_q95": 0.6181,
+   "inner_oof_c": 0.889,
+   "null_q95": 0.6192,
    "passes": true
   },
   {
@@ -666,8 +666,8 @@
    "repeat": 0,
    "fold": 0,
    "arm": "transcriptome",
-   "inner_oof_c": 0.6354,
-   "null_q95": 0.5933,
+   "inner_oof_c": 0.6427,
+   "null_q95": 0.5924,
    "passes": true
   },
   {
@@ -676,7 +676,7 @@
    "fold": 0,
    "arm": "clinical_stage",
    "inner_oof_c": 0.6034,
-   "null_q95": 0.5911,
+   "null_q95": 0.5915,
    "passes": true
   },
   {
@@ -720,8 +720,8 @@
    "repeat": 0,
    "fold": 3,
    "arm": "transcriptome",
-   "inner_oof_c": 0.5414,
-   "null_q95": 0.5998,
+   "inner_oof_c": 0.5388,
+   "null_q95": 0.599,
    "passes": false
   },
   {
@@ -738,7 +738,7 @@
    "repeat": 0,
    "fold": 4,
    "arm": "transcriptome",
-   "inner_oof_c": 0.6296,
+   "inner_oof_c": 0.6305,
    "null_q95": 0.5953,
    "passes": true
   },
@@ -747,8 +747,8 @@
    "repeat": 0,
    "fold": 4,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.6069,
-   "null_q95": 0.5954,
+   "inner_oof_c": 0.6077,
+   "null_q95": 0.5958,
    "passes": true
   },
   {
@@ -756,8 +756,8 @@
    "repeat": 1,
    "fold": 0,
    "arm": "transcriptome",
-   "inner_oof_c": 0.5142,
-   "null_q95": 0.5946,
+   "inner_oof_c": 0.5206,
+   "null_q95": 0.5955,
    "passes": false
   },
   {
@@ -765,8 +765,8 @@
    "repeat": 1,
    "fold": 0,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.5772,
-   "null_q95": 0.5978,
+   "inner_oof_c": 0.5768,
+   "null_q95": 0.5974,
    "passes": false
   },
   {
@@ -774,16 +774,16 @@
    "repeat": 1,
    "fold": 1,
    "arm": "transcriptome",
-   "inner_oof_c": 0.5936,
-   "null_q95": 0.5904,
-   "passes": true
+   "inner_oof_c": 0.5868,
+   "null_q95": 0.5905,
+   "passes": false
   },
   {
    "cohort": "GSE48075",
    "repeat": 1,
    "fold": 1,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.6105,
+   "inner_oof_c": 0.61,
    "null_q95": 0.5886,
    "passes": true
   },
@@ -792,8 +792,8 @@
    "repeat": 1,
    "fold": 2,
    "arm": "transcriptome",
-   "inner_oof_c": 0.6012,
-   "null_q95": 0.5962,
+   "inner_oof_c": 0.603,
+   "null_q95": 0.5966,
    "passes": true
   },
   {
@@ -801,7 +801,7 @@
    "repeat": 1,
    "fold": 2,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.6397,
+   "inner_oof_c": 0.6387,
    "null_q95": 0.603,
    "passes": true
   },
@@ -810,8 +810,8 @@
    "repeat": 1,
    "fold": 3,
    "arm": "transcriptome",
-   "inner_oof_c": 0.5665,
-   "null_q95": 0.5926,
+   "inner_oof_c": 0.5583,
+   "null_q95": 0.593,
    "passes": false
   },
   {
@@ -820,7 +820,7 @@
    "fold": 3,
    "arm": "clinical_stage",
    "inner_oof_c": 0.6396,
-   "null_q95": 0.5922,
+   "null_q95": 0.5926,
    "passes": true
   },
   {
@@ -837,8 +837,8 @@
    "repeat": 1,
    "fold": 4,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.6625,
-   "null_q95": 0.5893,
+   "inner_oof_c": 0.6646,
+   "null_q95": 0.5902,
    "passes": true
   },
   {
@@ -855,17 +855,17 @@
    "repeat": 2,
    "fold": 0,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.5998,
-   "null_q95": 0.5962,
-   "passes": true
+   "inner_oof_c": 0.5934,
+   "null_q95": 0.5939,
+   "passes": false
   },
   {
    "cohort": "GSE48075",
    "repeat": 2,
    "fold": 1,
    "arm": "transcriptome",
-   "inner_oof_c": 0.6232,
-   "null_q95": 0.6023,
+   "inner_oof_c": 0.6241,
+   "null_q95": 0.6027,
    "passes": true
   },
   {
@@ -874,7 +874,7 @@
    "fold": 1,
    "arm": "clinical_stage",
    "inner_oof_c": 0.6528,
-   "null_q95": 0.5958,
+   "null_q95": 0.5963,
    "passes": true
   },
   {
@@ -891,7 +891,7 @@
    "repeat": 2,
    "fold": 2,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.5444,
+   "inner_oof_c": 0.5426,
    "null_q95": 0.5965,
    "passes": false
   },
@@ -900,8 +900,8 @@
    "repeat": 2,
    "fold": 3,
    "arm": "transcriptome",
-   "inner_oof_c": 0.5753,
-   "null_q95": 0.5901,
+   "inner_oof_c": 0.5866,
+   "null_q95": 0.5888,
    "passes": false
   },
   {
@@ -909,8 +909,8 @@
    "repeat": 2,
    "fold": 3,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.584,
-   "null_q95": 0.5902,
+   "inner_oof_c": 0.5822,
+   "null_q95": 0.5905,
    "passes": false
   },
   {
@@ -936,17 +936,17 @@
    "repeat": 3,
    "fold": 0,
    "arm": "transcriptome",
-   "inner_oof_c": 0.595,
-   "null_q95": 0.5968,
-   "passes": false
+   "inner_oof_c": 0.5977,
+   "null_q95": 0.596,
+   "passes": true
   },
   {
    "cohort": "GSE48075",
    "repeat": 3,
    "fold": 0,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.6492,
-   "null_q95": 0.595,
+   "inner_oof_c": 0.6483,
+   "null_q95": 0.5955,
    "passes": true
   },
   {
@@ -955,7 +955,7 @@
    "fold": 1,
    "arm": "transcriptome",
    "inner_oof_c": 0.5637,
-   "null_q95": 0.5893,
+   "null_q95": 0.5906,
    "passes": false
   },
   {
@@ -963,7 +963,7 @@
    "repeat": 3,
    "fold": 1,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.6609,
+   "inner_oof_c": 0.6614,
    "null_q95": 0.592,
    "passes": true
   },
@@ -972,8 +972,8 @@
    "repeat": 3,
    "fold": 2,
    "arm": "transcriptome",
-   "inner_oof_c": 0.4991,
-   "null_q95": 0.5932,
+   "inner_oof_c": 0.4954,
+   "null_q95": 0.5937,
    "passes": false
   },
   {
@@ -981,8 +981,8 @@
    "repeat": 3,
    "fold": 2,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.5923,
-   "null_q95": 0.6015,
+   "inner_oof_c": 0.5904,
+   "null_q95": 0.6038,
    "passes": false
   },
   {
@@ -1008,8 +1008,8 @@
    "repeat": 3,
    "fold": 4,
    "arm": "transcriptome",
-   "inner_oof_c": 0.575,
-   "null_q95": 0.5923,
+   "inner_oof_c": 0.5794,
+   "null_q95": 0.5927,
    "passes": false
   },
   {
@@ -1017,8 +1017,8 @@
    "repeat": 3,
    "fold": 4,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.6249,
-   "null_q95": 0.5891,
+   "inner_oof_c": 0.6253,
+   "null_q95": 0.5883,
    "passes": true
   },
   {
@@ -1027,7 +1027,7 @@
    "fold": 0,
    "arm": "transcriptome",
    "inner_oof_c": 0.6036,
-   "null_q95": 0.5939,
+   "null_q95": 0.5958,
    "passes": true
   },
   {
@@ -1044,8 +1044,8 @@
    "repeat": 4,
    "fold": 1,
    "arm": "transcriptome",
-   "inner_oof_c": 0.5535,
-   "null_q95": 0.5928,
+   "inner_oof_c": 0.5526,
+   "null_q95": 0.5901,
    "passes": false
   },
   {
@@ -1053,7 +1053,7 @@
    "repeat": 4,
    "fold": 1,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.5695,
+   "inner_oof_c": 0.569,
    "null_q95": 0.5974,
    "passes": false
   },
@@ -1062,8 +1062,8 @@
    "repeat": 4,
    "fold": 2,
    "arm": "transcriptome",
-   "inner_oof_c": 0.4794,
-   "null_q95": 0.5937,
+   "inner_oof_c": 0.4901,
+   "null_q95": 0.5933,
    "passes": false
   },
   {
@@ -1071,8 +1071,8 @@
    "repeat": 4,
    "fold": 2,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.5766,
-   "null_q95": 0.5923,
+   "inner_oof_c": 0.5793,
+   "null_q95": 0.5924,
    "passes": false
   },
   {
@@ -1080,8 +1080,8 @@
    "repeat": 4,
    "fold": 3,
    "arm": "transcriptome",
-   "inner_oof_c": 0.5693,
-   "null_q95": 0.5954,
+   "inner_oof_c": 0.5701,
+   "null_q95": 0.595,
    "passes": false
   },
   {
@@ -1089,8 +1089,8 @@
    "repeat": 4,
    "fold": 3,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.6934,
-   "null_q95": 0.5937,
+   "inner_oof_c": 0.6943,
+   "null_q95": 0.5932,
    "passes": true
   },
   {
@@ -1098,8 +1098,8 @@
    "repeat": 4,
    "fold": 4,
    "arm": "transcriptome",
-   "inner_oof_c": 0.4793,
-   "null_q95": 0.5993,
+   "inner_oof_c": 0.4802,
+   "null_q95": 0.598,
    "passes": false
   },
   {
@@ -1107,10 +1107,10 @@
    "repeat": 4,
    "fold": 4,
    "arm": "clinical_stage",
-   "inner_oof_c": 0.616,
+   "inner_oof_c": 0.6164,
    "null_q95": 0.5936,
    "passes": true
   }
  ],
- "runtime_seconds": 214.8
+ "runtime_seconds": 204.3
 }

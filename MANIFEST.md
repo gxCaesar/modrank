@@ -1,15 +1,15 @@
 # Manifest
 
-424 files. Every one of them is listed here, and every file listed here is in the tree; the builder asserts both directions and refuses to write this file otherwise.
+448 files. Every one of them is listed here, and every file listed here is in the tree; the builder asserts both directions and refuses to write this file otherwise.
 
 | directory | files | what it holds |
 |---|---|---|
-| `analysis/` | 65 | the code that produced every reported number, one script per question |
+| `analysis/` | 67 | the code that produced every reported number, one script per question |
 | `development/` | 33 | the frozen protocol, the split manifest it binds, the ledger of all 269 scored candidates, the error atlas, and the component pre-registrations |
 | `experiments/20260817-blca-confirm/` | 29 | the confirmatory run: command, environment, log, code and result files |
 | `experiments/20260818-selection-null/` | 4 | the 200 outcome-permuted runs behind the corrected selection bar, and the encoder swap |
 | `experiments/20260818-reporting-dump/` | 2 | the reporting dump the manuscript's tables read from |
-| `paper/` | 43 | the manuscript sources, the figure builders and their source data, and the number-consistency checker |
+| `paper/` | 54 | the manuscript sources, the figure builders and their source data, and the number-consistency checker |
 | `docs/` | 2 | data card and model card |
 
 ## At the top level
@@ -24,6 +24,8 @@
 | `MANIFEST.md` | this file |
 | `README.md` | what this is, and how to run it |
 | `charter.md` | what the study committed to before it ran, including its kill criterion |
+| `experiments/20260816-survpath-blca-repro/results/tcga_blca__nll_surv_a0.5_lr5e-04_l2Weight_0.0001_5foldcv_b1_survival_months_dss_dim1_768_patches_4096_wsiDim_256_epochs_5_fusion_None_modality_survpath_pathT_combine/model_tcga_blca__nll_surv_a0.5_lr5e-04_l2Weight_0.0001_5foldcv_b1_survival_months_dss_dim1_768_patches_4096_wsiDim_256_epochs_5_fusion_None_modality_survpath_pathT_combine.txt` |  |
+| `experiments/20260817-pibd-blca-repro/results/tcga_blca_b32_survival_months_dss_wsiDim_256_epochs_30_omics_pathways_pathT_combine_s1/model_parameters.txt` |  |
 | `experiments/20260820-encoder-parity/README.md` |  |
 | `experiments/20260820-encoder-parity/results/encoder-parity.json` |  |
 | `experiments/20260820-encoder-parity/run.sh` |  |
@@ -261,5 +263,14 @@
 | `experiments/20260927-geo-percase/results/geo-external-rerun.json` |  |
 | `experiments/20260927-geo-percase/results/geo-percase.jsonl` |  |
 | `experiments/20260927-geo-percase/run.sh` |  |
+| `experiments/20260928-amendment-a2/README.md` |  |
+| `experiments/20260928-amendment-a2/legacy-checks/README.md` |  |
+| `experiments/20260928-amendment-a2/legacy-checks/driver-results.jsonl` |  |
+| `experiments/20260928-amendment-a2/legacy-checks/s12_reporting_dump.txt` |  |
+| `experiments/20260928-amendment-a2/legacy-checks/s14_metric_parity.txt` |  |
+| `experiments/20260928-amendment-a2/legacy-checks/s19_unified_fusion_and_added_value.txt` |  |
+| `experiments/20260928-amendment-a2/legacy-checks/s7b_why_grade_fails.txt` |  |
+| `experiments/20260928-amendment-a2/protocol.md` |  |
+| `experiments/20260928-amendment-a2/results/before-after.json` |  |
 | `verify_release.py` | recomputes the manuscript's load-bearing numbers from these files |
 

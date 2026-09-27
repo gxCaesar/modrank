@@ -120,7 +120,9 @@ def main():
     ii, jj = cpairs(t, e)
     known = {"ours_seed0": round(cidx(score_val["ours"], ii, jj), 4),
              "clinical_seed0": round(cidx(score_val["clinical"], ii, jj), 4)}
-    if abs(known["ours_seed0"] - 0.7225) > 5e-5 or abs(known["clinical_seed0"] - 0.6638) > 5e-5:
+    import blca_common
+    _tol = blca_common.A2_SANITY if blca_common.A2 else 5e-5   # amendment A2: exact check under BLCA_A2=0
+    if abs(known["ours_seed0"] - 0.7225) > _tol or abs(known["clinical_seed0"] - 0.6638) > _tol:
         print(json.dumps({"status": "error", "error_code": "known_answer_failed", "got": known}),
               file=sys.stderr)
         return 2

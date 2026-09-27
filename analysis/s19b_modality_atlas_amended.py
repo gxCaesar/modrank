@@ -26,6 +26,7 @@ import sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import blca_common                                           # noqa: E402
 from blca_common import Cohort, fitapply                     # noqa: E402
 from s5_step1_atlas import conditional_probe, spearman       # noqa: E402
 from s6_amend_clinical import dimaf_clinical                 # noqa: E402
@@ -61,7 +62,10 @@ def main():
            "spearman_survpath_vs_clinical": old["redundancy"]["spearman_survpath_vs_clinical"],
            "tied_q05_clinical": old["conditional_probe"]["clinically_tied_q05"]["arms"]["clinical"],
            "tied_q05_titan": old["conditional_probe"]["clinically_tied_q05"]["arms"]["titan"]}
-    ok = all(abs(round(got[k], 4) - KNOWN[k]) < 6e-4 for k in KNOWN)
+    # amendment A2: KNOWN holds pre-A2 values, checked to 6e-4 under BLCA_A2=0 and only as a
+    # gross-failure bound under A2 (the pre-A2 run itself is reproduced separately)
+    tol = blca_common.A2_SANITY if blca_common.A2 else 6e-4
+    ok = all(abs(round(got[k], 4) - KNOWN[k]) < tol for k in KNOWN)
     for k in KNOWN:
         print("  known answer %-32s %.4f (want %.4f)" % (k, got[k], KNOWN[k]), file=sys.stderr)
     if not ok:
@@ -73,7 +77,9 @@ def main():
     new = probe(co, np.hstack([dc["age"], dc["fem"], dc["stage"]]))
     rep = {"artifact_type": "s19b_modality_atlas_amended", "phase_of_origin": "post_freeze_2026-09-11",
            "reportable": True,
-           "known_answer": {"reproduced": True, "pre_amendment_block": got},
+           "known_answer": ({"reproduced": True, "pre_amendment_block": got} if not blca_common.A2 else
+                            {"reproduced": False, "pre_amendment_block": got, "amendment": "A2",
+                             "checked_within": blca_common.A2_SANITY}),
            "clinical_block": "amended: age, sex, AJCC pathologic tumour stage from DIMAF's split "
                              "files; seed 0; atlas functions imported unchanged",
            **new}

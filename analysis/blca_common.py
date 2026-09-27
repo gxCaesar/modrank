@@ -15,11 +15,21 @@ from __future__ import annotations
 import collections
 import csv
 import glob
+import os
 import pickle
 
 import numpy as np
 
 ALPHAS = (1.0, 8.0, 64.0, 512.0, 4096.0)
+
+# Amendment A2 (experiments/20260928-amendment-a2/protocol.md). Unset or "1": the Breslow partial
+# likelihood with full tied risk sets, and average ranks for tied values. "0": the original
+# implementations, kept only so that every regenerated result can first be shown to reproduce its
+# committed pre-A2 value under them.
+A2 = os.environ.get("BLCA_A2", "1") != "0"
+# Under A2 a known answer pinned to a pre-A2 value can no longer be met exactly; the script's exact
+# check is carried by its BLCA_A2=0 rerun instead, and this bound only catches a gross failure.
+A2_SANITY = 0.01
 
 
 # --------------------------------------------------------------------------- survival primitives
@@ -48,24 +58,38 @@ def cindex(risk, t, e):
     return cidx(risk, *cpairs(t, e))
 
 
+def cox_objective(b, Xo, to, eo, alpha, a2=None):
+    """Penalised negative partial log-likelihood and gradient, rows already sorted by time.
+
+    Breslow: an event at time t is compared with every subject whose time is at least t, so all
+    members of a tied-time group share one risk set (the first row of the group indexes it). The
+    pre-A2 form indexed each event's own row, leaving out tied subjects sorted before it."""
+    a2 = A2 if a2 is None else a2
+    ev = np.flatnonzero(eo == 1)
+    eta = Xo @ b
+    m = float(eta.max())
+    ex = np.exp(eta - m)
+    rs = np.cumsum(ex[::-1])[::-1]
+    rx = np.cumsum((Xo * ex[:, None])[::-1], axis=0)[::-1]
+    if a2:
+        first = np.searchsorted(to, to, side="left")
+        rs, rx = rs[first], rx[first]
+    ll = float(np.sum(eta[ev] - (np.log(rs[ev]) + m)))
+    g = (Xo[ev] - rx[ev] / rs[ev, None]).sum(0)
+    return -ll + 0.5 * alpha * float(b @ b), -g + alpha * b
+
+
 def cox_fit(X, t, e, alpha):
-    """Breslow-tie ridge Cox by L-BFGS on the exact partial likelihood and its gradient."""
+    """Breslow-tie ridge Cox by L-BFGS on the partial likelihood and its gradient."""
     from scipy.optimize import minimize
-    o = np.argsort(t)
-    Xo, eo = X[o], e[o]
+    o = np.argsort(t, kind="stable") if A2 else np.argsort(t)
+    Xo, eo, to = X[o], e[o], t[o]
     ev = np.flatnonzero(eo == 1)
     if ev.size < 2:
         return np.zeros(X.shape[1])
 
     def f(b):
-        eta = Xo @ b
-        m = float(eta.max())
-        ex = np.exp(eta - m)
-        rs = np.cumsum(ex[::-1])[::-1]
-        rx = np.cumsum((Xo * ex[:, None])[::-1], axis=0)[::-1]
-        ll = float(np.sum(eta[ev] - (np.log(rs[ev]) + m)))
-        g = (Xo[ev] - rx[ev] / rs[ev, None]).sum(0)
-        return -ll + 0.5 * alpha * float(b @ b), -g + alpha * b
+        return cox_objective(b, Xo, to, eo, alpha)
 
     return minimize(f, np.zeros(X.shape[1]), jac=True, method="L-BFGS-B",
                     options={"maxiter": 400, "gtol": 1e-8}).x
@@ -88,8 +112,46 @@ def fitapply(Xtr, ttr, etr, Xte, seed=0, alphas=ALPHAS):
     return ((Xte - mu) / sd) @ cox_fit((Xtr - mu) / sd, ttr, etr, ba)
 
 
+STACK_RIDGES = (0.1, 1.0, 10.0, 100.0)
+
+
+def stack_weights_tuned(Zi, t, e, inner, ridges=STACK_RIDGES):
+    """Amendment A2's added comparator: stacking weights whose ridge is chosen by three-fold
+    cross-validation over the training fold's inner out-of-fold percentiles Zi, on the same inner
+    split that produced them. Selection follows fitapply: pooled concordance of the held-out linear
+    predictors, first strict maximum in grid order. Returns (ridge, weights refit on all of Zi)."""
+    best, ba = -1.0, ridges[0]
+    for al in ridges:
+        ip = np.zeros(len(t))
+        for ite in inner:
+            itr = np.setdiff1d(np.arange(len(t)), ite)
+            mu = Zi[itr].mean(0)
+            ip[ite] = (Zi[ite] - mu) @ cox_fit(Zi[itr] - mu, t[itr], e[itr], al)
+        c = cindex(ip, t, e)
+        if c == c and c > best:
+            best, ba = c, al
+    return ba, cox_fit(Zi - Zi.mean(0), t, e, ba)
+
+
+def avg_rank(v):
+    """Zero-based ranks with ties given their average rank, independent of any sort order."""
+    _, inv, cnt = np.unique(np.asarray(v), return_inverse=True, return_counts=True)
+    start = np.cumsum(cnt) - cnt
+    return (start + (cnt - 1) / 2.0)[np.ravel(inv)]
+
+
+def ranks(v):
+    """Ranks for rank correlations: average ranks for ties under A2, argsort order before it."""
+    if A2:
+        return avg_rank(v)
+    return np.argsort(np.argsort(v)).astype(float)
+
+
 def pct(v):
-    """Rank to [0, 1]. Applied within a fold before pooling, for every arm equally."""
+    """Rank to [0, 1]. Applied within a fold before pooling, for every arm equally. Tied values share
+    their average rank (A2); before A2 they were ordered by NumPy's unspecified argsort."""
+    if A2:
+        return avg_rank(v) / max(1.0, len(v) - 1.0)
     return np.argsort(np.argsort(v)).astype(float) / max(1.0, len(v) - 1.0)
 
 

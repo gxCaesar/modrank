@@ -3,19 +3,20 @@
  "phase_of_origin": "post_freeze_2026-09-11",
  "reportable": true,
  "known_answer": {
-  "reproduced": true,
+  "reproduced": false,
   "pairs": 24219,
-  "slide_all": 0.6596,
-  "omics_all": 0.651,
-  "clinical_all": 0.6638,
+  "slide_all": 0.6595,
+  "omics_all": 0.6512,
+  "clinical_all": 0.6637,
   "clinical_dev_all": 0.6856,
   "note_values_reproduced": {
    "q40_pairs": true,
-   "q40_slide": true,
-   "q40_omics": true,
-   "double_pairs": true,
-   "double_slide": true
-  }
+   "q40_slide": false,
+   "q40_omics": false,
+   "double_pairs": false,
+   "double_slide": false
+  },
+  "amendment": "A2"
  },
  "definitions": {
   "scores": "seed-0 within-fold percentiles",
@@ -25,45 +26,45 @@
  },
  "all_pairs": {
   "pairs": 24219,
-  "slide": 0.6596,
-  "omics": 0.651,
-  "clinical": 0.6638
+  "slide": 0.6595,
+  "omics": 0.6512,
+  "clinical": 0.6637
  },
  "transcriptome_tied_q40": {
   "pairs": 9688,
-  "slide": 0.6396,
-  "omics": 0.5604,
-  "clinical": 0.6455
+  "slide": 0.6391,
+  "omics": 0.5606,
+  "clinical": 0.6453
  },
  "transcriptome_and_clinically_tied_q40": {
   "amended_clinical_block": {
-   "pairs": 3893,
-   "slide": 0.6212,
-   "omics": 0.5543,
-   "clinical": 0.5634
+   "pairs": 3892,
+   "slide": 0.6193,
+   "omics": 0.554,
+   "clinical": 0.5633
   },
   "development_era_clinical_block": {
-   "pairs": 3969,
-   "slide": 0.6165
+   "pairs": 3978,
+   "slide": 0.6149
   },
   "amended_block_from_the_rounded_committed_vector": {
-   "pairs": 3892,
-   "slide": 0.6209,
+   "pairs": 3891,
+   "slide": 0.619,
    "why_reported": "the committed vectors are rounded to five decimals, and a gap-quantile restriction is sensitive to the cross-fold collisions that rounding creates"
   }
  },
  "sensitivity_transcriptome_tied_and_same_stage_group": {
   "amended_stage_group": {
-   "pairs": 3183,
-   "slide": 0.603,
-   "omics": 0.5533,
-   "clinical": 0.5357
+   "pairs": 3182,
+   "slide": 0.601,
+   "omics": 0.5537,
+   "clinical": 0.5358
   },
   "development_era_stage_group": {
-   "pairs": 2335,
-   "slide": 0.6066,
-   "omics": 0.5542,
-   "clinical": 0.4972
+   "pairs": 2334,
+   "slide": 0.6048,
+   "omics": 0.5553,
+   "clinical": 0.4974
   }
  }
 }

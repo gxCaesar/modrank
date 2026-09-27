@@ -11,14 +11,14 @@
   "what_was_permuted": "the (time, event) pair across cases; folds, features and the estimator are untouched",
   "null_single_candidate": {
    "mean": 0.5011,
-   "sd": 0.0397,
+   "sd": 0.0398,
    "note": "THIS is the sigma the max-of-N formula wanted: the SD of one candidate's own absolute out-of-fold score with no signal present"
   },
   "null_max_over_the_family": {
-   "mean": 0.5383,
-   "sd": 0.03,
-   "q95": 0.5926,
-   "max": 0.6218,
+   "mean": 0.5382,
+   "sd": 0.0301,
+   "q95": 0.5918,
+   "max": 0.6211,
    "note": "needs no independence assumption, because the candidates were correlated in exactly the way the real search was"
   },
   "bars": {
@@ -28,63 +28,70 @@
     "inflation": 0.0244,
     "bar": 0.7034
    },
+   "as_frozen_in_the_protocol": {
+    "sigma": 0.0073,
+    "N": 211,
+    "inflation": 0.0239,
+    "bar": 0.7029,
+    "note": "read from development/benchmark-protocol.json; this is what was frozen"
+   },
    "gaussian_with_the_null_sigma": {
-    "sigma": 0.0397,
+    "sigma": 0.0398,
     "N": 206,
-    "inflation": 0.1297,
-    "bar": 0.8087
+    "inflation": 0.1299,
+    "bar": 0.8089
    },
    "empirical_max_q95": {
-    "inflation": 0.0926,
-    "bar": 0.7716,
+    "inflation": 0.0918,
+    "bar": 0.7708,
     "note": "the null max is centred on 0.5, so its excess over chance is the inflation a search of this family buys"
    }
   },
   "real_family_for_reference": {
-   "rank_avg:slide+omics+clinical": 0.7225,
+   "rank_avg:slide+omics+clinical": 0.7224,
    "pct_sum:slide+omics+clinical": 0.7204,
-   "pct_sum:omics+clinical": 0.7042,
-   "pct_sum:slide+clinical": 0.703,
-   "rank_avg:omics+clinical": 0.7005,
-   "rank_avg:slide+clinical": 0.7
+   "pct_sum:omics+clinical": 0.7039,
+   "pct_sum:slide+clinical": 0.7029,
+   "rank_avg:omics+clinical": 0.7002,
+   "rank_avg:slide+clinical": 0.6997
   }
  },
  "B_encoder_swap": {
   "question": "is the lead the METHOD or the 2025 encoder? Hold the method fixed, swap the slide block, keep omics and clinical identical.",
   "encoders": {
    "titan": {
-    "slide_alone": 0.6596,
-    "full_method": 0.7225
+    "slide_alone": 0.6595,
+    "full_method": 0.7224
    },
    "gigassl_ctranspath": {
     "slide_alone": 0.5807,
-    "full_method": 0.6869
+    "full_method": 0.687
    },
    "gigassl_gigapath": {
-    "slide_alone": 0.6004,
-    "full_method": 0.6967
+    "slide_alone": 0.6005,
+    "full_method": 0.6975
    },
    "gigassl_optimus": {
-    "slide_alone": 0.5802,
-    "full_method": 0.6907
+    "slide_alone": 0.5794,
+    "full_method": 0.6912
    },
    "gigassl_phikon": {
-    "slide_alone": 0.5328,
-    "full_method": 0.674
+    "slide_alone": 0.5329,
+    "full_method": 0.6726
    },
    "provgigapath": {
-    "slide_alone": 0.6051,
-    "full_method": 0.6986
+    "slide_alone": 0.6053,
+    "full_method": 0.6983
    },
    "uni_meanpool": {
-    "slide_alone": 0.5224,
-    "full_method": 0.6704
+    "slide_alone": 0.5226,
+    "full_method": 0.6695
    }
   },
-  "slide_arm_span": 0.1372,
-  "full_method_span": 0.0521,
-  "full_method_min": 0.6704,
-  "full_method_max": 0.7225,
+  "slide_arm_span": 0.1369,
+  "full_method_span": 0.0529,
+  "full_method_min": 0.6695,
+  "full_method_max": 0.7224,
   "incumbent_published": 0.679,
   "encoders_whose_full_method_still_beats_the_incumbent": 5,
   "reading": "if the full method clears the incumbent on every encoder, the lead is not TITAN. If it clears on one, the lead is TITAN and the paper must say so."

@@ -1,7 +1,7 @@
 {
  "artifact_type": "s6_amendment_A1_clinical_provenance",
  "amends": "development/benchmark-protocol.json",
- "executed_at_utc": "2026-08-17T08:42:07Z",
+ "executed_at_utc": "2026-09-27T07:09:18Z",
  "phase_of_origin": "frozen_amended",
  "defect": {
   "what": "the frozen run's clinical block took stage and T/N/M from a cached GDC query that selected the FIRST diagnosis record; cases with several diagnoses got the wrong tumour",
@@ -26,43 +26,43 @@
  "per_seed": [
   {
    "seed": 0,
-   "OURS": 0.7225,
-   "wsi_titan": 0.6596,
-   "omics_combine": 0.651,
-   "clinical": 0.6638
+   "OURS": 0.7224,
+   "wsi_titan": 0.6595,
+   "omics_combine": 0.6512,
+   "clinical": 0.6637
   },
   {
    "seed": 1,
-   "OURS": 0.7248,
-   "wsi_titan": 0.6515,
-   "omics_combine": 0.6733,
+   "OURS": 0.7247,
+   "wsi_titan": 0.6517,
+   "omics_combine": 0.6731,
    "clinical": 0.6657
   },
   {
    "seed": 2,
-   "OURS": 0.7129,
-   "wsi_titan": 0.655,
-   "omics_combine": 0.647,
+   "OURS": 0.7143,
+   "wsi_titan": 0.6553,
+   "omics_combine": 0.65,
    "clinical": 0.6638
   },
   {
    "seed": 3,
-   "OURS": 0.7243,
+   "OURS": 0.7247,
    "wsi_titan": 0.6553,
-   "omics_combine": 0.6664,
-   "clinical": 0.6644
+   "omics_combine": 0.6665,
+   "clinical": 0.6648
   },
   {
    "seed": 4,
-   "OURS": 0.7216,
-   "wsi_titan": 0.6472,
-   "omics_combine": 0.6681,
-   "clinical": 0.6666
+   "OURS": 0.721,
+   "wsi_titan": 0.6471,
+   "omics_combine": 0.6682,
+   "clinical": 0.6668
   }
  ],
  "primary": {
-  "value": 0.7212,
-  "sd_over_seeds": 0.0048,
+  "value": 0.7214,
+  "sd_over_seeds": 0.0043,
   "seeds": [
    0,
    1,
@@ -77,58 +77,58 @@
   "clinical_arm": 0.6856
  },
  "arms_seed0": {
-  "clinical_age_sex_stage_from_DIMAF_file": 0.6638,
-  "clinical_age_sex_GRADE_from_DIMAF_file": 0.5666,
+  "clinical_age_sex_stage_from_DIMAF_file": 0.6637,
+  "clinical_age_sex_GRADE_from_DIMAF_file": 0.5664,
   "stage_minus_grade": 0.0972,
-  "wsi_titan": 0.6596,
-  "omics_combine": 0.651,
-  "OURS": 0.7225,
-  "OURS_with_grade_instead_of_stage": 0.6856,
-  "survpath_plus_same_clinical": 0.681
+  "wsi_titan": 0.6595,
+  "omics_combine": 0.6512,
+  "OURS": 0.7224,
+  "OURS_with_grade_instead_of_stage": 0.687,
+  "survpath_plus_same_clinical": 0.6805
  },
  "comparisons": {
   "vs_clinical_alone": {
    "mean": 0.0587,
    "se": 0.0252,
    "ci95": [
-    0.0085,
-    0.1076
+    0.0086,
+    0.1082
    ],
-   "p_two_sided": 0.021
+   "p_two_sided": 0.0213
   },
   "vs_titan_alone": {
    "mean": 0.0629,
    "se": 0.0216,
    "ci95": [
-    0.0205,
-    0.1056
+    0.0208,
+    0.1058
    ],
    "p_two_sided": 0.0043
   },
   "vs_survpath_plus_same_clinical": {
-   "mean": 0.0417,
-   "se": 0.0201,
+   "mean": 0.0421,
+   "se": 0.0202,
    "ci95": [
-    0.0027,
-    0.0817
+    0.0028,
+    0.0821
    ],
-   "p_two_sided": 0.037
+   "p_two_sided": 0.0353
   },
   "vs_DIMAF_published": {
-   "ours_primary": 0.7212,
+   "ours_primary": 0.7214,
    "incumbent": 0.679,
-   "gap": 0.0422,
+   "gap": 0.0424,
    "fold_identity": "SETTLED -- 5 of 5 validation folds identical at case level, 359-case universe identical"
   }
  },
  "decision": {
   "rule": "primary > 0.7029 AND sd over seeds <= 0.0145",
   "target": 0.7029,
-  "primary": 0.7212,
+  "primary": 0.7214,
   "primary_clears_target": true,
-  "seed_sd": 0.0048,
+  "seed_sd": 0.0043,
   "seed_sd_within_bar": true,
   "VERDICT": "PASS",
-  "moved_from_frozen_run": -0.0048
+  "moved_from_frozen_run": -0.0046
  }
 }

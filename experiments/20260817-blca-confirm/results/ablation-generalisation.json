@@ -4,46 +4,46 @@
  "note": "the frozen arm, unchanged; nothing here re-tunes anything",
  "B_ablation_bladder": {
   "arms": {
-   "wsi": 0.6596,
-   "omics": 0.651,
-   "clin": 0.6638,
-   "wsi + omics": 0.6841,
-   "wsi + clin": 0.7,
-   "omics + clin": 0.7005,
-   "wsi + omics + clin": 0.7225
+   "wsi": 0.6595,
+   "omics": 0.6512,
+   "clin": 0.6637,
+   "wsi + omics": 0.6835,
+   "wsi + clin": 0.6997,
+   "omics + clin": 0.7002,
+   "wsi + omics + clin": 0.7224
   },
   "leave_one_out": {
-   "drop wsi   (omics + clin)": -0.022,
-   "drop omics (wsi + clin)": -0.0225,
-   "drop clin  (wsi + omics)": -0.0384
+   "drop wsi   (omics + clin)": -0.0222,
+   "drop omics (wsi + clin)": -0.0227,
+   "drop clin  (wsi + omics)": -0.0389
   },
   "paired_vs_full": {
    "omics + clin": {
-    "mean": -0.0218,
+    "mean": -0.0221,
     "se": 0.0136,
     "ci95": [
-     -0.0481,
-     0.0038
+     -0.0484,
+     0.0039
     ],
-    "p_two_sided": 0.1047
+    "p_two_sided": 0.0967
    },
    "wsi + clin": {
-    "mean": -0.0222,
+    "mean": -0.0224,
     "se": 0.0141,
     "ci95": [
-     -0.0489,
-     0.006
+     -0.0495,
+     0.0055
     ],
-    "p_two_sided": 0.11
+    "p_two_sided": 0.1073
    },
    "wsi + omics": {
-    "mean": -0.0385,
-    "se": 0.0154,
+    "mean": -0.039,
+    "se": 0.0156,
     "ci95": [
-     -0.0687,
-     -0.0084
+     -0.0696,
+     -0.0086
     ],
-    "p_two_sided": 0.01
+    "p_two_sided": 0.0107
    }
   }
  },
@@ -55,26 +55,26 @@
    "clinical": 6
   },
   "parameters_in_the_combination": 0,
-  "fit_seconds_all_three_views_five_folds": 7.8,
-  "peak_rss_mb": 208.8,
+  "fit_seconds_all_three_views_five_folds": 8.2,
+  "peak_rss_mb": 205.8,
   "hardware": "one CPU core-set on a laptop; no GPU is used by any arm of this method",
   "contrast": "the published entrants are attention and prototype networks trained end to end; this is three penalised Cox models and the combination has no parameters"
  },
  "J_omics_sensitivity": {
   "groupings": {
    "combine": {
-    "omics_alone": 0.651,
-    "full_arm_with_this_grouping": 0.7225,
+    "omics_alone": 0.6512,
+    "full_arm_with_this_grouping": 0.7224,
     "n_pathways": 275
    },
    "hallmarks": {
-    "omics_alone": 0.6061,
-    "full_arm_with_this_grouping": 0.6964,
+    "omics_alone": 0.606,
+    "full_arm_with_this_grouping": 0.6958,
     "n_pathways": 50
    },
    "xena": {
     "omics_alone": 0.6749,
-    "full_arm_with_this_grouping": 0.7314,
+    "full_arm_with_this_grouping": 0.7303,
     "n_pathways": 225
    }
   },
@@ -88,14 +88,14 @@
     "events": 113,
     "clinical_stage_source": "SurvPath datasets_csv/clinical_data (the DIMAF-file variant used for the headline is bladder-only)",
     "per_seed": [
-     0.6992,
-     0.7075,
-     0.6944,
-     0.7088,
-     0.704
+     0.7003,
+     0.7076,
+     0.6979,
+     0.7094,
+     0.7045
     ],
-    "primary_mean_over_seeds": 0.7028,
-    "sd_over_seeds": 0.006,
+    "primary_mean_over_seeds": 0.7039,
+    "sd_over_seeds": 0.0048,
     "published": {
      "MOAD-FNet": 0.691,
      "DIMAF": 0.679,
@@ -116,14 +116,14 @@
     "events": 60,
     "clinical_stage_source": "SurvPath datasets_csv/clinical_data",
     "per_seed": [
-     0.6892,
-     0.693,
-     0.7001,
-     0.7048,
-     0.7018
+     0.6881,
+     0.6915,
+     0.6997,
+     0.7034,
+     0.7017
     ],
-    "primary_mean_over_seeds": 0.6978,
-    "sd_over_seeds": 0.0065,
+    "primary_mean_over_seeds": 0.6969,
+    "sd_over_seeds": 0.0067,
     "published": {
      "APL": 0.794,
      "DSCASurv": 0.765,
@@ -133,7 +133,7 @@
      "SurvPath": 0.655
     },
     "best_published_any_protocol": 0.794,
-    "best_published_verified_folds": 0.759,
+    "best_published_verified_folds": 0.736,
     "beats_best_any": false,
     "beats_best_verified": false
    },
@@ -142,14 +142,14 @@
     "events": 37,
     "clinical_stage_source": "SurvPath datasets_csv/clinical_data",
     "per_seed": [
-     0.7141,
+     0.714,
      0.7352,
-     0.7328,
-     0.7285,
-     0.7272
+     0.7333,
+     0.7276,
+     0.7303
     ],
-    "primary_mean_over_seeds": 0.7276,
-    "sd_over_seeds": 0.0082,
+    "primary_mean_over_seeds": 0.7281,
+    "sd_over_seeds": 0.0084,
     "published": {
      "DSCASurv": 0.832,
      "APL": 0.812,
@@ -170,12 +170,12 @@
     "per_seed": [
      0.6179,
      0.6222,
-     0.6025,
-     0.6071,
-     0.6209
+     0.6031,
+     0.6075,
+     0.6212
     ],
-    "primary_mean_over_seeds": 0.6141,
-    "sd_over_seeds": 0.0088,
+    "primary_mean_over_seeds": 0.6144,
+    "sd_over_seeds": 0.0086,
     "published": {
      "DSCASurv": 0.666,
      "APL": 0.653,
@@ -192,14 +192,14 @@
     "events": 84,
     "clinical_stage_source": "SurvPath datasets_csv/clinical_data",
     "per_seed": [
-     0.6311,
-     0.643,
-     0.6395,
-     0.6551,
-     0.6482
+     0.629,
+     0.6418,
+     0.6377,
+     0.6489,
+     0.6466
     ],
-    "primary_mean_over_seeds": 0.6434,
-    "sd_over_seeds": 0.009,
+    "primary_mean_over_seeds": 0.6408,
+    "sd_over_seeds": 0.0079,
     "published": {
      "DSCASurv": 0.698,
      "APL": 0.686,

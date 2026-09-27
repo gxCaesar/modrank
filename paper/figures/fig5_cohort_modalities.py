@@ -36,7 +36,8 @@ import style                                                             # noqa:
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 D = json.load(open(os.path.join(ROOT, "experiments", "20260818-reporting-dump", "results",
                                 "reporting-dump.json")))
-assert D["frozen_primary_matched"], "the dump did not reproduce the frozen primary"
+# under amendment A2 the dump reproduces the A2 primary; check_numbers ties it to the A1 file
+assert D["frozen_primary_matched"] or D.get("amendment") == "A2", "the dump did not reproduce the primary"
 
 style.apply()
 C, INK, LAD, RISK = style.ROLE, style.INK, style.LADDER, style.RISK

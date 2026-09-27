@@ -29,6 +29,7 @@ import sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import blca_common                                                           # noqa: E402
 from blca_common import Cohort, cidx, cpairs, fitapply                    # noqa: E402
 from s5_omics_arm import load_rna, pathway_matrix                         # noqa: E402
 from s6_amend_clinical import dimaf_clinical                              # noqa: E402
@@ -89,10 +90,18 @@ def main():
         print("  seed %d  OURS=%.4f" % (sd, per_seed[-1]), file=sys.stderr, flush=True)
 
     primary = float(np.mean(per_seed))
-    assert abs(primary - FROZEN_PRIMARY) < 5e-5, (
-        "recomputed primary %.4f does not match the frozen %.4f; the run has drifted and no "
-        "figure may be built on this dump" % (primary, FROZEN_PRIMARY))
-    print("  primary %.4f matches the frozen value" % primary, file=sys.stderr)
+    if not blca_common.A2:
+        assert abs(primary - FROZEN_PRIMARY) < 5e-5, (
+            "recomputed primary %.4f does not match the frozen %.4f; the run has drifted and no "
+            "figure may be built on this dump" % (primary, FROZEN_PRIMARY))
+        print("  primary %.4f matches the frozen value" % primary, file=sys.stderr)
+    else:
+        # Amendment A2: this script first reproduced its committed output under BLCA_A2=0
+        # (experiments/20260928-amendment-a2/legacy-checks). The bound below only catches a gross
+        # failure of the corrected primitives; it is not a scientific threshold.
+        assert abs(primary - FROZEN_PRIMARY) < 0.01, "A2 primary %.4f is implausibly far from %.4f" % (
+            primary, FROZEN_PRIMARY)
+        print("  primary %.4f under A2 (pre-A2 %.4f)" % (primary, FROZEN_PRIMARY), file=sys.stderr)
 
     mean_arm = {k: np.vstack([a[k] for a in arms_by_seed]).mean(0)
                 for k in ("wsi_titan", "omics_combine", "clinical", "OURS")}
@@ -154,7 +163,8 @@ def main():
            "reportable": "descriptive only; nothing here fits, selects or compares anything new",
            "n": n, "events": int(co.e.sum()), "comparable_pairs": int(ii.size),
            "seeds": list(seeds), "per_seed_OURS": per_seed, "primary": round(primary, 4),
-           "frozen_primary_matched": True,
+                      "frozen_primary_matched": not blca_common.A2,
+           "amendment": "A2" if blca_common.A2 else None, "pre_A2_primary": FROZEN_PRIMARY,
            "fold_sizes": [int((fold_of == k).sum()) for k in range(len(fi))],
            "cases": cases, "pathways": paths}
     with open(a.out, "w") as fh:

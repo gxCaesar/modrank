@@ -116,9 +116,9 @@
   "source_file": "experiments/20260817-blca-confirm/results/reviewer-gaps.json",
   "field": "m_detectable_margin",
   "values": {
-   "case_level_bootstrap_se": 0.021,
-   "detectable_at_80pc_power_two_sided_0.05": 0.0589,
-   "power_of_the_observed_input_parity_margin": 0.355,
+   "case_level_bootstrap_se": 0.0211,
+   "detectable_at_80pc_power_two_sided_0.05": 0.059,
+   "power_of_the_observed_input_parity_margin": 0.352,
    "n": 359,
    "events": 113,
    "reading": "a two-sided test at this cohort's SE detects a margin of about 0.059 at 80% power. The nine published entries on this benchmark span 0.596 to 0.691 and consecutive entries differ by 0.002 to 0.012, so almost none of the published ORDERING is resolvable at this n -- a statement about the benchmark, not about any one method."
@@ -130,14 +130,14 @@
   "field": "canonical_arms_seed_averaged_scores",
   "values": {
    "construction": "per seed 0-4: fit, score out-of-fold, percentile-normalise within fold. Then average the five score vectors and re-normalise within fold. Both sides of every comparison get this identical treatment.",
-   "ours": 0.7237,
+   "ours": 0.7233,
    "slide_alone": 0.6535,
-   "omics_alone": 0.6648,
-   "clinical_alone": 0.6644,
-   "ours_without_clinical": 0.6897,
-   "survpath_plus_clinical": 0.6897,
-   "pibd_plus_clinical_best_val": 0.6989,
-   "pibd_plus_clinical_final_epoch": 0.6639,
+   "omics_alone": 0.6637,
+   "clinical_alone": 0.6645,
+   "ours_without_clinical": 0.69,
+   "survpath_plus_clinical": 0.6894,
+   "pibd_plus_clinical_best_val": 0.6982,
+   "pibd_plus_clinical_final_epoch": 0.6643,
    "not_the_primary_metric": "the pre-registered primary is 0.7212, the MEAN OF FIVE PER-SEED CONCORDANCES. This table's 'ours' is the concordance of the AVERAGED SCORE, which is a different and slightly higher quantity. Averaging favours the competitor if anything: its seeds are full retrainings, ours are inner-CV partitions."
   }
  },
@@ -156,12 +156,12 @@
      "logrank_p": 5.82e-05
     },
     "pibd_plus_same_clinical": {
-     "cindex": 0.6989,
-     "td_auc_8m": 0.781,
-     "td_auc_14m": 0.7516,
-     "td_auc_22m": 0.7385,
-     "ibs": 0.195,
-     "logrank_p": 4.3e-09
+     "cindex": 0.6982,
+     "td_auc_8m": 0.7794,
+     "td_auc_14m": 0.7505,
+     "td_auc_22m": 0.7372,
+     "ibs": 0.1951,
+     "logrank_p": 8.63e-09
     },
     "per_fold_cindex": [
      0.6038,
@@ -183,12 +183,12 @@
      "logrank_p": 0.0441
     },
     "pibd_plus_same_clinical": {
-     "cindex": 0.6639,
-     "td_auc_8m": 0.7039,
-     "td_auc_14m": 0.6988,
-     "td_auc_22m": 0.7027,
+     "cindex": 0.6643,
+     "td_auc_8m": 0.7054,
+     "td_auc_14m": 0.7008,
+     "td_auc_22m": 0.7028,
      "ibs": 0.1996,
-     "logrank_p": 9.38e-08
+     "logrank_p": 6.5e-08
     },
     "per_fold_cindex": [
      0.551,

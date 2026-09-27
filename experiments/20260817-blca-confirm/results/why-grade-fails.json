@@ -28,9 +28,9 @@
      "0": 2
     }
    },
-   "c_age_sex_grade": 0.5658,
-   "c_age_sex_stage": 0.6218,
-   "stage_minus_grade": 0.056
+   "c_age_sex_grade": 0.5642,
+   "c_age_sex_stage": 0.6219,
+   "stage_minus_grade": 0.0577
   },
   "brca": {
    "n": 871,
@@ -48,9 +48,9 @@
      "0": 2
     }
    },
-   "c_age_sex_grade": 0.4828,
-   "c_age_sex_stage": 0.5686,
-   "stage_minus_grade": 0.0858
+   "c_age_sex_grade": 0.4853,
+   "c_age_sex_stage": 0.5683,
+   "stage_minus_grade": 0.083
   },
   "coadread": {
    "n": 298,
@@ -68,9 +68,9 @@
      "0": 1
     }
    },
-   "c_age_sex_grade": 0.469,
-   "c_age_sex_stage": 0.6898,
-   "stage_minus_grade": 0.2208
+   "c_age_sex_grade": 0.4691,
+   "c_age_sex_stage": 0.6902,
+   "stage_minus_grade": 0.2211
   },
   "hnsc": {
    "n": 394,
@@ -100,9 +100,9 @@
      "0": 21
     }
    },
-   "c_age_sex_grade": 0.5027,
+   "c_age_sex_grade": 0.5042,
    "c_age_sex_stage": 0.545,
-   "stage_minus_grade": 0.0423
+   "stage_minus_grade": 0.0408
   },
   "stad": {
    "n": 319,
@@ -130,11 +130,12 @@
      "I": 12
     }
    },
-   "c_age_sex_grade": 0.5358,
-   "c_age_sex_stage": 0.5819,
-   "stage_minus_grade": 0.0461
+   "c_age_sex_grade": 0.5364,
+   "c_age_sex_stage": 0.5841,
+   "stage_minus_grade": 0.0477
   }
  },
- "gain_vs_grade_entropy_pearson": -0.976,
- "gain_vs_grade_entropy_reading": "negative means the swap helps MOST where grade is least informative, which is the mechanism this analysis proposes. n=5 cohorts, so it is a consistency check and not an estimate."
+ "gain_vs_grade_entropy_pearson": -0.934,
+ "gain_vs_grade_entropy_reading": "negative means the swap helps MOST where grade is least informative, which is the mechanism this analysis proposes. n=5 cohorts, so it is a consistency check and not an estimate.",
+ "reproduced_by": "analysis/s7b_why_grade_fails.py under amendment A2: composition fields equal to the pre-A2 file, concordances read from the A2 stage5.json"
 }

@@ -116,14 +116,17 @@ def five_study_validation():
 
 
 def fusion_null_five_studies():
-    # 25 comparisons since 2026-09-27: the two fusions of 2026-09-13 and the three of the
-    # field-inflation protocol, each against the rank average in five studies
+    # 30 comparisons since amendment A2: the two fusions of 2026-09-13, the three of the
+    # field-inflation protocol and amendment A2's tuned-ridge stacking, each against the rank
+    # average in five studies
     fus = load(FUSION)["cohorts"]
     more = load(os.path.join(FI, "five-study-extensions-bd.json"))["fusions_D"]
     pairs = [v[k] for v in fus.values() for k in ("ModRank_minus_concatenated", "ModRank_minus_stacked")]
+    pairs += [v["stacked_tuned_ridge"]["ModRank_minus_stacked_tuned_ridge"] for v in fus.values()
+              if "stacked_tuned_ridge" in v]
     pairs += [v["ModRank_minus_" + k] for v in more.values() for k in ("simplex", "interaction", "gated")]
-    if len(pairs) != 25:
-        print("emit_claim: expected 25 fusion comparisons, found %d" % len(pairs), file=sys.stderr)
+    if len(pairs) != 30:
+        print("emit_claim: expected 30 fusion comparisons, found %d" % len(pairs), file=sys.stderr)
         sys.exit(2)
     return str(sum(1 for d in pairs if d["ci95"][0] > 0 or d["ci95"][1] < 0))
 

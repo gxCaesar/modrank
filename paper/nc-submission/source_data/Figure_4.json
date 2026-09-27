@@ -7,63 +7,63 @@
   "field": "holm_family_of_six/comparisons",
   "values": {
    "ours vs omics alone": {
-    "delta": 0.0588,
+    "delta": 0.0595,
     "ci95": [
-     0.0172,
-     0.1009
+     0.0174,
+     0.1025
     ],
-    "p_raw": 0.0053,
-    "p_holm": 0.0265,
+    "p_raw": 0.0057,
+    "p_holm": 0.0285,
     "survives_at_0.05": true
    },
    "ours vs slide alone": {
-    "delta": 0.0704,
+    "delta": 0.0699,
     "ci95": [
-     0.0288,
-     0.1138
+     0.0279,
+     0.1136
     ],
     "p_raw": 0.0007,
     "p_holm": 0.0042,
     "survives_at_0.05": true
    },
    "ours vs clinical alone": {
-    "delta": 0.0594,
+    "delta": 0.0587,
     "ci95": [
-     0.0111,
-     0.107
+     0.0107,
+     0.1065
     ],
-    "p_raw": 0.0163,
-    "p_holm": 0.0652,
+    "p_raw": 0.0167,
+    "p_holm": 0.0668,
     "survives_at_0.05": false
    },
    "ours vs ours-without-clinical": {
-    "delta": 0.034,
+    "delta": 0.0333,
     "ci95": [
-     0.005,
-     0.0635
+     0.0041,
+     0.063
     ],
-    "p_raw": 0.0187,
-    "p_holm": 0.0652,
+    "p_raw": 0.0243,
+    "p_holm": 0.0729,
     "survives_at_0.05": false
    },
    "ours vs SurvPath+clinical (seed-matched)": {
-    "delta": 0.034,
+    "delta": 0.0338,
     "ci95": [
-     -0.0056,
-     0.0731
+     -0.0053,
+     0.0727
     ],
-    "p_raw": 0.0843,
-    "p_holm": 0.1686,
+    "p_raw": 0.0867,
+    "p_holm": 0.1734,
     "survives_at_0.05": false
    },
    "ours vs PIBD+clinical (best-val checkpoint)": {
-    "delta": 0.0249,
+    "delta": 0.0252,
     "ci95": [
-     -0.0181,
-     0.0675
+     -0.0173,
+     0.0676
     ],
-    "p_raw": 0.2413,
-    "p_holm": 0.2413,
+    "p_raw": 0.2383,
+    "p_holm": 0.2383,
     "survives_at_0.05": false
    }
   }
@@ -74,46 +74,46 @@
   "field": "B_ablation_bladder",
   "values": {
    "arms": {
-    "wsi": 0.6596,
-    "omics": 0.651,
-    "clin": 0.6638,
-    "wsi + omics": 0.6841,
-    "wsi + clin": 0.7,
-    "omics + clin": 0.7005,
-    "wsi + omics + clin": 0.7225
+    "wsi": 0.6595,
+    "omics": 0.6512,
+    "clin": 0.6637,
+    "wsi + omics": 0.6835,
+    "wsi + clin": 0.6997,
+    "omics + clin": 0.7002,
+    "wsi + omics + clin": 0.7224
    },
    "leave_one_out": {
-    "drop wsi   (omics + clin)": -0.022,
-    "drop omics (wsi + clin)": -0.0225,
-    "drop clin  (wsi + omics)": -0.0384
+    "drop wsi   (omics + clin)": -0.0222,
+    "drop omics (wsi + clin)": -0.0227,
+    "drop clin  (wsi + omics)": -0.0389
    },
    "paired_vs_full": {
     "omics + clin": {
-     "mean": -0.0218,
+     "mean": -0.0221,
      "se": 0.0136,
      "ci95": [
-      -0.0481,
-      0.0038
+      -0.0484,
+      0.0039
      ],
-     "p_two_sided": 0.1047
+     "p_two_sided": 0.0967
     },
     "wsi + clin": {
-     "mean": -0.0222,
+     "mean": -0.0224,
      "se": 0.0141,
      "ci95": [
-      -0.0489,
-      0.006
+      -0.0495,
+      0.0055
      ],
-     "p_two_sided": 0.11
+     "p_two_sided": 0.1073
     },
     "wsi + omics": {
-     "mean": -0.0385,
-     "se": 0.0154,
+     "mean": -0.039,
+     "se": 0.0156,
      "ci95": [
-      -0.0687,
-      -0.0084
+      -0.0696,
+      -0.0086
      ],
-     "p_two_sided": 0.01
+     "p_two_sided": 0.0107
     }
    }
   }

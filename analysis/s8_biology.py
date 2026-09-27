@@ -83,8 +83,8 @@ INVERTED = {"EMT": {"CLDN3", "CLDN4", "CLDN7"}}
 
 
 def spearman(a, b):
-    ra = np.argsort(np.argsort(a)).astype(float)
-    rb = np.argsort(np.argsort(b)).astype(float)
+    from blca_common import ranks            # average ranks for ties under amendment A2
+    ra, rb = ranks(a), ranks(b)
     ra -= ra.mean(); rb -= rb.mean()
     d = float(np.sqrt((ra @ ra) * (rb @ rb)))
     return float(ra @ rb / d) if d else float("nan")
@@ -296,6 +296,16 @@ def main():
                    "contradict it are in the table."}
     print("B6 done", file=sys.stderr, flush=True)
 
+    # BH over the eight axes of each block. Added to the committed file by hand on 2026-08-18 so the
+    # figures load q rather than recomputing it; written here since amendment A2, so a rerun keeps it.
+    for blk in ("B2_survival_association", "B3_what_the_image_arm_tracks", "B4_what_the_omics_arm_tracks"):
+        if "axes" in rep.get(blk, {}):
+            q = bh({k: v["p"] for k, v in rep[blk]["axes"].items()})
+            for k in rep[blk]["axes"]:
+                rep[blk]["axes"][k]["bh_q"] = q[k]
+            rep[blk]["bh_note"] = ("Benjamini-Hochberg over the 8 axes in this block. Added 2026-08-18 so "
+                                   "the figures load q rather than recomputing it, and so the four "
+                                   "significant axes the manuscript names can be checked against the file.")
     open(a.out, "w").write(json.dumps(rep, indent=1) + "\n")
     print("wrote", a.out)
     return 0

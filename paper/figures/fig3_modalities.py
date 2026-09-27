@@ -22,7 +22,7 @@ of those measurements were sitting unused.
      the equal-weight average
      works and why it is not the representation that limits the fusion.
   d  THE PANEL THIS FIGURE IS FOR. Restrict the comparable pairs to those the clinical model cannot
-     separate and score the arms again. On the tightest 1,213 pairs of 24,219 the clinical arm is a
+     separate and score the arms again. On the tightest 1,211 pairs of 24,219 the clinical arm is a
      coin flip at 0.4959 and the slide arm holds 0.6220. That is the whole-slide image earning its
      place, measured rather than asserted, and it is the answer to "what does the image add".
   e  discrimination over time, per modality, at three horizons plus the integrated Brier score.

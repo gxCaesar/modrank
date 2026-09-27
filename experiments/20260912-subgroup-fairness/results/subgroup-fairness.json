@@ -19,10 +19,10 @@
   "min_pairs": 100
  },
  "pooled": {
-  "clinical_stage": 0.6644,
+  "clinical_stage": 0.6645,
   "slide": 0.6535,
-  "omics": 0.6648,
-  "ours": 0.7237
+  "omics": 0.6637,
+  "ours": 0.7233
  },
  "splits": {
   "sex": {
@@ -30,18 +30,18 @@
     "n": 269,
     "events": 82,
     "comparable_pairs": 13326,
-    "clinical_stage": 0.7015,
-    "slide": 0.6613,
-    "omics": 0.6637,
-    "ours": 0.7406,
+    "clinical_stage": 0.7014,
+    "slide": 0.6616,
+    "omics": 0.662,
+    "ours": 0.7399,
     "ours_minus_clinical": {
-     "mean": 0.0396,
-     "se": 0.0276,
+     "mean": 0.0389,
+     "se": 0.0274,
      "ci95": [
-      -0.0143,
-      0.0936
+      -0.0147,
+      0.0927
      ],
-     "p_two_sided": 0.1523,
+     "p_two_sided": 0.157,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     }
@@ -50,30 +50,41 @@
     "n": 90,
     "events": 31,
     "comparable_pairs": 1603,
-    "clinical_stage": 0.5652,
-    "slide": 0.6298,
-    "omics": 0.6631,
-    "ours": 0.6616,
+    "clinical_stage": 0.5664,
+    "slide": 0.6294,
+    "omics": 0.6663,
+    "ours": 0.6638,
     "ours_minus_clinical": {
-     "mean": 0.0963,
-     "se": 0.0506,
+     "mean": 0.0973,
+     "se": 0.0504,
      "ci95": [
-      -0.0031,
-      0.1964
+      -0.0006,
+      0.1979
      ],
-     "p_two_sided": 0.059,
+     "p_two_sided": 0.052,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     }
    },
    "ours_men_minus_women": {
-    "mean": 0.0811,
-    "se": 0.0544,
+    "mean": 0.078,
+    "se": 0.0536,
     "ci95": [
-     -0.0231,
-     0.19
+     -0.0244,
+     0.1844
     ],
-    "p_two_sided": 0.1323,
+    "p_two_sided": 0.1423,
+    "reps": 6000,
+    "resampled": "the two strata independently, being disjoint"
+   },
+   "clinical_gap_minus_ours_gap": {
+    "mean": 0.0572,
+    "se": 0.0565,
+    "ci95": [
+     -0.05,
+     0.1711
+    ],
+    "p_two_sided": 0.3117,
     "reps": 6000,
     "resampled": "the two strata independently, being disjoint"
    }
@@ -83,18 +94,18 @@
     "n": 180,
     "events": 58,
     "comparable_pairs": 6242,
-    "clinical_stage": 0.6578,
-    "slide": 0.6817,
-    "omics": 0.6308,
-    "ours": 0.7285,
+    "clinical_stage": 0.6584,
+    "slide": 0.6822,
+    "omics": 0.6304,
+    "ours": 0.7298,
     "ours_minus_clinical": {
-     "mean": 0.0699,
-     "se": 0.0323,
+     "mean": 0.0706,
+     "se": 0.032,
      "ci95": [
-      0.0072,
-      0.1335
+      0.0086,
+      0.1334
      ],
-     "p_two_sided": 0.0293,
+     "p_two_sided": 0.0267,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     }
@@ -103,30 +114,41 @@
     "n": 179,
     "events": 55,
     "comparable_pairs": 5842,
-    "clinical_stage": 0.6749,
-    "slide": 0.6272,
-    "omics": 0.6962,
-    "ours": 0.7213,
+    "clinical_stage": 0.6746,
+    "slide": 0.6269,
+    "omics": 0.6941,
+    "ours": 0.7204,
     "ours_minus_clinical": {
-     "mean": 0.0464,
-     "se": 0.038,
+     "mean": 0.0459,
+     "se": 0.0375,
      "ci95": [
-      -0.0309,
-      0.1189
+      -0.0297,
+      0.1177
      ],
-     "p_two_sided": 0.226,
+     "p_two_sided": 0.2237,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     }
    },
    "ours_at_minus_above": {
-    "mean": 0.0065,
-    "se": 0.0471,
+    "mean": 0.0088,
+    "se": 0.0468,
     "ci95": [
-     -0.0849,
-     0.0996
+     -0.082,
+     0.1024
     ],
-    "p_two_sided": 0.8857,
+    "p_two_sided": 0.8463,
+    "reps": 6000,
+    "resampled": "the two strata independently, being disjoint"
+   },
+   "clinical_gap_minus_ours_gap": {
+    "mean": -0.0242,
+    "se": 0.0493,
+    "ci95": [
+     -0.1226,
+     0.0701
+    ],
+    "p_two_sided": 0.6243,
     "reps": 6000,
     "resampled": "the two strata independently, being disjoint"
    }
@@ -161,17 +183,17 @@
     "events": 93,
     "comparable_pairs": 16454,
     "clinical_stage": 0.6539,
-    "slide": 0.6505,
-    "omics": 0.6544,
-    "ours": 0.7122,
+    "slide": 0.6504,
+    "omics": 0.6552,
+    "ours": 0.7129,
     "ours_minus_clinical": {
-     "mean": 0.0588,
-     "se": 0.0282,
+     "mean": 0.0594,
+     "se": 0.0279,
      "ci95": [
-      0.0043,
-      0.1132
+      0.0052,
+      0.1134
      ],
-     "p_two_sided": 0.0357,
+     "p_two_sided": 0.032,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     }

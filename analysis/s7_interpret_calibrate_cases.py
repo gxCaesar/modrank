@@ -59,8 +59,8 @@ from s7_survival_metrics import km_censoring, g_at  # noqa: E402
 
 
 def spearman(a, b):
-    ra = np.argsort(np.argsort(a)).astype(float)
-    rb = np.argsort(np.argsort(b)).astype(float)
+    from blca_common import ranks            # average ranks for ties under amendment A2
+    ra, rb = ranks(a), ranks(b)
     ra -= ra.mean(); rb -= rb.mean()
     d = float(np.sqrt((ra @ ra) * (rb @ rb)))
     return float(ra @ rb / d) if d else float("nan")

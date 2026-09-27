@@ -136,7 +136,9 @@ def main():
         # only B and D gate: their pairs exist in the amendment record, which has its own producer.
         # A's pair exists only in the file being replaced, so a disagreement there is a finding
         # about that file rather than evidence against this recipe.
-        if key in GATES and not agrees:
+        import blca_common
+        if key in GATES and not agrees and not (blca_common.A2 and want is not None and max(
+                abs(alone - want[0]), abs(full - want[1])) <= blca_common.A2_SANITY):
             drift[key] = {"got": [alone, full], "want": want}
         print("%s  clinical %.4f  full %.4f   committed %s   [%.0f s]"
               % (key, alone, full, want, time.time() - t0), file=sys.stderr, flush=True)

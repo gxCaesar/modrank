@@ -6,14 +6,14 @@
   "source_file": "experiments/20260817-blca-confirm/results/amendment-A1-clinical-provenance.json",
   "field": "arms_seed0",
   "values": {
-   "clinical_age_sex_stage_from_DIMAF_file": 0.6638,
-   "clinical_age_sex_GRADE_from_DIMAF_file": 0.5666,
+   "clinical_age_sex_stage_from_DIMAF_file": 0.6637,
+   "clinical_age_sex_GRADE_from_DIMAF_file": 0.5664,
    "stage_minus_grade": 0.0972,
-   "wsi_titan": 0.6596,
-   "omics_combine": 0.651,
-   "OURS": 0.7225,
-   "OURS_with_grade_instead_of_stage": 0.6856,
-   "survpath_plus_same_clinical": 0.681
+   "wsi_titan": 0.6595,
+   "omics_combine": 0.6512,
+   "OURS": 0.7224,
+   "OURS_with_grade_instead_of_stage": 0.687,
+   "survpath_plus_same_clinical": 0.6805
   }
  },
  "b_parameter_counts": {
@@ -118,9 +118,9 @@
      "0": 2
     }
    },
-   "c_age_sex_grade": 0.5658,
-   "c_age_sex_stage": 0.6218,
-   "stage_minus_grade": 0.056
+   "c_age_sex_grade": 0.5642,
+   "c_age_sex_stage": 0.6219,
+   "stage_minus_grade": 0.0577
   },
   "provenance_note": "Two released files carry a stage field for these patients. This panel draws the benchmark's own clinical file, five levels over 334 valued cases, because it is the only clinical source common to all five studies and so is what the five-study comparison can use. The arms in panel a, and every concordance in the paper, read the incumbent's split files instead: four AJCC stage groups over 357 valued cases, whose composition is the next entry and is what Figure 7a draws."
  },

@@ -8,17 +8,17 @@
   "coefficients": [
    {
     "name": "stage=Stage IV",
-    "coef": 0.2605,
+    "coef": 0.2603,
     "sd_over_folds": 0.0257
    },
    {
     "name": "stage=Stage II",
-    "coef": -0.1551,
+    "coef": -0.155,
     "sd_over_folds": 0.0146
    },
    {
     "name": "age",
-    "coef": 0.112,
+    "coef": 0.1118,
     "sd_over_folds": 0.0416
    },
    {
@@ -28,12 +28,12 @@
    },
    {
     "name": "stage=Stage I",
-    "coef": -0.0522,
+    "coef": -0.0521,
     "sd_over_folds": 0.0165
    },
    {
     "name": "female",
-    "coef": 0.0234,
+    "coef": 0.0236,
     "sd_over_folds": 0.0225
    }
   ]
@@ -44,58 +44,53 @@
   "top_15_by_absolute_coefficient": [
    {
     "name": "Transport_of_fatty_acids",
-    "coef": 0.133,
-    "sd_over_folds": 0.0329
+    "coef": 0.1331,
+    "sd_over_folds": 0.0328
    },
    {
     "name": "AlphaE_beta7_integrin_cell_surface_interactions",
-    "coef": -0.1319,
+    "coef": -0.1318,
     "sd_over_folds": 0.0292
    },
    {
     "name": "Transferrin_endocytosis_and_recycling",
-    "coef": 0.1271,
-    "sd_over_folds": 0.021
+    "coef": 0.1269,
+    "sd_over_folds": 0.0212
    },
    {
     "name": "Glucocorticoid_biosynthesis",
-    "coef": -0.1252,
-    "sd_over_folds": 0.0101
+    "coef": -0.1251,
+    "sd_over_folds": 0.0099
    },
    {
     "name": "Methylation",
-    "coef": -0.1177,
-    "sd_over_folds": 0.0321
+    "coef": -0.1175,
+    "sd_over_folds": 0.0323
    },
    {
     "name": "Conjugation_of_benzoate_with_glycine",
-    "coef": -0.117,
+    "coef": -0.1171,
     "sd_over_folds": 0.0309
    },
    {
     "name": "Epidermal_Growth_Factor_Receptor_(EGFR)_signaling",
-    "coef": 0.11,
-    "sd_over_folds": 0.0214
+    "coef": 0.1099,
+    "sd_over_folds": 0.0213
    },
    {
     "name": "Transport_of_gamma-carboxylated_protein_precursors_from_the_endoplasmic_reticulum_to_the_Golgi_apparatus",
-    "coef": -0.107,
+    "coef": -0.1068,
     "sd_over_folds": 0.009
    },
    {
     "name": "Galactose_catabolism",
     "coef": 0.1022,
-    "sd_over_folds": 0.0283
+    "sd_over_folds": 0.0282
    },
    {
     "name": "Serotonin_receptors",
-    "coef": -0.0998,
+    "coef": -0.1,
     "sd_over_folds": 0.0261
-   },
-   {
-    "name": "Gamma-carboxylation_of_protein_precursors",
-    "coef": -0.0995,
-    "sd_over_folds": 0.0099
    },
    {
     "name": "Iron_uptake_and_transport",
@@ -103,29 +98,34 @@
     "sd_over_folds": 0.0193
    },
    {
+    "name": "Gamma-carboxylation_of_protein_precursors",
+    "coef": -0.0993,
+    "sd_over_folds": 0.0099
+   },
+   {
     "name": "CREB_phosphorylation_through_the_activation_of_Adenylate_Cyclase",
-    "coef": 0.0991,
-    "sd_over_folds": 0.029
+    "coef": 0.099,
+    "sd_over_folds": 0.0291
    },
    {
     "name": "Serine_biosynthesis",
-    "coef": 0.0978,
-    "sd_over_folds": 0.0289
+    "coef": 0.0977,
+    "sd_over_folds": 0.0287
    },
    {
     "name": "Insulin_receptor_recycling",
-    "coef": 0.0974,
-    "sd_over_folds": 0.0275
+    "coef": 0.0973,
+    "sd_over_folds": 0.0276
    }
   ]
  },
  "H3_what_the_image_arm_is": {
-  "spearman_with_stage": 0.2155,
-  "spearman_with_grade": -0.0311,
+  "spearman_with_stage": 0.2682,
+  "spearman_with_grade": -0.1855,
   "spearman_with_age": 0.0485,
-  "spearman_with_sex": 0.0112,
-  "spearman_with_the_clinical_arm": 0.2445,
-  "spearman_with_the_omics_arm": 0.2713,
+  "spearman_with_sex": 0.0544,
+  "spearman_with_the_clinical_arm": 0.2443,
+  "spearman_with_the_omics_arm": 0.2715,
   "reading": "a slide score that were merely a stage detector would correlate strongly with stage and with the clinical arm. Its concordance restricted to pairs the clinical arm cannot separate is the direct version of the same question."
  },
  "F_calibration": {

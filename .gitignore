@@ -7,8 +7,9 @@ __pycache__/
 *.out
 *.bbl
 *.blg
-# except the run logs this release ships: they are the record of the runs that
-# produced the reported numbers, and the verifier checks for them by name.
+# except the files of those kinds this release ships: the run logs are the record of
+# the runs that produced the reported numbers, and the verifier and the number gate
+# read them and the two .aux files by name.
 !experiments/20260817-blca-confirm/logs/confirm.log
 !experiments/20260818-selection-null/run.log
 !experiments/20260911-blca-posthoc/logs/run.log
@@ -22,5 +23,7 @@ __pycache__/
 !experiments/20260913-encoder-sensitivity/logs/run.log
 !experiments/20260913-five-cohort-fusion/logs/run.log
 !experiments/20260927-geo-percase/logs/run.log
+!paper/nc-submission/main.aux
+!paper/nc-submission/supplementary.aux
 # inputs are public releases, pointed at rather than redistributed
 data/

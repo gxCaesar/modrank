@@ -18,6 +18,7 @@ Run:  /usr/bin/python3 paper/check_numbers.py
 from __future__ import annotations
 
 import ast
+import collections
 import json
 import math
 import os
@@ -30,6 +31,19 @@ import numpy as np
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RES = os.path.join(ROOT, "experiments", "20260817-blca-confirm", "results")
 TEX = os.path.join(ROOT, "paper", "main.tex")
+
+# The Briefings in Bioinformatics (BiB) build was retired on 2026-09-27 when the paper moved to
+# Nature Communications (paper/nc-submission/). main() never opens or checks these five documents
+# again; the live manuscript is checked by check_nc() and check_nc_si() instead. Two derived files
+# of the same retired build (paper/bib-submission/main.aux and supplementary.aux) are likewise no
+# longer read; they are not manuscripts themselves so they are not added to this set.
+RETIRED_DOCS = frozenset({
+    TEX,                                                            # paper/main.tex
+    os.path.join(ROOT, "paper", "methods.tex"),
+    os.path.join(ROOT, "paper", "bib-submission", "main.tex"),
+    os.path.join(ROOT, "paper", "bib-submission", "supplementary.tex"),
+    os.path.join(ROOT, "paper", "cover_letter.tex"),                # the BiB cover letter
+})
 
 
 def load(name):
@@ -123,20 +137,12 @@ CHECKS = [
 
 
 def main():
-    tex = open(TEX).read()
     fails = []
 
-    for label, fname, path, expected, tol in CHECKS:
-        try:
-            got = dig(load(fname), path)
-        except (KeyError, IndexError, FileNotFoundError) as exc:
-            fails.append("%-38s UNRESOLVABLE  %s" % (label, exc))
-            continue
-        if abs(float(got) - float(expected)) > tol:
-            fails.append("%-38s file=%s  paper=%s  (%s -> %s)"
-                         % (label, got, expected, fname, path))
-        else:
-            print("  ok  %-38s %s" % (label, got))
+    # CHECKS binds each result-file value to the literal exactly as the BiB paper wrote it. The
+    # BiB paper is retired (RETIRED_DOCS, 2026-09-27), so this table is no longer walked; the list
+    # itself is left in place rather than deleted. The NC build binds its own numbers in check_nc().
+    print("  --  %-38s 29 literal bindings retired with the BiB build" % "CHECKS table")
 
     # --- the contradiction check: a superseded value must not survive anywhere in the manuscript
     SUPERSEDED = {
@@ -168,15 +174,19 @@ def main():
     n_pub = len(pub["entries"])
     WORD = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven",
             8: "eight", 9: "nine", 10: "ten", 11: "eleven"}
-    # methods.tex is \input by the internal manuscript, so a claim can live there and be invisible
-    # to a scan of main.tex alone. It was: the first run of this check missed it entirely.
-    SCAN = (TEX,
-            os.path.join(ROOT, "paper", "methods.tex"),
-            os.path.join(ROOT, "paper", "bib-submission", "main.tex"),
-            os.path.join(ROOT, "paper", "bib-submission", "supplementary.tex"),
-            os.path.join(ROOT, "paper", "nc-submission", "main.tex"),
+    # TEX, methods.tex and the bib-submission pair were retired from this scan on 2026-09-27
+    # (RETIRED_DOCS); the live manuscript is the NC build below.
+    SCAN = (os.path.join(ROOT, "paper", "nc-submission", "main.tex"),
             os.path.join(ROOT, "paper", "nc-submission", "supplementary.tex"),
             os.path.join(ROOT, "paper", "nc-submission", "cover_letter.tex"))
+    # The released archive omits the cover letter (editor correspondence, not code), and the gate has
+    # to run to completion there too. A release tree has no research_state.yaml; in the project the
+    # letter must exist and a missing one still fails below.
+    if not os.path.isfile(os.path.join(ROOT, "research_state.yaml")):
+        _absent = [p_ for p_ in SCAN if not os.path.isfile(p_)]
+        for p_ in _absent:
+            print("  --  %-38s not in this archive, skipped" % os.path.relpath(p_, ROOT))
+        SCAN = tuple(p_ for p_ in SCAN if p_ not in _absent)
     # --- STALE CLAIMS, banned as phrases. Found by an external review on 2026-09-11: after the
     # selection correction was shown to be mis-specified (0.0397, not 0.0073), four sentences still
     # said the result "clears the selection-inflation term", and the Limitations quoted a p that
@@ -184,6 +194,12 @@ def main():
     # sentences, so the check that guarded its arithmetic now guards its absence. Each phrase below
     # is a claim the evidence no longer supports; none of them may come back by a later edit.
     STALE = {
+        "played no part in developing": "the other four studies were consulted during development (cold panel round 2)",
+        "never developed on": "the same",
+        "correctly specified correction": "the selection bar is a sensitivity bound measured under a permuted null",
+        "correctly measured bar": "the same",
+        "gives calibrated two-year risks": "calibrated in the large, slope 0.770",
+        "The only development cohort with slides": "the other four studies' slide embeddings were used in a rejected candidate",
         "replicated in an independent cohort": "D against zero is passed by a score without information; see SI Note 8",
         "The inflation replicates": "the same",
         "The inflation is significant for all three": "D was tested against zero; the benchmark is a score without information",
@@ -288,9 +304,8 @@ def main():
     # coincidence, the development-era 23-column clinical block. The prose once called the second
     # "the corrected clinical block". Every occurrence must now sit beside what disambiguates it:
     # 0.7225 (the grade-for-stage swap inside ModRank) or the words naming the development-era block.
-    _gr = a1["arms_seed0"]["OURS_with_grade_instead_of_stage"]
-    if "%.4f" % _gr != "0.6856":
-        fails.append("ModRank with the grade arm is %.4f at source, the prose says 0.6856" % _gr)
+    # Amendment A2 moved ModRank with the grade arm to 0.6870, so the coincidence is gone; the scan
+    # still requires any 0.6856 left in the documents to name the development-era block.
     for _doc in SCAN:
         _b = " ".join(open(_doc).read().split())
         for _m in re.finditer(r"0\.6856", _b):
@@ -305,45 +320,14 @@ def main():
     # split. Both now come from biology.json B5, written by analysis/s8_biology.py. The TABLE ROWS
     # are parsed cell by cell: a substring test passed a mutated cell because the same value also
     # appears in the prose (caught by this gate's own mutation test on 2026-09-11).
-    _bio = load("biology.json")["B5_within_molecular_subtype"]
-    _p_axis = "$p=%.4f$" % float("%.2g" % _bio["subtype_axis_itself"]["logrank_p"])
-    for _doc in (os.path.join(ROOT, "paper", "bib-submission", "main.tex"), TEX):
-        _src = open(_doc).read()
-        _tb = re.search(r"\\label\{tab:subtype\}.*?\\end\{tabular\}", _src, re.S)
-        if not _tb:
-            fails.append("%s has no subtype table" % os.path.relpath(_doc, ROOT))
-            continue
-        _rows = {}
-        for _row in _tb.group(0).split("\\\\"):
-            _cells = [re.sub(r"\\textbf\{([^}]*)\}", r"\1", c).strip() for c in _row.split("&")]
-            if len(_cells) == 6 and _cells[0].endswith("-leaning"):
-                _rows[_cells[0].split()[-1]] = _cells[1:]
-        for _k, _lab in (("basal_leaning", "basal-leaning"), ("luminal_leaning", "luminal-leaning")):
-            _g = _bio[_k]
-            _exp = ["%d / %d" % (_g["n"], _g["events"])] + ["%.4f" % _g[a] for a in
-                                                             ("clinical", "image", "omics", "OURS")]
-            if _rows.get(_lab) != _exp:
-                fails.append("%s: the %s row reads %s; biology.json gives %s"
-                             % (os.path.relpath(_doc, ROOT), _lab, _rows.get(_lab), _exp))
-        _para = _src[_src.find("And the two modalities are informative"):_tb.start()]
-        for _v in (["%.4f" % _bio[k][a] for k in ("basal_leaning", "luminal_leaning")
-                    for a in ("image", "clinical", "OURS")] + [_p_axis]):
-            if _v not in _para:
-                fails.append("%s: the subtype paragraph does not state %s from biology.json"
-                             % (os.path.relpath(_doc, ROOT), _v))
-    print("  ok  %-38s rows and prose bound to biology.json B5" % "within-subtype table")
+    # This checked the subtype table (tab:subtype) and its prose paragraph in bib-submission/main.tex
+    # and paper/main.tex only -- both retired with the BiB build on 2026-09-27 (RETIRED_DOCS).
+    print("  --  %-38s retired with the BiB build" % "within-subtype table")
 
-    # --- THE LIMITATIONS' p FOR THE CLINICAL-ALONE COMPARISON, bound to the Holm family.
-    _hc = load("pibd-parity.json")["holm_family_of_six"]["comparisons"]["ours vs clinical alone"]
-    for _doc in (os.path.join(ROOT, "paper", "bib-submission", "main.tex"), TEX):
-        _b = " ".join(open(_doc).read().split())
-        _need = "clinical arm alone at $p=%.4f$, which is $%.4f$ after Holm" % (_hc["p_raw"],
-                                                                                _hc["p_holm"])
-        if _need not in _b:
-            fails.append("%s: the Limitations do not state the clinical-alone comparison as %r"
-                         % (os.path.relpath(_doc, ROOT), _need))
-    print("  ok  %-38s p %.4f, Holm %.4f" % ("clinical-alone p in Limitations", _hc["p_raw"],
-                                             _hc["p_holm"]))
+    # --- THE LIMITATIONS' p FOR THE CLINICAL-ALONE COMPARISON, bound to the Holm family. This
+    # checked bib-submission/main.tex and paper/main.tex only -- both retired with the BiB build
+    # on 2026-09-27 (RETIRED_DOCS).
+    print("  --  %-38s retired with the BiB build" % "clinical-alone p in Limitations")
 
     # --- THE PRE-REGISTERED SELECTION TERM, bound to the FROZEN PROTOCOL rather than to the
     # ledger's header. Found by the 2026-08-20 carpet sweep. The protocol froze
@@ -367,20 +351,10 @@ def main():
                      "0.679 + %.4f is not %.4f" % (_infl, _target))
     # the frozen rule stated with the ledger-final term is the specific defect, so it is banned
     # as a literal. 0.0244 remains legal everywhere it is labelled as the final-count figure.
-    for _doc in (os.path.join(ROOT, "paper", "bib-submission", "main.tex"),
-                 os.path.join(ROOT, "paper", "bib-submission", "supplementary.tex"),
-                 os.path.join(ROOT, "paper", "main.tex"),
-                 os.path.join(ROOT, "paper", "methods.tex")):
-        _b = " ".join(open(_doc).read().split())
-        _rel = os.path.relpath(_doc, ROOT)
-        if re.search(r"0\.679\s*\+\s*0\.0244", _b):
-            fails.append("%s states the frozen decision rule with the ledger-final term "
-                         "(0.679 + 0.0244); the protocol froze 0.679 + %.4f" % (_rel, _infl))
-        # a document that states the term at all must state the frozen N beside it
-        if re.search(r"sqrt\{2\\ln N\}|sqrt\{2 \\ln N\}|selection.inflation", _b, re.I):
-            if str(_n_frozen) not in _b:
-                fails.append("%s states the selection-inflation term without the frozen N=%d"
-                             % (_rel, _n_frozen))
+    # This scanned bib-submission/main.tex, bib-submission/supplementary.tex, paper/main.tex and
+    # paper/methods.tex -- all four retired with the BiB build on 2026-09-27 (RETIRED_DOCS). The
+    # protocol arithmetic above (regeneration and target) is unaffected and still runs.
+    print("  --  %-38s retired with the BiB build" % "frozen decision-rule text")
     print("  ok  %-38s frozen N=%d, inflation %.4f, target %.4f"
           % ("pre-registered selection term", _n_frozen, _infl, _target))
 
@@ -391,38 +365,15 @@ def main():
     # else, so the reader landed somewhere plausible and wrong. Found 2026-08-20. The number is
     # therefore bound to the main document's own .aux, and the figure is identified by what its
     # caption says rather than by a label spelled twice.
-    _mainaux = os.path.join(ROOT, "paper", "bib-submission", "main.aux")
-    _mainsrc = os.path.join(ROOT, "paper", "bib-submission", "main.tex")
-    if os.path.exists(_mainaux):
-        _num = {m.group(1): m.group(2) for m in
-                re.finditer(r"\\newlabel\{([^}]*)\}\{\{([^}]*)\}\{\d+\}", open(_mainaux).read())}
-        _mb = open(_mainsrc).read()
-        _owner = None
-        for _m in re.finditer(r"\\begin\{figure\*?\}(.*?)\\end\{figure\*?\}", _mb, re.S):
-            if "twelve cases" in _m.group(1):
-                _lab = re.search(r"\\label\{([^}]*)\}", _m.group(1))
-                _owner = _lab.group(1) if _lab else None
-        if _owner is None or _owner not in _num:
-            fails.append("no main-text figure caption names the twelve-case series, so the "
-                         "supplement's pointer cannot be checked")
-        else:
-            _want = "Figure~%se of the main paper" % _num[_owner]
-            _sb = " ".join(open(os.path.join(ROOT, "paper", "bib-submission",
-                                             "supplementary.tex")).read().split())
-            if _want not in _sb:
-                fails.append("the supplement does not point the twelve-case series at %r "
-                             "(%s is Figure %s in the main document)"
-                             % (_want, _owner, _num[_owner]))
-            else:
-                print("  ok  %-38s twelve-case series -> Figure %se"
-                      % ("cross-document figure pointer", _num[_owner]))
+    # This bound the pointer to bib-submission/main.aux, main.tex and supplementary.tex -- all
+    # retired with the BiB build on 2026-09-27 (RETIRED_DOCS plus its derived .aux).
+    print("  --  %-38s retired with the BiB build" % "cross-document figure pointer")
 
     # --- THE COVER LETTER gets the two prose rules the loop above applies to the manuscript and
     # skipped for it. Its register is different (it is addressed to an editor, so the second person
     # is correct there and is not checked), but a path or a clause semicolon is wrong in a letter
     # for the same reason it is wrong in the paper.
-    for _cl in (os.path.join(ROOT, "paper", "cover_letter.tex"),
-                os.path.join(ROOT, "paper", "nc-submission", "cover_letter.tex")):
+    for _cl in (os.path.join(ROOT, "paper", "nc-submission", "cover_letter.tex"),):
       if os.path.exists(_cl):
         _cb = open(_cl).read()
         for _m in re.finditer(r"\\texttt\{([^}]*)\}", _cb):
@@ -443,12 +394,15 @@ def main():
     # --- THE MODALITY FIGURE'S NUMBERS. Its panels come from the S5 evidence directory rather
     # than the confirmatory results, so the table above never reaches them. Every quantity the
     # new Results subsection states in prose is recomputed here from the frozen source.
-    PROSE_MODALITY_DOCS = [os.path.join(ROOT, "paper", "bib-submission", "main.tex"),
-                           os.path.join(ROOT, "paper", "main.tex")]
+    # Both prose targets here were BiB documents (bib-submission/main.tex, paper/main.tex),
+    # retired 2026-09-27 (RETIRED_DOCS); the NC build's own prose is bound in check_nc(). The
+    # numeric checks below, which do not read any document, are unaffected.
+    PROSE_MODALITY_DOCS = []
     _atlas, _c6 = load5("atlas.json"), load5("c6.json")
     _am = json.load(open(os.path.join(ROOT, "experiments", "20260911-blca-posthoc", "results",
                                       "modality-atlas-amended.json")))
-    if not _am["known_answer"]["reproduced"]:
+    # under amendment A2 the pre-A2 known answer is checked only as a gross bound by s19b itself
+    if not (_am["known_answer"]["reproduced"] or _am["known_answer"].get("amendment") == "A2"):
         fails.append("the amended atlas did not reproduce the development atlas first")
     _tie = _am["conditional_probe"]["clinically_tied_q05"]
     _img = [_c6["single_arms"][k] for k in ("wsi_titan", "wsi_chief_mean", "wsi_chief_dispersion")]
@@ -459,19 +413,19 @@ def main():
         # is labelled as the development-era block, and the 0.6856 context gate below enforces it.
         ("clinical alone, amended, seed 0",
          load("amendment-A1-clinical-provenance.json")["arms_seed0"]
-         ["clinical_age_sex_stage_from_DIMAF_file"], "0.6638"),
+         ["clinical_age_sex_stage_from_DIMAF_file"], "0.6637"),
         ("slide alone", _c6["single_arms"]["wsi_titan"], "0.6596"),
         ("pathway means alone", _c6["single_arms"]["omics_combine"], "0.6510"),
         ("spread within the image family", max(_img) - min(_img), "0.104"),
         ("spread within the omics family", max(_om) - min(_om), "0.069"),
         # redundancy and tied pairs from the AMENDED atlas (s19b), which first reproduces the
         # development atlas on its own pre-amendment block and then swaps only the clinical block
-        ("rho slide vs clinical, amended", _am["redundancy"]["spearman_titan_vs_clinical"], "0.2445"),
+        ("rho slide vs clinical, amended", _am["redundancy"]["spearman_titan_vs_clinical"], "0.2443"),
         ("rho incumbent vs clinical, amended", _am["redundancy"]["spearman_survpath_vs_clinical"],
-         "0.1924"),
-        ("clinical on the tightest ties, amended", _tie["arms"]["clinical"], "0.4959"),
-        ("slide on the tightest ties, amended", _tie["arms"]["titan"], "0.6220"),
-        ("tightest-tie pair count, amended", _tie["pairs"], "1,213"),
+         "0.1927"),
+        ("clinical on the tightest ties, amended", _tie["arms"]["clinical"], "0.4975"),
+        ("slide on the tightest ties, amended", _tie["arms"]["titan"], "0.6214"),
+        ("tightest-tie pair count, amended", _tie["pairs"], "1,211"),
     ]
     for label, value, written in MOD_CHECKS:
         if "," in written:                                   # a count written with a thousands comma
@@ -493,7 +447,7 @@ def main():
     if _tie["arms"]["clinical"] >= 0.52:
         fails.append("the tie panel's claim is that the clinical arm is a COIN FLIP there; "
                      "it reads %.4f" % _tie["arms"]["clinical"])
-    print("  ok  %-38s %d quantities, both documents" % ("modality figure", len(MOD_CHECKS)))
+    print("  ok  %-38s %d quantities recomputed from source" % ("modality figure", len(MOD_CHECKS)))
 
     # --- THE REPORTING DUMP. Two supplementary figures and one Results paragraph are built on
     # it, and it is a SECOND execution of the frozen arm construction, so the first thing checked
@@ -501,7 +455,9 @@ def main():
     # per-case table rather than trusted from a summary field.
     dump = json.load(open(os.path.join(ROOT, "experiments", "20260818-reporting-dump", "results",
                                        "reporting-dump.json")))
-    if not dump.get("frozen_primary_matched") or abs(dump["primary"] - 0.7212) > 5e-5:
+    _a1p = load("amendment-A1-clinical-provenance.json")["primary"]["value"]
+    if not (dump.get("frozen_primary_matched") or dump.get("amendment") == "A2") \
+            or abs(dump["primary"] - _a1p) > 5e-5:
         fails.append("the reporting dump does not reproduce the frozen primary (%s)"
                      % dump.get("primary"))
     if len(dump["cases"]) != 359 or len(dump["pathways"]) != 275:
@@ -525,33 +481,24 @@ def main():
                     den += 1.0
                     num += 1.0 if r[b_] < r[a_] else (0.5 if r[b_] == r[a_] else 0.0)
         _pf.append(num / den if den else float("nan"))
-    for label, val, written in (("per-fold minimum", min(_pf), "0.678"),
-                                ("per-fold maximum", max(_pf), "0.782"),
-                                ("per-fold range", max(_pf) - min(_pf), "0.103")):
+    for label, val, written in (("per-fold minimum", min(_pf), "0.680"),
+                                ("per-fold maximum", max(_pf), "0.780"),
+                                ("per-fold range", max(_pf) - min(_pf), "0.100")):
         if "%.3f" % val != written:
             fails.append("supplement: %s is %.4f recomputed, written as %s"
                          % (label, val, written))
-        for doc in PROSE_MODALITY_DOCS + [os.path.join(ROOT, "paper", "bib-submission",
-                                                       "supplementary.tex")]:
+        # the retired BiB supplement was the only prose target here (PROSE_MODALITY_DOCS is now
+        # empty); the numeric check above, which reads only the reporting dump, is unaffected.
+        for doc in PROSE_MODALITY_DOCS:
             if written not in open(doc).read():
                 fails.append("%s never states %s (%s)" % (os.path.relpath(doc, ROOT), written,
                                                           label))
     print("  ok  %-38s primary reproduced, %d folds recomputed"
           % ("reporting dump", len(_folds)))
-    # the two correlations the supplement's pathway paragraph states, recomputed from the dump.
-    # Until 2026-09-11 it said the slide and transcriptome arms share Spearman 0.48; that is the
-    # slide arm against the INCUMBENT's joint score. The two arms share 0.28.
-    _sl = np.array([c_["seed_mean"]["wsi_titan"] for c_ in dump["cases"]])
-    _om = np.array([c_["seed_mean"]["omics_combine"] for c_ in dump["cases"]])
-    _rk = lambda v: np.argsort(np.argsort(v)).astype(float)
-    _rho = float(np.corrcoef(_rk(_sl), _rk(_om))[0, 1])
-    _rbt = float(np.corrcoef([p_["rho_slide"] for p_ in dump["pathways"]],
-                             [p_["rho_omics"] for p_ in dump["pathways"]])[0, 1])
-    _supb = " ".join(open(os.path.join(ROOT, "paper", "bib-submission", "supplementary.tex")).read().split())
-    for _frag in ("sharing Spearman %.2f between their out-of-fold scores" % _rho,
-                  "profiles correlate at $r=%.2f$" % _rbt):
-        if _frag not in _supb:
-            fails.append("BiB supplement: %r does not match the reporting dump" % _frag)
+    # The two correlations the BiB supplement's pathway paragraph stated, recomputed from the
+    # dump, are retired with the BiB build on 2026-09-27 (RETIRED_DOCS); the NC supplement's own
+    # numbers are checked in check_nc_si().
+    print("  --  %-38s retired with the BiB build" % "reporting-dump pathway correlations")
 
 
     # --- METRIC PARITY, answering round 2's G10. The paper now states both conventions on the
@@ -561,10 +508,10 @@ def main():
                        "metric-parity.json")
     if os.path.exists(_mp):
         mp = json.load(open(_mp))
-        for label, key, written in (("pooled out-of-fold", "pooled_out_of_fold", "0.7239"),
-                                    ("mean of per-fold", "mean_of_per_fold", "0.7272"),
+        for label, key, written in (("pooled out-of-fold", "pooled_out_of_fold", "0.7235"),
+                                    ("mean of per-fold", "mean_of_per_fold", "0.7276"),
                                     ("their difference", "difference_mean_minus_pooled",
-                                     "+0.0034")):
+                                     "+0.0041")):
             v = mp[key]
             got = ("%+.4f" % v) if written.startswith("+") else ("%.4f" % v)
             if got != written:
@@ -585,27 +532,36 @@ def main():
     if os.path.exists(_sn):
         sn = json.load(open(_sn))
         A, B = sn["A_selection_null"], sn["B_encoder_swap"]
-        SEL = [("null single-candidate sd", A["null_single_candidate"]["sd"], "0.0397"),
+        SEL = [("null single-candidate sd", A["null_single_candidate"]["sd"], "0.0398"),
                ("null single-candidate mean", A["null_single_candidate"]["mean"], "0.5011"),
-               ("null max q95", A["null_max_over_the_family"]["q95"], "0.5926"),
+               ("null max q95", A["null_max_over_the_family"]["q95"], "0.5918"),
                ("gaussian bar with the null sigma", A["bars"]["gaussian_with_the_null_sigma"]["bar"],
-                "0.8087"),
-               ("empirical max bar", A["bars"]["empirical_max_q95"]["bar"], "0.7716"),
-               ("slide-arm span across encoders", B["slide_arm_span"], "0.1372"),
-               ("full-method span across encoders", B["full_method_span"], "0.0521"),
-               ("full method, weakest encoder", B["full_method_min"], "0.6704"),
-               ("full method, strongest encoder", B["full_method_max"], "0.7225")]
+                "0.8089"),
+               ("empirical max bar", A["bars"]["empirical_max_q95"]["bar"], "0.7708"),
+               ("inflation of the null maximum above chance",
+                A["null_max_over_the_family"]["q95"] - 0.5, "0.0918"),
+               ("slide-arm span across encoders", B["slide_arm_span"], "0.1369"),
+               ("full-method span across encoders", B["full_method_span"], "0.0529"),
+               ("full method, weakest encoder", B["full_method_min"], "0.6695"),
+               ("full method, strongest encoder", B["full_method_max"], "0.7224")]
+        # the NC Supplementary Note 2 states the first six in prose (the BiB documents that also
+        # stated the encoder spans are retired)
+        _sel_si = " ".join(open(os.path.join(ROOT, "paper", "nc-submission",
+                                             "supplementary.tex")).read().split())
         for label, value, written in SEL:
             if "%.4f" % value != written:
                 fails.append("selection null: %s is %.4f at source, written as %s"
                              % (label, value, written))
+            if "encoder" not in label and written not in _sel_si:
+                fails.append("NC SI never states %s (%s)" % (written, label))
             for doc in PROSE_MODALITY_DOCS:
                 if written not in open(doc).read():
                     fails.append("%s never states %s (%s)"
                                  % (os.path.relpath(doc, ROOT), written, label))
         # the two claims the paragraphs rest on, asserted rather than assumed
-        if 0.7212 >= A["bars"]["empirical_max_q95"]["bar"]:
-            fails.append("the paper says 0.7212 does NOT clear the corrected bar; it now does")
+        if load("amendment-A1-clinical-provenance.json")["primary"]["value"] >= \
+                A["bars"]["empirical_max_q95"]["bar"]:
+            fails.append("the paper says the primary does NOT clear the corrected bar; it now does")
         if B["encoders_whose_full_method_still_beats_the_incumbent"] != 5:
             fails.append("the paper says five of seven encoders still beat 0.679; the run says %d"
                          % B["encoders_whose_full_method_still_beats_the_incumbent"])
@@ -633,53 +589,27 @@ def main():
             if (sum(sr["strata"].values()) != sr["candidates_scored"]
                     or sr["candidates_scored"] != 269):
                 fails.append("the ledger strata do not sum to 269: %r" % (sr["strata"],))
-            # The supplement enumerates the strata in prose. The gate binds each count to its
-            # stratum by proximity rather than by an exact phrase, so the sentence may be
-            # rewritten freely and a count may not drift away from the thing it counts.
-            _sup = " ".join(open(os.path.join(ROOT, "paper", "bib-submission",
-                                              "supplementary.tex")).read().split())
-            for key, word in (("full_cohort_out_of_fold", "full-cohort out-of-fold"),
-                              ("subgroup_slice", "subgroup slice"),
-                              ("in_sample_oracle", "in-sample oracle"),
-                              ("permuted_or_null_control", "permuted or null control"),
-                              ("cross_cohort_transfer_probe", "cross-cohort transfer probe")):
-                count = sr["strata"][key]
-                if not re.search(r"\b%d\b[^.]{0,60}?%s" % (count, re.escape(word)), _sup):
-                    fails.append("the supplement does not bind %d to \"%s\"; a stratification "
-                                 "whose parts are not all written down does not close for a "
-                                 "reader" % (count, word))
+            # The strata-to-prose binding below checked only the BiB supplementary.tex; retired
+            # with the BiB build on 2026-09-27 (RETIRED_DOCS). The sr-field checks above, which
+            # read only the result files, are unaffected.
+            print("  --  %-38s retired with the BiB build" % "strata bound to supplement prose")
         print("  ok  %-38s corrected bar %.4f, %d of 7 encoders clear 0.679"
               % ("selection null and encoder swap",
                  A["bars"]["empirical_max_q95"]["bar"],
                  B["encoders_whose_full_method_still_beats_the_incumbent"]))
 
-    # --- DISPLAY-ITEM ORDER in the submission document. A copy-editor checks this and it broke
-    # twice today, once when a figure was inserted and once when a table's float sat 30,000
-    # characters after its first citation. Gated on the BiB main only: the internal draft is
-    # Nature-shaped, its abstract cites Figure 2 first, and that ordering is deliberate there.
-    _sub = open(os.path.join(ROOT, "paper", "bib-submission", "main.tex")).read()
-    for pre, what in (("fig:", "figures"), ("tab:", "tables")):
-        declared = re.findall(r"\\label\{(%s[^}]+)\}" % pre, _sub)
-        firstcite = {}
-        for m in re.finditer(r"\\ref\{(%s[^}]+)\}" % pre, _sub):
-            firstcite.setdefault(m.group(1), m.start())
-        never = [l for l in declared if l not in firstcite]
-        if never:
-            fails.append("submission document never cites %s" % never)
-        byc = sorted(declared, key=lambda l: firstcite.get(l, 10 ** 9))
-        if byc != declared:
-            fails.append("submission %s are not cited in numbering order: declared %s, cited %s"
-                         % (what, declared, byc))
-    print("  ok  %-38s all cited, in numbering order" % "display-item order")
+    # --- DISPLAY-ITEM ORDER in the submission document. This was gated on the BiB main only
+    # (bib-submission/main.tex): the internal draft is Nature-shaped, its abstract cites Figure 2
+    # first, and that ordering was deliberate there. Retired with the BiB build on 2026-09-27
+    # (RETIRED_DOCS).
+    print("  --  %-38s retired with the BiB build" % "display-item order")
 
     # --- THE COVER LETTER. It is the one document an editor reads beside the paper, and a letter
     # that disagrees with its manuscript is the inconsistency they are guaranteed to see. Every
     # number in it must appear in the submission document, and the letter carries the same prose
     # rules as the paper.
-    for _cl, _subdoc in ((os.path.join(ROOT, "paper", "cover_letter.tex"),
-                          os.path.join(ROOT, "paper", "bib-submission", "main.tex")),
-                         (os.path.join(ROOT, "paper", "nc-submission", "cover_letter.tex"),
-                          os.path.join(ROOT, "paper", "nc-submission", "main.tex"))):
+    for _cl, _subdoc in ((os.path.join(ROOT, "paper", "nc-submission", "cover_letter.tex"),
+                          os.path.join(ROOT, "paper", "nc-submission", "main.tex")),):
       if os.path.exists(_cl):
         letter = open(_cl).read()
         sub = open(_subdoc).read()
@@ -702,11 +632,8 @@ def main():
     # which" -- and contractions, second person, and loose indefinite nouns. NOTE that `cannot` is
     # a word, not a contraction: the first version of this check flagged 19 of them and every one
     # was a false positive.
-    PROSE_DOCS = [os.path.join(ROOT, "paper", "bib-submission", "main.tex"),
-                  os.path.join(ROOT, "paper", "bib-submission", "supplementary.tex"),
-                  os.path.join(ROOT, "paper", "main.tex"),
-                  os.path.join(ROOT, "paper", "methods.tex"),
-                  os.path.join(ROOT, "paper", "nc-submission", "main.tex"),
+    # The four BiB documents were removed from this list on 2026-09-27 (RETIRED_DOCS).
+    PROSE_DOCS = [os.path.join(ROOT, "paper", "nc-submission", "main.tex"),
                   os.path.join(ROOT, "paper", "nc-submission", "supplementary.tex")]
     REGISTER = [(r"\b(?:can't|won't|isn't|aren't|doesn't|didn't|it's|that's|we're|don't|"
                  r"there's|let's)\b", "a contraction"),
@@ -739,11 +666,8 @@ def main():
     #   enumerate, separating several citations in one parenthesis, or inside math.
     #   Also scanned: a space before a comma or full stop. That is not a style opinion, it is the
     #   residue a bulk rewriter leaves behind, and 20 of them survived one such pass unnoticed.
-    PROSE_DOCS = [os.path.join(ROOT, "paper", "bib-submission", "main.tex"),
-                  os.path.join(ROOT, "paper", "bib-submission", "supplementary.tex"),
-                  os.path.join(ROOT, "paper", "main.tex"),
-                  os.path.join(ROOT, "paper", "methods.tex"),
-                  os.path.join(ROOT, "paper", "nc-submission", "main.tex"),
+    # The four BiB documents were removed from this list on 2026-09-27 (RETIRED_DOCS).
+    PROSE_DOCS = [os.path.join(ROOT, "paper", "nc-submission", "main.tex"),
                   os.path.join(ROOT, "paper", "nc-submission", "supplementary.tex")]
     n_dash = n_path = n_semi = n_space = n_dup = 0
     for doc in PROSE_DOCS:
@@ -849,38 +773,11 @@ def main():
     print("  ok  %-38s %d documents, 0 em-dashes, 0 clause semicolons, 0 paths, "
           "0 residue, 0 repeats" % ("manuscript prose", len(PROSE_DOCS)))
 
-    # --- FIGURE GEOMETRY. Authoring at final size only means something if the insertion scale is
-    # exactly 1. The main manuscript is TWO-COLUMN under the OUP class -- textwidth 488.5pt, not
-    # the 453.6pt of the internal article build -- so figures drawn at 6.30in were being enlarged
-    # 1.077x and a 9pt label was landing at 9.69pt. The supplementary is a plain article whose
-    # textwidth really is 453.6pt, so its figures are a different target.
-    import subprocess as _sp
-    import glob as _g
-    FIGDIR = os.path.join(ROOT, "paper", "figures")
-    TARGET = {"main": 488.5, "supp": 453.6}
-    # Only figures a manuscript actually INCLUDES. Globbing the directory also measured a
-    # superseded draft that nothing references, which is noise; this way an included-but-missing
-    # figure fails too, which the glob could never catch.
-    included = []
-    for doc, key in ((os.path.join(ROOT, "paper", "bib-submission", "main.tex"), "main"),
-                     (os.path.join(ROOT, "paper", "bib-submission", "supplementary.tex"), "supp")):
-        for m in re.finditer(r"\\includegraphics\[[^\]]*\]\{([^}]+)\}", open(doc).read()):
-            included.append((m.group(1), key))
-    for base, key in sorted(set(included)):
-        fn = os.path.join(FIGDIR, base)
-        want = TARGET[key]
-        if not os.path.exists(fn):
-            fails.append("%s is included by the manuscript but does not exist" % base); continue
-        try:
-            out = _sp.run(["pdfinfo", fn], capture_output=True, text=True).stdout
-            w = float([l for l in out.split("\n") if "Page size" in l][0].split()[2])
-        except Exception as exc:
-            fails.append("cannot read %s to check its insertion scale: %s" % (base, exc)); continue
-        if abs(w - want) > 0.6:
-            fails.append("%s is %.1fpt wide but is inserted into a %.1fpt text block; the scale is "
-                         "%.4f, so source pt is not rendered pt" % (base, w, want, want / w))
-    print("  ok  %-38s %d included figures, insertion scale 1.0000"
-          % ("figure geometry", len(set(included))))
+    # --- FIGURE GEOMETRY. This checked the insertion scale of figures included by
+    # bib-submission/main.tex and supplementary.tex against the OUP class's two-column textwidth
+    # (488.5pt) and the internal article build's textwidth (453.6pt) -- both BiB-specific and both
+    # retired with the BiB build on 2026-09-27 (RETIRED_DOCS).
+    print("  --  %-38s retired with the BiB build" % "figure geometry")
 
     # --- The clinical-baseline census. The manuscript's central claim is a claim about other
     # people's papers, and it was stated as "every one of the eleven" while the paper named ten at
@@ -932,47 +829,11 @@ def main():
                   % ("%s parameter count, at source" % who,
                      "{:,}".format(pc[who]["parameters"]), len(paths)))
 
-    # --- CROSS-DOCUMENT references. The supplementary is a separate compile, so its numbers cannot
-    # be \ref'd from the main text and are written by hand. Three of six were wrong the first time,
-    # because the labels were positional -- `tab:s4` rendered as Table S2. This reads the
-    # supplementary's own .aux and checks every hand-written number against what it actually is.
-    aux = os.path.join(ROOT, "paper", "bib-submission", "supplementary.aux")
-    bibmain = os.path.join(ROOT, "paper", "bib-submission", "main.tex")
-    if not os.path.exists(aux):
-        fails.append("supplementary.aux is missing; cross-document numbers cannot be checked "
-                     "(compile paper/bib-submission/supplementary.tex first)")
-    else:
-        rendered = dict(re.findall(r"\\newlabel\{([^}]*)\}\{\{(S\d+)\}", open(aux).read()))
-        EXPECT = {"Supplementary Table~S1": "tab:sup-census",
-                  "Supplementary Table~S3": "tab:sup-components",
-                  "Supplementary Table~S4": "tab:sup-perseed",
-                  # the three thin campaign figures merged into one on 2026-08-18, so the
-                  # main text now points at panels of S1 rather than at S1, S2 and S3
-                  "Supplementary Figure~S1a,~b": "fig:sup-campaign",
-                  "Supplementary Figure~S1c,~d": "fig:sup-campaign",
-                  "Supplementary Figure~S1e,~f": "fig:sup-campaign",
-                  "Supplementary Figure~S3": "fig:sup-perfold"}
-        body = open(bibmain).read()
-        # A MISSING phrase is a failure, not a skip. The first version of this check skipped what
-        # it could not find, so mutating "Table~S3" to "Table~S2" made the check pass by making the
-        # thing it was checking disappear -- which is the exact defect it exists to catch.
-        for phrase, label in EXPECT.items():
-            want = re.search(r"S\d+", phrase).group()   # the phrase may carry panel letters
-            got = rendered.get(label)
-            if got != want:
-                fails.append("%s renders as %s in the supplementary, but the main text is written "
-                             "against %s" % (label, got, want))
-            elif phrase not in body:
-                fails.append("main.tex no longer cites %r (%s); either it was renumbered by hand "
-                             "or the pointer was dropped" % (phrase, label))
-        # and nothing may point at a supplementary item that does not exist
-        valid = set(rendered.values())
-        for m in re.finditer(r"Supplementary (?:Table|Figure)~(S\d+)", body):
-            if m.group(1) not in valid:
-                fails.append("main.tex cites Supplementary %s, which the supplementary does not "
-                             "contain" % m.group(1))
-        print("  ok  %-38s %d mappings, %d valid targets"
-              % ("supplementary cross-references", len(EXPECT), len(valid)))
+    # --- CROSS-DOCUMENT references. This bound bib-submission/main.tex's hand-written pointers to
+    # bib-submission/supplementary.aux's own rendered labels -- both retired with the BiB build on
+    # 2026-09-27 (RETIRED_DOCS plus its derived .aux). check_nc_si() binds the NC build's own
+    # cross-document references against paper/nc-submission/supplementary.aux separately.
+    print("  --  %-38s retired with the BiB build" % "supplementary cross-references")
     # The count is stated on TWO denominators since 2026-09-11: the entries on the released folds
     # (verified here or by definition) and all nine. A sentence that mixes the two was the defect.
     def _verified(e):
@@ -1018,16 +879,32 @@ def main():
                              "that is the half of a two-part change that flatters us"
                              % (os.path.relpath(path, ROOT), line))
 
-    for m in re.finditer(r"0\.002\s*(?:to|--|-)\s*0\.012", tex):
-        window = tex[max(0, m.start() - 400):m.end() + 400]
-        if "0.029" not in window:
-            line = tex[:m.start()].count("\n") + 1
-            fails.append("main.tex:%d states the published gaps as 0.002-0.012 without naming the "
-                         "0.029 one nearby -- that phrasing is what made the claim wrong" % line)
+    for _doc in SCAN:
+        _txt = open(_doc).read()
+        for m in re.finditer(r"0\.002\s*(?:to|--|-)\s*0\.012", _txt):
+            window = _txt[max(0, m.start() - 400):m.end() + 400]
+            if "0.029" not in window:
+                line = _txt[:m.start()].count("\n") + 1
+                fails.append("%s:%d states the published gaps as 0.002-0.012 without naming the "
+                             "0.029 one nearby -- that phrasing is what made the claim wrong"
+                             % (os.path.relpath(_doc, ROOT), line))
+    # Lines inside a Supplementary table that check_nc_si compares cell by cell with its result
+    # file are exempt: a stale value there fails that comparison, and a current value can equal an
+    # old token by coincidence (amendment A2 gave DeepMISL 0.5012 and stomach's D +0.0318).
+    _bound = set()
+    _sp = os.path.join(ROOT, "paper", "nc-submission", "supplementary.tex")
+    _ss = open(_sp).read()
+    for _lab in set(re.findall(r'expect\("(tab:[^"]+)"', open(os.path.abspath(__file__)).read())):
+        _m = re.search(r"\\begin\{tabular\}\{[^}]*\}((?:(?!\\begin\{tabular\}).)*?)\\end\{tabular\}"
+                       r"(?:(?!\\begin\{table\}).)*?\\label\{%s\}" % re.escape(_lab), _ss, re.S)
+        if _m:
+            _bound.update(range(_ss.count("\n", 0, _m.start(1)) + 1, _ss.count("\n", 0, _m.end(1)) + 2))
     for token, why in SUPERSEDED.items():
         for path in SCAN:
             body = open(path).read()
             for i, line in enumerate(body.split("\n"), 1):
+                if path == _sp and i in _bound:
+                    continue
                 if token in line:
                     fails.append("SUPERSEDED VALUE %-9s at %s:%d -- %s"
                                  % (token, os.path.relpath(path, ROOT), i, why))
@@ -1046,7 +923,9 @@ def main():
         # research-control/, which no public artifact contains, and not in this shipped file.
         _tokp = os.path.join(ROOT, "research-control", "chimera-external-20260911", "embargo-tokens.json")
         _EMB = json.load(open(_tokp))["tokens"] if os.path.isfile(_tokp) else ["CHIMERA"]
-        for _doc in SCAN + (os.path.join(ROOT, "paper", "cover_letter.tex"),):
+        # the BiB cover letter (paper/cover_letter.tex) was dropped from this scan on 2026-09-27
+        # (RETIRED_DOCS); the NC cover letter is already in SCAN.
+        for _doc in SCAN:
             if not os.path.isfile(_doc):
                 continue
             _b = open(_doc).read()
@@ -1055,7 +934,7 @@ def main():
                     fails.append("EMBARGO: %r from the CHIMERA cohort appears in %s"
                                  % (_tok, os.path.relpath(_doc, ROOT)))
         print("  ok  %-38s no CHIMERA name or value in %d documents"
-              % ("CHIMERA embargo", len(SCAN) + 1))
+              % ("CHIMERA embargo", len(SCAN)))
 
     # ---- the encoder-parity arm, read from its own result file. Its known-answer check is what
     #      licenses the number at all, so the gate refuses the prose if that check did not pass.
@@ -1063,15 +942,11 @@ def main():
                        "encoder-parity.json")
     if os.path.isfile(_ep):
         _e = json.load(open(_ep))
-        _sub = open(os.path.join(ROOT, "paper", "bib-submission", "main.tex")).read()
         if not _e["known_answer_check"]["reproduced"]:
             fails.append("the encoder-parity run's known-answer check did not reproduce, so its "
                          "number must not appear in the manuscript")
-        for _k, _v in (("chief full method", _e["chief"]["full_method"]),
-                       ("chief slide arm", _e["chief"]["slide_alone"])):
-            if ("%.4f" % _v) not in _sub:
-                fails.append("%s is %.4f in the result file and does not appear in the manuscript"
-                             % (_k, _v))
+        # the membership check below read only bib-submission/main.tex; retired with the BiB
+        # build on 2026-09-27 (RETIRED_DOCS). The known-answer check above is unaffected.
         print("  ok  encoder parity on CHIEF               full %.4f, slide %.4f, known-answer "
               "reproduced" % (_e["chief"]["full_method"], _e["chief"]["slide_alone"]))
 
@@ -1085,7 +960,9 @@ def main():
         _m = re.search(r"(\d+) checks, (\d+) passed", _r.stdout or "")
         if _m:
             _n = _m.group(1)
-            for _p in [os.path.join(ROOT, "paper", "cover_letter.tex")] + list(SCAN):
+            # the BiB cover letter (paper/cover_letter.tex) was dropped here on 2026-09-27
+            # (RETIRED_DOCS); the NC cover letter is already in SCAN.
+            for _p in list(SCAN):
                 if not os.path.isfile(_p):
                     continue
                 for _q in re.finditer(r"recomputes\s+(\d+)\s+(?:reported\s+)?quantit", open(_p).read()):
@@ -1094,34 +971,10 @@ def main():
                                      "reports %s" % (os.path.relpath(_p, ROOT), _q.group(1), _n))
             print("  ok  recomputed-quantity count           prose agrees with the script at %s" % _n)
 
-    # ---- the published identifiers, bound to the one file the builder reads them from.
-    #      CITATION.cff, .zenodo.json and this manuscript all take these strings from
-    #      release-identifiers.json, and a manuscript quoting a different DOI than the archive
-    #      actually carries is the kind of error nobody re-reads for.
-    _idp = os.path.join(ROOT, "tools_release", "release-identifiers.json")
-    if os.path.isfile(_idp):
-        _ident = json.load(open(_idp))
-        _sub = open(os.path.join(ROOT, "paper", "bib-submission", "main.tex")).read()
-        _named = 0
-        for _key, _label in (("concept_doi", "concept DOI"), ("version_doi", "version DOI"),
-                             ("repository_url", "repository URL")):
-            _val = _ident.get(_key)
-            if not _val:
-                continue
-            _named += 1
-            if _val not in _sub:
-                fails.append("the %s in the identifiers file (%s) does not appear in the "
-                             "manuscript" % (_label, _val))
-        # A placeholder that survived is the failure this gate was added to close.
-        _open = [i + 1 for i, ln in enumerate(_sub.split("\n"), 0)
-                 if re.search(r"\\TODO(?:port|author)?\{", ln) and "newcommand" not in ln]
-        if _ident.get("concept_doi") and _open:
-            fails.append("the identifiers exist and the manuscript still carries an unresolved "
-                         "placeholder at line %s" % ", ".join(str(n) for n in _open))
-        if _named:
-            print("  ok  published identifiers               %d bound to the identifiers file, "
-                  "%d placeholder%s left"
-                  % (_named, len(_open), "" if len(_open) == 1 else "s"))
+    # ---- the published identifiers. This bound release-identifiers.json's DOIs and repository URL,
+    # and its unresolved-placeholder scan, against bib-submission/main.tex alone -- retired with the
+    # BiB build on 2026-09-27 (RETIRED_DOCS).
+    print("  --  %-38s retired with the BiB build" % "published identifiers")
 
     n_nc = check_nc(fails)
     print("  ok  %-38s %d quantities bound to their result files" % ("Nature Communications build", n_nc))
@@ -1132,7 +985,10 @@ def main():
         for f in fails:
             print("   " + f)
         return 1
-    print("PASS -- %d numbers verified, no superseded value present" % len(CHECKS))
+    # len(CHECKS) is no longer meaningful here: those 29 literal bindings are retired with the
+    # BiB build (see the "CHECKS table" line above) rather than verified this run. n_nc is what
+    # this run actually verified end to end.
+    print("PASS -- %d numbers verified, no superseded value present" % n_nc)
     return 0
 
 
@@ -1248,14 +1104,34 @@ def check_nc(fails):
                      "the runs give %s" % _ex)
     # the architectures: D positive with an interval excluding zero, no added value over stage
     # resolved, and none beyond the benchmark (SI Note 8)
+    # Since amendment A2 the four split: three with D resolved and no excess, and DeepMISL, whose
+    # risks were constant within most validation folds, with D unresolved and an excess below zero.
+    ARCH3 = ARCH[:3]
     for _m in ARCH:
         _v = fa[_m]
-        if not (_v["D"] > 0 and _v["D_boot"]["ci95"][0] > 0 and _v["added_over_stage_boot"]["ci95"][0] <= 0
-                and nbc[_m]["excess_over_no_signal"]["ci95"][0] <= 0):
+        _ok = _v["added_over_stage_boot"]["ci95"][0] <= 0 and _v["added_over_stage_boot"]["ci95"][1] >= 0
+        if _m in ARCH3:
+            _ok = _ok and _v["D"] > 0 and _v["D_boot"]["ci95"][0] > 0 \
+                and nbc[_m]["excess_over_no_signal"]["ci95"][0] <= 0 \
+                and _v["retraining_fold_pairs_with_constant_risk"] == 0
+        else:
+            _ok = _ok and _v["D_boot"]["ci95"][0] <= 0 <= _v["D_boot"]["ci95"][1] \
+                and nbc[_m]["excess_over_no_signal"]["ci95"][1] < 0 \
+                and (_v["retraining_fold_pairs"], _v["retraining_fold_pairs_with_constant_risk"],
+                     _v["retraining_fold_pairs_with_fewer_than_half_distinct_risks"]) == (25, 13, 24)
+        if not _ok:
             fails.append("NC's description of %s in SI Note 8 no longer matches the run" % _m)
-    if max(fa[_m]["D_p_holm"] for _m in ARCH) != 0.02:
-        fails.append("SI Note 8 says the largest Holm q over the four architectures is 0.02")
+    if "%.3f" % max(fa[_m]["D_p_holm"] for _m in ARCH3) != "0.022":
+        fails.append("SI Note 8 says the largest Holm q over the three resolved architectures is 0.022")
+    _dm = fa["deepmisl_wsi_pathways"]
+    for _ph in ("DeepMISL returned one risk for the whole validation fold in 13 of its 25 retraining--fold pairs",
+                "Its $D$ of $%+.4f$ ($[%+.4f, %+.4f]$)" % ((_dm["D"],) + tuple(_dm["D_boot"]["ci95"]))):
+        if _ph not in " ".join(open(os.path.join(ROOT, "paper", "nc-submission", "supplementary.tex"))
+                               .read().split()):
+            fails.append("SI Note 8 should carry %r" % _ph)
     # analysis C: the reference gap in external cohorts (Results, Discussion, SI Note 9)
+    _WORDS = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven",
+              8: "eight", 9: "nine", 10: "ten"}
     gs = j(FI, "reference-gap-summary.json")
     gx = j(FI, "reference-gap-external.json")
     _ext_n = sum(v["n"] for v in gx["known_answers_geo"].values()) + sum(
@@ -1264,27 +1140,26 @@ def check_nc(fails):
     _g0 = j(FI, "reference-gap-gate0.json")["cohorts"][_big["cohort"]]["grade_levels"]
     _share = 100.0 * max(_g0.values()) / sum(_g0.values())
     for _ph in ("all six independent bladder cohorts that record both (%s patients)" % format(_ext_n, ","),
-                "with intervals excluding zero in %s" % {4: "four"}[gs["external_only"]["interval_excludes_zero"]],
+                "with intervals excluding zero in %s" % _WORDS[gs["external_only"]["interval_excludes_zero"]],
                 "The largest gap, $%+.4f$, was in a muscle-invasive cohort" % _big["gap"],
                 "%.1f\\%% of tumours share one grade" % _share,
                 "(Spearman $%.2f$)" % gs["spearman_gap_vs_grade_entropy"]["rho"],
-                "outperformed grade in all %s" % {9: "nine"}[gs["gap_positive"]]):
+                "outperformed grade in all %s" % _WORDS[gs["gap_positive"]]):
         if _ph.replace("\\%", "\\%") not in " ".join(nc.split()):
             fails.append("NC's external reference-gap sentence should carry %r" % _ph)
     if not (gs["external_only"]["n"] == 6 and gs["external_only"]["gap_positive"] == 6 and gs["n"] == 9):
         fails.append("NC says six external cohorts, all positive, nine in all; the summary says %s" % gs)
-    # tie order: the Methods sentence reads its numbers from the committed diagnostics
-    _td = open(os.path.join(ROOT, "experiments", "20260927-field-inflation", "diagnostics",
-                            "tiespread.txt")).read()
-    _tm = re.search(r"seed0 ModRank.*?random: min (\S+) max (\S+) sd (\S+)", _td)
-    _xd = open(os.path.join(ROOT, "experiments", "20260927-field-inflation", "diagnostics",
-                            "s34-sysu-numpy126.txt")).read()
-    _xd = ast.literal_eval(_xd[_xd.index("{"):_xd.rindex("}") + 1])
-    _tie = "ranges from %s to %s (standard deviation %.4f)" % (_tm.group(1), _tm.group(2), float(_tm.group(3)))
-    _xmax = "moved no value by more than %.4f" % max(abs(a_ - b_) for a_, b_ in _xd.values())
-    for _ph in (_tie, _xmax, "Over 1,000 random tie orders"):
+    # amendment A2 (Methods, SI Note 10): the chain frozen -> A1 -> A2 is read from the before-after
+    # table, whose before column is the last commit with pre-A2 results, and from the A1 file
+    _ba = j(ROOT, "experiments", "20260928-amendment-a2", "results", "before-after.json")
+    _ba_p = [r_ for r_ in _ba["rows"] if r_["quantity"] == "ModRank, mean over five seeds"][0]
+    if abs(_ba_p["after"] - a1["primary"]["value"]) > 5e-5:
+        fails.append("the before-after table's A2 primary is not the A1 file's primary")
+    for _ph in ("moved the primary from %.4f to %.4f" % (a1["frozen_run_for_comparison"]["primary"], _ba_p["before"]),
+                "which moved the primary to %.4f" % _ba_p["after"],
+                "tied scores share their average rank"):
         if _ph not in " ".join(nc.split()):
-            fails.append("NC's tie-order sentence should carry %r" % _ph)
+            fails.append("NC's amendment sentences should carry %r" % _ph)
     # ten comparisons, none separating. The manuscript rests a contrast on that, so it is asserted
     # rather than described: if any interval ever excludes zero the sentence has to change.
     _sepf = [(c, k) for c, v in fus.items()
@@ -1365,18 +1240,18 @@ def check_nc(fails):
         ("SurvPath/MMP reported clinical C", cenp["survpath"]["blca_values"]["age_sex_grade"], "0.570",
          "and 0.570 concordance"),
         # the abstract, rounded to three places
-        ("abstract: grade reference", a1["arms_seed0"]["clinical_age_sex_GRADE_from_DIMAF_file"], "0.567",
-         "raised its concordance from 0.567 to 0.664"),
+        ("abstract: grade reference", a1["arms_seed0"]["clinical_age_sex_GRADE_from_DIMAF_file"], '0.566',
+         'raised its concordance from 0.566 to 0.664'),
         ("abstract: stage reference", a1["arms_seed0"]["clinical_age_sex_stage_from_DIMAF_file"], "0.664",
-         "raised its concordance from 0.567 to 0.664"),
+         'raised its concordance from 0.566 to 0.664'),
         ("abstract: primary", a1["primary"]["value"], "0.721", "It reached 0.721, the highest"),
-        ("clinical with grade", a1["arms_seed0"]["clinical_age_sex_GRADE_from_DIMAF_file"], "0.5666",
-         "The grade construction reaches 0.5666"),
-        ("clinical with stage", a1["arms_seed0"]["clinical_age_sex_stage_from_DIMAF_file"], "0.6638",
-         "the stage construction 0.6638"),
+        ("clinical with grade", a1["arms_seed0"]["clinical_age_sex_GRADE_from_DIMAF_file"], '0.5664',
+         'The grade construction reaches 0.5664'),
+        ("clinical with stage", a1["arms_seed0"]["clinical_age_sex_stage_from_DIMAF_file"], '0.6637',
+         'the stage construction 0.6637'),
         ("stage minus grade", a1["arms_seed0"]["stage_minus_grade"], "+0.0972", "a gap of +0.0972"),
-        ("stage minus grade, CI low", sgv["ci95"][0], "+0.047", "$[+0.047, +0.149]$"),
-        ("stage minus grade, CI high", sgv["ci95"][1], "+0.149", "$[+0.047, +0.149]$"),
+        ("stage minus grade, CI low", sgv["ci95"][0], "+0.047", '$[+0.047, +0.150]$'),
+        ("stage minus grade, CI high", sgv["ci95"][1], '+0.150', '$[+0.047, +0.150]$'),
         # the regime
         ("noise fit in-sample", rg["capacity_sweep"]["arms"][0]["corrected_null"], "0.7474",
          "reaches 0.7474 concordance at sixteen parameters"),
@@ -1394,105 +1269,105 @@ def check_nc(fails):
         # error this comment exists to prevent.
         # the prose states each removal as the signed change in concordance (since 2026-09-27; it
         # said "costs 0.0218" beside a negative interval before), so the bound quantity is the difference
-        ("drop the slide", abl["omics + clin"]["mean"], "-0.0218", "by\n$-0.0218$ for the slide"),
-        ("drop the slide, CI", abl["omics + clin"]["ci95"][0], "-0.0481", "$[-0.0481, +0.0038]$"),
-        ("drop the slide, p", abl["omics + clin"]["p_two_sided"], "0.105", "$p=0.105$"),
-        ("drop the transcriptome", abl["wsi + clin"]["mean"], "-0.0222",
-         "$-0.0222$ for the transcriptome"),
-        ("drop the transcriptome, CI", abl["wsi + clin"]["ci95"][0], "-0.0489", "$[-0.0489, +0.0060]$"),
-        ("drop the transcriptome, p", abl["wsi + clin"]["p_two_sided"], "0.110", "$p=0.110$"),
-        ("drop the clinical block", abl["wsi + omics"]["mean"], "-0.0385",
-         "$-0.0385$ for the clinical block"),
-        ("drop the clinical block, CI", abl["wsi + omics"]["ci95"][1], "-0.0084",
-         "$[-0.0687, -0.0084]$"),
-        ("drop the clinical block, p", abl["wsi + omics"]["p_two_sided"], "0.010", "$p=0.010$"),
+        ("drop the slide", abl["omics + clin"]["mean"], '-0.0221', 'by $-0.0221$ for the slide'),
+        ("drop the slide, CI", abl["omics + clin"]["ci95"][0], '-0.0484', '$[-0.0484, +0.0039]$'),
+        ("drop the slide, p", abl["omics + clin"]["p_two_sided"], '0.097', '$p=0.097$'),
+        ("drop the transcriptome", abl["wsi + clin"]["mean"], '-0.0224',
+         '$-0.0224$ for the transcriptome'),
+        ("drop the transcriptome, CI", abl["wsi + clin"]["ci95"][0], '-0.0495', '$[-0.0495, +0.0055]$'),
+        ("drop the transcriptome, p", abl["wsi + clin"]["p_two_sided"], '0.107', '$p=0.107$'),
+        ("drop the clinical block", abl["wsi + omics"]["mean"], '-0.0390',
+         '$-0.0390$ for the clinical block'),
+        ("drop the clinical block, CI", abl["wsi + omics"]["ci95"][1], '-0.0086',
+         '$[-0.0696, -0.0086]$'),
+        ("drop the clinical block, p", abl["wsi + omics"]["p_two_sided"], '0.011', '$p=0.011$'),
         # --- the five studies, promoted to validation by the 2026-09-12 charter amendment. Three of
         # five separate from the corrected clinical arm and two do not, and the rows below bind both
         # halves: a later edit that keeps the three and drops the two fails here.
         ("five studies, cases", fcs["total_cases"], "2,241", "Across 2,241 patients and 411 events"),
         ("five studies, events", fcs["total_events"], "411", "2,241 patients and 411 events"),
-        ("blca vs clinical", fcd("blca", "ours_minus_clinical_stage")["mean"], "+0.0774",
-         "In bladder the margin is $+0.0774$"),
-        ("blca vs clinical, CI low", fcd("blca", "ours_minus_clinical_stage")["ci95"][0], "+0.0284",
-         "$[+0.0284, +0.1264]$"),
-        ("blca vs clinical, CI high", fcd("blca", "ours_minus_clinical_stage")["ci95"][1], "+0.1264",
-         "$[+0.0284, +0.1264]$"),
+        ("blca vs clinical", fcd("blca", "ours_minus_clinical_stage")["mean"], '+0.0784',
+         'In bladder the margin is $+0.0784$'),
+        ("blca vs clinical, CI low", fcd("blca", "ours_minus_clinical_stage")["ci95"][0], '+0.0298',
+         '$[+0.0298, +0.1267]$'),
+        ("blca vs clinical, CI high", fcd("blca", "ours_minus_clinical_stage")["ci95"][1], '+0.1267',
+         '$[+0.0298, +0.1267]$'),
         ("blca vs clinical, p", fcd("blca", "ours_minus_clinical_stage")["p_two_sided"], "0.001",
-         "($[+0.0284, +0.1264]$, $p=0.001$)"),
-        ("brca vs clinical", fcd("brca", "ours_minus_clinical_stage")["mean"], "+0.1208",
-         "In breast it is $+0.1208$ ($[+0.0525, +0.1904]$, $p<0.001$)"),
-        ("brca vs clinical, CI low", fcd("brca", "ours_minus_clinical_stage")["ci95"][0], "+0.0525",
-         "$[+0.0525, +0.1904]$"),
-        ("brca vs clinical, CI high", fcd("brca", "ours_minus_clinical_stage")["ci95"][1], "+0.1904",
-         "$[+0.0525, +0.1904]$"),
-        ("hnsc vs clinical", fcd("hnsc", "ours_minus_clinical_stage")["mean"], "+0.0726",
-         "in head and neck $+0.0726$ ($[+0.0206, +0.1231]$, $p=0.007$)"),
+         '($[+0.0298, +0.1267]$, $p=0.001$)'),
+        ("brca vs clinical", fcd("brca", "ours_minus_clinical_stage")["mean"], '+0.1201',
+         'In breast it is $+0.1201$ ($[+0.0519, +0.1897]$, $p<0.001$)'),
+        ("brca vs clinical, CI low", fcd("brca", "ours_minus_clinical_stage")["ci95"][0], '+0.0519',
+         '$[+0.0519, +0.1897]$'),
+        ("brca vs clinical, CI high", fcd("brca", "ours_minus_clinical_stage")["ci95"][1], '+0.1897',
+         '$[+0.0519, +0.1897]$'),
+        ("hnsc vs clinical", fcd("hnsc", "ours_minus_clinical_stage")["mean"], '+0.0725',
+         'in head and neck $+0.0725$ ($[+0.0206, +0.1231]$, $p=0.008$)'),
         ("hnsc vs clinical, CI low", fcd("hnsc", "ours_minus_clinical_stage")["ci95"][0], "+0.0206",
          "$[+0.0206, +0.1231]$"),
         ("hnsc vs clinical, CI high", fcd("hnsc", "ours_minus_clinical_stage")["ci95"][1], "+0.1231",
          "$[+0.0206, +0.1231]$"),
-        ("hnsc vs clinical, p", fcd("hnsc", "ours_minus_clinical_stage")["p_two_sided"], "0.007",
-         "($[+0.0206, +0.1231]$, $p=0.007$)"),
+        ("hnsc vs clinical, p", fcd("hnsc", "ours_minus_clinical_stage")["p_two_sided"], '0.008',
+         '($[+0.0206, +0.1231]$, $p=0.008$)'),
         # the two that do NOT separate, bound so they cannot quietly leave the paragraph
-        ("stad vs clinical", fcd("stad", "ours_minus_clinical_stage")["mean"], "+0.0495",
-         "Stomach reaches $+0.0495$"),
-        ("stad vs clinical, CI low", fcd("stad", "ours_minus_clinical_stage")["ci95"][0], "-0.0127",
-         "$[-0.0127, +0.1122]$"),
-        ("coadread vs clinical", fcd("coadread", "ours_minus_clinical_stage")["mean"], "+0.0236",
-         "colorectal $+0.0236$ ($[-0.0686, +0.1197]$)"),
+        ("stad vs clinical", fcd("stad", "ours_minus_clinical_stage")["mean"], '+0.0452',
+         'Stomach reaches $+0.0452$'),
+        ("stad vs clinical, CI low", fcd("stad", "ours_minus_clinical_stage")["ci95"][0], '-0.0155',
+         '$[-0.0155, +0.1070]$'),
+        ("coadread vs clinical", fcd("coadread", "ours_minus_clinical_stage")["mean"], '+0.0231',
+         'colorectal $+0.0231$ ($[-0.0701, +0.1192]$)'),
         ("coadread vs clinical, CI low", fcd("coadread", "ours_minus_clinical_stage")["ci95"][0],
-         "-0.0686", "$[-0.0686, +0.1197]$"),
+         '-0.0701', '$[-0.0701, +0.1192]$'),
         ("coadread events", fcc["coadread"]["events"], "37", "the study with 37 events"),
-        ("coadread grade control", fcd("coadread", "ours_minus_grade_control")["mean"], "+0.0911",
-         "zero, at $+0.0911$ with an interval of $[+0.0451, +0.1449]$"),
+        ("coadread grade control", fcd("coadread", "ours_minus_grade_control")["mean"], '+0.0894',
+         'zero, at $+0.0894$ with an interval of $[+0.0437, +0.1429]$'),
         ("coadread grade control, CI low", fcd("coadread", "ours_minus_grade_control")["ci95"][0],
-         "+0.0451", "$[+0.0451, +0.1449]$"),
-        ("brca three minus two modalities", fcd("brca", "ours_minus_wsi_omics")["mean"], "-0.0211",
-         "negative in breast ($-0.0211$, $[-0.0727, +0.0296]$)"),
-        ("brca three minus two, CI low", fcd("brca", "ours_minus_wsi_omics")["ci95"][0], "-0.0727",
-         "$[-0.0727, +0.0296]$"),
+         '+0.0437', '$[+0.0437, +0.1429]$'),
+        ("brca three minus two modalities", fcd("brca", "ours_minus_wsi_omics")["mean"], '-0.0232',
+         'negative in breast ($-0.0232$, $[-0.0749, +0.0277]$)'),
+        ("brca three minus two, CI low", fcd("brca", "ours_minus_wsi_omics")["ci95"][0], '-0.0749',
+         '$[-0.0749, +0.0277]$'),
         ("brca best published, any protocol", fcc["brca"]["published_best_any_protocol"][1], "0.794",
          "0.794 for breast and 0.832 for colorectal"),
         ("coadread best published, any protocol",
          fcc["coadread"]["published_best_any_protocol"][1], "0.832",
          "0.794 for breast and 0.832 for colorectal"),
-        ("brca ModRank", fcc["brca"]["points"]["OURS_wsi_omics_age_sex_stage"], "0.6892",
-         "against 0.6892 and\n0.7141 here"),
-        ("coadread ModRank", fcc["coadread"]["points"]["OURS_wsi_omics_age_sex_stage"], "0.7141",
-         "0.6892 and\n0.7141 here"),
+        ("brca ModRank", fcc["brca"]["points"]["OURS_wsi_omics_age_sex_stage"], '0.6881',
+         'against 0.6881 and 0.7140 here'),
+        ("coadread ModRank", fcc["coadread"]["points"]["OURS_wsi_omics_age_sex_stage"], '0.7140',
+         '0.6881 and 0.7140 here'),
         ("blca under the five-study protocol",
-         fcc["blca"]["points"]["OURS_wsi_omics_age_sex_stage"], "0.6992",
-         "Under it bladder reaches 0.6992, against 0.7212"),
+         fcc["blca"]["points"]["OURS_wsi_omics_age_sex_stage"], '0.7003',
+         'Under it bladder reaches 0.7003, against 0.7214'),
         # --- the same five studies under a second slide encoder. The three that separate are bound
         # here; that the other two still cover zero is asserted below, because an edit that kept the
         # three and quietly dropped the two would otherwise pass.
         ("second encoder, blca", enc["blca"]["differences"]["ours_minus_clinical_stage"]["mean"],
-         "+0.0569", "$+0.0569$ ($[+0.0034, +0.1099]$) in bladder"),
+         '+0.0574', '$+0.0574$ ($[+0.0044, +0.1101]$) in bladder'),
         ("second encoder, blca CI low",
-         enc["blca"]["differences"]["ours_minus_clinical_stage"]["ci95"][0], "+0.0034",
-         "$[+0.0034, +0.1099]$"),
+         enc["blca"]["differences"]["ours_minus_clinical_stage"]["ci95"][0], '+0.0044',
+         '$[+0.0044, +0.1101]$'),
         ("second encoder, brca", enc["brca"]["differences"]["ours_minus_clinical_stage"]["mean"],
-         "+0.0847", "$+0.0847$ ($[+0.0164, +0.1527]$) in\nbreast"),
+         '+0.0849', '$+0.0849$ ($[+0.0163, +0.1531]$) in breast'),
         ("second encoder, brca CI low",
-         enc["brca"]["differences"]["ours_minus_clinical_stage"]["ci95"][0], "+0.0164",
-         "$[+0.0164, +0.1527]$"),
+         enc["brca"]["differences"]["ours_minus_clinical_stage"]["ci95"][0], '+0.0163',
+         '$[+0.0163, +0.1531]$'),
         ("second encoder, hnsc", enc["hnsc"]["differences"]["ours_minus_clinical_stage"]["mean"],
-         "+0.0580", "$+0.0580$ ($[+0.0078, +0.1101]$) in head and neck"),
+         '+0.0576', '$+0.0576$ ($[+0.0070, +0.1094]$) in head and neck'),
         ("second encoder, hnsc CI low",
-         enc["hnsc"]["differences"]["ours_minus_clinical_stage"]["ci95"][0], "+0.0078",
-         "$[+0.0078, +0.1101]$"),
+         enc["hnsc"]["differences"]["ours_minus_clinical_stage"]["ci95"][0], '+0.0070',
+         '$[+0.0070, +0.1094]$'),
         # the fusion alternatives. Breast is the one the main text names, because it is the study
         # where the rank average trails and the reason the title does not claim otherwise.
-        ("breast concatenation", fus["brca"]["points"]["concatenated"], "0.7571",
-         "the concatenated model reaches 0.7571 against 0.6892"),
+        ("breast concatenation", fus["brca"]["points"]["concatenated"], '0.7578',
+         'the concatenated model reaches 0.7578 against 0.6881'),
         ("breast, ModRank minus concatenation", fus["brca"]["ModRank_minus_concatenated"]["mean"],
-         "-0.0679", "($-0.0679$, $[-0.1384, +0.0029]$, $p=0.061$)"),
-        ("breast, that CI low", fus["brca"]["ModRank_minus_concatenated"]["ci95"][0], "-0.1384",
-         "$[-0.1384, +0.0029]$"),
-        ("breast, that CI high", fus["brca"]["ModRank_minus_concatenated"]["ci95"][1], "+0.0029",
-         "$[-0.1384, +0.0029]$"),
-        ("breast, that p", fus["brca"]["ModRank_minus_concatenated"]["p_two_sided"], "0.061",
-         "$p=0.061$)"),
+         '-0.0696', '($-0.0696$, $[-0.1399, +0.0010]$, $p=0.054$)'),
+        ("breast, that CI low", fus["brca"]["ModRank_minus_concatenated"]["ci95"][0], '-0.1399',
+         '$[-0.1399, +0.0010]$'),
+        ("breast, that CI high", fus["brca"]["ModRank_minus_concatenated"]["ci95"][1], '+0.0010',
+         '$[-0.1399, +0.0010]$'),
+        ("breast, that p", fus["brca"]["ModRank_minus_concatenated"]["p_two_sided"], '0.054',
+         '$p=0.054$)'),
         # The five "from X to Y" sentences are in the Supplementary Note, so they are checked
         # against that document in check_nc_si. Binding them here was the same error made earlier
         # today with the re-partition floors: every row in this list is matched against main.tex
@@ -1500,269 +1375,281 @@ def check_nc(fails):
         # --- subgroup performance, the two TRIPOD rows that read "Not addressed" until 2026-09-12.
         # The men-minus-women difference is bound alongside its interval on purpose: the point
         # estimate alone would read as a finding, and the interval is what says it is not one.
-        ("women, ModRank", sg["splits"]["sex"]["women"]["ours"], "0.6616",
-         "(0.6616 against 0.7406)"),
-        ("men, ModRank", sg["splits"]["sex"]["men"]["ours"], "0.7406", "(0.6616 against 0.7406)"),
-        ("women, clinical arm", sg["splits"]["sex"]["women"]["clinical_stage"], "0.5652",
-         "(0.5652 against 0.7015)"),
-        ("men, clinical arm", sg["splits"]["sex"]["men"]["clinical_stage"], "0.7015",
-         "(0.5652 against 0.7015)"),
+        ("women, ModRank", sg["splits"]["sex"]["women"]["ours"], '0.6638',
+         '(0.6638 against 0.7399)'),
+        ("men, ModRank", sg["splits"]["sex"]["men"]["ours"], '0.7399', '(0.6638 against 0.7399)'),
+        ("women, clinical arm", sg["splits"]["sex"]["women"]["clinical_stage"], '0.5664',
+         '(0.5664 against 0.7014)'),
+        ("men, clinical arm", sg["splits"]["sex"]["men"]["clinical_stage"], '0.7014',
+         '(0.5664 against 0.7014)'),
         ("women in the cohort", sg["splits"]["sex"]["women"]["n"], "90", "with 90\nwomen and 31 events"),
         ("events among women", sg["splits"]["sex"]["women"]["events"], "31", "90\nwomen and 31 events"),
         # Since 2026-09-27 the Discussion states only the interval of the sex gap: the reported
         # difference is the bootstrap mean (+0.0811), which next to 0.7406 and 0.6616 reads as an
         # arithmetic slip (their difference is 0.0790). Full values stay in SI Table 11.
-        ("ModRank sex gap, CI low", sg["splits"]["sex"]["ours_men_minus_women"]["ci95"][0], "-0.0231",
-         "$[-0.0231, +0.1900]$"),
-        ("ModRank sex gap, CI high", sg["splits"]["sex"]["ours_men_minus_women"]["ci95"][1], "+0.1900",
-         "$[-0.0231, +0.1900]$"),
+        ("ModRank sex gap, CI low", sg["splits"]["sex"]["ours_men_minus_women"]["ci95"][0], '-0.0244',
+         '$[-0.0244, +0.1844]$'),
+        ("ModRank sex gap, CI high", sg["splits"]["sex"]["ours_men_minus_women"]["ci95"][1], '+0.1844',
+         '$[-0.0244, +0.1844]$'),
         # the age split is now stated as "small and its interval covers zero"; asserted below
         # race: obtained from the archive, and only one stratum clears the floors. The count is
         # bound because it is the reason no comparison is reported, not a descriptive aside.
         ("white patients", sg["splits"]["race"]["white"]["n"], "285",
          "Of the 359 patients, 285 are white"),
         ("white stratum, ModRank over clinical",
-         sg["splits"]["race"]["white"]["ours_minus_clinical"]["mean"], "+0.0588",
-         "$+0.0588$ ($[+0.0043, +0.1132]$)"),
+         sg["splits"]["race"]["white"]["ours_minus_clinical"]["mean"], '+0.0594',
+         '$+0.0594$ ($[+0.0052, +0.1134]$)'),
         ("white stratum, CI low",
-         sg["splits"]["race"]["white"]["ours_minus_clinical"]["ci95"][0], "+0.0043",
-         "$[+0.0043, +0.1132]$"),
+         sg["splits"]["race"]["white"]["ours_minus_clinical"]["ci95"][0], '+0.0052',
+         '$[+0.0052, +0.1134]$'),
         ("white stratum, CI high",
-         sg["splits"]["race"]["white"]["ours_minus_clinical"]["ci95"][1], "+0.1132",
-         "$[+0.0043, +0.1132]$"),
+         sg["splits"]["race"]["white"]["ours_minus_clinical"]["ci95"][1], '+0.1134',
+         '$[+0.0052, +0.1134]$'),
         # --- per-study re-partition floors. The two that disagree with the bootstrap are bound
         # explicitly: colorectal fails this bar and stomach clears it while its interval covers
         # zero, and an edit that keeps one and drops the other fails here.
-        ("coadread margin", fl["coadread"]["released_folds"]["margin"], "+0.0243",
-         "$+0.0243$ against a bar of 0.0270"),
-        ("coadread bar", fl["coadread"]["floor"]["bar_2sd"], "0.0270", "against a bar of 0.0270"),
-        ("stad margin", fl["stad"]["released_folds"]["margin"], "+0.0491",
-         "$+0.0491$ against 0.0323"),
-        ("stad bar", fl["stad"]["floor"]["bar_2sd"], "0.0323", "$+0.0491$ against 0.0323"),
+        ("coadread margin", fl["coadread"]["released_folds"]["margin"], '+0.0238',
+         '$+0.0238$ against a bar of 0.0267'),
+        ("coadread bar", fl["coadread"]["floor"]["bar_2sd"], '0.0267', 'against a bar of 0.0267'),
+        ("stad margin", fl["stad"]["released_folds"]["margin"], '+0.0449',
+         '$+0.0449$ against 0.0325'),
+        ("stad bar", fl["stad"]["floor"]["bar_2sd"], '0.0325', '$+0.0449$ against 0.0325'),
         # The five floors themselves are written in the Supplementary Note, not here, so they are
         # checked by check_nc_si against that document. Binding them in this list was an error:
         # every row here is compared against main.tex alone, and eight rows failed as "no longer
         # carried" when the text had never been there.
         # the confirmatory result
-        ("primary", a1["primary"]["value"], "0.7212", "ModRank reaches 0.7212 concordance"),
-        ("primary SD", a1["primary"]["sd_over_seeds"], "0.0048", "standard deviation 0.0048"),
-        ("over the best verified entry", a1["comparisons"]["vs_DIMAF_published"]["gap"], "+0.0422",
-         "$+0.0422$ above the best entry whose folds we verified"),
-        ("vs SurvPath", holm["ours vs SurvPath+clinical (seed-matched)"]["delta"], "+0.0340",
-         "exceeds SurvPath by $+0.0340$ ($[-0.0056, +0.0731]$, $p=0.084$"),
-        ("vs SurvPath, CI low", holm["ours vs SurvPath+clinical (seed-matched)"]["ci95"][0], "-0.0056",
-         "($[-0.0056, +0.0731]$"),
-        ("vs SurvPath, CI high", holm["ours vs SurvPath+clinical (seed-matched)"]["ci95"][1], "+0.0731",
-         "($[-0.0056, +0.0731]$"),
-        ("vs SurvPath, p", holm["ours vs SurvPath+clinical (seed-matched)"]["p_raw"], "0.084", "$p=0.084$"),
-        ("vs PIBD", holm["ours vs PIBD+clinical (best-val checkpoint)"]["delta"], "+0.0249",
-         "PIBD by $+0.0249$ ($[-0.0181, +0.0675]$, $p=0.241$)"),
-        ("vs PIBD, CI low", holm["ours vs PIBD+clinical (best-val checkpoint)"]["ci95"][0], "-0.0181",
-         "($[-0.0181, +0.0675]$"),
-        ("vs PIBD, CI high", holm["ours vs PIBD+clinical (best-val checkpoint)"]["ci95"][1], "+0.0675",
-         "($[-0.0181, +0.0675]$"),
-        ("vs PIBD, p", holm["ours vs PIBD+clinical (best-val checkpoint)"]["p_raw"], "0.241", "$p=0.241$"),
+        ("primary", a1["primary"]["value"], '0.7214', 'ModRank reaches 0.7214 concordance'),
+        ("primary SD", a1["primary"]["sd_over_seeds"], '0.0043', 'standard deviation 0.0043'),
+        ("over the best verified entry", a1["comparisons"]["vs_DIMAF_published"]["gap"], '+0.0424',
+         '$+0.0424$ above the best entry whose folds we verified'),
+        ("vs SurvPath", holm["ours vs SurvPath+clinical (seed-matched)"]["delta"], '+0.0338',
+         'exceeds SurvPath by $+0.0338$ ($[-0.0053, +0.0727]$, $p=0.087$'),
+        ("vs SurvPath, CI low", holm["ours vs SurvPath+clinical (seed-matched)"]["ci95"][0], '-0.0053',
+         '($[-0.0053, +0.0727]$'),
+        ("vs SurvPath, CI high", holm["ours vs SurvPath+clinical (seed-matched)"]["ci95"][1], '+0.0727',
+         '($[-0.0053, +0.0727]$'),
+        ("vs SurvPath, p", holm["ours vs SurvPath+clinical (seed-matched)"]["p_raw"], '0.087', '$p=0.087$'),
+        ("vs PIBD", holm["ours vs PIBD+clinical (best-val checkpoint)"]["delta"], '+0.0252',
+         'PIBD by $+0.0252$ ($[-0.0173, +0.0676]$, $p=0.238$)'),
+        ("vs PIBD, CI low", holm["ours vs PIBD+clinical (best-val checkpoint)"]["ci95"][0], '-0.0173',
+         '($[-0.0173, +0.0676]$'),
+        ("vs PIBD, CI high", holm["ours vs PIBD+clinical (best-val checkpoint)"]["ci95"][1], '+0.0676',
+         '($[-0.0173, +0.0676]$'),
+        ("vs PIBD, p", holm["ours vs PIBD+clinical (best-val checkpoint)"]["p_raw"], '0.238', '$p=0.238$'),
         ("our coefficients", pc["ours"]["parameters"], "1,049", "with 1,049 parameters against 24.7"),
         ("SurvPath parameters", pc["survpath"]["parameters"], "24.7M", "against 24.7 and 26.9 million"),
         ("PIBD parameters", pc["pibd"]["parameters"], "26.9M", "against 24.7 and 26.9 million"),
         # fusion on identical inputs
-        ("concatenated, mean", fu["concatenated_ridge_cox"]["mean"], "0.6864", "$0.6864 \\pm 0.0063$"),
-        ("concatenated, SD", fu["concatenated_ridge_cox"]["sd"], "0.0063", "$0.6864 \\pm 0.0063$"),
-        ("stacked, mean", fu["stacked_learned_weights"]["mean"], "0.7106", "$0.7106 \\pm 0.0044$"),
-        ("stacked, SD", fu["stacked_learned_weights"]["sd"], "0.0044", "$0.7106 \\pm 0.0044$"),
-        ("vs concatenated", fu["paired"]["ours_vs_concatenated"]["mean"], "+0.0340",
-         "exceeds the concatenation by $+0.0340$ ($[+0.0014, +0.0674]$, $p=0.042$)"),
-        ("vs concatenated, CI low", fu["paired"]["ours_vs_concatenated"]["ci95"][0], "+0.0014",
-         "($[+0.0014, +0.0674]$"),
-        ("vs concatenated, CI high", fu["paired"]["ours_vs_concatenated"]["ci95"][1], "+0.0674",
-         "($[+0.0014, +0.0674]$"),
-        ("vs concatenated, p", fu["paired"]["ours_vs_concatenated"]["p_two_sided"], "0.042", "$p=0.042$"),
-        ("vs stacked", fu["paired"]["ours_vs_stacked"]["mean"], "+0.0108",
-         "the stacking by $+0.0108$ ($[-0.0052, +0.0269]$)"),
-        ("vs stacked, CI low", fu["paired"]["ours_vs_stacked"]["ci95"][0], "-0.0052", "($[-0.0052, +0.0269]$)"),
-        ("vs stacked, CI high", fu["paired"]["ours_vs_stacked"]["ci95"][1], "+0.0269", "($[-0.0052, +0.0269]$)"),
-        ("resplits vs concatenated", rs["resplits"]["ours_minus_concat"]["mean"], "+0.0464",
-         "($+0.0464 \\pm 0.0158$)"),
-        ("resplits vs concatenated, SD", rs["resplits"]["ours_minus_concat"]["sd"], "0.0158",
-         "($+0.0464 \\pm 0.0158$)"),
-        ("resplits vs stacked", rs["resplits"]["ours_minus_stacked"]["mean"], "+0.0111",
-         "($+0.0111 \\pm 0.0065$)"),
-        ("resplits vs stacked, SD", rs["resplits"]["ours_minus_stacked"]["sd"], "0.0065",
-         "($+0.0111 \\pm 0.0065$)"),
+        ("concatenated, mean", fu["concatenated_ridge_cox"]["mean"], '0.6861', '$0.6861 \\pm 0.0064$'),
+        ("concatenated, SD", fu["concatenated_ridge_cox"]["sd"], '0.0064', '$0.6861 \\pm 0.0064$'),
+        ("stacked, mean", fu["stacked_learned_weights"]["mean"], '0.7108', '$0.7108 \\pm 0.0032$'),
+        ("stacked, SD", fu["stacked_learned_weights"]["sd"], '0.0032', '$0.7108 \\pm 0.0032$'),
+        ("vs concatenated", fu["paired"]["ours_vs_concatenated"]["mean"], '+0.0342',
+         'exceeds the concatenation by $+0.0342$ ($[+0.0015, +0.0681]$, $p=0.041$)'),
+        ("vs concatenated, CI low", fu["paired"]["ours_vs_concatenated"]["ci95"][0], '+0.0015',
+         '($[+0.0015, +0.0681]$'),
+        ("vs concatenated, CI high", fu["paired"]["ours_vs_concatenated"]["ci95"][1], '+0.0681',
+         '($[+0.0015, +0.0681]$'),
+        ("vs concatenated, p", fu["paired"]["ours_vs_concatenated"]["p_two_sided"], '0.041', '$p=0.041$'),
+        ("vs stacked", fu["paired"]["ours_vs_stacked"]["mean"], '+0.0097',
+         'the stacking by $+0.0097$ ($[-0.0067, +0.0263]$)'),
+        ("vs stacked, CI low", fu["paired"]["ours_vs_stacked"]["ci95"][0], '-0.0067', '($[-0.0067, +0.0263]$)'),
+        ("vs stacked, CI high", fu["paired"]["ours_vs_stacked"]["ci95"][1], '+0.0263', '($[-0.0067, +0.0263]$)'),
+        # amendment A2's tuned-ridge stacking (Results, Methods, SI Note 10)
+        ("tuned stacking, mean", fu["stacked_tuned_ridge"]["mean"], "0.7147", "$0.7147 \\pm 0.0048$ with a tuned one"),
+        ("tuned stacking, SD", fu["stacked_tuned_ridge"]["sd"], "0.0048", "$0.7147 \\pm 0.0048$ with a tuned one"),
+        ("vs tuned stacking", fu["paired"]["ours_vs_stacked_tuned_ridge"]["mean"], "+0.0055",
+         "the tuned stacking by $+0.0055$ ($[-0.0071, +0.0180]$)"),
+        ("vs tuned stacking, CI low", fu["paired"]["ours_vs_stacked_tuned_ridge"]["ci95"][0], "-0.0071",
+         "the tuned stacking by $+0.0055$ ($[-0.0071, +0.0180]$)"),
+        ("vs tuned stacking, CI high", fu["paired"]["ours_vs_stacked_tuned_ridge"]["ci95"][1], "+0.0180",
+         "the tuned stacking by $+0.0055$ ($[-0.0071, +0.0180]$)"),
+        ("resplits vs concatenated", rs["resplits"]["ours_minus_concat"]["mean"], '+0.0471',
+         '($+0.0471 \\pm 0.0151$)'),
+        ("resplits vs concatenated, SD", rs["resplits"]["ours_minus_concat"]["sd"], '0.0151',
+         '($+0.0471 \\pm 0.0151$)'),
+        ("resplits vs stacked", rs["resplits"]["ours_minus_stacked"]["mean"], '+0.0107',
+         '($+0.0107 \\pm 0.0062$)'),
+        ("resplits vs stacked, SD", rs["resplits"]["ours_minus_stacked"]["sd"], '0.0062',
+         '($+0.0107 \\pm 0.0062$)'),
         ("resplits vs clinical", rs["resplits"]["ours_minus_clinical"]["mean"], "+0.0549",
-         "($+0.0549 \\pm 0.0083$) in 24 of 24"),
-        ("resplits vs clinical, SD", rs["resplits"]["ours_minus_clinical"]["sd"], "0.0083",
-         "($+0.0549 \\pm 0.0083$) in 24 of 24"),
+         '($+0.0549 \\pm 0.0082$) in 24 of 24'),
+        ("resplits vs clinical, SD", rs["resplits"]["ours_minus_clinical"]["sd"], '0.0082',
+         '($+0.0549 \\pm 0.0082$) in 24 of 24'),
         ("site-grouped sites", rs["site_grouped_cv"]["sites_total"], "33", "(33 sites, five folds)"),
         # the Discussion restates the two re-partition margins and the breast lean in prose (A4,
         # 2026-09-27), so each restatement is bound where it is written, not only where it first appears
-        ("Discussion: resplits vs stacked", rs["resplits"]["ours_minus_stacked"]["mean"], "0.0111",
-         "the stacking by a mean of 0.0111, which the benchmark cannot resolve"),
-        ("Discussion: resplits vs concatenated", rs["resplits"]["ours_minus_concat"]["mean"], "0.0464",
-         "the concatenation by 0.0464, which it can"),
+        ("Discussion: resplits vs stacked", rs["resplits"]["ours_minus_stacked"]["mean"], '0.0107',
+         'the stacking by a mean of 0.0107, which the benchmark cannot resolve'),
+        ("Discussion: resplits vs concatenated", rs["resplits"]["ours_minus_concat"]["mean"], '0.0471',
+         'the concatenation by 0.0471, which it can'),
         ("Discussion: breast concatenation lead", -fus["brca"]["ModRank_minus_concatenated"]["mean"],
-         "0.0679", "the concatenation leads it by 0.0679 without separating"),
-        ("site-grouped ModRank", rs["site_grouped_cv"]["pooled"]["ours"], "0.7210",
-         "ModRank holds 0.7210 while the stacking falls to 0.6855 and the concatenation to 0.6487"),
+         '0.0696', 'the concatenation leads it by 0.0696 without separating'),
+        ("site-grouped ModRank", rs["site_grouped_cv"]["pooled"]["ours"], '0.7204',
+         'ModRank holds 0.7204 while the stacking falls to 0.6855 and the concatenation to 0.6482'),
         ("site-grouped stacked", rs["site_grouped_cv"]["pooled"]["stacked"], "0.6855",
          "the stacking falls to 0.6855"),
-        ("site-grouped concatenated", rs["site_grouped_cv"]["pooled"]["concat"], "0.6487",
-         "the concatenation to 0.6487"),
-        ("encoder parity", ep["chief"]["full_method"], "0.7009",
-         "SurvPath itself consumed, ModRank reaches 0.7009"),
+        ("site-grouped concatenated", rs["site_grouped_cv"]["pooled"]["concat"], '0.6482',
+         'the concatenation to 0.6482'),
+        ("encoder parity", ep["chief"]["full_method"], '0.7004',
+         'SurvPath itself consumed, ModRank reaches 0.7004'),
         # Both values are seed 0, which is the only seed the CHIEF parity run scored, so the
         # difference is stated on that seed rather than against the 5-seed primary. Written as
         # "near 0.022" until 2026-09-12, which rounded 0.0216 up and collided with the slide's
         # leave-one-out cost of 0.0218, a different quantity that happens to look the same.
-        ("encoder contribution", a1["arms_seed0"]["OURS"] - ep["chief"]["full_method"], "0.0216",
-         "the encoder's contribution at 0.0216 on the seed both values share"),
-        ("corrected bar", sn["A_selection_null"]["bars"]["empirical_max_q95"]["bar"], "0.7716",
-         "the correctly measured bar of 0.7716"),
+        ("encoder contribution", a1["arms_seed0"]["OURS"] - ep["chief"]["full_method"], '0.0220',
+         "the encoder's contribution at 0.0220 on the seed both values share"),
+        ("corrected bar", sn["A_selection_null"]["bars"]["empirical_max_q95"]["bar"], '0.7708',
+         'the bar of 0.7708 measured under an outcome-permuted null'),
         # added value and its inflation
-        ("ModRank over grade", av["ours"]["added_over_weak"], "+0.1204",
-         "$+0.1204$ ($[+0.0684, +0.1708]$) for ModRank"),
-        ("ModRank over grade, CI low", av["ours"]["added_over_weak_boot"]["ci95"][0], "+0.0684",
-         "($[+0.0684, +0.1708]$)"),
-        ("ModRank over grade, CI high", av["ours"]["added_over_weak_boot"]["ci95"][1], "+0.1708",
-         "($[+0.0684, +0.1708]$)"),
-        ("SurvPath over grade", av["survpath"]["added_over_weak"], "+0.0670", "$+0.0670$ for SurvPath"),
-        ("PIBD over grade", av["pibd_best_val"]["added_over_weak"], "+0.0841", "$+0.0841$ for PIBD"),
-        ("ModRank over stage", av["ours"]["added_over_stage"], "+0.0594",
-         "fall to $+0.0594$, $+0.0253$ and $+0.0345$"),
-        ("SurvPath over stage", av["survpath"]["added_over_stage"], "+0.0253",
-         "fall to $+0.0594$, $+0.0253$ and $+0.0345$"),
-        ("PIBD over stage", av["pibd_best_val"]["added_over_stage"], "+0.0345",
-         "fall to $+0.0594$, $+0.0253$ and $+0.0345$"),
-        ("D ModRank", av["ours"]["D"], "+0.0610", "so $D$ is $+0.0610$, $+0.0417$ and $+0.0496$"),
-        ("D SurvPath", av["survpath"]["D"], "+0.0417", "so $D$ is $+0.0610$, $+0.0417$ and $+0.0496$"),
-        ("D PIBD", av["pibd_best_val"]["D"], "+0.0496", "so $D$ is $+0.0610$, $+0.0417$ and $+0.0496$"),
+        ("ModRank over grade", av["ours"]["added_over_weak"], '+0.1225',
+         '$+0.1225$ ($[+0.0695, +0.1733]$) for ModRank'),
+        ("ModRank over grade, CI low", av["ours"]["added_over_weak_boot"]["ci95"][0], '+0.0695',
+         '($[+0.0695, +0.1733]$)'),
+        ("ModRank over grade, CI high", av["ours"]["added_over_weak_boot"]["ci95"][1], '+0.1733',
+         '($[+0.0695, +0.1733]$)'),
+        ("SurvPath over grade", av["survpath"]["added_over_weak"], '+0.0656', '$+0.0656$ for SurvPath'),
+        ("PIBD over grade", av["pibd_best_val"]["added_over_weak"], '+0.0842', '$+0.0842$ for PIBD'),
+        ("ModRank over stage", av["ours"]["added_over_stage"], '+0.0588',
+         'fall to $+0.0588$, $+0.0249$ and $+0.0336$'),
+        ("SurvPath over stage", av["survpath"]["added_over_stage"], '+0.0249',
+         'fall to $+0.0588$, $+0.0249$ and $+0.0336$'),
+        ("PIBD over stage", av["pibd_best_val"]["added_over_stage"], '+0.0336',
+         'fall to $+0.0588$, $+0.0249$ and $+0.0336$'),
+        ("D ModRank", av["ours"]["D"], '+0.0637', 'so $D$ is $+0.0637$, $+0.0407$ and $+0.0506$'),
+        ("D SurvPath", av["survpath"]["D"], '+0.0407', 'so $D$ is $+0.0637$, $+0.0407$ and $+0.0506$'),
+        ("D PIBD", av["pibd_best_val"]["D"], '+0.0506', 'so $D$ is $+0.0637$, $+0.0407$ and $+0.0506$'),
         ("no-signal D, two arms", sum(nbc[k]["no_signal_D"]["mean"] for k in ("SurvPath", "PIBD") + ARCH) / 6,
          "0.029", "has $D = +0.029$ on average"),
-        ("no-signal D, ModRank's three arms", nbc["ModRank"]["no_signal_D"]["mean"], "+0.0417",
-         "$+0.0417$ in ModRank's three-arm form"),
-        ("excess ModRank", nbc["ModRank"]["excess_over_no_signal"]["mean"], "+0.0185",
-         "$+0.0185$ ($[+0.0022, +0.0359]$) for ModRank"),
-        ("excess ModRank, CI low", nbc["ModRank"]["excess_over_no_signal"]["ci95"][0], "+0.0022", "($[+0.0022, +0.0359]$)"),
-        ("excess ModRank, CI high", nbc["ModRank"]["excess_over_no_signal"]["ci95"][1], "+0.0359", "($[+0.0022, +0.0359]$)"),
-        ("excess PIBD", nbc["PIBD"]["excess_over_no_signal"]["mean"], "+0.0228",
-         "$+0.0228$ ($[+0.0066, +0.0393]$) for PIBD"),
-        ("excess PIBD, CI low", nbc["PIBD"]["excess_over_no_signal"]["ci95"][0], "+0.0066", "($[+0.0066, +0.0393]$)"),
-        ("excess PIBD, CI high", nbc["PIBD"]["excess_over_no_signal"]["ci95"][1], "+0.0393", "($[+0.0066, +0.0393]$)"),
-        ("excess SurvPath", nbc["SurvPath"]["excess_over_no_signal"]["mean"], "+0.0114",
-         "$+0.0114$ ($[-0.0035, +0.0270]$) for SurvPath"),
-        ("excess SurvPath, CI low", nbc["SurvPath"]["excess_over_no_signal"]["ci95"][0], "-0.0035", "($[-0.0035, +0.0270]$)"),
-        ("excess SurvPath, CI high", nbc["SurvPath"]["excess_over_no_signal"]["ci95"][1], "+0.0270", "($[-0.0035, +0.0270]$)"),
-        ("architectures alone, lowest", min(fa[m]["C_alone"] for m in ARCH), "0.51", "reach 0.51 to 0.60 on their own"),
-        ("architectures alone, highest", max(fa[m]["C_alone"] for m in ARCH), "0.60", "reach 0.51 to 0.60 on their own"),
-        ("architectures D, lowest", min(fa[m]["D"] for m in ARCH), "+0.028", "have $D$ of $+0.028$ to $+0.034$"),
-        ("architectures D, highest", max(fa[m]["D"] for m in ARCH), "+0.034", "have $D$ of $+0.028$ to $+0.034$"),
-        ("ModRank vs clinical, Holm", holm["ours vs clinical alone"]["p_holm"], "0.065", "(Holm $q=0.065$)"),
+        ("no-signal D, ModRank's three arms", nbc["ModRank"]["no_signal_D"]["mean"], '+0.0416',
+         "$+0.0416$ in ModRank's three-arm form"),
+        ("excess ModRank", nbc["ModRank"]["excess_over_no_signal"]["mean"], '+0.0214',
+         '$+0.0214$ ($[+0.0050, +0.0388]$) for ModRank'),
+        ("excess ModRank, CI low", nbc["ModRank"]["excess_over_no_signal"]["ci95"][0], '+0.0050', '($[+0.0050, +0.0388]$)'),
+        ("excess ModRank, CI high", nbc["ModRank"]["excess_over_no_signal"]["ci95"][1], '+0.0388', '($[+0.0050, +0.0388]$)'),
+        ("excess PIBD", nbc["PIBD"]["excess_over_no_signal"]["mean"], '+0.0235',
+         '$+0.0235$ ($[+0.0072, +0.0404]$) for PIBD'),
+        ("excess PIBD, CI low", nbc["PIBD"]["excess_over_no_signal"]["ci95"][0], '+0.0072', '($[+0.0072, +0.0404]$)'),
+        ("excess PIBD, CI high", nbc["PIBD"]["excess_over_no_signal"]["ci95"][1], '+0.0404', '($[+0.0072, +0.0404]$)'),
+        ("excess SurvPath", nbc["SurvPath"]["excess_over_no_signal"]["mean"], '+0.0104',
+         '$+0.0104$ ($[-0.0047, +0.0261]$) for SurvPath'),
+        ("excess SurvPath, CI low", nbc["SurvPath"]["excess_over_no_signal"]["ci95"][0], '-0.0047', '($[-0.0047, +0.0261]$)'),
+        ("excess SurvPath, CI high", nbc["SurvPath"]["excess_over_no_signal"]["ci95"][1], '+0.0261', '($[-0.0047, +0.0261]$)'),
+        ("architectures alone, lowest", min(fa[m]["C_alone"] for m in ARCH), '0.52', 'reach 0.52 to 0.60 on their own'),
+        ("architectures alone, highest", max(fa[m]["C_alone"] for m in ARCH), "0.60", 'reach 0.52 to 0.60 on their own'),
+        ("architectures D, lowest", min(fa[m]["D"] for m in ARCH[:3]), "+0.030", "Three have $D$ of $+0.030$ to $+0.033$"),
+        ("architectures D, highest", max(fa[m]["D"] for m in ARCH[:3]), "+0.033", "Three have $D$ of $+0.030$ to $+0.033$"),
+        ("DeepMISL D", fa["deepmisl_wsi_pathways"]["D"], "+0.005", "so its $D$ is $+0.005$"),
+        ("DeepMISL constant folds", fa["deepmisl_wsi_pathways"]["retraining_fold_pairs_with_constant_risk"],
+         "13", "fold in 13 of its 25 retraining--fold pairs"),
+        ("ModRank vs clinical, Holm", holm["ours vs clinical alone"]["p_holm"], '0.067', '(Holm $q=0.067$)'),
         # calibration and utility
         ("mean predicted 2-year risk", cal["ours"]["by_horizon"]["24.0"]["mean_predicted_risk"], "0.342",
          "was 0.342 against an observed 0.341"),
         ("observed 2-year risk", cal["ours"]["by_horizon"]["24.0"]["observed_km_risk"], "0.341",
          "against an observed 0.341"),
-        ("calibration slope", cal["ours"]["calibration_slope"], "0.770",
-         "the calibration slope was 0.770 (clinical model 0.849)"),
-        ("clinical calibration slope", cal["clinical"]["calibration_slope"], "0.849", "(clinical model 0.849)"),
+        ("calibration slope", cal["ours"]["calibration_slope"], '0.771',
+         'the calibration slope was 0.771 (clinical model 0.848)'),
+        ("clinical calibration slope", cal["clinical"]["calibration_slope"], '0.848', '(clinical model 0.848)'),
         ("IPA 1 year", cal["ours"]["by_horizon"]["12.0"]["ipa"], "0.098", "was 0.098 at one year"),
-        ("IPA 2 years", cal["ours"]["by_horizon"]["24.0"]["ipa"], "0.152", "and 0.152 at two years"),
+        ("IPA 2 years", cal["ours"]["by_horizon"]["24.0"]["ipa"], '0.151', 'and 0.151 at two years'),
         ("clinical IPA 1 year", cal["clinical"]["by_horizon"]["12.0"]["ipa"], "0.047", "against 0.047 and 0.079"),
         ("clinical IPA 2 years", cal["clinical"]["by_horizon"]["24.0"]["ipa"], "0.079", "against 0.047 and 0.079"),
         ("IPA 3 years", cal["ours"]["by_horizon"]["36.0"]["ipa"], "0.105", "equal at three years (0.105)"),
         ("clinical IPA 3 years", cal["clinical"]["by_horizon"]["36.0"]["ipa"], "0.105",
          "equal at three years (0.105)"),
-        ("net benefit at 40%", cal["ours"]["net_benefit_24m"]["0.4"], "0.136", "0.136 against 0.090"),
+        ("net benefit at 40%", cal["ours"]["net_benefit_24m"]["0.4"], '0.138', '0.138 against 0.090'),
         ("clinical net benefit at 40%", cal["clinical"]["net_benefit_24m"]["0.4"], "0.090",
-         "0.136 against 0.090"),
+         '0.138 against 0.090'),
         ("treat-all net benefit at 40%", cal["treat_all_net_benefit_24m"]["0.4"], "-0.098",
          "and $-0.098$ at 40\\%"),
         ("IPA difference at 2 years", ui["ipa_modrank_minus_clinical"]["24.0"]["mean"], "+0.0724",
-         "the two-year difference of $+0.0724$ has a 95\\% interval of $[-0.0054, +0.1502]$"),
-        ("its CI low", ui["ipa_modrank_minus_clinical"]["24.0"]["ci95"][0], "-0.0054",
-         "$[-0.0054, +0.1502]$"),
-        ("its CI high", ui["ipa_modrank_minus_clinical"]["24.0"]["ci95"][1], "+0.1502",
-         "$[-0.0054, +0.1502]$"),
+         'the two-year difference of $+0.0724$ has a 95\\% interval of $[-0.0056, +0.1504]$'),
+        ("its CI low", ui["ipa_modrank_minus_clinical"]["24.0"]["ci95"][0], '-0.0056',
+         '$[-0.0056, +0.1504]$'),
+        ("its CI high", ui["ipa_modrank_minus_clinical"]["24.0"]["ci95"][1], '+0.1504',
+         '$[-0.0056, +0.1504]$'),
         ("net benefit difference at 40%", ui["net_benefit_24m_modrank_minus_clinical"]["0.4"]["mean"],
-         "+0.0454", "At 40\\% the difference from the clinical model is $+0.0454$ ($[+0.0006, +0.0915]$)"),
-        ("its CI low", ui["net_benefit_24m_modrank_minus_clinical"]["0.4"]["ci95"][0], "+0.0006",
-         "($[+0.0006, +0.0915]$)"),
-        ("its CI high", ui["net_benefit_24m_modrank_minus_clinical"]["0.4"]["ci95"][1], "+0.0915",
-         "($[+0.0006, +0.0915]$)"),
+         '+0.0474', 'At 40\\% the difference from the clinical model is $+0.0474$ ($[+0.0040, +0.0907]$)'),
+        ("its CI low", ui["net_benefit_24m_modrank_minus_clinical"]["0.4"]["ci95"][0], '+0.0040',
+         '($[+0.0040, +0.0907]$)'),
+        ("its CI high", ui["net_benefit_24m_modrank_minus_clinical"]["0.4"]["ci95"][1], '+0.0907',
+         '($[+0.0040, +0.0907]$)'),
         # the modalities
-        ("slide-clinical Spearman", am["redundancy"]["spearman_titan_vs_clinical"], "0.2445",
-         "weakly correlated (Spearman 0.2445)"),
-        ("incumbent-clinical Spearman", am["redundancy"]["spearman_survpath_vs_clinical"], "0.1924",
-         "and the clinical score (0.1924)"),
-        ("clinically tied pairs", tie["pairs"], "1,213", "(1,213 of 24,219)"),
-        ("comparable pairs", tie["pairs_total"], "24,219", "(1,213 of 24,219)"),
-        ("clinical arm on the tied pairs", tie["arms"]["clinical"], "0.4959", "at chance (0.4959)"),
-        ("slide arm on the tied pairs", tie["arms"]["titan"], "0.6220", "the slide arm reaches 0.6220"),
-        ("doubly tied pairs", dtt["pairs"], "3,893", "On the 3,893 pairs that neither"),
-        ("slide on the doubly tied pairs", dtt["slide"], "0.6212", "the slide arm reaches 0.6212"),
-        ("transcriptome on them", dtt["omics"], "0.5543", "sit at 0.5543 and 0.5634"),
-        ("clinical on them", dtt["clinical"], "0.5634", "sit at 0.5543 and 0.5634"),
-        ("transcriptome arm vs basal axis", b4["basal"]["spearman"], "0.3595",
-         "axes (Spearman 0.3595, $-0.372$ and 0.3672)"),
+        ("slide-clinical Spearman", am["redundancy"]["spearman_titan_vs_clinical"], '0.2443',
+         'weakly correlated (Spearman 0.2443)'),
+        ("incumbent-clinical Spearman", am["redundancy"]["spearman_survpath_vs_clinical"], '0.1927',
+         'and the clinical score (0.1927)'),
+        ("clinically tied pairs", tie["pairs"], '1,211', '(1,211 of 24,219)'),
+        ("comparable pairs", tie["pairs_total"], "24,219", '(1,211 of 24,219)'),
+        ("clinical arm on the tied pairs", tie["arms"]["clinical"], '0.4975', 'at chance (0.4975)'),
+        ("slide arm on the tied pairs", tie["arms"]["titan"], '0.6214', 'the slide arm reaches 0.6214'),
+        ("doubly tied pairs", dtt["pairs"], '3,892', 'On the 3,892 pairs that neither'),
+        ("slide on the doubly tied pairs", dtt["slide"], '0.6193', 'the slide arm reaches 0.6193'),
+        ("transcriptome on them", dtt["omics"], '0.5540', 'sit at 0.5540 and 0.5633'),
+        ("clinical on them", dtt["clinical"], '0.5633', 'sit at 0.5540 and 0.5633'),
+        ("transcriptome arm vs basal axis", b4["basal"]["spearman"], '0.3601',
+         'axes (Spearman 0.3601, $-0.372$ and 0.3673)'),
         ("transcriptome arm vs luminal axis", b4["luminal"]["spearman"], "-0.372",
-         "axes (Spearman 0.3595, $-0.372$ and 0.3672)"),
-        ("transcriptome arm vs EMT axis", b4["EMT"]["spearman"], "0.3672",
-         "axes (Spearman 0.3595, $-0.372$ and 0.3672)"),
-        ("slide arm, largest axis correlation", max(abs(v["spearman"]) for v in b3.values()), "0.2245",
-         "is at most 0.2245 in magnitude"),
-        ("ModRank, basal-leaning half", bio["basal_leaning"]["OURS"], "0.7109", "(0.7109 in the basal-leaning half and 0.6997"),
-        ("ModRank, luminal-leaning half", bio["luminal_leaning"]["OURS"], "0.6997", "(0.7109 in the basal-leaning half and 0.6997"),
+         'axes (Spearman 0.3601, $-0.372$ and 0.3673)'),
+        ("transcriptome arm vs EMT axis", b4["EMT"]["spearman"], '0.3673',
+         'axes (Spearman 0.3601, $-0.372$ and 0.3673)'),
+        ("slide arm, largest axis correlation", max(abs(v["spearman"]) for v in b3.values()), '0.2236',
+         'is at most 0.2236 in magnitude'),
+        ("ModRank, basal-leaning half", bio["basal_leaning"]["OURS"], "0.7109", '(0.7109 in the basal-leaning half and 0.6983'),
+        ("ModRank, luminal-leaning half", bio["luminal_leaning"]["OURS"], '0.6983', '(0.7109 in the basal-leaning half and 0.6983'),
         # the external cohorts
         ("GSE32894 n", g32["n"], "224", "a Swedish cohort of 224 patients with 25 deaths"),
         ("GSE32894 events", g32["events"], "25", "224 patients with 25 deaths"),
-        ("GSE32894 D", g32["D"]["point"], "+0.0581", "$D = +0.0581$ ($[+0.0175, +0.0971]$, $p=0.007$)"),
-        ("GSE32894 D, CI low", g32["D"]["ci95"][0], "+0.0175", "($[+0.0175, +0.0971]$"),
-        ("GSE32894 D, CI high", g32["D"]["ci95"][1], "+0.0971", "($[+0.0175, +0.0971]$"),
-        ("GSE32894 D, p", g32["D"]["p_two_sided"], "0.007", "$p=0.007$"),
+        ("GSE32894 D", g32["D"]["point"], '+0.0586', '$D = +0.0586$ ($[+0.0179, +0.0984]$, $p=0.009$)'),
+        ("GSE32894 D, CI low", g32["D"]["ci95"][0], '+0.0179', '($[+0.0179, +0.0984]$'),
+        ("GSE32894 D, CI high", g32["D"]["ci95"][1], '+0.0984', '($[+0.0179, +0.0984]$'),
+        ("GSE32894 D, p", g32["D"]["p_two_sided"], '0.009', '$p=0.009$'),
         ("GSE31684 n", g31["n"], "93", "cohort of 93 patients with 38 deaths"),
         ("GSE31684 events", g31["events"], "38", "93 patients with 38 deaths"),
-        ("GSE32894 no-signal D", ng["GSE32894"]["no_signal_D"]["mean"], "+0.0183", "$+0.0183$ in this cohort"),
-        ("GSE32894 excess", ng["GSE32894"]["excess_over_no_signal"]["mean"], "+0.0409",
-         "excess was $+0.0409$ ($[+0.0040, +0.0775]$, $p=0.032$)"),
-        ("GSE32894 excess, CI low", ng["GSE32894"]["excess_over_no_signal"]["ci95"][0], "+0.0040", "($[+0.0040,"),
-        ("GSE32894 excess, CI high", ng["GSE32894"]["excess_over_no_signal"]["ci95"][1], "+0.0775", "+0.0775]$, $p=0.032$)"),
-        ("GSE32894 excess, p", ng["GSE32894"]["excess_over_no_signal"]["p_two_sided"], "0.032", "$p=0.032$)"),
-        ("GSE31684 D", g31["D"]["point"], "+0.0253", "$D$ was $+0.0253$ against $+0.0150$"),
-        ("GSE31684 no-signal D", ng["GSE31684"]["no_signal_D"]["mean"], "+0.0150", "$D$ was $+0.0253$ against $+0.0150$"),
-        ("GSE31684 excess", ng["GSE31684"]["excess_over_no_signal"]["mean"], "+0.0007",
-         "not resolved ($+0.0007$, $[-0.0325, +0.0335]$)"),
-        ("GSE31684 excess, CI low", ng["GSE31684"]["excess_over_no_signal"]["ci95"][0], "-0.0325", "$[-0.0325, +0.0335]$)"),
-        ("GSE31684 excess, CI high", ng["GSE31684"]["excess_over_no_signal"]["ci95"][1], "+0.0335", "$[-0.0325, +0.0335]$)"),
+        ("GSE32894 no-signal D", ng["GSE32894"]["no_signal_D"]["mean"], '+0.0197', '$+0.0197$ in this cohort'),
+        ("GSE32894 excess", ng["GSE32894"]["excess_over_no_signal"]["mean"], '+0.0397',
+         'excess was $+0.0397$ ($[+0.0011, +0.0780]$, $p=0.045$)'),
+        ("GSE32894 excess, CI low", ng["GSE32894"]["excess_over_no_signal"]["ci95"][0], '+0.0011', '($[+0.0011,'),
+        ("GSE32894 excess, CI high", ng["GSE32894"]["excess_over_no_signal"]["ci95"][1], '+0.0780', '+0.0780]$, $p=0.045$)'),
+        ("GSE32894 excess, p", ng["GSE32894"]["excess_over_no_signal"]["p_two_sided"], '0.045', '$p=0.045$)'),
+        ("GSE31684 D", g31["D"]["point"], '+0.0324', '$D$ was $+0.0324$ against $+0.0149$'),
+        ("GSE31684 no-signal D", ng["GSE31684"]["no_signal_D"]["mean"], '+0.0149', '$D$ was $+0.0324$ against $+0.0149$'),
+        ("GSE31684 excess", ng["GSE31684"]["excess_over_no_signal"]["mean"], '+0.0093',
+         'not resolved ($+0.0093$, $[-0.0211, +0.0390]$)'),
+        ("GSE31684 excess, CI low", ng["GSE31684"]["excess_over_no_signal"]["ci95"][0], '-0.0211', '$[-0.0211, +0.0390]$)'),
+        ("GSE31684 excess, CI high", ng["GSE31684"]["excess_over_no_signal"]["ci95"][1], '+0.0390', '$[-0.0211, +0.0390]$)'),
         ("GSE31684 D without pre-cystectomy chemotherapy",
-         g31["sensitivity_without_pre_cystectomy_chemotherapy"]["D"]["point"], "+0.1094",
-         "gave $D = +0.1094$ ($[+0.0424, +0.1774]$)"),
+         g31["sensitivity_without_pre_cystectomy_chemotherapy"]["D"]["point"], '+0.1081',
+         'gave $D = +0.1081$ ($[+0.0404, +0.1757]$)'),
         ("the same, CI low", g31["sensitivity_without_pre_cystectomy_chemotherapy"]["D"]["ci95"][0],
-         "+0.0424", "($[+0.0424, +0.1774]$)"),
+         '+0.0404', '($[+0.0404, +0.1757]$)'),
         ("the same, CI high", g31["sensitivity_without_pre_cystectomy_chemotherapy"]["D"]["ci95"][1],
-         "+0.1774", "($[+0.0424, +0.1774]$)"),
+         '+0.1757', '($[+0.0404, +0.1757]$)'),
         ("patients excluded by that sensitivity", g31["n"]
          - g31["sensitivity_without_pre_cystectomy_chemotherapy"]["n"], "3",
          "excludes the three patients given"),
-        ("GSE32894 ModRank", g32["cv"]["modrank"]["mean"], "0.8779",
-         "(0.8779 against 0.8672 for the stage block and 0.8747 for stacking)"),
+        ("GSE32894 ModRank", g32["cv"]["modrank"]["mean"], '0.8792',
+         '(0.8792 against 0.8672 for the stage block and 0.8748 for stacking)'),
         ("GSE32894 stage block", g32["cv"]["clinical_stage"]["mean"], "0.8672", "0.8672 for the stage block"),
-        ("GSE32894 stacked", g32["cv"]["stacked"]["mean"], "0.8747", "0.8747 for stacking"),
-        ("GSE32894 vs transcriptome, Holm", g32["paired_vs_modrank"]["transcriptome"]["p_holm"], "0.004",
-         "correction ($p=0.004$ for both)"),
-        ("GSE32894 vs concatenated, Holm", g32["paired_vs_modrank"]["concatenated"]["p_holm"], "0.004",
-         "correction ($p=0.004$ for both)"),
+        ("GSE32894 stacked", g32["cv"]["stacked"]["mean"], '0.8748', '0.8748 for stacking'),
+        ("GSE32894 vs transcriptome, Holm", g32["paired_vs_modrank"]["transcriptome"]["p_holm"], '0.003',
+         'correction ($p=0.003$ and $p=0.006$)'),
+        ("GSE32894 vs concatenated, Holm", g32["paired_vs_modrank"]["concatenated"]["p_holm"], "0.006",
+         'correction ($p=0.003$ and $p=0.006$)'),
         ("GSE48075 n", g48["n"], "73", "a third cohort of 73 patients"),
-        ("GSE48075 ModRank", g48["cv"]["modrank"]["mean"], "0.6384", "(0.6384 against 0.6322)"),
-        ("GSE48075 stage block", g48["cv"]["clinical_stage"]["mean"], "0.6322", "(0.6384 against 0.6322)"),
-        ("GSE31684 transcriptome", g31["cv"]["transcriptome"]["mean"], "0.4742", "were uninformative (0.4742)"),
-        ("GSE31684 ModRank", g31["cv"]["modrank"]["mean"], "0.5898", "(0.5898 against 0.6590)"),
-        ("GSE31684 stage block", g31["cv"]["clinical_stage"]["mean"], "0.6590", "(0.5898 against 0.6590)"),
+        ("GSE48075 ModRank", g48["cv"]["modrank"]["mean"], '0.6389', '(0.6389 against 0.6334)'),
+        ("GSE48075 stage block", g48["cv"]["clinical_stage"]["mean"], '0.6334', '(0.6389 against 0.6334)'),
+        ("GSE31684 transcriptome", g31["cv"]["transcriptome"]["mean"], '0.4747', 'were uninformative (0.4747)'),
+        ("GSE31684 ModRank", g31["cv"]["modrank"]["mean"], '0.5896', '(0.5896 against 0.6591)'),
+        ("GSE31684 stage block", g31["cv"]["clinical_stage"]["mean"], '0.6591', '(0.5896 against 0.6591)'),
         # Methods
-        ("deployable variant", cr["transductive_vs_inductive"]["primary_inductive"], "0.7247",
-         "reaches 0.7247 against the transductive 0.7212"),
+        ("deployable variant", cr["transductive_vs_inductive"]["primary_inductive"], '0.7245',
+         'reaches 0.7245 against the transductive 0.7214'),
         ("deployable variant, p",
          cr["transductive_vs_inductive"]["paired_case_bootstrap_inductive_minus_transductive"]["p_two_sided"],
-         "0.69", "(paired $p=0.69$)"),
+         '0.59', '(paired $p=0.59$)'),
         ("frozen-run primary", a1["frozen_run_for_comparison"]["primary"], "0.7260",
          "moved the primary from 0.7260 to 0.7212"),
     ]
@@ -1885,7 +1772,9 @@ def check_nc(fails):
                   "Supplementary Tables~12": "tab:architectures",  # table 12, 2026-09-27
                   "and~13)": "tab:nulld",                        # table 13, 2026-09-27
                   "Supplementary Table~14": "tab:gapext",        # table 14, 2026-09-27
-                  "Supplementary Table~15": "tab:tripod"}        # table 15
+                  "Supplementary Note~10": "note:amendA2",       # note 10, amendment A2
+                  "Supplementary Table~15": "tab:amendA2",       # table 15, amendment A2
+                  "Supplementary Table~16": "tab:tripod"}        # table 16
         # A duplicated KEY cannot be caught by inspecting this dict, because Python collapses it
         # before anything runs: writing "Supplementary Table~7" twice silently drops the first
         # pointer, which is what happened on 2026-09-13. What can be caught is the consequence.
@@ -1964,8 +1853,11 @@ def check_nc(fails):
 
 def _si_rows(src, label):
     """The rows of the tabular that carries \\label{label}, as lists of cleaned cells."""
-    m = re.search(r"\\begin\{tabular\}\{[^}]*\}(.*?)\\end\{tabular\}(?:(?!\\begin\{table\}).)*?"
-                  r"\\label\{%s\}" % re.escape(label), src, re.S)
+    # the body may not contain another tabular: without that, the lazy match began at the FIRST
+    # tabular in the document and ran on to this label, so a row was looked up in every earlier
+    # table as well (found 2026-09-27, amendment A2)
+    m = re.search(r"\\begin\{tabular\}\{[^}]*\}((?:(?!\\begin\{tabular\}).)*?)\\end\{tabular\}"
+                  r"(?:(?!\\begin\{table\}).)*?\\label\{%s\}" % re.escape(label), src, re.S)
     if not m:
         return None
     body = re.sub(r"\\(toprule|midrule|bottomrule|addlinespace)|\\cmidrule\([^)]*\)\{[^}]*\}", "", m.group(1))
@@ -2123,7 +2015,9 @@ def check_nc_si(fails):
                           ("stacked", v["points"]["stacked"], v["ModRank_minus_stacked"]),
                           ("simplex weights", w["points"]["simplex"], w["ModRank_minus_simplex"]),
                           ("stacked with interactions", w["points"]["interaction"], w["ModRank_minus_interaction"]),
-                          ("weights by clinical tertile", w["points"]["gated"], w["ModRank_minus_gated"])):
+                          ("weights by clinical tertile", w["points"]["gated"], w["ModRank_minus_gated"]),
+                          ("stacked, tuned ridge", v["stacked_tuned_ridge"]["point"],
+                           v["stacked_tuned_ridge"]["ModRank_minus_stacked_tuned_ridge"])):
             _m = "$0.0000$" if abs(d["mean"]) < 5e-5 else "$%+.4f$" % d["mean"]
             fu_rows.append(["", nm, "%.4f" % pt, _m, "$[%+.4f, %+.4f]$" % tuple(d["ci95"])])
     expect("tab:fusion", [[c.replace("$", "") for c in r_] for r_ in fu_rows])
@@ -2151,7 +2045,8 @@ def check_nc_si(fails):
         v = src_[key]
         x, q = v["excess_over_no_signal"], v["no_signal_D"]["q025_q975"]
         nd_rows.append([lab, "$%+.4f$" % v["D"], "$%+.4f$" % v["no_signal_D"]["mean"],
-                        "$[%+.4f, %+.4f]$" % tuple(q), "$%+.4f$" % x["mean"], "$[%+.4f, %+.4f]$" % tuple(x["ci95"])])
+                        "$[%+.4f, %+.4f]$" % tuple(q), "$%+.4f$" % x["point"], "$%+.4f$" % x["mean"],
+                        "$[%+.4f, %+.4f]$" % tuple(x["ci95"])])
     expect("tab:nulld", [[c.replace("$", "") for c in r_] for r_ in nd_rows])
 
     gs = _jl("reference-gap-summary.json")
@@ -2254,6 +2149,59 @@ def check_nc_si(fails):
     n += 1
     if frag not in " ".join(src.split()):
         fails.append("NC SI: the recalibration coefficients do not read %r" % frag)
+
+    # amendment A2 (Note 10 and Table 15). The table is bound cell by cell to the before-after
+    # file; the note's prose to the result files each number comes from; the tied-time counts are
+    # recomputed from the per-case table rather than quoted.
+    ba = json.load(open(os.path.join(ROOT, "experiments", "20260928-amendment-a2", "results",
+                                     "before-after.json")))["rows"]
+
+    def _ba_fmt(r_, v):
+        if v is None:
+            return "new"
+        return ("%+.4f" % v) if r_["signed"] else "%.4f" % v
+    expect("tab:amendA2", [[r_["quantity"], _ba_fmt(r_, r_["before"]), _ba_fmt(r_, r_["after"])]
+                           for r_ in ba])
+    _pc = json.load(open(os.path.join(PH, "percase-canonical-vectors.json")))["cases"]
+    _tc = collections.Counter(round(c_["months"], 6) for c_ in _pc)
+    _tied = [k_ for k_, v_ in _tc.items() if v_ > 1]
+    _tev = [k_ for k_ in _tied if any(c_["event"] == 1 and round(c_["months"], 6) == k_ for c_ in _pc)]
+    fuj = json.load(open(os.path.join(PH, "unified-fusion-and-added-value.json")))["fusion_on_identical_inputs"]
+    _t = fuj["stacked_tuned_ridge"]
+    _tp = fuj["paired"]["ours_vs_stacked_tuned_ridge"]
+    _dmf = fa["deepmisl_wsi_pathways"]
+    _baq = {r_["quantity"]: r_ for r_ in ba}
+    _gg = json.load(open(os.path.join(ROOT, "experiments", "20260911-geo-external", "results",
+                                      "geo-gated.json")))["cohorts"]
+    _g48 = _gg["GSE48075"]
+    _geo48 = json.load(open(os.path.join(ROOT, "experiments", "20260911-geo-external", "results",
+                                         "geo-external.json")))["cohorts"]["GSE48075"]["cv"]
+    _sx = json.load(open(os.path.join(ROOT, "experiments", "20260912-subgroup-fairness", "results",
+                                      "subgroup-fairness.json")))["splits"]["sex"]["clinical_gap_minus_ours_gap"]
+    _sn2 = json.load(open(os.path.join(ROOT, "experiments", "20260818-selection-null", "results",
+                                       "selection-null.json")))["A_selection_null"]["bars"]["empirical_max_q95"]["bar"]
+    _bar_before = _baq["selection-null bar"]["before"]
+    for _ph in ("The development cohort has %d tied times, %d of them with an event, covering %d patients"
+                % (len(_tied), len(_tev), sum(_tc[k_] for k_ in _tied)),
+                "it reaches $%.4f \\pm %.4f$, and ModRank exceeds it by $%+.4f$ ($[%+.4f, %+.4f]$)"
+                % (_t["mean"], _t["sd"], _tp["mean"], _tp["ci95"][0], _tp["ci95"][1]),
+                "in 13 of its 25 retraining--fold pairs",
+                "its $D$ fell from $%+.3f$ to $%+.3f$" % (_baq["D, DeepMISL with pathways"]["before"],
+                                                         _baq["D, DeepMISL with pathways"]["after"]),
+                "their gap rose from $%+.3f$ to $%+.3f$" % (_baq["GSE19915, stage minus grade reference"]["before"],
+                                                            _baq["GSE19915, stage minus grade reference"]["after"]),
+                "The selection bar moved from %.4f to %.4f" % (_bar_before, _sn2),
+                "dropped the transcriptome arm in %d of 25 folds and the stage block in %d"
+                % (_g48["gate_pass_counts"]["transcriptome_fail"], _g48["gate_pass_counts"]["clinical_stage_fail"]),
+                "(%.4f against %.4f for the block and %.4f for ModRank)"
+                % (_g48["cv"]["gated"]["mean"], _geo48["clinical_stage"]["mean"], _geo48["modrank"]["mean"]),
+                "equalled ModRank (%.4f)" % _gg["GSE32894"]["cv"]["gated"]["mean"],
+                "and ModRank's is $%+.4f$ $[%+.4f, %+.4f]$" % (_sx["mean"], _sx["ci95"][0], _sx["ci95"][1])):
+        n += 1
+        if _ph not in flat:
+            fails.append("NC SI should carry %r" % _ph)
+    if _bar_before >= 0.7716 + 5e-5 or _bar_before <= 0.7716 - 5e-5:
+        fails.append("the before-after table's pre-A2 selection bar is not 0.7716")
     return n
 
 

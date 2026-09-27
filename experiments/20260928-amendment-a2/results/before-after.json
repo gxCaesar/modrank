@@ -1,0 +1,498 @@
+{
+ "artifact_type": "s37_amendment_a2_before_after",
+ "phase_of_origin": "amendment_A2",
+ "before_commit": "88615c4",
+ "reads": "values as stored in each result file; nothing recomputed",
+ "rows": [
+  {
+   "group": "TCGA-BLCA",
+   "quantity": "ModRank, mean over five seeds",
+   "signed": false,
+   "before": 0.7212,
+   "after": 0.7214,
+   "change": 0.0002,
+   "source": "experiments/20260817-blca-confirm/results/amendment-A1-clinical-provenance.json",
+   "field": "primary/value"
+  },
+  {
+   "group": "TCGA-BLCA",
+   "quantity": "ModRank, SD over seeds",
+   "signed": false,
+   "before": 0.0048,
+   "after": 0.0043,
+   "change": -0.0005,
+   "source": "experiments/20260817-blca-confirm/results/amendment-A1-clinical-provenance.json",
+   "field": "primary/sd_over_seeds"
+  },
+  {
+   "group": "TCGA-BLCA",
+   "quantity": "clinical reference with grade",
+   "signed": false,
+   "before": 0.5666,
+   "after": 0.5664,
+   "change": -0.0002,
+   "source": "experiments/20260817-blca-confirm/results/amendment-A1-clinical-provenance.json",
+   "field": "arms_seed0/clinical_age_sex_GRADE_from_DIMAF_file"
+  },
+  {
+   "group": "TCGA-BLCA",
+   "quantity": "clinical reference with stage",
+   "signed": false,
+   "before": 0.6638,
+   "after": 0.6637,
+   "change": -0.0001,
+   "source": "experiments/20260817-blca-confirm/results/amendment-A1-clinical-provenance.json",
+   "field": "arms_seed0/clinical_age_sex_stage_from_DIMAF_file"
+  },
+  {
+   "group": "TCGA-BLCA",
+   "quantity": "stage minus grade",
+   "signed": true,
+   "before": 0.0972,
+   "after": 0.0972,
+   "change": 0.0,
+   "source": "experiments/20260817-blca-confirm/results/amendment-A1-clinical-provenance.json",
+   "field": "arms_seed0/stage_minus_grade"
+  },
+  {
+   "group": "TCGA-BLCA",
+   "quantity": "ModRank minus best verified published",
+   "signed": true,
+   "before": 0.0422,
+   "after": 0.0424,
+   "change": 0.0002,
+   "source": "experiments/20260817-blca-confirm/results/amendment-A1-clinical-provenance.json",
+   "field": "comparisons/vs_DIMAF_published/gap"
+  },
+  {
+   "group": "TCGA-BLCA",
+   "quantity": "ModRank minus SurvPath + clinical",
+   "signed": true,
+   "before": 0.034,
+   "after": 0.0338,
+   "change": -0.0002,
+   "source": "experiments/20260817-blca-confirm/results/pibd-parity.json",
+   "field": "holm_family_of_six/comparisons/ours vs SurvPath+clinical (seed-matched)/delta"
+  },
+  {
+   "group": "TCGA-BLCA",
+   "quantity": "ModRank minus PIBD + clinical",
+   "signed": true,
+   "before": 0.0249,
+   "after": 0.0252,
+   "change": 0.0003,
+   "source": "experiments/20260817-blca-confirm/results/pibd-parity.json",
+   "field": "holm_family_of_six/comparisons/ours vs PIBD+clinical (best-val checkpoint)/delta"
+  },
+  {
+   "group": "TCGA-BLCA",
+   "quantity": "ModRank minus clinical, Holm p",
+   "signed": false,
+   "before": 0.0652,
+   "after": 0.0668,
+   "change": 0.0016,
+   "source": "experiments/20260817-blca-confirm/results/pibd-parity.json",
+   "field": "holm_family_of_six/comparisons/ours vs clinical alone/p_holm"
+  },
+  {
+   "group": "TCGA-BLCA",
+   "quantity": "calibration slope",
+   "signed": false,
+   "before": 0.7704,
+   "after": 0.7707,
+   "change": 0.0003,
+   "source": "experiments/20260911-blca-posthoc/results/calibration-and-decision-curve.json",
+   "field": "ours/calibration_slope"
+  },
+  {
+   "group": "TCGA-BLCA",
+   "quantity": "IPA at two years",
+   "signed": false,
+   "before": 0.1516,
+   "after": 0.1515,
+   "change": -0.0001,
+   "source": "experiments/20260911-blca-posthoc/results/calibration-and-decision-curve.json",
+   "field": "ours/by_horizon/24.0/ipa"
+  },
+  {
+   "group": "TCGA-BLCA",
+   "quantity": "selection-null bar",
+   "signed": false,
+   "before": 0.7716,
+   "after": 0.7708,
+   "change": -0.0008,
+   "source": "experiments/20260818-selection-null/results/selection-null.json",
+   "field": "A_selection_null/bars/empirical_max_q95/bar"
+  },
+  {
+   "group": "TCGA-BLCA",
+   "quantity": "inductive variant",
+   "signed": false,
+   "before": 0.7247,
+   "after": 0.7245,
+   "change": -0.0002,
+   "source": "experiments/20260817-blca-confirm/results/cold-panel-round1-measurements.json",
+   "field": "transductive_vs_inductive/primary_inductive"
+  },
+  {
+   "group": "Fusion, TCGA-BLCA",
+   "quantity": "concatenation, mean",
+   "signed": false,
+   "before": 0.6864,
+   "after": 0.6861,
+   "change": -0.0003,
+   "source": "experiments/20260911-blca-posthoc/results/unified-fusion-and-added-value.json",
+   "field": "fusion_on_identical_inputs/concatenated_ridge_cox/mean"
+  },
+  {
+   "group": "Fusion, TCGA-BLCA",
+   "quantity": "stacking (ridge 1), mean",
+   "signed": false,
+   "before": 0.7106,
+   "after": 0.7108,
+   "change": 0.0002,
+   "source": "experiments/20260911-blca-posthoc/results/unified-fusion-and-added-value.json",
+   "field": "fusion_on_identical_inputs/stacked_learned_weights/mean"
+  },
+  {
+   "group": "Fusion, TCGA-BLCA",
+   "quantity": "stacking (tuned ridge), mean",
+   "signed": false,
+   "before": null,
+   "after": 0.7147,
+   "change": null,
+   "source": "experiments/20260911-blca-posthoc/results/unified-fusion-and-added-value.json",
+   "field": "fusion_on_identical_inputs/stacked_tuned_ridge/mean"
+  },
+  {
+   "group": "Fusion, TCGA-BLCA",
+   "quantity": "ModRank minus concatenation",
+   "signed": true,
+   "before": 0.034,
+   "after": 0.0342,
+   "change": 0.0002,
+   "source": "experiments/20260911-blca-posthoc/results/unified-fusion-and-added-value.json",
+   "field": "fusion_on_identical_inputs/paired/ours_vs_concatenated/mean"
+  },
+  {
+   "group": "Fusion, TCGA-BLCA",
+   "quantity": "ModRank minus stacking (ridge 1)",
+   "signed": true,
+   "before": 0.0108,
+   "after": 0.0097,
+   "change": -0.0011,
+   "source": "experiments/20260911-blca-posthoc/results/unified-fusion-and-added-value.json",
+   "field": "fusion_on_identical_inputs/paired/ours_vs_stacked/mean"
+  },
+  {
+   "group": "Fusion, TCGA-BLCA",
+   "quantity": "ModRank minus stacking (tuned ridge)",
+   "signed": true,
+   "before": null,
+   "after": 0.0055,
+   "change": null,
+   "source": "experiments/20260911-blca-posthoc/results/unified-fusion-and-added-value.json",
+   "field": "fusion_on_identical_inputs/paired/ours_vs_stacked_tuned_ridge/mean"
+  },
+  {
+   "group": "Fusion, TCGA-BLCA",
+   "quantity": "re-partitions, minus stacking",
+   "signed": true,
+   "before": 0.0111,
+   "after": 0.0107,
+   "change": -0.0004,
+   "source": "experiments/20260911-blca-posthoc/results/resplit-and-site-cv.json",
+   "field": "resplits/ours_minus_stacked/mean"
+  },
+  {
+   "group": "Fusion, TCGA-BLCA",
+   "quantity": "re-partitions, minus concatenation",
+   "signed": true,
+   "before": 0.0464,
+   "after": 0.0471,
+   "change": 0.0007,
+   "source": "experiments/20260911-blca-posthoc/results/resplit-and-site-cv.json",
+   "field": "resplits/ours_minus_concat/mean"
+  },
+  {
+   "group": "Fusion, TCGA-BLCA",
+   "quantity": "held-out sites, ModRank",
+   "signed": false,
+   "before": 0.721,
+   "after": 0.7204,
+   "change": -0.0006,
+   "source": "experiments/20260911-blca-posthoc/results/resplit-and-site-cv.json",
+   "field": "site_grouped_cv/pooled/ours"
+  },
+  {
+   "group": "Fusion, TCGA-BLCA",
+   "quantity": "held-out sites, stacking",
+   "signed": false,
+   "before": 0.6855,
+   "after": 0.6855,
+   "change": 0.0,
+   "source": "experiments/20260911-blca-posthoc/results/resplit-and-site-cv.json",
+   "field": "site_grouped_cv/pooled/stacked"
+  },
+  {
+   "group": "Added value",
+   "quantity": "D, ModRank",
+   "signed": true,
+   "before": 0.061,
+   "after": 0.0637,
+   "change": 0.0027,
+   "source": "experiments/20260911-blca-posthoc/results/unified-fusion-and-added-value.json",
+   "field": "added_value_inflation/constructions/ours/D"
+  },
+  {
+   "group": "Added value",
+   "quantity": "D, SurvPath",
+   "signed": true,
+   "before": 0.0417,
+   "after": 0.0407,
+   "change": -0.001,
+   "source": "experiments/20260911-blca-posthoc/results/unified-fusion-and-added-value.json",
+   "field": "added_value_inflation/constructions/survpath/D"
+  },
+  {
+   "group": "Added value",
+   "quantity": "D, PIBD",
+   "signed": true,
+   "before": 0.0496,
+   "after": 0.0506,
+   "change": 0.001,
+   "source": "experiments/20260911-blca-posthoc/results/unified-fusion-and-added-value.json",
+   "field": "added_value_inflation/constructions/pibd_best_val/D"
+  },
+  {
+   "group": "Added value",
+   "quantity": "excess over no signal, ModRank",
+   "signed": true,
+   "before": 0.0185,
+   "after": 0.0214,
+   "change": 0.0029,
+   "source": "experiments/20260927-field-inflation/analysis-results/inflation-null-blca.json",
+   "field": "constructions/ModRank/excess_over_no_signal/mean"
+  },
+  {
+   "group": "Added value",
+   "quantity": "excess over no signal, SurvPath",
+   "signed": true,
+   "before": 0.0114,
+   "after": 0.0104,
+   "change": -0.001,
+   "source": "experiments/20260927-field-inflation/analysis-results/inflation-null-blca.json",
+   "field": "constructions/SurvPath/excess_over_no_signal/mean"
+  },
+  {
+   "group": "Added value",
+   "quantity": "excess over no signal, PIBD",
+   "signed": true,
+   "before": 0.0228,
+   "after": 0.0235,
+   "change": 0.0007,
+   "source": "experiments/20260927-field-inflation/analysis-results/inflation-null-blca.json",
+   "field": "constructions/PIBD/excess_over_no_signal/mean"
+  },
+  {
+   "group": "Added value",
+   "quantity": "D, DeepMISL with pathways",
+   "signed": true,
+   "before": 0.034,
+   "after": 0.0054,
+   "change": -0.0286,
+   "source": "experiments/20260927-field-inflation/analysis-results/field-inflation-a.json",
+   "field": "models/deepmisl_wsi_pathways/D"
+  },
+  {
+   "group": "Added value",
+   "quantity": "GSE32894, D",
+   "signed": true,
+   "before": 0.0581,
+   "after": 0.0586,
+   "change": 0.0005,
+   "source": "experiments/20260911-geo-external/results/geo-external.json",
+   "field": "cohorts/GSE32894/D/point"
+  },
+  {
+   "group": "Added value",
+   "quantity": "GSE32894, excess over no signal",
+   "signed": true,
+   "before": 0.0409,
+   "after": 0.0397,
+   "change": -0.0012,
+   "source": "experiments/20260927-field-inflation/analysis-results/inflation-null-geo.json",
+   "field": "constructions/GSE32894/excess_over_no_signal/mean"
+  },
+  {
+   "group": "Added value",
+   "quantity": "GSE31684, excess over no signal",
+   "signed": true,
+   "before": 0.0007,
+   "after": 0.0093,
+   "change": 0.0086,
+   "source": "experiments/20260927-field-inflation/analysis-results/inflation-null-geo.json",
+   "field": "constructions/GSE31684/excess_over_no_signal/mean"
+  },
+  {
+   "group": "Added value",
+   "quantity": "GSE19915, stage minus grade reference",
+   "signed": true,
+   "before": 0.129,
+   "after": 0.1612,
+   "change": 0.0322,
+   "source": "experiments/20260927-field-inflation/analysis-results/reference-gap-external.json",
+   "field": "cohorts/GSE19915/gap"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "BLCA, ModRank",
+   "signed": false,
+   "before": 0.6992,
+   "after": 0.7003,
+   "change": 0.0011,
+   "source": "experiments/20260912-five-cohort-intervals/results/five-cohort-intervals.json",
+   "field": "cohorts/blca/points/OURS_wsi_omics_age_sex_stage"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "BLCA, ModRank minus clinical",
+   "signed": true,
+   "before": 0.0774,
+   "after": 0.0784,
+   "change": 0.001,
+   "source": "experiments/20260912-five-cohort-intervals/results/five-cohort-intervals.json",
+   "field": "cohorts/blca/differences/ours_minus_clinical_stage/mean"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "BLCA, ModRank minus stacking (tuned ridge)",
+   "signed": true,
+   "before": null,
+   "after": 0.0043,
+   "change": null,
+   "source": "experiments/20260913-five-cohort-fusion/results/five-cohort-fusion.json",
+   "field": "cohorts/blca/stacked_tuned_ridge/ModRank_minus_stacked_tuned_ridge/mean"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "BRCA, ModRank",
+   "signed": false,
+   "before": 0.6892,
+   "after": 0.6881,
+   "change": -0.0011,
+   "source": "experiments/20260912-five-cohort-intervals/results/five-cohort-intervals.json",
+   "field": "cohorts/brca/points/OURS_wsi_omics_age_sex_stage"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "BRCA, ModRank minus clinical",
+   "signed": true,
+   "before": 0.1208,
+   "after": 0.1201,
+   "change": -0.0007,
+   "source": "experiments/20260912-five-cohort-intervals/results/five-cohort-intervals.json",
+   "field": "cohorts/brca/differences/ours_minus_clinical_stage/mean"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "BRCA, ModRank minus stacking (tuned ridge)",
+   "signed": true,
+   "before": null,
+   "after": -0.0259,
+   "change": null,
+   "source": "experiments/20260913-five-cohort-fusion/results/five-cohort-fusion.json",
+   "field": "cohorts/brca/stacked_tuned_ridge/ModRank_minus_stacked_tuned_ridge/mean"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "COADREAD, ModRank",
+   "signed": false,
+   "before": 0.7141,
+   "after": 0.714,
+   "change": -0.0001,
+   "source": "experiments/20260912-five-cohort-intervals/results/five-cohort-intervals.json",
+   "field": "cohorts/coadread/points/OURS_wsi_omics_age_sex_stage"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "COADREAD, ModRank minus clinical",
+   "signed": true,
+   "before": 0.0236,
+   "after": 0.0231,
+   "change": -0.0005,
+   "source": "experiments/20260912-five-cohort-intervals/results/five-cohort-intervals.json",
+   "field": "cohorts/coadread/differences/ours_minus_clinical_stage/mean"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "COADREAD, ModRank minus stacking (tuned ridge)",
+   "signed": true,
+   "before": null,
+   "after": 0.0119,
+   "change": null,
+   "source": "experiments/20260913-five-cohort-fusion/results/five-cohort-fusion.json",
+   "field": "cohorts/coadread/stacked_tuned_ridge/ModRank_minus_stacked_tuned_ridge/mean"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "HNSC, ModRank",
+   "signed": false,
+   "before": 0.6179,
+   "after": 0.6179,
+   "change": 0.0,
+   "source": "experiments/20260912-five-cohort-intervals/results/five-cohort-intervals.json",
+   "field": "cohorts/hnsc/points/OURS_wsi_omics_age_sex_stage"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "HNSC, ModRank minus clinical",
+   "signed": true,
+   "before": 0.0726,
+   "after": 0.0725,
+   "change": -0.0001,
+   "source": "experiments/20260912-five-cohort-intervals/results/five-cohort-intervals.json",
+   "field": "cohorts/hnsc/differences/ours_minus_clinical_stage/mean"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "HNSC, ModRank minus stacking (tuned ridge)",
+   "signed": true,
+   "before": null,
+   "after": 0.003,
+   "change": null,
+   "source": "experiments/20260913-five-cohort-fusion/results/five-cohort-fusion.json",
+   "field": "cohorts/hnsc/stacked_tuned_ridge/ModRank_minus_stacked_tuned_ridge/mean"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "STAD, ModRank",
+   "signed": false,
+   "before": 0.6311,
+   "after": 0.629,
+   "change": -0.0021,
+   "source": "experiments/20260912-five-cohort-intervals/results/five-cohort-intervals.json",
+   "field": "cohorts/stad/points/OURS_wsi_omics_age_sex_stage"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "STAD, ModRank minus clinical",
+   "signed": true,
+   "before": 0.0495,
+   "after": 0.0452,
+   "change": -0.0043,
+   "source": "experiments/20260912-five-cohort-intervals/results/five-cohort-intervals.json",
+   "field": "cohorts/stad/differences/ours_minus_clinical_stage/mean"
+  },
+  {
+   "group": "Five studies",
+   "quantity": "STAD, ModRank minus stacking (tuned ridge)",
+   "signed": true,
+   "before": null,
+   "after": 0.0424,
+   "change": null,
+   "source": "experiments/20260913-five-cohort-fusion/results/five-cohort-fusion.json",
+   "field": "cohorts/stad/stacked_tuned_ridge/ModRank_minus_stacked_tuned_ridge/mean"
+  }
+ ]
+}

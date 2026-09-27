@@ -56,6 +56,7 @@ import time
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import blca_common                                                             # noqa: E402
 from blca_common import ALPHAS, Cohort, cidx, cox_fit, cpairs, fitapply, pct  # noqa: E402
 from s5_omics_arm import load_rna, pathway_matrix                             # noqa: E402
 from s6_amend_clinical import boot, dimaf_clinical                            # noqa: E402
@@ -169,6 +170,8 @@ def main():
            "ours_canonical": C(OURS), "survpath_plus_clinical_canonical": C(SPC),
            "pibd_plus_clinical_best_val_canonical": C(PIBD["best_val"]["stage"])}
     bad = {k: (round(v, 4), KNOWN[k]) for k, v in got.items() if abs(round(v, 4) - KNOWN[k]) > TOL}
+    if blca_common.A2:            # amendment A2: exact known answers are checked under BLCA_A2=0
+        bad = {k: v for k, v in bad.items() if abs(v[0] - v[1]) > blca_common.A2_SANITY}
     for k in KNOWN:
         print("  known answer %-40s %.4f (want %.4f)" % (k, got[k], KNOWN[k]), file=sys.stderr)
     if bad:
@@ -182,8 +185,10 @@ def main():
     print("  concatenation fitted (%.0f s)" % (time.time() - t0), file=sys.stderr, flush=True)
 
     stacked_s, gated_s, weights, gate_log = {}, {}, {}, []
+    tuned_s, tuned_ridges = {}, {}          # amendment A2's added comparator, computed under A2 only
     for s in SEEDS:
         st, gt = np.full(n, np.nan), np.full(n, np.nan)
+        stt = np.full(n, np.nan)
         for k, (tri, vai) in enumerate(fi):
             m = len(tri)
             inner = np.array_split(np.random.default_rng(s).permutation(m), 3)
@@ -200,6 +205,10 @@ def main():
             weights.setdefault(s, []).append([round(float(x), 4) for x in w])
             Zv = np.column_stack([Z[s][b][vai] for b in BLOCKS])
             st[vai] = Zv @ w
+            if blca_common.A2:
+                al, wt = blca_common.stack_weights_tuned(Zi, co.t[tri], co.e[tri], inner)
+                stt[vai] = Zv @ wt
+                tuned_ridges.setdefault(s, []).append(al)
             # the gate: each arm against a permutation null of its own inner out-of-fold score
             ti, ei = co.t[tri], co.e[tri]
             i2, j2 = cpairs(ti, ei)
@@ -228,6 +237,8 @@ def main():
                     acc = acc + Z[s][b][vai]
             gt[vai] = acc
         stacked_s[s] = co.fold_pct(st)
+        if blca_common.A2:
+            tuned_s[s] = co.fold_pct(stt)
         gated_s[s] = co.fold_pct(gt)
         print("  seed %d stacking and gate done (%.0f s)" % (s, time.time() - t0),
               file=sys.stderr, flush=True)
@@ -253,6 +264,12 @@ def main():
         "paired": {"ours_vs_concatenated": boot(OURS, CONCAT, co.t, co.e, a.reps),
                    "ours_vs_stacked": boot(OURS, STACK, co.t, co.e, a.reps)},
     }
+    if blca_common.A2:
+        STACKT = canon([tuned_s[s] for s in SEEDS])
+        fusion["stacked_tuned_ridge"] = {**summary(tuned_s), "canonical": round(C(STACKT), 4),
+                                         "ridge_grid": list(blca_common.STACK_RIDGES),
+                                         "ridge_per_seed_fold": {str(s): tuned_ridges[s] for s in SEEDS}}
+        fusion["paired"]["ours_vs_stacked_tuned_ridge"] = boot(OURS, STACKT, co.t, co.e, a.reps)
     gated = {"every_arm_passes_every_fold_and_seed": all_pass,
              "fraction_of_arm_folds_passing": round(float(np.mean([g["passes"] for g in gate_log])), 4),
              **summary(gated_s), "canonical": round(C(GATED), 4),

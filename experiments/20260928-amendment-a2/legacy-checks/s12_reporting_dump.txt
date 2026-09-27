@@ -1,0 +1,9 @@
+Legacy check of analysis/s12_reporting_dump.py, final code (after the A2 edits), BLCA_A2=0:
+  seed 0  OURS=0.7225
+  seed 1  OURS=0.7248
+  seed 2  OURS=0.7129
+  seed 3  OURS=0.7243
+  seed 4  OURS=0.7216
+  primary 0.7212 matches the frozen value
+  wrote <scratch>/legacy/reporting-dump-final.json  (359 cases, 275 pathways)
+Comparison with experiments/20260818-reporting-dump/results/reporting-dump.json: every committed field identical; two keys added by the A2 edit (amendment, pre_A2_primary).

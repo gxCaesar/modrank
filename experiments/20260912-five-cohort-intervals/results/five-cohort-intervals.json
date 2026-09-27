@@ -9,17 +9,20 @@
   "seed": 0,
   "source": "identical to s6_confirmatory.boot"
  },
+ "slide_encoder": "TCGA_TITAN_features.pkl",
+ "slide_encoder_is_the_primary": true,
+ "slides_available": 11658,
  "cohorts": {
   "blca": {
    "n_cases": 359,
    "events": 113,
    "comparable_pairs": 24219,
    "points": {
-    "OURS_wsi_omics_age_sex_stage": 0.6992,
-    "control_same_arm_with_GRADE_instead": 0.6861,
-    "age_sex_stage": 0.6218,
-    "age_sex_grade": 0.5658,
-    "WSI_plus_OMICS": 0.6841
+    "OURS_wsi_omics_age_sex_stage": 0.7003,
+    "control_same_arm_with_GRADE_instead": 0.6859,
+    "age_sex_stage": 0.6219,
+    "age_sex_grade": 0.5642,
+    "WSI_plus_OMICS": 0.6835
    },
    "published_best_verified_released_folds": [
     "SurvPath",
@@ -31,46 +34,46 @@
    ],
    "differences": {
     "ours_minus_grade_control": {
-     "mean": 0.0132,
-     "se": 0.0135,
+     "mean": 0.0144,
+     "se": 0.0136,
      "ci95": [
-      -0.0136,
-      0.0396
+      -0.0124,
+      0.041
      ],
-     "p_two_sided": 0.3183,
+     "p_two_sided": 0.283,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "ours_minus_clinical_stage": {
-     "mean": 0.0774,
-     "se": 0.025,
+     "mean": 0.0784,
+     "se": 0.0249,
      "ci95": [
-      0.0284,
-      0.1264
+      0.0298,
+      0.1267
      ],
      "p_two_sided": 0.0013,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "ours_minus_wsi_omics": {
-     "mean": 0.0149,
-     "se": 0.0146,
+     "mean": 0.0166,
+     "se": 0.0148,
      "ci95": [
-      -0.0134,
-      0.0437
+      -0.0117,
+      0.0461
      ],
-     "p_two_sided": 0.3057,
+     "p_two_sided": 0.2613,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "stage_minus_grade": {
-     "mean": 0.0563,
-     "se": 0.0267,
+     "mean": 0.0579,
+     "se": 0.0266,
      "ci95": [
-      0.0042,
-      0.1087
+      0.006,
+      0.1098
      ],
-     "p_two_sided": 0.036,
+     "p_two_sided": 0.0307,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     }
@@ -81,11 +84,11 @@
    "events": 60,
    "comparable_pairs": 24073,
    "points": {
-    "OURS_wsi_omics_age_sex_stage": 0.6892,
-    "control_same_arm_with_GRADE_instead": 0.6614,
-    "age_sex_stage": 0.5686,
-    "age_sex_grade": 0.4828,
-    "WSI_plus_OMICS": 0.7101
+    "OURS_wsi_omics_age_sex_stage": 0.6881,
+    "control_same_arm_with_GRADE_instead": 0.6638,
+    "age_sex_stage": 0.5683,
+    "age_sex_grade": 0.4853,
+    "WSI_plus_OMICS": 0.711
    },
    "published_best_verified_released_folds": [
     "SurvPath",
@@ -97,46 +100,46 @@
    ],
    "differences": {
     "ours_minus_grade_control": {
-     "mean": 0.0283,
-     "se": 0.0225,
+     "mean": 0.0248,
+     "se": 0.0224,
      "ci95": [
-      -0.0155,
-      0.0723
+      -0.0192,
+      0.0686
      ],
-     "p_two_sided": 0.202,
+     "p_two_sided": 0.2633,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "ours_minus_clinical_stage": {
-     "mean": 0.1208,
-     "se": 0.0354,
+     "mean": 0.1201,
+     "se": 0.0352,
      "ci95": [
-      0.0525,
-      0.1904
+      0.0519,
+      0.1897
      ],
      "p_two_sided": 0.0003,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "ours_minus_wsi_omics": {
-     "mean": -0.0211,
-     "se": 0.0262,
+     "mean": -0.0232,
+     "se": 0.0263,
      "ci95": [
-      -0.0727,
-      0.0296
+      -0.0749,
+      0.0277
      ],
-     "p_two_sided": 0.4257,
+     "p_two_sided": 0.3827,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "stage_minus_grade": {
-     "mean": 0.087,
-     "se": 0.0472,
+     "mean": 0.0841,
+     "se": 0.047,
      "ci95": [
-      -0.0062,
-      0.1779
+      -0.0087,
+      0.1754
      ],
-     "p_two_sided": 0.0677,
+     "p_two_sided": 0.0747,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     }
@@ -147,11 +150,11 @@
    "events": 37,
    "comparable_pairs": 6711,
    "points": {
-    "OURS_wsi_omics_age_sex_stage": 0.7141,
-    "control_same_arm_with_GRADE_instead": 0.6231,
-    "age_sex_stage": 0.6898,
-    "age_sex_grade": 0.469,
-    "WSI_plus_OMICS": 0.6819
+    "OURS_wsi_omics_age_sex_stage": 0.714,
+    "control_same_arm_with_GRADE_instead": 0.6247,
+    "age_sex_stage": 0.6902,
+    "age_sex_grade": 0.4691,
+    "WSI_plus_OMICS": 0.6825
    },
    "published_best_verified_released_folds": [
     "SurvPath",
@@ -163,44 +166,44 @@
    ],
    "differences": {
     "ours_minus_grade_control": {
-     "mean": 0.0911,
-     "se": 0.0248,
+     "mean": 0.0894,
+     "se": 0.0247,
      "ci95": [
-      0.0451,
-      0.1449
+      0.0437,
+      0.1429
      ],
      "p_two_sided": 0.0,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "ours_minus_clinical_stage": {
-     "mean": 0.0236,
+     "mean": 0.0231,
      "se": 0.0484,
      "ci95": [
-      -0.0686,
-      0.1197
+      -0.0701,
+      0.1192
      ],
-     "p_two_sided": 0.64,
+     "p_two_sided": 0.638,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "ours_minus_wsi_omics": {
-     "mean": 0.0327,
-     "se": 0.0258,
+     "mean": 0.032,
+     "se": 0.0259,
      "ci95": [
-      -0.019,
-      0.0805
+      -0.0202,
+      0.0804
      ],
-     "p_two_sided": 0.212,
+     "p_two_sided": 0.2213,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "stage_minus_grade": {
-     "mean": 0.2212,
-     "se": 0.0508,
+     "mean": 0.2216,
+     "se": 0.0505,
      "ci95": [
-      0.1262,
-      0.3254
+      0.1272,
+      0.3259
      ],
      "p_two_sided": 0.0,
      "reps": 6000,
@@ -214,10 +217,10 @@
    "comparable_pairs": 29731,
    "points": {
     "OURS_wsi_omics_age_sex_stage": 0.6179,
-    "control_same_arm_with_GRADE_instead": 0.6015,
+    "control_same_arm_with_GRADE_instead": 0.6008,
     "age_sex_stage": 0.545,
-    "age_sex_grade": 0.5027,
-    "WSI_plus_OMICS": 0.6169
+    "age_sex_grade": 0.5042,
+    "WSI_plus_OMICS": 0.616
    },
    "published_best_verified_released_folds": [
     "SurvPath",
@@ -229,46 +232,46 @@
    ],
    "differences": {
     "ours_minus_grade_control": {
-     "mean": 0.0164,
+     "mean": 0.0172,
      "se": 0.0172,
      "ci95": [
-      -0.0181,
-      0.0496
+      -0.0173,
+      0.0505
      ],
-     "p_two_sided": 0.3337,
+     "p_two_sided": 0.3163,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "ours_minus_clinical_stage": {
-     "mean": 0.0726,
+     "mean": 0.0725,
      "se": 0.0263,
      "ci95": [
       0.0206,
       0.1231
      ],
-     "p_two_sided": 0.0073,
+     "p_two_sided": 0.008,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "ours_minus_wsi_omics": {
-     "mean": 0.0012,
-     "se": 0.014,
+     "mean": 0.002,
+     "se": 0.0141,
      "ci95": [
-      -0.0258,
-      0.0284
+      -0.025,
+      0.0296
      ],
-     "p_two_sided": 0.9437,
+     "p_two_sided": 0.8943,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "stage_minus_grade": {
-     "mean": 0.0423,
+     "mean": 0.0408,
      "se": 0.0351,
      "ci95": [
-      -0.0265,
-      0.1113
+      -0.0278,
+      0.1099
      ],
-     "p_two_sided": 0.226,
+     "p_two_sided": 0.2417,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     }
@@ -279,10 +282,10 @@
    "events": 84,
    "comparable_pairs": 16158,
    "points": {
-    "OURS_wsi_omics_age_sex_stage": 0.6311,
-    "control_same_arm_with_GRADE_instead": 0.6125,
-    "age_sex_stage": 0.5819,
-    "age_sex_grade": 0.5358,
+    "OURS_wsi_omics_age_sex_stage": 0.629,
+    "control_same_arm_with_GRADE_instead": 0.613,
+    "age_sex_stage": 0.5841,
+    "age_sex_grade": 0.5364,
     "WSI_plus_OMICS": 0.6108
    },
    "published_best_verified_released_folds": [
@@ -295,46 +298,46 @@
    ],
    "differences": {
     "ours_minus_grade_control": {
-     "mean": 0.0184,
-     "se": 0.0178,
+     "mean": 0.0157,
+     "se": 0.0177,
      "ci95": [
-      -0.0162,
-      0.0529
+      -0.0192,
+      0.05
      ],
-     "p_two_sided": 0.2987,
+     "p_two_sided": 0.369,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "ours_minus_clinical_stage": {
-     "mean": 0.0495,
-     "se": 0.0315,
+     "mean": 0.0452,
+     "se": 0.0312,
      "ci95": [
-      -0.0127,
-      0.1122
+      -0.0155,
+      0.107
      ],
-     "p_two_sided": 0.113,
+     "p_two_sided": 0.1417,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "ours_minus_wsi_omics": {
-     "mean": 0.0203,
-     "se": 0.019,
+     "mean": 0.0183,
+     "se": 0.0189,
      "ci95": [
-      -0.0169,
-      0.0582
+      -0.0186,
+      0.056
      ],
-     "p_two_sided": 0.2757,
+     "p_two_sided": 0.3237,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     },
     "stage_minus_grade": {
-     "mean": 0.0457,
-     "se": 0.0327,
+     "mean": 0.0473,
+     "se": 0.0321,
      "ci95": [
-      -0.0191,
-      0.1091
+      -0.0167,
+      0.1096
      ],
-     "p_two_sided": 0.1637,
+     "p_two_sided": 0.139,
      "reps": 6000,
      "resampled": "cases, not comparable pairs"
     }
@@ -355,5 +358,5 @@
   ],
   "reading": "the second list is what a validation claim rests on. A cohort absent from it shows the method not separable from the corrected clinical reference there, which is a consistency check and not a validation, and must be reported as one"
  },
- "runtime_seconds": 71.7
+ "runtime_seconds": 84.0
 }

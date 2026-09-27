@@ -3,48 +3,48 @@
  "phase_of_origin": "frozen_post_hoc",
  "l_seed_matched_competitor_metrics": {
   "survpath_alone_seed_averaged": {
-   "cindex": 0.6294,
-   "td_auc_8m": 0.7079,
-   "td_auc_14m": 0.6998,
-   "td_auc_22m": 0.6556,
-   "ibs": 0.2126,
-   "logrank_p": 0.00725
+   "cindex": 0.6292,
+   "td_auc_8m": 0.7076,
+   "td_auc_14m": 0.6993,
+   "td_auc_22m": 0.655,
+   "ibs": 0.2127,
+   "logrank_p": 0.00892
   },
   "survpath_plus_clinical_seed_averaged": {
-   "cindex": 0.6891,
-   "td_auc_8m": 0.7572,
-   "td_auc_14m": 0.7449,
-   "td_auc_22m": 0.7129,
-   "ibs": 0.1987,
-   "logrank_p": 1.48e-07
+   "cindex": 0.689,
+   "td_auc_8m": 0.7551,
+   "td_auc_14m": 0.7446,
+   "td_auc_22m": 0.7128,
+   "ibs": 0.1989,
+   "logrank_p": 3.08e-07
   },
   "OURS": {
-   "cindex": 0.7225,
-   "td_auc_8m": 0.8006,
-   "td_auc_14m": 0.7832,
-   "td_auc_22m": 0.7549,
+   "cindex": 0.7224,
+   "td_auc_8m": 0.8009,
+   "td_auc_14m": 0.7831,
+   "td_auc_22m": 0.7545,
    "ibs": 0.1888,
-   "logrank_p": 2.76e-14
+   "logrank_p": 2.69e-14
   },
   "note": "recomputed on the seed-AVERAGED competitor so no table mixes a five-seed arm with a one-seed one"
  },
  "k_clinicians_model": {
   "variants": {
    "age+sex+stage (the frozen arm)": {
-    "clinical_alone": 0.6638,
-    "full_arm_with_it": 0.7225
+    "clinical_alone": 0.6637,
+    "full_arm_with_it": 0.7224
    },
    "age+sex+grade": {
-    "clinical_alone": 0.5666,
-    "full_arm_with_it": 0.6856
+    "clinical_alone": 0.5664,
+    "full_arm_with_it": 0.687
    },
    "age+sex+stage+grade (a pathology report)": {
-    "clinical_alone": 0.6635,
-    "full_arm_with_it": 0.7225
+    "clinical_alone": 0.6634,
+    "full_arm_with_it": 0.7232
    },
    "stage alone": {
-    "clinical_alone": 0.6695,
-    "full_arm_with_it": 0.7216
+    "clinical_alone": 0.667,
+    "full_arm_with_it": 0.7187
    }
   },
   "reading": "if adding grade to stage does not help, the finding is cleaner: it is stage that was missing, not 'more clinical variables'."
@@ -53,21 +53,21 @@
   "cases_without_a_stage_value": 2,
   "of_total": 359,
   "encoding_in_the_frozen_arm": "all-zero stage block, i.e. an implicit 'no stage information'",
-  "full_cohort": 0.7225,
+  "full_cohort": 0.7224,
   "complete_cases_only": {
    "n": 357,
    "events": 113,
-   "OURS": 0.7084,
+   "OURS": 0.7082,
    "clinical": 0.6636
   }
  },
  "g_slide_pooling": {
   "cases_with_more_than_one_slide": 25,
   "of_total": 359,
-  "mean_pool_image_arm": 0.6596,
-  "max_pool_image_arm": 0.6558,
-  "mean_pool_full_arm": 0.7225,
-  "max_pool_full_arm": 0.7224
+  "mean_pool_image_arm": 0.6595,
+  "max_pool_image_arm": 0.6557,
+  "mean_pool_full_arm": 0.7224,
+  "max_pool_full_arm": 0.7223
  },
  "d_multiplicity": {
   "family": "the five prespecified comparisons in the frozen protocol",
@@ -76,59 +76,59 @@
    "ours vs clinical alone": {
     "delta": 0.0587,
     "ci95": [
-     0.0085,
-     0.1076
+     0.0086,
+     0.1082
     ],
-    "p_raw": 0.021,
-    "p_holm": 0.045,
+    "p_raw": 0.0213,
+    "p_holm": 0.0459,
     "survives_holm_at_0.05": true
    },
    "ours vs image alone": {
     "delta": 0.0629,
     "ci95": [
-     0.0205,
-     0.1056
+     0.0208,
+     0.1058
     ],
     "p_raw": 0.0043,
     "p_holm": 0.0172,
     "survives_holm_at_0.05": true
    },
    "ours vs omics alone": {
-    "delta": 0.0714,
+    "delta": 0.0711,
     "ci95": [
-     0.0286,
+     0.028,
      0.1153
     ],
-    "p_raw": 0.0013,
-    "p_holm": 0.0065,
+    "p_raw": 0.0017,
+    "p_holm": 0.0085,
     "survives_holm_at_0.05": true
    },
    "ours vs SurvPath+clinical (seed-matched)": {
-    "delta": 0.0334,
+    "delta": 0.0333,
     "ci95": [
-     -0.0064,
-     0.0735
+     -0.0063,
+     0.0733
     ],
-    "p_raw": 0.1027,
-    "p_holm": 0.1027,
+    "p_raw": 0.104,
+    "p_holm": 0.104,
     "survives_holm_at_0.05": false
    },
    "ours vs ours-without-clinical": {
-    "delta": 0.0383,
+    "delta": 0.0389,
     "ci95": [
-     0.0074,
-     0.0699
+     0.0073,
+     0.0707
     ],
-    "p_raw": 0.015,
-    "p_holm": 0.045,
+    "p_raw": 0.0153,
+    "p_holm": 0.0459,
     "survives_holm_at_0.05": true
    }
   }
  },
  "m_detectable_margin": {
-  "case_level_bootstrap_se": 0.021,
-  "detectable_at_80pc_power_two_sided_0.05": 0.0589,
-  "power_of_the_observed_input_parity_margin": 0.355,
+  "case_level_bootstrap_se": 0.0211,
+  "detectable_at_80pc_power_two_sided_0.05": 0.059,
+  "power_of_the_observed_input_parity_margin": 0.352,
   "n": 359,
   "events": 113,
   "reading": "a two-sided test at this cohort's SE detects a margin of about 0.059 at 80% power. The nine published entries on this benchmark span 0.596 to 0.691 and consecutive entries differ by 0.002 to 0.012, so almost none of the published ORDERING is resolvable at this n -- a statement about the benchmark, not about any one method."

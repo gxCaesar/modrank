@@ -90,14 +90,26 @@ def main():
         diffs.append(("all", "gain_vs_grade_entropy_pearson", r, committed["gain_vs_grade_entropy_pearson"]))
     for d in diffs:
         print("  differs: %s %s recomputed %r committed %r" % d, file=sys.stderr)
+    # amendment A2: the concordances come from stage5.json and move with it; the composition fields
+    # (levels, modal share, entropy) are not Cox- or rank-derived and must still be identical
+    import blca_common
+    A2_FIELDS = {"c_age_sex_grade", "c_age_sex_stage", "stage_minus_grade", "gain_vs_grade_entropy_pearson"}
+    if blca_common.A2:
+        diffs = [d for d in diffs if d[1] not in A2_FIELDS]
     if diffs:
         print(json.dumps({"status": "error", "error_code": "does_not_reproduce_the_committed_file"}),
               file=sys.stderr)
         return 2
     rep = dict(committed)
-    rep["reproduced_by"] = ("analysis/s7b_why_grade_fails.py on 2026-09-11: every field recomputed from "
-                            "the benchmark's released clinical and metadata files and stage5.json, "
-                            "equal to the committed file")
+    if blca_common.A2:
+        rep["cohorts"] = cohorts
+        rep["gain_vs_grade_entropy_pearson"] = r
+        rep["reproduced_by"] = ("analysis/s7b_why_grade_fails.py under amendment A2: composition fields equal "
+                                "to the pre-A2 file, concordances read from the A2 stage5.json")
+    else:
+        rep["reproduced_by"] = ("analysis/s7b_why_grade_fails.py on 2026-09-11: every field recomputed from "
+                                "the benchmark's released clinical and metadata files and stage5.json, "
+                                "equal to the committed file")
     json.dump(rep, open(a.out, "w"), indent=1)
     print("reproduced: %d studies, grade entropy %s, Pearson %.3f over %d studies with a grade"
           % (len(STUDIES), {st: cohorts[st]["grade"]["normalised_entropy"] for st in with_grade}, r,

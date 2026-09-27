@@ -128,52 +128,52 @@
  "B2_survival_association": {
   "axes": {
    "basal": {
-    "cox_score_statistic": 2.251,
-    "p": 0.0244,
+    "cox_score_statistic": 2.253,
+    "p": 0.0243,
     "cindex_as_a_raw_score": 0.5619,
-    "bh_q": 0.0488
+    "bh_q": 0.0486
    },
    "luminal": {
-    "cox_score_statistic": 2.808,
-    "p": 0.00498,
+    "cox_score_statistic": 2.805,
+    "p": 0.00504,
     "cindex_as_a_raw_score": 0.4052,
-    "bh_q": 0.0178
+    "bh_q": 0.0176
    },
    "EMT": {
-    "cox_score_statistic": 3.317,
-    "p": 0.00091,
+    "cox_score_statistic": 3.318,
+    "p": 0.000907,
     "cindex_as_a_raw_score": 0.575,
     "bh_q": 0.0073
    },
    "immune": {
-    "cox_score_statistic": 1.895,
-    "p": 0.0581,
+    "cox_score_statistic": 1.892,
+    "p": 0.0585,
     "cindex_as_a_raw_score": 0.4498,
-    "bh_q": 0.093
+    "bh_q": 0.0936
    },
    "proliferation": {
-    "cox_score_statistic": 1.56,
-    "p": 0.119,
+    "cox_score_statistic": 1.562,
+    "p": 0.118,
     "cindex_as_a_raw_score": 0.5394,
-    "bh_q": 0.1587
+    "bh_q": 0.1573
    },
    "p53_cell_cycle": {
-    "cox_score_statistic": 0.469,
-    "p": 0.639,
+    "cox_score_statistic": 0.463,
+    "p": 0.643,
     "cindex_as_a_raw_score": 0.4852,
-    "bh_q": 0.7303
+    "bh_q": 0.7349
    },
    "FGFR3_axis": {
-    "cox_score_statistic": 0.118,
-    "p": 0.906,
+    "cox_score_statistic": 0.115,
+    "p": 0.908,
     "cindex_as_a_raw_score": 0.4753,
-    "bh_q": 0.906
+    "bh_q": 0.908
    },
    "stroma": {
-    "cox_score_statistic": 2.713,
-    "p": 0.00667,
+    "cox_score_statistic": 2.717,
+    "p": 0.0066,
     "cindex_as_a_raw_score": 0.5736,
-    "bh_q": 0.0178
+    "bh_q": 0.0176
    }
   },
   "pathways_tested": 275,
@@ -181,78 +181,78 @@
   "top_15_pathways": [
    {
     "pathway": "Epidermal_Growth_Factor_Receptor_(EGFR)_signaling",
-    "p": 0.000694,
-    "q_BH": 0.1102
+    "p": 0.000689,
+    "q_BH": 0.1098
    },
    {
     "pathway": "Axonal_growth_stimulation",
-    "p": 0.000802,
-    "q_BH": 0.1102
+    "p": 0.000799,
+    "q_BH": 0.1098
    },
    {
     "pathway": "EGFR_interacts_with_phospholipase_C-gamma",
-    "p": 0.00228,
-    "q_BH": 0.2043
+    "p": 0.00227,
+    "q_BH": 0.2032
    },
    {
     "pathway": "Ceramide_signalling",
-    "p": 0.00297,
-    "q_BH": 0.2043
+    "p": 0.00296,
+    "q_BH": 0.2032
    },
    {
     "pathway": "HALLMARK_EPITHELIAL_MESENCHYMAL_TRANSITION",
-    "p": 0.00399,
-    "q_BH": 0.2194
+    "p": 0.00393,
+    "q_BH": 0.2164
    },
    {
     "pathway": "PLCG1_events_in_ERBB2_signaling",
-    "p": 0.00539,
-    "q_BH": 0.2457
+    "p": 0.00537,
+    "q_BH": 0.2453
    },
    {
     "pathway": "Cam-PDE_1_activation",
-    "p": 0.00652,
-    "q_BH": 0.2457
+    "p": 0.00648,
+    "q_BH": 0.2453
    },
    {
     "pathway": "Transferrin_endocytosis_and_recycling",
-    "p": 0.00735,
-    "q_BH": 0.2457
+    "p": 0.00731,
+    "q_BH": 0.2453
    },
    {
     "pathway": "Sulfide_oxidation_to_sulfate",
-    "p": 0.00842,
-    "q_BH": 0.2457
+    "p": 0.00854,
+    "q_BH": 0.2453
    },
    {
     "pathway": "Signalling_to_p38_via_RIT_and_RIN",
-    "p": 0.00894,
-    "q_BH": 0.2457
+    "p": 0.00892,
+    "q_BH": 0.2453
    },
    {
     "pathway": "HALLMARK_HEDGEHOG_SIGNALING",
-    "p": 0.0115,
-    "q_BH": 0.247
+    "p": 0.0114,
+    "q_BH": 0.2455
    },
    {
     "pathway": "PDGF_receptor_signaling_network",
-    "p": 0.0116,
-    "q_BH": 0.247
+    "p": 0.0115,
+    "q_BH": 0.2455
    },
    {
     "pathway": "PLC-gamma1_signalling",
-    "p": 0.0118,
-    "q_BH": 0.247
+    "p": 0.0117,
+    "q_BH": 0.2455
    },
    {
     "pathway": "Pentose_phosphate_pathway_(hexose_monophosphate_shunt)",
     "p": 0.0145,
-    "q_BH": 0.247
+    "q_BH": 0.2455
    },
    {
     "pathway": "CREB_phosphorylation_through_the_activation_of_Adenylate_Cyclase",
     "p": 0.015,
-    "q_BH": 0.247
+    "q_BH": 0.2455
    }
   ],
   "note": "computed on the whole cohort, which is correct for an ASSOCIATION and would be leakage if it selected anything. It selects nothing -- the frozen arm uses all 275.",
@@ -261,47 +261,47 @@
  "B3_what_the_image_arm_tracks": {
   "axes": {
    "basal": {
-    "spearman": 0.0438,
-    "p": 0.408,
-    "bh_q": 0.544
+    "spearman": 0.0444,
+    "p": 0.402,
+    "bh_q": 0.536
    },
    "luminal": {
-    "spearman": -0.1871,
-    "p": 0.000364,
-    "bh_q": 0.001
+    "spearman": -0.1878,
+    "p": 0.000346,
+    "bh_q": 0.0009
    },
    "EMT": {
-    "spearman": 0.1463,
-    "p": 0.00547,
-    "bh_q": 0.0109
+    "spearman": 0.1466,
+    "p": 0.00537,
+    "bh_q": 0.0107
    },
    "immune": {
-    "spearman": -0.0149,
-    "p": 0.778,
-    "bh_q": 0.8891
+    "spearman": -0.0151,
+    "p": 0.775,
+    "bh_q": 0.8857
    },
    "proliferation": {
-    "spearman": 0.0757,
-    "p": 0.152,
-    "bh_q": 0.2432
+    "spearman": 0.075,
+    "p": 0.156,
+    "bh_q": 0.2496
    },
    "p53_cell_cycle": {
-    "spearman": 0.0071,
-    "p": 0.894,
-    "bh_q": 0.894
+    "spearman": 0.0069,
+    "p": 0.896,
+    "bh_q": 0.896
    },
    "FGFR3_axis": {
-    "spearman": -0.2245,
-    "p": 1.76e-05,
-    "bh_q": 0.0001
+    "spearman": -0.2236,
+    "p": 1.89e-05,
+    "bh_q": 0.0002
    },
    "stroma": {
-    "spearman": 0.1917,
-    "p": 0.000259,
-    "bh_q": 0.001
+    "spearman": 0.1915,
+    "p": 0.000263,
+    "bh_q": 0.0009
    }
   },
-  "pathways_with_BH_q_below_0.05": 59,
+  "pathways_with_BH_q_below_0.05": 58,
   "top_12_pathways_by_absolute_correlation": [
    {
     "pathway": "Fatty_acids",
@@ -316,21 +316,21 @@
    {
     "pathway": "L1CAM_interactions",
     "spearman": 0.228,
-    "q_BH": 0.0011
+    "q_BH": 0.0012
    },
    {
     "pathway": "Utilization_of_Ketone_Bodies",
     "spearman": 0.224,
-    "q_BH": 0.0012
+    "q_BH": 0.0013
    },
    {
     "pathway": "Glutathione_synthesis_and_recycling",
-    "spearman": -0.219,
+    "spearman": -0.22,
     "q_BH": 0.0015
    },
    {
     "pathway": "Cross-presentation_of_particulate_exogenous_antigens_(phagosomes)",
-    "spearman": 0.217,
+    "spearman": 0.216,
     "q_BH": 0.0015
    },
    {
@@ -349,14 +349,14 @@
     "q_BH": 0.0017
    },
    {
-    "pathway": "Synthesis__Secretion__and_Inactivation_of_Glucose-dependent_Insulinotropic_Polypeptide_(GIP)",
-    "spearman": 0.208,
-    "q_BH": 0.0018
-   },
-   {
     "pathway": "Axonal_growth_stimulation",
     "spearman": 0.208,
-    "q_BH": 0.0018
+    "q_BH": 0.0019
+   },
+   {
+    "pathway": "Synthesis__Secretion__and_Inactivation_of_Glucose-dependent_Insulinotropic_Polypeptide_(GIP)",
+    "spearman": 0.207,
+    "q_BH": 0.0019
    },
    {
     "pathway": "PLC-gamma1_signalling",
@@ -370,56 +370,56 @@
  "B4_what_the_omics_arm_tracks": {
   "axes": {
    "basal": {
-    "spearman": 0.3595,
-    "p": 2.16e-12,
+    "spearman": 0.3601,
+    "p": 1.97e-12,
     "bh_q": 0.0
    },
    "luminal": {
-    "spearman": -0.372,
-    "p": 3.19e-13,
+    "spearman": -0.3719,
+    "p": 3.22e-13,
     "bh_q": 0.0
    },
    "EMT": {
-    "spearman": 0.3672,
-    "p": 6.73e-13,
+    "spearman": 0.3673,
+    "p": 6.58e-13,
     "bh_q": 0.0
    },
    "immune": {
-    "spearman": -0.0684,
-    "p": 0.196,
-    "bh_q": 0.224
+    "spearman": -0.0678,
+    "p": 0.2,
+    "bh_q": 0.2286
    },
    "proliferation": {
-    "spearman": 0.158,
-    "p": 0.00269,
-    "bh_q": 0.0043
+    "spearman": 0.1584,
+    "p": 0.00262,
+    "bh_q": 0.0042
    },
    "p53_cell_cycle": {
-    "spearman": 0.0596,
-    "p": 0.26,
-    "bh_q": 0.26
+    "spearman": 0.0599,
+    "p": 0.258,
+    "bh_q": 0.258
    },
    "FGFR3_axis": {
-    "spearman": -0.0929,
-    "p": 0.0787,
-    "bh_q": 0.1049
+    "spearman": -0.0928,
+    "p": 0.0792,
+    "bh_q": 0.1056
    },
    "stroma": {
-    "spearman": 0.3227,
-    "p": 3.83e-10,
+    "spearman": 0.323,
+    "p": 3.68e-10,
     "bh_q": 0.0
    }
   },
-  "pathways_with_BH_q_below_0.05": 179,
+  "pathways_with_BH_q_below_0.05": 180,
   "top_12_pathways_by_absolute_correlation": [
    {
     "pathway": "Axonal_growth_stimulation",
-    "spearman": 0.42,
+    "spearman": 0.421,
     "q_BH": 0.0
    },
    {
     "pathway": "Ceramide_signalling",
-    "spearman": 0.398,
+    "spearman": 0.399,
     "q_BH": 0.0
    },
    {
@@ -429,12 +429,12 @@
    },
    {
     "pathway": "Epidermal_Growth_Factor_Receptor_(EGFR)_signaling",
-    "spearman": 0.345,
+    "spearman": 0.346,
     "q_BH": 0.0
    },
    {
     "pathway": "EGFR_interacts_with_phospholipase_C-gamma",
-    "spearman": 0.344,
+    "spearman": 0.345,
     "q_BH": 0.0
    },
    {
@@ -444,7 +444,7 @@
    },
    {
     "pathway": "PLC-gamma1_signalling",
-    "spearman": 0.322,
+    "spearman": 0.323,
     "q_BH": 0.0
    },
    {
@@ -454,22 +454,22 @@
    },
    {
     "pathway": "HALLMARK_APICAL_JUNCTION",
-    "spearman": 0.306,
+    "spearman": 0.307,
     "q_BH": 0.0
    },
    {
     "pathway": "Cam-PDE_1_activation",
-    "spearman": 0.306,
-    "q_BH": 0.0
-   },
-   {
-    "pathway": "Beta_oxidation_of_butanoyl-CoA_to_acetyl-CoA",
-    "spearman": -0.304,
+    "spearman": 0.307,
     "q_BH": 0.0
    },
    {
     "pathway": "HALLMARK_HEDGEHOG_SIGNALING",
     "spearman": 0.304,
+    "q_BH": 0.0
+   },
+   {
+    "pathway": "Beta_oxidation_of_butanoyl-CoA_to_acetyl-CoA",
+    "spearman": -0.304,
     "q_BH": 0.0
    }
   ],
@@ -477,39 +477,39 @@
   "bh_note": "Benjamini-Hochberg over the 8 axes in this block. Added 2026-08-18 so the figures load q rather than recomputing it, and so the four significant axes the manuscript names can be checked against the file."
  },
  "B4b_contrast": {
-  "spearman_image_vs_omics_arm": 0.2713,
+  "spearman_image_vs_omics_arm": 0.2715,
   "axes_side_by_side": {
    "basal": {
-    "image": 0.0438,
-    "omics": 0.3595
+    "image": 0.0444,
+    "omics": 0.3601
    },
    "luminal": {
-    "image": -0.1871,
-    "omics": -0.372
+    "image": -0.1878,
+    "omics": -0.3719
    },
    "EMT": {
-    "image": 0.1463,
-    "omics": 0.3672
+    "image": 0.1466,
+    "omics": 0.3673
    },
    "immune": {
-    "image": -0.0149,
-    "omics": -0.0684
+    "image": -0.0151,
+    "omics": -0.0678
    },
    "proliferation": {
-    "image": 0.0757,
-    "omics": 0.158
+    "image": 0.075,
+    "omics": 0.1584
    },
    "p53_cell_cycle": {
-    "image": 0.0071,
-    "omics": 0.0596
+    "image": 0.0069,
+    "omics": 0.0599
    },
    "FGFR3_axis": {
-    "image": -0.2245,
-    "omics": -0.0929
+    "image": -0.2236,
+    "omics": -0.0928
    },
    "stroma": {
-    "image": 0.1917,
-    "omics": 0.3227
+    "image": 0.1915,
+    "omics": 0.323
    }
   },
   "reading": "the two arms are only weakly correlated with each other; this says whether that is because they read DIFFERENT biology or because one of them reads none"
@@ -530,7 +530,7 @@
    "n": 180,
    "events": 42,
    "pairs": 4157,
-   "OURS": 0.6997,
+   "OURS": 0.6983,
    "image": 0.6197,
    "omics": 0.6218,
    "clinical": 0.7005
@@ -540,8 +540,8 @@
    "events": 71,
    "pairs": 7831,
    "OURS": 0.7109,
-   "image": 0.6693,
-   "omics": 0.6226,
+   "image": 0.669,
+   "omics": 0.6232,
    "clinical": 0.6472
   }
  },
@@ -704,7 +704,7 @@
    {
     "case_id": "TCGA-GD-A6C6",
     "selected_as": "image arm far ABOVE omics arm",
-    "ours": 0.4,
+    "ours": 0.393,
     "image": 1.0,
     "omics": 0.0,
     "clinical": 0.357,

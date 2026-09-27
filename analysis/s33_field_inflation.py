@@ -49,14 +49,26 @@ def fold_pct(v, fold):
 
 
 def exact(v, fold):
-    """Undo the table's five-decimal rounding: a fold percentile is rank / (fold size - 1)."""
+    """Undo the table's five-decimal rounding: a fold percentile is rank / (fold size - 1).
+
+    Before amendment A2 every rank is an integer and the ranks of a fold are a permutation. Under A2
+    tied values share their average rank, so ranks are multiples of one half and only their sum,
+    n(n - 1) / 2, is fixed."""
+    import blca_common
     out = np.full(len(v), np.nan)
     for k in np.unique(fold):
         m = fold == k
-        r = v[m] * (m.sum() - 1)
-        assert np.abs(r - np.round(r)).max() < 1e-3, "not a fold percentile"
-        assert sorted(np.round(r).astype(int)) == list(range(m.sum())), "not a permutation of ranks"
-        out[m] = np.round(r) / (m.sum() - 1.0)
+        n = int(m.sum())
+        r = v[m] * (n - 1)
+        if blca_common.A2:
+            assert np.abs(2 * r - np.round(2 * r)).max() < 2e-3, "not a fold percentile"
+            r = np.round(2 * r) / 2.0
+            assert abs(r.sum() - n * (n - 1) / 2.0) < 1e-6, "ranks do not sum to n(n-1)/2"
+        else:
+            assert np.abs(r - np.round(r)).max() < 1e-3, "not a fold percentile"
+            r = np.round(r)
+            assert sorted(r.astype(int)) == list(range(n)), "not a permutation of ranks"
+        out[m] = r / (n - 1.0)
     return out
 
 
@@ -161,6 +173,14 @@ def main():
         res["seeds"] = [sd for sd, _, _ in complete]
         res["per_seed_C_alone"] = [round(float(cidx(fold_pct(r, fold), ii, jj)), 4)
                                    for _, r, _ in complete]
+        # how often a retraining returned (nearly) one risk for a whole validation fold: ties that
+        # the rank rule resolves, and that amendment A2 resolves by average rank
+        distinct = [(len(np.unique(r[fold == k])), int((fold == k).sum()))
+                    for _, r, _ in complete for k in sorted(set(fold.tolist()))]
+        res["retraining_fold_pairs"] = len(distinct)
+        res["retraining_fold_pairs_with_constant_risk"] = sum(1 for u, _ in distinct if u == 1)
+        res["retraining_fold_pairs_with_fewer_than_half_distinct_risks"] = sum(
+            1 for u, sz in distinct if u < sz / 2.0)
         out["models"][m] = res
         print("%-24s alone %.4f | over grade %+.4f %s | over stage %+.4f %s | D %+.4f %s"
               % (m, res["C_alone"], res["added_over_weak"], res["added_over_weak_boot"]["ci95"],

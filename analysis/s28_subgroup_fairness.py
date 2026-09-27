@@ -91,6 +91,29 @@ def boot_between(xa, ta, ea, xb, tb, eb, reps=REPS, seed=0):
             "reps": int(v.size), "resampled": "the two strata independently, being disjoint"}
 
 
+def boot_gap_difference(va, ta, ea, vb, tb, eb, arm1, arm2, reps=REPS, seed=0):
+    """(arm1 in A minus arm1 in B) minus (arm2 in A minus arm2 in B), on the same independent
+    resamples of the two disjoint strata that boot_between draws: whether one arm depends on the
+    stratum more than another."""
+    rng = np.random.default_rng(seed)
+    na, nb = len(ta), len(tb)
+    v = []
+    for _ in range(reps):
+        a = rng.choice(na, size=na, replace=True)
+        b = rng.choice(nb, size=nb, replace=True)
+        ia, ja = cpairs(ta[a], ea[a])
+        ib, jb = cpairs(tb[b], eb[b])
+        if ia.size and ib.size:
+            v.append((cidx(va[arm1][a], ia, ja) - cidx(vb[arm1][b], ib, jb))
+                     - (cidx(va[arm2][a], ia, ja) - cidx(vb[arm2][b], ib, jb)))
+    v = np.asarray(v)
+    return {"mean": round(float(v.mean()), 4), "se": round(float(v.std(ddof=1)), 4),
+            "ci95": [round(float(np.quantile(v, .025)), 4),
+                     round(float(np.quantile(v, .975)), 4)],
+            "p_two_sided": round(float(2 * min((v <= 0).mean(), (v >= 0).mean())), 4),
+            "reps": int(v.size), "resampled": "the two strata independently, being disjoint"}
+
+
 def stratum(rows, name):
     t = np.array([r["months"] for r in rows], dtype=float)
     e = np.array([r["event"] for r in rows], dtype=float)
@@ -130,7 +153,14 @@ def main():
     e = np.array([c["event"] for c in cases], dtype=float)
     ii, jj = cpairs(t, e)
     drift = {}
-    for arm, want in KNOWN.items():
+    import blca_common
+    known = KNOWN
+    if blca_common.A2:            # amendment A2: the canonical values come from the regenerated s19 run
+        _u = json.load(open(os.path.join(os.path.dirname(os.path.abspath(a.vectors)),
+                                         "unified-fusion-and-added-value.json")))
+        known = {"ours": _u["known_answers"]["ours_canonical"]["recomputed"],
+                 "clinical_stage": _u["added_value_inflation"]["constructions"]["ours"]["C_stage"]}
+    for arm, want in known.items():
         got = round(cidx(np.array([c[arm] for c in cases], dtype=float), ii, jj), 4)
         if abs(got - want) > 5e-5:
             drift[arm] = {"got": got, "want": want}
@@ -173,6 +203,10 @@ def main():
             (la, (va, ta, ea)), (lb, (vb, tb, eb)) = list(keep.items())
             rec["ours_%s_minus_%s" % (la.split()[0], lb.split()[0])] = boot_between(
                 va["ours"], ta, ea, vb["ours"], tb, eb)
+            # the clinical arm's stratum gap minus ModRank's (SI Note 7), emitted here since
+            # amendment A2; it had been computed once and quoted from the README
+            rec["clinical_gap_minus_ours_gap"] = boot_gap_difference(
+                va, ta, ea, vb, tb, eb, "clinical_stage", "ours")
         out["splits"][axis] = rec
         for label in groups:
             r = rec[label]

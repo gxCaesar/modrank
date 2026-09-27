@@ -133,28 +133,42 @@ for k in ("survpath", "pibd"):
           "%d" % PC[k]["ratio_to_ours"])
 
 # --- 10. THE HEADLINE, which round 2's artifact executor correctly observed this script never
-# touched. "22 checks passed" was an internal-consistency result that said nothing about 0.7212.
-# Two numbers exist and the distinction is the point: the frozen confirmatory run produced 0.7260,
-# and amendment A1 rebuilt the clinical block from DIMAF's released split files, which moved the
-# reported primary to 0.7212. Both are checked here, against the files that recorded them.
+# touched. "22 checks passed" was an internal-consistency result that said nothing about the primary.
+# Three numbers exist and the distinction is the point: the frozen confirmatory run produced 0.7260;
+# amendment A1 rebuilt the clinical block from DIMAF's released split files, which moved the primary to
+# 0.7212; amendment A2 corrected the Cox risk sets and tied ranks and regenerated every later result,
+# which moved it to 0.7214. The first and last are checked against the files that record them, the
+# middle one against the amendment's before-after table.
 CONF = load(R, "confirmatory.json")
 check("the frozen confirmatory run recorded 0.7260",
       abs(CONF["primary"]["value"] - 0.7260) < 5e-5, "%.4f" % CONF["primary"]["value"])
 A1 = load(R, "amendment-A1-clinical-provenance.json")
-check("amendment A1's per-seed values average to the reported 0.7212",
-      abs(sum(r["OURS"] for r in A1["per_seed"]) / len(A1["per_seed"]) - 0.7212) < 5e-5,
+REPORTED = 0.7214
+check("the per-seed values average to the reported %.4f" % REPORTED,
+      abs(sum(r["OURS"] for r in A1["per_seed"]) / len(A1["per_seed"]) - REPORTED) < 5e-5,
       "%.4f over %d seeds" % (sum(r["OURS"] for r in A1["per_seed"]) / len(A1["per_seed"]),
                               len(A1["per_seed"])))
 check("the manuscript's headline is the AMENDED value, not the frozen one",
-      abs(A1["primary"]["value"] - 0.7212) < 5e-5 and CONF["primary"]["value"] != A1["primary"]["value"],
+      abs(A1["primary"]["value"] - REPORTED) < 5e-5 and CONF["primary"]["value"] != A1["primary"]["value"],
       "frozen %.4f -> amended %.4f" % (CONF["primary"]["value"], A1["primary"]["value"]))
+
+# --- AMENDMENT A2: the before-after table records the pre-A2 values beside the regenerated ones
+BAF = os.path.join(os.path.dirname(os.path.abspath(__file__)), "experiments", "20260928-amendment-a2",
+                   "results", "before-after.json")
+if os.path.exists(BAF):
+    BAR = {r["quantity"]: r for r in json.load(open(BAF))["rows"]}
+    _p = BAR["ModRank, mean over five seeds"]
+    check("amendment A2 moved the primary from A1's 0.7212 to the reported value",
+          abs(_p["before"] - 0.7212) < 5e-5 and abs(_p["after"] - A1["primary"]["value"]) < 5e-5,
+          "%.4f -> %.4f" % (_p["before"], _p["after"]))
 
 DUMP = os.path.join(os.path.dirname(os.path.abspath(__file__)), "experiments",
                     "20260818-reporting-dump", "results", "reporting-dump.json")
 if os.path.exists(DUMP):
     D = json.load(open(DUMP))
-    check("the reporting dump re-executed the arm and reproduced 0.7212",
-          D.get("frozen_primary_matched") and abs(D["primary"] - 0.7212) < 5e-5,
+    check("the reporting dump re-executed the arm and reproduced %.4f" % REPORTED,
+          (D.get("frozen_primary_matched") or D.get("amendment") == "A2")
+          and abs(D["primary"] - REPORTED) < 5e-5,
           "%.4f from %d cases" % (D["primary"], len(D["cases"])))
     check("its per-seed values equal amendment A1's",
           [round(x, 4) for x in D["per_seed_OURS"]] == [r["OURS"] for r in A1["per_seed"]],
@@ -202,7 +216,7 @@ if os.path.exists(NULL):
     b = A["bars"]["gaussian_with_the_null_sigma"]
     got = b["sigma"] * math.sqrt(2 * math.log(b["N"]))
     check("gaussian with the null sigma inflation regenerates",
-          abs(got - b["inflation"]) < 5e-4 and abs(b["inflation"] - 0.1297) < 5e-5,
+          abs(got - b["inflation"]) < 5e-4 and abs(b["inflation"] - 0.1299) < 5e-5,
           "%.4f x sqrt(2 ln %d) = %.4f" % (b["sigma"], b["N"], got))
 
     check("the null's sigma is 5x the sigma the rule used",
@@ -214,7 +228,7 @@ if os.path.exists(NULL):
     # chance, so its excess over 0.5 is what a search of this family buys.
     emp = INC + (A["null_max_over_the_family"]["q95"] - 0.5)
     check("the empirical-max bar regenerates from the null's own q95",
-          abs(emp - A["bars"]["empirical_max_q95"]["bar"]) < 5e-4 and abs(emp - 0.7716) < 5e-4,
+          abs(emp - A["bars"]["empirical_max_q95"]["bar"]) < 5e-4 and abs(emp - 0.7708) < 5e-4,
           "%.4f + (%.4f - 0.5) = %.4f" % (INC, A["null_max_over_the_family"]["q95"], emp))
 
     P = A1["primary"]["value"]

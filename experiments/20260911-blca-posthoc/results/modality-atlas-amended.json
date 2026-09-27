@@ -3,30 +3,32 @@
  "phase_of_origin": "post_freeze_2026-09-11",
  "reportable": true,
  "known_answer": {
-  "reproduced": true,
+  "reproduced": false,
   "pre_amendment_block": {
-   "spearman_titan_vs_clinical": 0.213,
-   "spearman_survpath_vs_clinical": 0.1656,
-   "tied_q05_clinical": 0.5012,
-   "tied_q05_titan": 0.612
-  }
+   "spearman_titan_vs_clinical": 0.2136,
+   "spearman_survpath_vs_clinical": 0.1661,
+   "tied_q05_clinical": 0.4988,
+   "tied_q05_titan": 0.6058
+  },
+  "amendment": "A2",
+  "checked_within": 0.01
  },
  "clinical_block": "amended: age, sex, AJCC pathologic tumour stage from DIMAF's split files; seed 0; atlas functions imported unchanged",
  "redundancy": {
-  "spearman_titan_vs_clinical": 0.2445,
-  "spearman_survpath_vs_clinical": 0.1924,
-  "spearman_titan_vs_survpath": 0.4836
+  "spearman_titan_vs_clinical": 0.2443,
+  "spearman_survpath_vs_clinical": 0.1927,
+  "spearman_titan_vs_survpath": 0.4838
  },
  "conditional_probe": {
   "clinically_tied_q05": {
-   "pairs": 1213,
+   "pairs": 1211,
    "pairs_total": 24219,
    "clinical_gap_threshold": 0.0282,
    "arms": {
-    "clinical": 0.4959,
-    "titan": 0.622,
-    "survpath": 0.5952,
-    "titan+clinical": 0.6068
+    "clinical": 0.4975,
+    "titan": 0.6214,
+    "survpath": 0.5937,
+    "titan+clinical": 0.6073
    }
   },
   "clinically_tied_q10": {
@@ -34,32 +36,32 @@
    "pairs_total": 24219,
    "clinical_gap_threshold": 0.0563,
    "arms": {
-    "clinical": 0.5107,
-    "titan": 0.6271,
+    "clinical": 0.5103,
+    "titan": 0.6288,
     "survpath": 0.5999,
-    "titan+clinical": 0.6176
+    "titan+clinical": 0.6195
    }
   },
   "clinically_tied_q20": {
-   "pairs": 4844,
+   "pairs": 4845,
    "pairs_total": 24219,
    "clinical_gap_threshold": 0.1127,
    "arms": {
-    "clinical": 0.5319,
-    "titan": 0.6361,
-    "survpath": 0.5969,
-    "titan+clinical": 0.6289
+    "clinical": 0.532,
+    "titan": 0.6362,
+    "survpath": 0.5968,
+    "titan+clinical": 0.6295
    }
   },
   "clinically_tied_q40": {
-   "pairs": 9695,
+   "pairs": 9696,
    "pairs_total": 24219,
    "clinical_gap_threshold": 0.2429,
    "arms": {
-    "clinical": 0.5661,
+    "clinical": 0.5662,
     "titan": 0.6368,
-    "survpath": 0.5873,
-    "titan+clinical": 0.6392
+    "survpath": 0.5871,
+    "titan+clinical": 0.6396
    }
   },
   "all_pairs": {
@@ -67,10 +69,10 @@
    "pairs_total": 24219,
    "clinical_gap_threshold": null,
    "arms": {
-    "clinical": 0.6638,
-    "titan": 0.6596,
+    "clinical": 0.6637,
+    "titan": 0.6595,
     "survpath": 0.6118,
-    "titan+clinical": 0.7
+    "titan+clinical": 0.6997
    }
   }
  }

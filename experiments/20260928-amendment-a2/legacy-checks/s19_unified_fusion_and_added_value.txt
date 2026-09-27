@@ -1,0 +1,4 @@
+Legacy check of analysis/s19_unified_fusion_and_added_value.py (final code), BLCA_A2=0.
+Interpreter: the conda environment "ml" (Python 3.8.20, NumPy 1.24.4, SciPy 1.10.1), the environment in experiments/20260911-blca-posthoc/env.txt.
+unified-fusion-and-added-value.json: DIFF_COUNT=0; percase-canonical-vectors.json: DIFF_COUNT=0 (runtime ignored).
+Under /usr/bin/python3 (3.9.6, NumPy 2.0.2, SciPy 1.13.1) the same run differed in five auxiliary fields only (stacked weights of seed 3 fold 0 in the third decimal, one gated-variant log entry) and in no reported concordance or per-case vector: an optimiser-version effect, not a pipeline change.

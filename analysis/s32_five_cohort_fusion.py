@@ -45,6 +45,7 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+import blca_common                                                             # noqa: E402
 from blca_common import ALPHAS, cidx, cox_fit, cpairs, fitapply, pct          # noqa: E402
 from s5_stage_five_cohorts import COHORTS, fold_pct, load_cohort              # noqa: E402
 
@@ -83,7 +84,7 @@ def arm(X, co, alphas=ALPHAS, seed=SEED):
     return fold_pct(s, co["assign"])
 
 
-def stacked(blocks, per_arm, co, seed=SEED):
+def stacked(blocks, per_arm, co, seed=SEED, tuned=None):
     """Three weights per fold from the arms' inner out-of-fold percentiles, ridge 1.0.
 
     Copied from s19 rather than re-derived. The inner three-fold split inside each training fold is
@@ -92,6 +93,8 @@ def stacked(blocks, per_arm, co, seed=SEED):
     """
     n = len(co["keep"])
     st = np.full(n, np.nan)
+    if tuned is not None:           # amendment A2's added comparator, the ridge chosen per fold
+        tuned.update(st=np.full(n, np.nan), ridges=[])
     for tri, vai in co["fi"]:
         if len(tri) < 30 or not len(vai):
             continue
@@ -108,6 +111,12 @@ def stacked(blocks, per_arm, co, seed=SEED):
         w = cox_fit(Zi - Zi.mean(0), co["t"][tri], co["e"][tri], 1.0)
         Zv = np.column_stack([per_arm[b][vai] for b in blocks])
         st[vai] = Zv @ w
+        if tuned is not None:
+            al, wt = blca_common.stack_weights_tuned(Zi, co["t"][tri], co["e"][tri], inner)
+            tuned["st"][vai] = Zv @ wt
+            tuned["ridges"].append(al)
+    if tuned is not None:
+        tuned["score"] = fold_pct(tuned["st"], co["assign"])
     return fold_pct(st, co["assign"])
 
 
@@ -157,7 +166,8 @@ def main():
             continue
         ours = fold_pct(per["slide"] + per["omics"] + per["clinical"], co["assign"])
         cat = arm(np.hstack([co["T"], co["P"], CLIN]), co, EXT_ALPHAS)
-        stk = stacked(blocks, per, co)
+        tun = {} if blca_common.A2 else None
+        stk = stacked(blocks, per, co, tuned=tun)
 
         def sc(v):
             return round(float(cidx(v, ii, jj)), 4)
@@ -173,6 +183,11 @@ def main():
         row["fitting_the_fusion_beats_the_rank_average"] = bool(
             row["ModRank_minus_concatenated"]["ci95"][1] < 0
             or row["ModRank_minus_stacked"]["ci95"][1] < 0)
+        if tun is not None:
+            row["stacked_tuned_ridge"] = {
+                "point": sc(tun["score"]), "ridge_grid": list(blca_common.STACK_RIDGES),
+                "ridge_per_fold": tun["ridges"],
+                "ModRank_minus_stacked_tuned_ridge": boot(ours, tun["score"], co["t"], co["e"])}
         out["cohorts"][c] = row
         print("%-9s ModRank %.4f | concat %.4f d=%+.4f %s | stacked %.4f d=%+.4f %s  [%.0f s]"
               % (c, row["points"]["ModRank"], row["points"]["concatenated"],
@@ -193,6 +208,11 @@ def main():
         "studies_where_the_rank_average_beats_stacking_with_an_interval_excluding_zero": [
             k for k, v in out["cohorts"].items()
             if v.get("ModRank_minus_stacked", {}).get("ci95", [0, 0])[0] > 0],
+        **({"studies_where_tuned_ridge_stacking_and_the_rank_average_separate": [
+            k for k, v in out["cohorts"].items() if "stacked_tuned_ridge" in v and (
+                v["stacked_tuned_ridge"]["ModRank_minus_stacked_tuned_ridge"]["ci95"][0] > 0
+                or v["stacked_tuned_ridge"]["ModRank_minus_stacked_tuned_ridge"]["ci95"][1] < 0)]}
+           if blca_common.A2 else {}),
         "reading": "the title's second clause needs the first list to be empty. The other two say "
                    "how much stronger than that the evidence is, and are reported whatever they are",
     }

@@ -24,99 +24,99 @@
    "comparable_pairs": 2193,
    "cv": {
     "transcriptome": {
-     "mean": 0.4742,
-     "sd": 0.0204,
-     "repeat_averaged_vector_c": 0.4699
+     "mean": 0.4747,
+     "sd": 0.0235,
+     "repeat_averaged_vector_c": 0.4726
     },
     "clinical_stage": {
-     "mean": 0.659,
-     "sd": 0.0197,
+     "mean": 0.6591,
+     "sd": 0.0195,
      "repeat_averaged_vector_c": 0.6648
     },
     "modrank": {
-     "mean": 0.5898,
-     "sd": 0.0306,
-     "repeat_averaged_vector_c": 0.6099
+     "mean": 0.5896,
+     "sd": 0.0311,
+     "repeat_averaged_vector_c": 0.604
     },
     "concatenated": {
-     "mean": 0.4895,
-     "sd": 0.0184,
-     "repeat_averaged_vector_c": 0.4948
+     "mean": 0.4893,
+     "sd": 0.0197,
+     "repeat_averaged_vector_c": 0.4904
     },
     "stacked": {
-     "mean": 0.6317,
-     "sd": 0.0129,
-     "repeat_averaged_vector_c": 0.6534
+     "mean": 0.6324,
+     "sd": 0.0152,
+     "repeat_averaged_vector_c": 0.6528
     },
     "clinical_weak": {
-     "mean": 0.5066,
-     "sd": 0.0184,
-     "repeat_averaged_vector_c": 0.5043
+     "mean": 0.5059,
+     "sd": 0.0183,
+     "repeat_averaged_vector_c": 0.5041
     },
     "modrank_with_weak": {
-     "mean": 0.4773,
-     "sd": 0.0198,
-     "repeat_averaged_vector_c": 0.4747
+     "mean": 0.4816,
+     "sd": 0.0201,
+     "repeat_averaged_vector_c": 0.4756
     }
    },
    "paired_vs_modrank": {
     "clinical_stage": {
-     "mean": -0.0537,
+     "mean": -0.0597,
      "ci95": [
-      -0.1164,
-      0.0131
+      -0.1249,
+      0.0084
      ],
-     "p_two_sided": 0.1077,
-     "p_holm": 0.2154
+     "p_two_sided": 0.0837,
+     "p_holm": 0.1674
     },
     "transcriptome": {
-     "mean": 0.1401,
+     "mean": 0.1314,
      "ci95": [
-      0.0597,
-      0.2211
+      0.0536,
+      0.2103
      ],
-     "p_two_sided": 0.0007,
-     "p_holm": 0.0028
+     "p_two_sided": 0.001,
+     "p_holm": 0.004
     },
     "concatenated": {
-     "mean": 0.1154,
+     "mean": 0.1137,
      "ci95": [
-      0.0349,
-      0.1971
+      0.0365,
+      0.1926
      ],
-     "p_two_sided": 0.004,
-     "p_holm": 0.012
+     "p_two_sided": 0.0037,
+     "p_holm": 0.0111
     },
     "stacked": {
-     "mean": -0.0416,
+     "mean": -0.0468,
      "ci95": [
-      -0.1285,
-      0.053
+      -0.1376,
+      0.0498
      ],
-     "p_two_sided": 0.359,
-     "p_holm": 0.359
+     "p_two_sided": 0.3133,
+     "p_holm": 0.3133
     }
    },
    "floor": {
-    "sd": 0.0212,
-    "bar": 0.0423
+    "sd": 0.0241,
+    "bar": 0.0481
    },
    "decision": {
     "margins": {
-     "clinical_stage": -0.0692,
-     "transcriptome": 0.1156,
+     "clinical_stage": -0.0695,
+     "transcriptome": 0.1149,
      "concatenated": 0.1003,
-     "stacked": -0.0419
+     "stacked": -0.0428
     },
     "clears_every_comparator": false
    },
    "D": {
-    "point": 0.0253,
+    "point": 0.0324,
     "ci95": [
-     -0.018,
-     0.0678
+     -0.0112,
+     0.0753
     ],
-    "p_two_sided": 0.258
+    "p_two_sided": 0.1503
    },
    "sensitivity_without_pre_cystectomy_chemotherapy": {
     "n": 90,
@@ -124,97 +124,97 @@
     "comparable_pairs": 2002,
     "cv": {
      "transcriptome": {
-      "mean": 0.4743,
-      "sd": 0.0299,
-      "repeat_averaged_vector_c": 0.4615
+      "mean": 0.4735,
+      "sd": 0.031,
+      "repeat_averaged_vector_c": 0.4603
      },
      "clinical_stage": {
-      "mean": 0.6174,
-      "sd": 0.0259,
-      "repeat_averaged_vector_c": 0.6189
+      "mean": 0.6175,
+      "sd": 0.0258,
+      "repeat_averaged_vector_c": 0.6174
      },
      "modrank": {
-      "mean": 0.5623,
-      "sd": 0.0191,
-      "repeat_averaged_vector_c": 0.5702
+      "mean": 0.5627,
+      "sd": 0.0172,
+      "repeat_averaged_vector_c": 0.5714
      },
      "concatenated": {
-      "mean": 0.4848,
-      "sd": 0.0303,
-      "repeat_averaged_vector_c": 0.4765
+      "mean": 0.4887,
+      "sd": 0.0307,
+      "repeat_averaged_vector_c": 0.4815
      },
      "stacked": {
-      "mean": 0.5649,
-      "sd": 0.0805,
-      "repeat_averaged_vector_c": 0.5962
+      "mean": 0.567,
+      "sd": 0.0826,
+      "repeat_averaged_vector_c": 0.5959
      },
      "clinical_weak": {
-      "mean": 0.4217,
-      "sd": 0.0288,
-      "repeat_averaged_vector_c": 0.3379
+      "mean": 0.421,
+      "sd": 0.0292,
+      "repeat_averaged_vector_c": 0.3374
      },
      "modrank_with_weak": {
-      "mean": 0.4328,
-      "sd": 0.03,
-      "repeat_averaged_vector_c": 0.3986
+      "mean": 0.4307,
+      "sd": 0.0298,
+      "repeat_averaged_vector_c": 0.3996
      }
     },
     "paired_vs_modrank": {
      "clinical_stage": {
-      "mean": -0.0482,
+      "mean": -0.0453,
       "ci95": [
-       -0.12,
-       0.0234
+       -0.1169,
+       0.0251
       ],
-      "p_two_sided": 0.179,
-      "p_holm": 0.358
+      "p_two_sided": 0.199,
+      "p_holm": 0.398
      },
      "transcriptome": {
-      "mean": 0.1082,
+      "mean": 0.1108,
       "ci95": [
-       0.039,
-       0.176
+       0.0405,
+       0.18
       ],
-      "p_two_sided": 0.003,
-      "p_holm": 0.012
+      "p_two_sided": 0.0037,
+      "p_holm": 0.0148
      },
      "concatenated": {
-      "mean": 0.0931,
+      "mean": 0.0895,
       "ci95": [
-       0.026,
-       0.1582
+       0.0232,
+       0.156
       ],
-      "p_two_sided": 0.0093,
-      "p_holm": 0.0279
+      "p_two_sided": 0.01,
+      "p_holm": 0.03
      },
      "stacked": {
-      "mean": -0.025,
+      "mean": -0.0234,
       "ci95": [
-       -0.136,
-       0.0903
+       -0.1303,
+       0.0875
       ],
-      "p_two_sided": 0.651,
-      "p_holm": 0.651
+      "p_two_sided": 0.662,
+      "p_holm": 0.662
      }
     },
     "floor": {
-     "sd": 0.025,
-     "bar": 0.05
+     "sd": 0.0239,
+     "bar": 0.0479
     },
     "decision": {
      "margins": {
-      "clinical_stage": -0.0551,
-      "transcriptome": 0.088,
-      "concatenated": 0.0775,
-      "stacked": -0.0026
+      "clinical_stage": -0.0548,
+      "transcriptome": 0.0892,
+      "concatenated": 0.074,
+      "stacked": -0.0043
      },
      "clears_every_comparator": false
     },
     "D": {
-     "point": 0.1094,
+     "point": 0.1081,
      "ci95": [
-      0.0424,
-      0.1774
+      0.0404,
+      0.1757
      ],
      "p_two_sided": 0.002
     }
@@ -244,125 +244,125 @@
    "comparable_pairs": 4186,
    "cv": {
     "transcriptome": {
-     "mean": 0.8163,
-     "sd": 0.0165,
-     "repeat_averaged_vector_c": 0.8267
+     "mean": 0.8164,
+     "sd": 0.0167,
+     "repeat_averaged_vector_c": 0.8269
     },
     "clinical_stage": {
      "mean": 0.8672,
-     "sd": 0.0125,
-     "repeat_averaged_vector_c": 0.8723
+     "sd": 0.0136,
+     "repeat_averaged_vector_c": 0.8729
     },
     "modrank": {
-     "mean": 0.8779,
-     "sd": 0.0072,
-     "repeat_averaged_vector_c": 0.8907
+     "mean": 0.8792,
+     "sd": 0.0074,
+     "repeat_averaged_vector_c": 0.8911
     },
     "concatenated": {
-     "mean": 0.8216,
-     "sd": 0.0263,
-     "repeat_averaged_vector_c": 0.8364
+     "mean": 0.8219,
+     "sd": 0.0261,
+     "repeat_averaged_vector_c": 0.8368
     },
     "stacked": {
-     "mean": 0.8747,
-     "sd": 0.0081,
-     "repeat_averaged_vector_c": 0.8874
+     "mean": 0.8748,
+     "sd": 0.0083,
+     "repeat_averaged_vector_c": 0.8877
     },
     "clinical_weak": {
-     "mean": 0.7255,
-     "sd": 0.0158,
-     "repeat_averaged_vector_c": 0.7309
+     "mean": 0.7262,
+     "sd": 0.0162,
+     "repeat_averaged_vector_c": 0.7302
     },
     "modrank_with_weak": {
-     "mean": 0.8018,
-     "sd": 0.0111,
-     "repeat_averaged_vector_c": 0.8073
+     "mean": 0.8024,
+     "sd": 0.0126,
+     "repeat_averaged_vector_c": 0.807
     }
    },
    "paired_vs_modrank": {
     "clinical_stage": {
-     "mean": 0.0185,
+     "mean": 0.0182,
      "ci95": [
-      -0.0245,
-      0.0622
+      -0.0237,
+      0.0611
      ],
-     "p_two_sided": 0.381,
-     "p_holm": 0.762
+     "p_two_sided": 0.3807,
+     "p_holm": 0.7614
     },
     "transcriptome": {
-     "mean": 0.0641,
+     "mean": 0.0642,
      "ci95": [
-      0.027,
-      0.1061
+      0.0271,
+      0.1065
      ],
-     "p_two_sided": 0.001,
-     "p_holm": 0.004
+     "p_two_sided": 0.0007,
+     "p_holm": 0.0028
     },
     "concatenated": {
-     "mean": 0.0543,
+     "mean": 0.0541,
      "ci95": [
-      0.0182,
-      0.098
+      0.0183,
+      0.0973
      ],
-     "p_two_sided": 0.0013,
-     "p_holm": 0.004
+     "p_two_sided": 0.002,
+     "p_holm": 0.006
     },
     "stacked": {
      "mean": 0.0034,
      "ci95": [
-      -0.0044,
-      0.0129
+      -0.0041,
+      0.0136
      ],
-     "p_two_sided": 0.44,
-     "p_holm": 0.762
+     "p_two_sided": 0.4633,
+     "p_holm": 0.7614
     }
    },
    "floor": {
-    "sd": 0.0109,
-    "bar": 0.0217
+    "sd": 0.0113,
+    "bar": 0.0225
    },
    "decision": {
     "margins": {
-     "clinical_stage": 0.0107,
-     "transcriptome": 0.0616,
-     "concatenated": 0.0563,
-     "stacked": 0.0032
+     "clinical_stage": 0.012,
+     "transcriptome": 0.0628,
+     "concatenated": 0.0573,
+     "stacked": 0.0044
     },
     "clears_every_comparator": false
    },
    "D": {
-    "point": 0.0581,
+    "point": 0.0586,
     "ci95": [
-     0.0175,
-     0.0971
+     0.0179,
+     0.0984
     ],
-    "p_two_sided": 0.0073
+    "p_two_sided": 0.009
    },
    "with_the_rule_block": {
     "transcriptome": {
-     "mean": 0.8163,
-     "sd": 0.0165,
-     "repeat_averaged_vector_c": 0.8267
+     "mean": 0.8164,
+     "sd": 0.0167,
+     "repeat_averaged_vector_c": 0.8269
     },
     "clinical_stage": {
-     "mean": 0.8458,
-     "sd": 0.0147,
-     "repeat_averaged_vector_c": 0.8537
+     "mean": 0.8464,
+     "sd": 0.0148,
+     "repeat_averaged_vector_c": 0.8545
     },
     "modrank": {
-     "mean": 0.8651,
-     "sd": 0.0061,
-     "repeat_averaged_vector_c": 0.8804
+     "mean": 0.8654,
+     "sd": 0.0062,
+     "repeat_averaged_vector_c": 0.8813
     },
     "concatenated": {
-     "mean": 0.8235,
+     "mean": 0.8233,
      "sd": 0.0258,
-     "repeat_averaged_vector_c": 0.8373
+     "repeat_averaged_vector_c": 0.8368
     },
     "stacked": {
      "mean": 0.8598,
-     "sd": 0.0074,
-     "repeat_averaged_vector_c": 0.8755
+     "sd": 0.0076,
+     "repeat_averaged_vector_c": 0.8764
     }
    }
   },
@@ -382,83 +382,83 @@
    "comparable_pairs": 1749,
    "cv": {
     "transcriptome": {
-     "mean": 0.5683,
-     "sd": 0.0232,
-     "repeat_averaged_vector_c": 0.5718
+     "mean": 0.5701,
+     "sd": 0.0225,
+     "repeat_averaged_vector_c": 0.5732
     },
     "clinical_stage": {
-     "mean": 0.6322,
-     "sd": 0.0106,
-     "repeat_averaged_vector_c": 0.6398
+     "mean": 0.6334,
+     "sd": 0.0116,
+     "repeat_averaged_vector_c": 0.6412
     },
     "modrank": {
-     "mean": 0.6384,
-     "sd": 0.0281,
-     "repeat_averaged_vector_c": 0.6584
+     "mean": 0.6389,
+     "sd": 0.0268,
+     "repeat_averaged_vector_c": 0.6664
     },
     "concatenated": {
-     "mean": 0.5864,
-     "sd": 0.0236,
-     "repeat_averaged_vector_c": 0.5952
+     "mean": 0.5872,
+     "sd": 0.0238,
+     "repeat_averaged_vector_c": 0.5941
     },
     "stacked": {
-     "mean": 0.6201,
-     "sd": 0.0318,
-     "repeat_averaged_vector_c": 0.6401
+     "mean": 0.6197,
+     "sd": 0.0288,
+     "repeat_averaged_vector_c": 0.6415
     }
    },
    "paired_vs_modrank": {
     "clinical_stage": {
-     "mean": 0.018,
+     "mean": 0.0246,
      "ci95": [
-      -0.0648,
-      0.1021
+      -0.061,
+      0.1103
      ],
-     "p_two_sided": 0.6667,
-     "p_holm": 0.9794
+     "p_two_sided": 0.5677,
+     "p_holm": 0.6874
     },
     "transcriptome": {
-     "mean": 0.0884,
+     "mean": 0.0951,
      "ci95": [
-      -0.0119,
-      0.1866
+      -0.0034,
+      0.1931
      ],
-     "p_two_sided": 0.083,
-     "p_holm": 0.332
+     "p_two_sided": 0.0593,
+     "p_holm": 0.2372
     },
     "concatenated": {
-     "mean": 0.0647,
+     "mean": 0.0739,
      "ci95": [
-      -0.0288,
-      0.1559
+      -0.0165,
+      0.1626
      ],
-     "p_two_sided": 0.166,
-     "p_holm": 0.498
+     "p_two_sided": 0.107,
+     "p_holm": 0.321
     },
     "stacked": {
-     "mean": 0.0182,
+     "mean": 0.0248,
      "ci95": [
-      -0.0361,
-      0.0733
+      -0.0265,
+      0.0777
      ],
-     "p_two_sided": 0.4897,
-     "p_holm": 0.9794
+     "p_two_sided": 0.3437,
+     "p_holm": 0.6874
     }
    },
    "floor": {
-    "sd": 0.027,
-    "bar": 0.054
+    "sd": 0.0262,
+    "bar": 0.0524
    },
    "decision": {
     "margins": {
-     "clinical_stage": 0.0062,
-     "transcriptome": 0.0701,
-     "concatenated": 0.052,
-     "stacked": 0.0183
+     "clinical_stage": 0.0055,
+     "transcriptome": 0.0688,
+     "concatenated": 0.0517,
+     "stacked": 0.0192
     },
     "clears_every_comparator": false
    }
   }
  },
- "runtime_seconds": 369.2
+ "runtime_seconds": 339.7
 }

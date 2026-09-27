@@ -52,8 +52,8 @@ from blca_common import Cohort, cidx, cpairs, cox_fit, fitapply  # noqa: E402
 
 
 def spearman(a, b):
-    ra = np.argsort(np.argsort(a)).astype(float)
-    rb = np.argsort(np.argsort(b)).astype(float)
+    from blca_common import ranks            # average ranks for ties under amendment A2
+    ra, rb = ranks(a), ranks(b)
     ra -= ra.mean()
     rb -= rb.mean()
     d = float(np.sqrt((ra @ ra) * (rb @ rb)))
@@ -108,13 +108,18 @@ def score_test(X, t, e):
     a survival statistic at all. This is the exact score test: U = sum over events of (x_i - xbar
     over the risk set), standardised by its variance under the null.
     """
-    o = np.argsort(t)
+    import blca_common
+    o = np.argsort(t, kind="stable") if blca_common.A2 else np.argsort(t)
     Xo, eo = X[o], e[o]
     n = len(t)
     ev = np.flatnonzero(eo == 1)
     csum = np.cumsum(Xo[::-1], axis=0)[::-1]
     csq = np.cumsum((Xo ** 2)[::-1], axis=0)[::-1]
     sz = np.arange(n, 0, -1).astype(float)[:, None]
+    if blca_common.A2:
+        # amendment A2: every member of a tied-time group shares the group's full risk set
+        first = np.searchsorted(t[o], t[o], side="left")
+        csum, csq, sz = csum[first], csq[first], sz[first]
     mean_rs = csum / sz
     var_rs = np.maximum(csq / sz - mean_rs ** 2, 0.0)
     U = (Xo[ev] - mean_rs[ev]).sum(0)

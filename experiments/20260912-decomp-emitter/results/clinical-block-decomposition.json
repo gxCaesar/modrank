@@ -16,7 +16,7 @@
    "what": "the frozen block: age, sex and one-hot T, N, M and AJCC stage from the cached GDC query, which selected the first diagnosis record per case",
    "columns": 23,
    "clinical_alone": 0.6856,
-   "with_both_modalities": 0.7291,
+   "with_both_modalities": 0.7287,
    "previous_file": [
     0.6863,
     0.7285
@@ -27,27 +27,27 @@
   "B": {
    "what": "the amended block: age, sex and one-hot stage from the incumbent's released split files",
    "columns": 6,
-   "clinical_alone": 0.6638,
-   "with_both_modalities": 0.7225,
+   "clinical_alone": 0.6637,
+   "with_both_modalities": 0.7224,
    "previous_file": [
     0.6638,
     0.7225
    ],
-   "agrees_with_previous_file": true,
+   "agrees_with_previous_file": false,
    "is_a_known_answer": true
   },
   "D": {
    "what": "the amended block with histological grade in place of stage",
    "columns": 4,
-   "clinical_alone": 0.5666,
-   "with_both_modalities": 0.6856,
+   "clinical_alone": 0.5664,
+   "with_both_modalities": 0.687,
    "previous_file": [
     0.5666,
     0.6856
    ],
-   "agrees_with_previous_file": true,
+   "agrees_with_previous_file": false,
    "is_a_known_answer": true
   }
  },
- "runtime_seconds": 7.0
+ "runtime_seconds": 9.3
 }

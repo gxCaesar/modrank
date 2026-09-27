@@ -14,127 +14,127 @@
  },
  "constructions": {
   "ModRank": {
-   "D": 0.061,
+   "D": 0.0637,
    "no_signal_D": {
-    "mean": 0.0417,
+    "mean": 0.0416,
     "q025_q975": [
-     0.0289,
-     0.0538
+     0.0287,
+     0.0539
     ]
    },
    "excess_over_no_signal": {
-    "point": 0.0193,
-    "mean": 0.0185,
+    "point": 0.0221,
+    "mean": 0.0214,
     "ci95": [
-     0.0022,
-     0.0359
+     0.005,
+     0.0388
     ],
-    "p_two_sided": 0.0263
+    "p_two_sided": 0.009
    },
    "no_signal_arms": 2
   },
   "SurvPath": {
-   "D": 0.0417,
+   "D": 0.0407,
    "no_signal_D": {
     "mean": 0.0288,
     "q025_q975": [
-     0.016,
-     0.0413
-    ]
-   },
-   "excess_over_no_signal": {
-    "point": 0.0129,
-    "mean": 0.0114,
-    "ci95": [
-     -0.0035,
-     0.027
-    ],
-    "p_two_sided": 0.1373
-   },
-   "no_signal_arms": 1
-  },
-  "PIBD": {
-   "D": 0.0496,
-   "no_signal_D": {
-    "mean": 0.0287,
-    "q025_q975": [
-     0.0154,
-     0.0406
-    ]
-   },
-   "excess_over_no_signal": {
-    "point": 0.021,
-    "mean": 0.0228,
-    "ci95": [
-     0.0066,
-     0.0393
-    ],
-    "p_two_sided": 0.0033
-   },
-   "no_signal_arms": 1
-  },
-  "coattn": {
-   "D": 0.0317,
-   "no_signal_D": {
-    "mean": 0.0287,
-    "q025_q975": [
-     0.0158,
-     0.0409
-    ]
-   },
-   "excess_over_no_signal": {
-    "point": 0.0031,
-    "mean": 0.0019,
-    "ci95": [
-     -0.0122,
-     0.0149
-    ],
-    "p_two_sided": 0.767
-   },
-   "no_signal_arms": 1
-  },
-  "abmil_wsi_pathways": {
-   "D": 0.0302,
-   "no_signal_D": {
-    "mean": 0.0288,
-    "q025_q975": [
-     0.0165,
+     0.0157,
      0.0412
     ]
    },
    "excess_over_no_signal": {
-    "point": 0.0014,
-    "mean": 0.0028,
+    "point": 0.0119,
+    "mean": 0.0104,
     "ci95": [
-     -0.0139,
-     0.0196
+     -0.0047,
+     0.0261
     ],
-    "p_two_sided": 0.731
+    "p_two_sided": 0.175
+   },
+   "no_signal_arms": 1
+  },
+  "PIBD": {
+   "D": 0.0506,
+   "no_signal_D": {
+    "mean": 0.0287,
+    "q025_q975": [
+     0.0158,
+     0.0406
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": 0.0219,
+    "mean": 0.0235,
+    "ci95": [
+     0.0072,
+     0.0404
+    ],
+    "p_two_sided": 0.0017
+   },
+   "no_signal_arms": 1
+  },
+  "coattn": {
+   "D": 0.0323,
+   "no_signal_D": {
+    "mean": 0.0287,
+    "q025_q975": [
+     0.0159,
+     0.0409
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": 0.0036,
+    "mean": 0.0027,
+    "ci95": [
+     -0.0113,
+     0.0157
+    ],
+    "p_two_sided": 0.6907
+   },
+   "no_signal_arms": 1
+  },
+  "abmil_wsi_pathways": {
+   "D": 0.0325,
+   "no_signal_D": {
+    "mean": 0.0288,
+    "q025_q975": [
+     0.0167,
+     0.0411
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": 0.0037,
+    "mean": 0.005,
+    "ci95": [
+     -0.012,
+     0.0218
+    ],
+    "p_two_sided": 0.5543
    },
    "no_signal_arms": 1
   },
   "transmil_wsi_pathways": {
-   "D": 0.0284,
+   "D": 0.0301,
    "no_signal_D": {
     "mean": 0.0286,
     "q025_q975": [
-     0.016,
-     0.041
+     0.0158,
+     0.0407
     ]
    },
    "excess_over_no_signal": {
-    "point": -0.0001,
-    "mean": 0.0023,
+    "point": 0.0015,
+    "mean": 0.0037,
     "ci95": [
-     -0.0152,
-     0.0195
+     -0.0139,
+     0.0209
     ],
-    "p_two_sided": 0.7873
+    "p_two_sided": 0.675
    },
    "no_signal_arms": 1
   },
   "deepmisl_wsi_pathways": {
-   "D": 0.034,
+   "D": 0.0054,
    "no_signal_D": {
     "mean": 0.0287,
     "q025_q975": [
@@ -143,16 +143,16 @@
     ]
    },
    "excess_over_no_signal": {
-    "point": 0.0053,
-    "mean": 0.0081,
+    "point": -0.0233,
+    "mean": -0.0204,
     "ci95": [
-     -0.009,
-     0.0249
+     -0.0399,
+     -0.0021
     ],
-    "p_two_sided": 0.35
+    "p_two_sided": 0.026
    },
    "no_signal_arms": 1
   }
  },
- "runtime_seconds": 166.2
+ "runtime_seconds": 223.4
 }
