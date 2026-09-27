@@ -1,0 +1,62 @@
+{
+ "artifact_type": "s35_inflation_null_geo",
+ "phase_of_origin": "post_freeze_2026-09-27",
+ "basis": "experiments/20260927-field-inflation/README.md, finding 1",
+ "bootstrap": {
+  "replicates": 6000,
+  "seed": 20260911,
+  "unit": "cases"
+ },
+ "no_signal": {
+  "draws_full_data": 2000,
+  "draws_per_resample": 20,
+  "rng_seed": 35
+ },
+ "constructions": {
+  "GSE31684": {
+   "n": 93,
+   "events": 38,
+   "D": 0.0253,
+   "no_signal_D": {
+    "mean": 0.015,
+    "q025_q975": [
+     -0.0148,
+     0.0436
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": 0.0103,
+    "mean": 0.0007,
+    "ci95": [
+     -0.0325,
+     0.0335
+    ],
+    "p_two_sided": 0.9813
+   },
+   "no_signal_arms": 1
+  },
+  "GSE32894": {
+   "n": 224,
+   "events": 25,
+   "D": 0.0581,
+   "no_signal_D": {
+    "mean": 0.0183,
+    "q025_q975": [
+     -0.0069,
+     0.042
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": 0.0397,
+    "mean": 0.0409,
+    "ci95": [
+     0.004,
+     0.0775
+    ],
+    "p_two_sided": 0.0317
+   },
+   "no_signal_arms": 1
+  }
+ },
+ "runtime_seconds": 60.2
+}

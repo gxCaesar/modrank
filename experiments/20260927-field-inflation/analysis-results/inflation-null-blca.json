@@ -1,0 +1,158 @@
+{
+ "artifact_type": "s35_inflation_null_blca",
+ "phase_of_origin": "post_freeze_2026-09-27",
+ "basis": "experiments/20260927-field-inflation/README.md, finding 1",
+ "bootstrap": {
+  "replicates": 6000,
+  "seed": 20260911,
+  "unit": "cases"
+ },
+ "no_signal": {
+  "draws_full_data": 2000,
+  "draws_per_resample": 20,
+  "rng_seed": 35
+ },
+ "constructions": {
+  "ModRank": {
+   "D": 0.061,
+   "no_signal_D": {
+    "mean": 0.0417,
+    "q025_q975": [
+     0.0289,
+     0.0538
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": 0.0193,
+    "mean": 0.0185,
+    "ci95": [
+     0.0022,
+     0.0359
+    ],
+    "p_two_sided": 0.0263
+   },
+   "no_signal_arms": 2
+  },
+  "SurvPath": {
+   "D": 0.0417,
+   "no_signal_D": {
+    "mean": 0.0288,
+    "q025_q975": [
+     0.016,
+     0.0413
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": 0.0129,
+    "mean": 0.0114,
+    "ci95": [
+     -0.0035,
+     0.027
+    ],
+    "p_two_sided": 0.1373
+   },
+   "no_signal_arms": 1
+  },
+  "PIBD": {
+   "D": 0.0496,
+   "no_signal_D": {
+    "mean": 0.0287,
+    "q025_q975": [
+     0.0154,
+     0.0406
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": 0.021,
+    "mean": 0.0228,
+    "ci95": [
+     0.0066,
+     0.0393
+    ],
+    "p_two_sided": 0.0033
+   },
+   "no_signal_arms": 1
+  },
+  "coattn": {
+   "D": 0.0317,
+   "no_signal_D": {
+    "mean": 0.0287,
+    "q025_q975": [
+     0.0158,
+     0.0409
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": 0.0031,
+    "mean": 0.0019,
+    "ci95": [
+     -0.0122,
+     0.0149
+    ],
+    "p_two_sided": 0.767
+   },
+   "no_signal_arms": 1
+  },
+  "abmil_wsi_pathways": {
+   "D": 0.0302,
+   "no_signal_D": {
+    "mean": 0.0288,
+    "q025_q975": [
+     0.0165,
+     0.0412
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": 0.0014,
+    "mean": 0.0028,
+    "ci95": [
+     -0.0139,
+     0.0196
+    ],
+    "p_two_sided": 0.731
+   },
+   "no_signal_arms": 1
+  },
+  "transmil_wsi_pathways": {
+   "D": 0.0284,
+   "no_signal_D": {
+    "mean": 0.0286,
+    "q025_q975": [
+     0.016,
+     0.041
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": -0.0001,
+    "mean": 0.0023,
+    "ci95": [
+     -0.0152,
+     0.0195
+    ],
+    "p_two_sided": 0.7873
+   },
+   "no_signal_arms": 1
+  },
+  "deepmisl_wsi_pathways": {
+   "D": 0.034,
+   "no_signal_D": {
+    "mean": 0.0287,
+    "q025_q975": [
+     0.0157,
+     0.0412
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": 0.0053,
+    "mean": 0.0081,
+    "ci95": [
+     -0.009,
+     0.0249
+    ],
+    "p_two_sided": 0.35
+   },
+   "no_signal_arms": 1
+  }
+ },
+ "runtime_seconds": 166.2
+}

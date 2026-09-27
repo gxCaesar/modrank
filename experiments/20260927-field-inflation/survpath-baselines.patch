@@ -1,0 +1,120 @@
+--- experiments/20260927-field-inflation/core_utils.py.before	2026-09-27 09:42:10.477663061 +0800
++++ SurvPath/utils/core_utils.py	2026-09-27 09:42:34.601668878 +0800
+@@ -154,7 +154,7 @@
+         model_dict = {
+             "device" : args.device, "df_comp" : args.composition_df, "omic_input_dim" : omics_input_dim,
+             "dim_per_path_1" : args.encoding_layer_1_dim, "dim_per_path_2" : args.encoding_layer_2_dim,
+-            "fusion":args.fusion
++            "fusion":args.fusion, "wsi_embedding_dim": args.encoding_dim
+         }
+ 
+         model = ABMIL(**model_dict)
+@@ -165,7 +165,7 @@
+         model_dict = {
+             "device" : args.device, "df_comp" : args.composition_df, "omic_input_dim" : omics_input_dim,
+             "dim_per_path_1" : args.encoding_layer_1_dim, "dim_per_path_2" : args.encoding_layer_2_dim,
+-            "fusion":args.fusion
++            "fusion":args.fusion, "wsi_embedding_dim": args.encoding_dim
+         }
+ 
+         model = DeepMISL(**model_dict)
+@@ -184,14 +184,17 @@
+         model_dict = {
+             "device" : args.device, "df_comp" : args.composition_df, "omic_input_dim" : omics_input_dim,
+             "dim_per_path_1" : args.encoding_layer_1_dim, "dim_per_path_2" : args.encoding_layer_2_dim,
+-            "fusion":args.fusion
++            "fusion":args.fusion, "wsi_embedding_dim": args.encoding_dim
+         }
+ 
+         model = TMIL(**model_dict)
+ 
+     elif args.modality == "coattn":
+ 
+-        model_dict = {'fusion': args.fusion, 'omic_sizes': args.omic_sizes, 'n_classes': args.n_classes}
++        # like survpath below (2026-09-27): --encoding_dim reaches the first layer, so the 768-d
++        # CTransPath features load instead of dying at 4096x768 x 1024x256
++        model_dict = {'fusion': args.fusion, 'omic_sizes': args.omic_sizes, 'n_classes': args.n_classes,
++                      'wsi_embedding_dim': args.encoding_dim}
+         model = MCATPathways(**model_dict)
+ 
+     elif args.modality == "coattn_motcat":
+--- experiments/20260927-field-inflation/model_ABMIL.py.before	2026-09-27 09:42:10.481663061 +0800
++++ SurvPath/models/model_ABMIL.py	2026-09-27 09:42:10.549663078 +0800
+@@ -23,7 +23,7 @@
+ # Attention MIL Implementation #
+ ################################
+ class ABMIL(nn.Module):
+-    def __init__(self, omic_input_dim=None, fusion=None, size_arg = "small", dropout=0.25, n_classes=4, df_comp=None, dim_per_path_1=16, dim_per_path_2=64, device="cpu"):
++    def __init__(self, omic_input_dim=None, fusion=None, size_arg = "small", dropout=0.25, n_classes=4, df_comp=None, dim_per_path_1=16, dim_per_path_2=64, device="cpu", wsi_embedding_dim=1024):
+         r"""
+         Attention MIL Implementation
+ 
+@@ -41,7 +41,7 @@
+         self.size_dict_omic = {'small': [256, 256]}
+ 
+         ### Deep Sets Architecture Construction
+-        size = self.size_dict_path[size_arg]
++        size = [wsi_embedding_dim] + self.size_dict_path[size_arg][1:]  # 768-d features: first layer takes wsi_embedding_dim (2026-09-27, see core_utils)
+         fc = [nn.Linear(size[0], size[1]), nn.ReLU(), nn.Dropout(dropout)]
+         attention_net = Attn_Net_Gated(L=size[1], D=size[2], dropout=dropout, n_classes=1)
+         fc.append(attention_net)
+--- experiments/20260927-field-inflation/model_DeepMISL.py.before	2026-09-27 09:42:10.481663061 +0800
++++ SurvPath/models/model_DeepMISL.py	2026-09-27 09:42:34.573668870 +0800
+@@ -22,7 +22,7 @@
+ ### Deep Sets Implementation ###
+ ################################
+ class DeepMISL(nn.Module):
+-    def __init__(self, omic_input_dim=None, fusion=None, size_arg = "small", dropout=0.25, df_comp=None, dim_per_path_1=16, dim_per_path_2=64, device="cpu", n_classes=4):
++    def __init__(self, omic_input_dim=None, fusion=None, size_arg = "small", dropout=0.25, df_comp=None, dim_per_path_1=16, dim_per_path_2=64, device="cpu", n_classes=4, wsi_embedding_dim=1024):
+         r"""
+         Deep Sets Implementation.
+ 
+@@ -39,7 +39,7 @@
+         self.size_dict_omic = {'small': [256, 256]}
+ 
+         ### Deep Sets Architecture Construction
+-        size = self.size_dict_path[size_arg]
++        size = [wsi_embedding_dim] + self.size_dict_path[size_arg][1:]  # 768-d features: first layer takes wsi_embedding_dim (2026-09-27, see core_utils)
+         self.phi = nn.Sequential(*[nn.Linear(size[0], size[1]), nn.ReLU(), nn.Dropout(dropout)])
+         self.rho = nn.Sequential(*[nn.Linear(size[1], size[2]), nn.ReLU(), nn.Dropout(dropout)])
+ 
+--- experiments/20260927-field-inflation/model_TMIL.py.before	2026-09-27 09:42:10.485663063 +0800
++++ SurvPath/models/model_TMIL.py	2026-09-27 09:42:10.549663078 +0800
+@@ -15,7 +15,7 @@
+ # Attention MIL Implementation #
+ ################################
+ class TMIL(nn.Module):
+-    def __init__(self, omic_input_dim=None, fusion=None, size_arg = "small", dropout=0.25, n_classes=4, df_comp=None, dim_per_path_1=16, dim_per_path_2=64, device="cpu"):
++    def __init__(self, omic_input_dim=None, fusion=None, size_arg = "small", dropout=0.25, n_classes=4, df_comp=None, dim_per_path_1=16, dim_per_path_2=64, device="cpu", wsi_embedding_dim=1024):
+         r"""
+         Attention MIL Implementation
+ 
+@@ -33,7 +33,7 @@
+         self.size_dict_omic = {'small': [256, 256]}
+ 
+         ### Deep Sets Architecture Construction
+-        size = self.size_dict_path[size_arg]
++        size = [wsi_embedding_dim] + self.size_dict_path[size_arg][1:]  # 768-d features: first layer takes wsi_embedding_dim (2026-09-27, see core_utils)
+         fc = [nn.Linear(size[0], size[1]), nn.ReLU(), nn.Dropout(dropout)]
+         self.fc = nn.Sequential(*fc)
+         # attention_net = Attn_Net_Gated(L=size[1], D=size[2], dropout=dropout, n_classes=1)
+--- experiments/20260927-field-inflation/model_MCATPathways.py.before	2026-09-27 09:42:10.485663063 +0800
++++ SurvPath/models/model_MCATPathways.py	2026-09-27 09:42:34.593668876 +0800
+@@ -26,7 +26,7 @@
+ ###########################
+ class MCATPathways(nn.Module):
+     def __init__(self, fusion='concat', omic_sizes=[100, 200, 300, 400, 500, 600], n_classes=4,
+-                 model_size_wsi: str='small', model_size_omic: str='small', dropout=0.25):
++                 model_size_wsi: str='small', model_size_omic: str='small', dropout=0.25, wsi_embedding_dim=1024):
+         super(MCATPathways, self).__init__()
+         self.fusion = fusion
+         self.omic_sizes = omic_sizes
+@@ -35,7 +35,7 @@
+         self.size_dict_omic = {'small': [256, 256], 'big': [1024, 1024, 1024, 256]}
+         
+         ### FC Layer over WSI bag
+-        size = self.size_dict_WSI[model_size_wsi]
++        size = [wsi_embedding_dim] + self.size_dict_WSI[model_size_wsi][1:]  # 768-d features: first layer takes wsi_embedding_dim (2026-09-27, see core_utils)
+         fc = [nn.Linear(size[0], size[1]), nn.ReLU()]
+         fc.append(nn.Dropout(0.25))
+         self.wsi_net = nn.Sequential(*fc)

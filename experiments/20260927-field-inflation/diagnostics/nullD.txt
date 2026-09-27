@@ -1,0 +1,8 @@
+C grade 0.5665  C stage 0.6644
+random M: C alone mean 0.4998 | added over grade mean -0.0218 | over stage mean -0.0505 | D mean +0.0287 sd 0.0061  q2.5 +0.0161 q97.5 +0.0404
+signal weight 0.0    C alone 0.4996  D +0.0282
+signal weight 0.25   C alone 0.5443  D +0.0321
+signal weight 0.5    C alone 0.5839  D +0.0356
+signal weight 1.0    C alone 0.6335  D +0.0418
+signal weight 2.0    C alone 0.6707  D +0.0460
+signal weight 1000000000.0 C alone 0.6897  D +0.0492

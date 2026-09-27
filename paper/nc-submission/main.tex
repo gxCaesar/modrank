@@ -36,14 +36,14 @@
 \noindent Multimodal survival models for bladder cancer are ranked on one public benchmark against a
 clinical reference built from tumour grade, which barely varies here.
 Rebuilding it with pathologic stage raised its concordance from 0.567
-to 0.664 and more than halved the apparent added value of three multimodal models, a bias that
-replicated in an independent cohort. We introduce ModRank, which fits one penalised Cox model per
+to 0.664, above two of four published models on these folds, and more than halved the added value of
+three multimodal models. We introduce ModRank, which fits one penalised Cox model per
 modality and averages their ranks without fitting the combination. It reached 0.721, the highest
 reported on this benchmark, without separating from two rerun competitors. It exceeded the corrected
 reference in two of four other benchmark studies, and its two-modality form did not exceed stage
 beyond the noise floor in three cohorts without histology. Here we show that clinical references for
-these models need pathologic stage and that, across five studies, neither concatenated nor stacked
-fusion significantly improves on a combination with nothing to fit.
+these models need pathologic stage and that, across five studies, none of five fitted fusions
+significantly improves on a combination with nothing to fit.
 \end{abstract}
 
 \section*{Introduction}
@@ -97,7 +97,7 @@ average with no fitted parameter. Under a prespecified protocol it reaches the h
 reported on the benchmark, although it is not significantly different from the two competitors we
 could rerun. Fitting the fusion on identical inputs does not significantly improve on it. In bladder a
 concatenated model falls below it and learned weights come within the benchmark's resolution of it,
-and across the benchmark's five studies neither fitted fusion is significantly ahead of it. ModRank
+and across the benchmark's five studies none of five fitted fusions is significantly ahead of it. ModRank
 holds its concordance when whole hospitals are held out and gives calibrated two-year risks, with a
 gain in accuracy over the clinical model that this cohort cannot resolve. It does not exceed the
 corrected reference in two of the benchmark's four other studies, and in three external cohorts
@@ -187,7 +187,7 @@ pre-registered selection correction was mis-specified. It used the standard devi
 difference where the maximum-of-candidates correction needs that of a single candidate's score. The
 primary does not clear the correctly measured bar of 0.7716 (Supplementary Note~2).
 
-\subsection*{A grade reference inflates all three models' added value}
+\subsection*{Added value falls when the reference includes stage}
 
 A clinical reference fixes the zero point of every claim about what histology and transcriptomics
 add, so we measured how far the reference moves it. For three multimodal constructions (ModRank, and
@@ -199,14 +199,20 @@ between the added value over grade and over stage, with all four concordances re
 Against the grade-based reference every construction appears to add substantially, $+0.1204$
 ($[+0.0684, +0.1708]$) for ModRank, $+0.0670$ for SurvPath and $+0.0841$ for PIBD. Against the stage-based
 reference the added values fall to $+0.0594$, $+0.0253$ and $+0.0345$
-(Fig.~\ref{fig:added}a). The inflation is significant for all three, $D = +0.0610$ ($[+0.0284,
-+0.0955]$), $+0.0417$ ($[+0.0196, +0.0668]$) and $+0.0496$ ($[+0.0238, +0.0769]$), and for ModRank
-it is positive in 24 of 24 re-partitions ($+0.0628 \pm 0.0086$). This comparison on the development
-cohort was specified after the confirmatory run, and the evidence that carries the claim is the
-replication, reported below, in an independent cohort under a protocol fixed beforehand. Against the stage-based reference, only ModRank's
-added value has an interval that excludes zero (Fig.~\ref{fig:added}a,~b). That comparison does not
-survive correction across the six prespecified comparisons (Holm $q=0.065$), so its direction is
-suggestive rather than resolved.
+(Fig.~\ref{fig:added}a), so $D$ is $+0.0610$, $+0.0417$ and $+0.0496$. Against the
+stage-based reference, only ModRank's added value has an interval that excludes zero. That comparison
+does not survive correction across the six prespecified comparisons (Holm $q=0.065$), so its
+direction is suggestive rather than resolved.
+
+Part of this difference comes from the combination rule. An equal-weight rank average dilutes a strong reference more than a
+weak one, so a score that carries no information, combined in the same way, has $D = +0.029$ on
+average and $+0.0417$ in ModRank's three-arm form (Methods). Against this benchmark the excess is
+$+0.0185$ ($[+0.0022, +0.0359]$) for ModRank, $+0.0228$ ($[+0.0066, +0.0393]$) for PIBD and
+$+0.0114$ ($[-0.0035, +0.0270]$) for SurvPath (Fig.~\ref{fig:added}b). Four further architectures
+from the SurvPath code base, rerun on the same folds, reach 0.51 to 0.60 on their own and have $D$ of $+0.028$ to $+0.034$, no more than the benchmark (Supplementary
+Note~8 and Supplementary Tables~12 and~13). The gap between the two references therefore has a part that any score shows under this
+rule and an excess that appears only with a model that carries signal. $D$ was specified after the
+confirmatory run, and its benchmark after the results in this paragraph were known.
 
 \subsection*{Calibration and clinical utility}
 
@@ -282,8 +288,11 @@ been reported, against 0.6892 and 0.7141 here (Fig.~\ref{fig:validation}c).
 The fusion alternatives were built on all five studies as well, since a claim about what fitting the
 combination buys had rested on the development cohort alone. A concatenated Cox and a stacked Cox
 were scored against the rank average in each study, and none of the ten comparisons has an interval
-that excludes zero in either direction. The rank average is ahead by point estimate in
-four studies and behind in breast, where the concatenated model reaches 0.7571 against 0.6892
+that excludes zero in either direction. Three further fitted fusions, specified afterwards, fared the
+same in all five studies (15 comparisons, none separating). They choose the arms' weights by inner
+cross-validation, add the arms' pairwise products to the stacking, or weight the arms separately
+within each tertile of clinical risk. The concatenation and the stacking trail the rank average by point estimate in
+four studies and lead it in breast, where the concatenated model reaches 0.7571 against 0.6892
 ($-0.0679$, $[-0.1384, +0.0029]$, $p=0.061$). The contrast with the reference correction is the
 point. A correct clinical reference changes concordance by $+0.0972$ ($[+0.047, +0.149]$), which
 separates, whereas no difference between the fusion rules tested separates at these sample sizes. At
@@ -328,14 +337,18 @@ cohorts, under protocols fixed before their outcomes were analysed. The public c
 survival with bulk expression carry no slides, so these tests concern the transcriptome and clinical
 arms. The recipe was refitted inside each cohort by repeated cross-validation.
 
-The inflation from a grade-based reference replicated in one of the two cohorts that record grade.
-In a Swedish cohort of 224 patients with 25
-deaths from the disease~\citep{sjodahl2012molecular}, where grade and stage both vary, a grade-based reference inflated the
-transcriptome's added value by $D = +0.0581$ ($[+0.0175, +0.0971]$, $p=0.007$). In a cystectomy
-cohort of 93 patients with 38 deaths~\citep{riester2012combination}, it was positive without reaching significance ($+0.0253$).
-The protocol's sensitivity analysis in that cohort, which excludes the three patients given
-chemotherapy before cystectomy, gave $+0.1094$ ($[+0.0424, +0.1774]$). An estimate that three patients
-move this far is fragile, and the all-patient value is the primary one.
+In the two cohorts that record grade, the transcriptome again added more over a grade-based reference
+than over a stage-based one. In a Swedish cohort of 224 patients with 25 deaths from the
+disease~\citep{sjodahl2012molecular}, where grade and stage both vary, $D = +0.0581$ ($[+0.0175,
++0.0971]$, $p=0.007$). The protocol tested $D$ against zero, but under this combination rule a score
+without information also has a positive $D$, $+0.0183$ in this cohort. Against that benchmark,
+computed after the protocol's analyses, the transcriptome's excess was $+0.0409$ ($[+0.0040,
++0.0775]$, $p=0.032$). In a cystectomy cohort of 93 patients with 38
+deaths~\citep{riester2012combination}, $D$ was $+0.0253$ against $+0.0150$ for a score without
+information, and the excess was not resolved ($+0.0007$, $[-0.0325, +0.0335]$). The protocol's
+sensitivity analysis in that cohort, which excludes the three patients given chemotherapy before
+cystectomy, gave $D = +0.1094$ ($[+0.0424, +0.1774]$). An estimate that three patients move this far
+is fragile, and the all-patient value is the primary one.
 
 The combination rule did not replicate beyond each cohort's noise floor. The two-arm ModRank had the
 best point estimate in the Swedish cohort (0.8779 against 0.8672 for the stage block and 0.8747 for
@@ -441,7 +454,9 @@ stacking 0.6855 and the concatenation 0.6487.}
 reference for three multimodal constructions, with 95\% intervals from 6,000 patient resamples.
 \textbf{b},~The inflation $D$, the added value over grade minus the added value over stage, in the
 development cohort (three constructions) and in the two independent cohorts that record grade,
-where the transcriptome is the added modality. \textbf{c},~Two-year calibration by quintile of predicted risk,
+where the transcriptome is the added modality. Behind each estimate, the grey band spans the central
+95\% of $D$ over 2,000 scores without information combined with the same references by the same rule,
+and the grey line marks their mean. \textbf{c},~Two-year calibration by quintile of predicted risk,
 with recalibration fitted inside the training folds only. The dotted line marks ideal calibration.
 \textbf{d},~Net benefit at two years for ModRank, the clinical model, treating all and treating none.}
 \label{fig:added}
@@ -520,14 +535,18 @@ benchmark resolves and of concatenation by more. That ordering holds when the sa
 re-partitioned and, in the pooled estimate, when whole hospitals are held out
 (Fig.~\ref{fig:robust}).
 
-The inflation is a property of the reference, not of one model. It appears for three constructions
-with different architectures, and for each of them the gain over a grade-based reference is two to
-three times the gain over a stage-based one. It replicated in an independent cohort in which grade
-and stage both vary. The determinants of its size are not settled. Across the benchmark's five
-studies the gain from swapping grade for stage tracks how uninformative grade is, a consistency
-check over three points (Fig.~\ref{fig:missing}d). In the external cohorts, against the protocol's
-prediction, the inflation was larger where grade varied. The consequence for published comparisons
-does not depend on its size. Two of the four published entries on verified folds, and five of all
+The inflation is mostly a property of the reference rather than of the model. For each of three
+constructions the gain over a grade-based reference is two to three times the gain over a
+stage-based one. A score that carries no information, combined by the same rank rule, already shows
+more than half of that difference, and four weaker architectures show no more. The remainder is an
+excess that appears only with a model that carries signal. Its interval excludes zero for ModRank
+and PIBD, for bladder under the five-study protocol and in the Swedish cohort, and not for SurvPath,
+head and neck, stomach or the cystectomy cohort (Supplementary Note~8). The gain from swapping grade
+for stage tracks how uninformative grade is across the five studies (Fig.~\ref{fig:missing}d). In
+the external cohorts, against the protocol's prediction, $D$ was larger where grade varied, so the
+determinants of the excess are not settled.
+
+The consequence for published comparisons does not depend on this decomposition. Two of the four published entries on verified folds, and five of all
 nine, fall below a clinical model of age, sex and stage (Fig.~\ref{fig:missing}a), so a gain
 reported over grade alone cannot be read as a gain over what the clinic knows. Multimodal survival
 models for bladder cancer should report their added value over a clinical reference that contains
@@ -539,8 +558,8 @@ nothing is estimated in the combination. Learned fusion spends events on weights
 penalised model spends them on 1,049 coefficients at once. On this cohort both fall below the rank
 average in every one of 24 re-partitions, the stacking by a mean of 0.0111, which the benchmark
 cannot resolve, and the concatenation by 0.0464, which it can. Holding out whole hospitals widens both gaps. Across the five
-studies scored under one protocol, however, no fitted fusion separates from the rank average in
-either direction, and in breast the concatenation leads it by 0.0679 without separating. This is the
+studies scored under one protocol, however, none of the five fitted fusions separates from the rank
+average in either direction, and in breast the concatenation leads it by 0.0679 without separating. This is the
 regime that sample-size guidance for prediction models anticipates~\citep{riley2020samplesize}.
 With 113 events a method can afford few estimated quantities, and here spending them on the combination did not improve on
 spending none.
@@ -618,7 +637,7 @@ specimen. The inputs are therefore available only after surgery, so a model buil
 inform adjuvant treatment and follow-up once anchored at the date of surgery (Discussion), and cannot
 inform the decision to give neoadjuvant chemotherapy, which precedes the specimen. The study uses
 public, de-identified data only and required no ethical approval. Reporting follows the TRIPOD+AI
-statement~\citep{collins2024tripodai} (Supplementary Table~12).
+statement~\citep{collins2024tripodai} (Supplementary Table~14).
 
 \subsection*{Folds, representations and estimator}
 
@@ -653,7 +672,13 @@ made after a cached query was found to have taken the first of several diagnosis
 rebuilt the clinical block from the incumbent's own files. Its effects, in opposite directions, moved
 the primary from 0.7260 to 0.7212 (Supplementary Note~2). Concordance is
 Harrell's~\citep{harrell1982cindex}, pooled over out-of-fold predictions after within-fold percentile
-normalisation. The primary averages concordance over five inner-cross-validation seeds. Paired
+normalisation. Within-fold percentiles break exact ties in the order returned by NumPy's
+default sort, which is unspecified and depends on the build. NumPy 1.24 and 2.0 on arm64 and NumPy
+1.24 on x86-64 agree, whereas NumPy 1.26 on an x86-64 processor with AVX-512 orders ties differently.
+Over 1,000 random tie orders the seed-0 concordance of ModRank ranges from 0.7203 to 0.7229
+(standard deviation 0.0004), and the five-study analyses rerun under that build moved no value by
+more than 0.0035. Reported values therefore reproduce to the fourth decimal under the builds recorded
+with the code. The primary averages concordance over five inner-cross-validation seeds. Paired
 comparisons use the seed-averaged score vector with 6,000 replicates that resample patients, never
 pairs, and a difference reported with such an interval is the mean of its replicates. The noise floor
 is the standard deviation, over 24 random re-partitions, of the paired difference between a
@@ -664,7 +689,12 @@ rank-averaged arm and the clinical arm (0.0073).
 The concatenated model is one ridge Cox on all 1,049 columns with the penalty grid extended to
 32,768. The stacked model fits three weights (ridge 1.0) on the inner
 out-of-fold percentiles of the three arms inside each training fold and applies them to the
-validation percentiles. The re-partitions are the same 24 that define the noise floor. For the
+validation percentiles. Three further fusions, specified after the five-study results were known and
+before they were run, use the same inner out-of-fold percentiles. The first chooses non-negative
+weights summing to one from a grid of step 0.1 (66 points) by inner concordance. The second adds the
+three pairwise products of arm percentiles to the stacked model. The third chooses such weights
+separately within each tertile of the clinical arm's inner out-of-fold percentile and applies them by
+the validation patient's clinical tertile. The re-partitions are the same 24 that define the noise floor. For the
 site-grouped analysis, whole tissue source sites (the contributing institution, the second field of
 the patient identifier) were assigned to five folds, largest first to the fold holding fewest
 patients.
@@ -677,6 +707,22 @@ combines them by the same rank rule. The inflation is $D = [C(M+\text{grade}) - 
 patient resamples. Competitors' scores are their own released out-of-fold predictions: SurvPath
 averaged over five retrainings, and PIBD at its best-validation checkpoint, the convention behind its
 published value.
+
+An equal-weight rank combination dilutes a stronger reference more, so $D$ is positive even for a
+score that carries no information. Each $D$ is therefore compared with a benchmark that keeps the
+reference and the combination rule and replaces the construction by random within-fold ranks, one
+random arm for a two-arm construction and two for ModRank's three-arm sum. The benchmark's $D$ is its
+mean over 2,000 random draws. The excess, $D$ minus that mean, has an interval from the same 6,000
+resamples, on each of which the benchmark is averaged over 20 fixed random draws. In the external
+cohorts the random arm replaces the transcriptome within each repeat of cross-validation. This
+comparison was specified after the analyses it qualifies had been run.
+
+The further architectures are MCAT~\citep{chen2021mcat}, ABMIL~\citep{ilse2018abmil},
+TransMIL~\citep{shao2021transmil} and DeepMISL~\citep{yao2020deepattnmisl}, each with pathway
+inputs. They were trained from the SurvPath code base on the released folds with the same tile
+features and the settings of their released scripts, five times each, under a protocol committed
+before they were run. MOTCat~\citep{xu2023motcat},
+whose implementation that code base does not include, was not run.
 
 \subsection*{Calibration and decision curves}
 
@@ -738,7 +784,7 @@ Omnibus (GSE31684, GSE32894, GSE48075). Source data are provided with this paper
 All analysis code, the prespecified protocols with their amendments, the record of every candidate
 scored during development, the confirmatory run, the outcome-permuted selection null and the external
 analyses are publicly available at \url{https://github.com/gxCaesar/modrank} and archived on Zenodo as
-version 1.2.0 (\TODO{version DOI, written when the deposit is published}). All archived versions
+version 1.3.0 (\TODO{version DOI, written when the deposit is published}). All archived versions
 resolve from \url{https://doi.org/10.5281/zenodo.22025756}. The archive includes a script that recomputes the
 reported numbers from the deposited result files rather than reading them from this manuscript.
 

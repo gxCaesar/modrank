@@ -3,13 +3,16 @@
 worth at the bedside.
 
   a  added value over the grade-based and the stage-based reference, three constructions, 95% CI
-  b  the inflation D, TCGA-BLCA (three constructions) and two independent GEO cohorts
+  b  the inflation D, TCGA-BLCA (three constructions) and two independent GEO cohorts, each beside
+     the D of a score without information combined by the same rule (mean and central 95% of 2,000
+     random draws)
   c  grouped calibration at 24 months, fitted inside the training folds, ModRank and clinical
   d  net benefit at 24 months: ModRank, the clinical model, treat all, treat none
 
 NO NUMERAL IS TYPED. Every value is read from a committed result file:
 experiments/20260911-blca-posthoc/results/{unified-fusion-and-added-value,calibration-and-decision-curve}.json
-and experiments/20260911-geo-external/results/geo-external.json. The plotted values are written to
+experiments/20260911-geo-external/results/geo-external.json and
+experiments/20260927-field-inflation/analysis-results/inflation-null-{blca,geo}.json. The plotted values are written to
 fig7_added_value_utility.source.json beside the figure.
 
 Authored at 180 mm (7.087 in), the Nature double-column width; dot and interval marks only, since
@@ -35,6 +38,9 @@ AV = json.load(open(os.path.join(PH, "unified-fusion-and-added-value.json")))["a
 CAL = json.load(open(os.path.join(PH, "calibration-and-decision-curve.json")))
 GEO = json.load(open(os.path.join(ROOT, "experiments", "20260911-geo-external", "results",
                                   "geo-external.json")))["cohorts"]
+FI = os.path.join(ROOT, "experiments", "20260927-field-inflation", "analysis-results")
+NULL = {**json.load(open(os.path.join(FI, "inflation-null-blca.json")))["constructions"],
+        **json.load(open(os.path.join(FI, "inflation-null-geo.json")))["constructions"]}
 
 style.apply()
 C, INK = style.ROLE, style.INK
@@ -74,24 +80,41 @@ panel("a", 0.005, 0.985)
 
 # ---------------------------------------------------------------- b  the inflation D
 axb = fig.add_axes([0.70, 0.58, 0.28, 0.36])
-ROWS = [("ModRank", AV["ours"]["D"], AV["ours"]["D_boot"]["ci95"], C["ours"], "o"),
-        ("SurvPath + clinical", AV["survpath"]["D"], AV["survpath"]["D_boot"]["ci95"], C["competitor"], "s"),
-        ("PIBD + clinical", AV["pibd_best_val"]["D"], AV["pibd_best_val"]["D_boot"]["ci95"], C["published"], "D"),
-        ("GSE32894, transcriptome", GEO["GSE32894"]["D"]["point"], GEO["GSE32894"]["D"]["ci95"], C["omics"], "^"),
-        ("GSE31684, transcriptome", GEO["GSE31684"]["D"]["point"], GEO["GSE31684"]["D"]["ci95"], C["omics"], "v")]
+ROWS = [("ModRank", AV["ours"]["D"], AV["ours"]["D_boot"]["ci95"], C["ours"], "o", "ModRank"),
+        ("SurvPath + clinical", AV["survpath"]["D"], AV["survpath"]["D_boot"]["ci95"], C["competitor"], "s",
+         "SurvPath"),
+        ("PIBD + clinical", AV["pibd_best_val"]["D"], AV["pibd_best_val"]["D_boot"]["ci95"], C["published"], "D",
+         "PIBD"),
+        ("GSE32894, transcriptome", GEO["GSE32894"]["D"]["point"], GEO["GSE32894"]["D"]["ci95"], C["omics"], "^",
+         "GSE32894"),
+        ("GSE31684, transcriptome", GEO["GSE31684"]["D"]["point"], GEO["GSE31684"]["D"]["ci95"], C["omics"], "v",
+         "GSE31684")]
+NULL_FILL, NULL_LINE = "#DDE1E8", "#8C93A1"
 src["b"] = {}
-for k, (lab, d, ci, col, mk) in enumerate(ROWS):
+for k, (lab, d, ci, col, mk, nk) in enumerate(ROWS):
     y = len(ROWS) - 1 - k
-    axb.plot(ci, [y, y], color=col, lw=1.1)
+    nd = NULL[nk]
+    assert abs(nd["D"] - d) < 5e-5, "%s: the benchmark file's D differs from the plotted D" % lab
+    lo, hi = nd["no_signal_D"]["q025_q975"]
+    axb.fill_betweenx([y - 0.30, y + 0.30], lo, hi, color=NULL_FILL, lw=0, zorder=1)
+    axb.plot([nd["no_signal_D"]["mean"]] * 2, [y - 0.30, y + 0.30], color=NULL_LINE, lw=1.0, zorder=1.5)
+    axb.plot(ci, [y, y], color=col, lw=1.1, zorder=2)
     axb.scatter([d], [y], s=34, marker=mk, color=col, zorder=3)
-    src["b"][lab] = {"D": d, "ci95": ci}
+    src["b"][lab] = {"D": d, "ci95": ci, "no_signal_D_mean": nd["no_signal_D"]["mean"],
+                     "no_signal_D_central95": [lo, hi],
+                     "excess_over_no_signal": nd["excess_over_no_signal"]}
+axb.legend(handles=[plt.matplotlib.patches.Patch(facecolor=NULL_FILL, edgecolor=NULL_LINE, lw=0.8,
+                                                  label="score without information")],
+           loc="upper left", fontsize=6.8, handlelength=1.2, borderaxespad=0.2, frameon=True,
+           facecolor="white", edgecolor="none", framealpha=1.0)
 axb.axvline(0, color=INK, lw=0.7, ls=":")
+axb.set_ylim(-0.6, len(ROWS) - 1 + 0.95)
 axb.axhline(1.5, color="#C9CFD8", lw=0.6)
 axb.text(axb.get_xlim()[1], 1.55, "external cohorts", fontsize=6.8, ha="right", va="bottom", color="#5A6273")
 axb.set_yticks(range(len(ROWS)))
 axb.set_yticklabels([r[0] for r in ROWS][::-1])
-axb.set_xlabel("inflation D from a grade-based reference")
-axb.set_title("the inflation, measured", fontsize=8, fontweight="bold")
+axb.set_xlabel("D, added value over grade minus over stage")
+axb.set_title("D beside a score without information", fontsize=8, fontweight="bold")
 panel("b", 0.515, 0.985)
 
 # ---------------------------------------------------------------- c  grouped calibration, 24 months

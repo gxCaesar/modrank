@@ -1,0 +1,84 @@
+{
+ "artifact_type": "s35_inflation_null_five",
+ "phase_of_origin": "post_freeze_2026-09-27",
+ "basis": "experiments/20260927-field-inflation/README.md, finding 1",
+ "bootstrap": {
+  "replicates": 6000,
+  "seed": 20260911,
+  "unit": "cases"
+ },
+ "no_signal": {
+  "draws_full_data": 2000,
+  "draws_per_resample": 20,
+  "rng_seed": 35
+ },
+ "constructions": {
+  "blca": {
+   "n": 359,
+   "events": 113,
+   "D": 0.0429,
+   "no_signal_D": {
+    "mean": 0.0246,
+    "q025_q975": [
+     0.0118,
+     0.0361
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": 0.0183,
+    "mean": 0.0181,
+    "ci95": [
+     0.003,
+     0.0333
+    ],
+    "p_two_sided": 0.018
+   },
+   "no_signal_arms": 2
+  },
+  "hnsc": {
+   "n": 394,
+   "events": 117,
+   "D": 0.0259,
+   "no_signal_D": {
+    "mean": 0.0181,
+    "q025_q975": [
+     0.0042,
+     0.032
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": 0.0078,
+    "mean": 0.0099,
+    "ci95": [
+     -0.0065,
+     0.0259
+    ],
+    "p_two_sided": 0.23
+   },
+   "no_signal_arms": 2
+  },
+  "stad": {
+   "n": 319,
+   "events": 84,
+   "D": 0.0275,
+   "no_signal_D": {
+    "mean": 0.0221,
+    "q025_q975": [
+     0.0079,
+     0.0371
+    ]
+   },
+   "excess_over_no_signal": {
+    "point": 0.0055,
+    "mean": 0.0042,
+    "ci95": [
+     -0.0113,
+     0.0192
+    ],
+    "p_two_sided": 0.577
+   },
+   "no_signal_arms": 2
+  }
+ },
+ "runtime_seconds": 88.2
+}

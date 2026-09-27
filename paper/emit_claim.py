@@ -33,6 +33,7 @@ FIVE = os.path.join(ROOT, "experiments", "20260912-five-cohort-intervals", "resu
                     "five-cohort-intervals.json")
 FUSION = os.path.join(ROOT, "experiments", "20260913-five-cohort-fusion", "results",
                       "five-cohort-fusion.json")
+FI = os.path.join(ROOT, "experiments", "20260927-field-inflation", "analysis-results")
 
 
 def load(p):
@@ -115,11 +116,27 @@ def five_study_validation():
 
 
 def fusion_null_five_studies():
+    # 25 comparisons since 2026-09-27: the two fusions of 2026-09-13 and the three of the
+    # field-inflation protocol, each against the rank average in five studies
     fus = load(FUSION)["cohorts"]
-    n = sum(1 for v in fus.values()
-            for k in ("ModRank_minus_concatenated", "ModRank_minus_stacked")
-            if v[k]["ci95"][0] > 0 or v[k]["ci95"][1] < 0)
-    return str(n)
+    more = load(os.path.join(FI, "five-study-extensions-bd.json"))["fusions_D"]
+    pairs = [v[k] for v in fus.values() for k in ("ModRank_minus_concatenated", "ModRank_minus_stacked")]
+    pairs += [v["ModRank_minus_" + k] for v in more.values() for k in ("simplex", "interaction", "gated")]
+    if len(pairs) != 25:
+        print("emit_claim: expected 25 fusion comparisons, found %d" % len(pairs), file=sys.stderr)
+        sys.exit(2)
+    return str(sum(1 for d in pairs if d["ci95"][0] > 0 or d["ci95"][1] < 0))
+
+
+def inflation_excess_over_no_signal():
+    # ModRank's D on TCGA-BLCA minus the D of a score without information combined by the same
+    # rule (analysis/s35_inflation_null.py). The committed D must match the per-case rows first.
+    nb = load(os.path.join(FI, "inflation-null-blca.json"))["constructions"]["ModRank"]
+    cases = rows()
+    d = ((conc(cases, "ours_grade") - conc(cases, "clinical_grade"))
+         - (conc(cases, "ours") - conc(cases, "clinical_stage")))
+    agree("D for ModRank", d, nb["D"])
+    return "%+.4f" % nb["excess_over_no_signal"]["mean"]
 
 
 def export_jsonl():
@@ -132,7 +149,8 @@ def export_jsonl():
 
 CLAIMS = {f.__name__: f for f in (modrank_tcga_benchmark, stage_reference_correction,
                                   clinical_reference_inflation, geo_inflation_replication,
-                                  five_study_validation, fusion_null_five_studies)}
+                                  five_study_validation, fusion_null_five_studies,
+                                  inflation_excess_over_no_signal)}
 
 
 def main(argv):

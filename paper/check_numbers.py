@@ -17,6 +17,7 @@ Run:  /usr/bin/python3 paper/check_numbers.py
 
 from __future__ import annotations
 
+import ast
 import json
 import math
 import os
@@ -183,6 +184,13 @@ def main():
     # sentences, so the check that guarded its arithmetic now guards its absence. Each phrase below
     # is a claim the evidence no longer supports; none of them may come back by a later edit.
     STALE = {
+        "replicated in an independent cohort": "D against zero is passed by a score without information; see SI Note 8",
+        "The inflation replicates": "the same",
+        "The inflation is significant for all three": "D was tested against zero; the benchmark is a score without information",
+        "a grade-based reference inflated the": "the same, in the external-cohort paragraph",
+        "neither concatenated nor stacked": "five fitted fusions were scored, not two",
+        "neither fitted fusion": "the same",
+        "no fitted fusion separates": "the same",
         "clears the selection-inflation": "the frozen selection term is mis-specified; nothing clears it as a test",
         "and the selection-inflation term": "the same, in a list of bars the result clears",
         "clears it by $+0.0178$": "the derived margin over the mis-specified term",
@@ -1208,6 +1216,57 @@ def check_nc(fails):
             "five-cohort-gigassl.json")["cohorts"]
     fus = j(ROOT, "experiments", "20260913-five-cohort-fusion", "results",
             "five-cohort-fusion.json")["cohorts"]
+    # the 2026-09-27 analyses (experiments/20260927-field-inflation): four further architectures,
+    # three further fusions, and the inflation D against a score without information
+    FI = os.path.join(ROOT, "experiments", "20260927-field-inflation", "analysis-results")
+    fa = j(FI, "field-inflation-a.json")["models"]
+    fbd = j(FI, "five-study-extensions-bd.json")
+    nb = j(FI, "inflation-null-blca.json")
+    ng = j(FI, "inflation-null-geo.json")["constructions"]
+    n5 = j(FI, "inflation-null-five.json")["constructions"]
+    nbc = nb["constructions"]
+    ARCH = ("coattn", "abmil_wsi_pathways", "transmil_wsi_pathways", "deepmisl_wsi_pathways")
+    if fbd["summary"]["D_comparisons"] != 15 or fbd["summary"]["D_fitted_fusion_ahead_interval_excluding_zero"] \
+            or fbd["summary"]["D_rank_average_ahead_interval_excluding_zero"]:
+        fails.append("NC says 15 further fusion comparisons and none separating; the run says %s"
+                     % fbd["summary"])
+    if not ("66 simplex points" in fbd["grid"] and "step 0.1" in fbd["grid"]):
+        fails.append("NC describes a 66-point grid of step 0.1; the run says %r" % fbd["grid"])
+    if (nb["no_signal"]["draws_full_data"], nb["no_signal"]["draws_per_resample"],
+            nb["bootstrap"]["replicates"]) != (2000, 20, 6000):
+        fails.append("NC describes 2,000 draws, 20 per resample and 6,000 resamples; the run says %s"
+                     % nb["no_signal"])
+    # which excess intervals exclude zero, stated in the Discussion and SI Note 8
+    _ex = {k: v["excess_over_no_signal"]["ci95"][0] > 0
+           for k, v in list(nbc.items()) + list(ng.items()) + [("five_" + c, v) for c, v in n5.items()]}
+    _want_ex = {"ModRank": True, "SurvPath": False, "PIBD": True, "coattn": False,
+                "abmil_wsi_pathways": False, "transmil_wsi_pathways": False,
+                "deepmisl_wsi_pathways": False, "GSE32894": True, "GSE31684": False,
+                "five_blca": True, "five_hnsc": False, "five_stad": False}
+    if _ex != _want_ex:
+        fails.append("NC names where the excess over a score without information is resolved; "
+                     "the runs give %s" % _ex)
+    # the architectures: D positive with an interval excluding zero, no added value over stage
+    # resolved, and none beyond the benchmark (SI Note 8)
+    for _m in ARCH:
+        _v = fa[_m]
+        if not (_v["D"] > 0 and _v["D_boot"]["ci95"][0] > 0 and _v["added_over_stage_boot"]["ci95"][0] <= 0
+                and nbc[_m]["excess_over_no_signal"]["ci95"][0] <= 0):
+            fails.append("NC's description of %s in SI Note 8 no longer matches the run" % _m)
+    if max(fa[_m]["D_p_holm"] for _m in ARCH) != 0.02:
+        fails.append("SI Note 8 says the largest Holm q over the four architectures is 0.02")
+    # tie order: the Methods sentence reads its numbers from the committed diagnostics
+    _td = open(os.path.join(ROOT, "experiments", "20260927-field-inflation", "diagnostics",
+                            "tiespread.txt")).read()
+    _tm = re.search(r"seed0 ModRank.*?random: min (\S+) max (\S+) sd (\S+)", _td)
+    _xd = open(os.path.join(ROOT, "experiments", "20260927-field-inflation", "diagnostics",
+                            "s34-sysu-numpy126.txt")).read()
+    _xd = ast.literal_eval(_xd[_xd.index("{"):_xd.rindex("}") + 1])
+    _tie = "ranges from %s to %s (standard deviation %.4f)" % (_tm.group(1), _tm.group(2), float(_tm.group(3)))
+    _xmax = "moved no value by more than %.4f" % max(abs(a_ - b_) for a_, b_ in _xd.values())
+    for _ph in (_tie, _xmax, "Over 1,000 random tie orders"):
+        if _ph not in " ".join(nc.split()):
+            fails.append("NC's tie-order sentence should carry %r" % _ph)
     # ten comparisons, none separating. The manuscript rests a contrast on that, so it is asserted
     # rather than described: if any interval ever excludes zero the sentence has to change.
     _sepf = [(c, k) for c, v in fus.items()
@@ -1556,19 +1615,29 @@ def check_nc(fails):
          "fall to $+0.0594$, $+0.0253$ and $+0.0345$"),
         ("PIBD over stage", av["pibd_best_val"]["added_over_stage"], "+0.0345",
          "fall to $+0.0594$, $+0.0253$ and $+0.0345$"),
-        ("D ModRank", av["ours"]["D"], "+0.0610", "$D = +0.0610$ ($[+0.0284, +0.0955]$)"),
-        ("D ModRank, CI low", av["ours"]["D_boot"]["ci95"][0], "+0.0284", "($[+0.0284, +0.0955]$)"),
-        ("D ModRank, CI high", av["ours"]["D_boot"]["ci95"][1], "+0.0955", "($[+0.0284, +0.0955]$)"),
-        ("D SurvPath", av["survpath"]["D"], "+0.0417", "$+0.0417$ ($[+0.0196, +0.0668]$)"),
-        ("D SurvPath, CI low", av["survpath"]["D_boot"]["ci95"][0], "+0.0196", "($[+0.0196, +0.0668]$)"),
-        ("D SurvPath, CI high", av["survpath"]["D_boot"]["ci95"][1], "+0.0668", "($[+0.0196, +0.0668]$)"),
-        ("D PIBD", av["pibd_best_val"]["D"], "+0.0496", "$+0.0496$ ($[+0.0238, +0.0769]$)"),
-        ("D PIBD, CI low", av["pibd_best_val"]["D_boot"]["ci95"][0], "+0.0238", "($[+0.0238, +0.0769]$)"),
-        ("D PIBD, CI high", av["pibd_best_val"]["D_boot"]["ci95"][1], "+0.0769", "($[+0.0238, +0.0769]$)"),
-        ("D over resplits", rs["resplits"]["D_added_value_inflation"]["mean"], "+0.0628",
-         "positive in 24 of 24 re-partitions ($+0.0628 \\pm 0.0086$)"),
-        ("D over resplits, SD", rs["resplits"]["D_added_value_inflation"]["sd"], "0.0086",
-         "($+0.0628 \\pm 0.0086$)"),
+        ("D ModRank", av["ours"]["D"], "+0.0610", "so $D$ is $+0.0610$, $+0.0417$ and $+0.0496$"),
+        ("D SurvPath", av["survpath"]["D"], "+0.0417", "so $D$ is $+0.0610$, $+0.0417$ and $+0.0496$"),
+        ("D PIBD", av["pibd_best_val"]["D"], "+0.0496", "so $D$ is $+0.0610$, $+0.0417$ and $+0.0496$"),
+        ("no-signal D, two arms", sum(nbc[k]["no_signal_D"]["mean"] for k in ("SurvPath", "PIBD") + ARCH) / 6,
+         "0.029", "has $D = +0.029$ on average"),
+        ("no-signal D, ModRank's three arms", nbc["ModRank"]["no_signal_D"]["mean"], "+0.0417",
+         "$+0.0417$ in ModRank's three-arm form"),
+        ("excess ModRank", nbc["ModRank"]["excess_over_no_signal"]["mean"], "+0.0185",
+         "$+0.0185$ ($[+0.0022, +0.0359]$) for ModRank"),
+        ("excess ModRank, CI low", nbc["ModRank"]["excess_over_no_signal"]["ci95"][0], "+0.0022", "($[+0.0022, +0.0359]$)"),
+        ("excess ModRank, CI high", nbc["ModRank"]["excess_over_no_signal"]["ci95"][1], "+0.0359", "($[+0.0022, +0.0359]$)"),
+        ("excess PIBD", nbc["PIBD"]["excess_over_no_signal"]["mean"], "+0.0228",
+         "$+0.0228$ ($[+0.0066, +0.0393]$) for PIBD"),
+        ("excess PIBD, CI low", nbc["PIBD"]["excess_over_no_signal"]["ci95"][0], "+0.0066", "($[+0.0066, +0.0393]$)"),
+        ("excess PIBD, CI high", nbc["PIBD"]["excess_over_no_signal"]["ci95"][1], "+0.0393", "($[+0.0066, +0.0393]$)"),
+        ("excess SurvPath", nbc["SurvPath"]["excess_over_no_signal"]["mean"], "+0.0114",
+         "$+0.0114$ ($[-0.0035, +0.0270]$) for SurvPath"),
+        ("excess SurvPath, CI low", nbc["SurvPath"]["excess_over_no_signal"]["ci95"][0], "-0.0035", "($[-0.0035, +0.0270]$)"),
+        ("excess SurvPath, CI high", nbc["SurvPath"]["excess_over_no_signal"]["ci95"][1], "+0.0270", "($[-0.0035, +0.0270]$)"),
+        ("architectures alone, lowest", min(fa[m]["C_alone"] for m in ARCH), "0.51", "reach 0.51 to 0.60 on their own"),
+        ("architectures alone, highest", max(fa[m]["C_alone"] for m in ARCH), "0.60", "reach 0.51 to 0.60 on their own"),
+        ("architectures D, lowest", min(fa[m]["D"] for m in ARCH), "+0.028", "have $D$ of $+0.028$ to $+0.034$"),
+        ("architectures D, highest", max(fa[m]["D"] for m in ARCH), "+0.034", "have $D$ of $+0.028$ to $+0.034$"),
         ("ModRank vs clinical, Holm", holm["ours vs clinical alone"]["p_holm"], "0.065", "(Holm $q=0.065$)"),
         # calibration and utility
         ("mean predicted 2-year risk", cal["ours"]["by_horizon"]["24.0"]["mean_predicted_risk"], "0.342",
@@ -1634,10 +1703,21 @@ def check_nc(fails):
         ("GSE32894 D, p", g32["D"]["p_two_sided"], "0.007", "$p=0.007$"),
         ("GSE31684 n", g31["n"], "93", "cohort of 93 patients with 38 deaths"),
         ("GSE31684 events", g31["events"], "38", "93 patients with 38 deaths"),
-        ("GSE31684 D", g31["D"]["point"], "+0.0253", "without reaching significance ($+0.0253$)"),
+        ("GSE32894 no-signal D", ng["GSE32894"]["no_signal_D"]["mean"], "+0.0183", "$+0.0183$ in this cohort"),
+        ("GSE32894 excess", ng["GSE32894"]["excess_over_no_signal"]["mean"], "+0.0409",
+         "excess was $+0.0409$ ($[+0.0040, +0.0775]$, $p=0.032$)"),
+        ("GSE32894 excess, CI low", ng["GSE32894"]["excess_over_no_signal"]["ci95"][0], "+0.0040", "($[+0.0040,"),
+        ("GSE32894 excess, CI high", ng["GSE32894"]["excess_over_no_signal"]["ci95"][1], "+0.0775", "+0.0775]$, $p=0.032$)"),
+        ("GSE32894 excess, p", ng["GSE32894"]["excess_over_no_signal"]["p_two_sided"], "0.032", "$p=0.032$)"),
+        ("GSE31684 D", g31["D"]["point"], "+0.0253", "$D$ was $+0.0253$ against $+0.0150$"),
+        ("GSE31684 no-signal D", ng["GSE31684"]["no_signal_D"]["mean"], "+0.0150", "$D$ was $+0.0253$ against $+0.0150$"),
+        ("GSE31684 excess", ng["GSE31684"]["excess_over_no_signal"]["mean"], "+0.0007",
+         "not resolved ($+0.0007$, $[-0.0325, +0.0335]$)"),
+        ("GSE31684 excess, CI low", ng["GSE31684"]["excess_over_no_signal"]["ci95"][0], "-0.0325", "$[-0.0325, +0.0335]$)"),
+        ("GSE31684 excess, CI high", ng["GSE31684"]["excess_over_no_signal"]["ci95"][1], "+0.0335", "$[-0.0325, +0.0335]$)"),
         ("GSE31684 D without pre-cystectomy chemotherapy",
          g31["sensitivity_without_pre_cystectomy_chemotherapy"]["D"]["point"], "+0.1094",
-         "gave $+0.1094$ ($[+0.0424, +0.1774]$)"),
+         "gave $D = +0.1094$ ($[+0.0424, +0.1774]$)"),
         ("the same, CI low", g31["sensitivity_without_pre_cystectomy_chemotherapy"]["D"]["ci95"][0],
          "+0.0424", "($[+0.0424, +0.1774]$)"),
         ("the same, CI high", g31["sensitivity_without_pre_cystectomy_chemotherapy"]["D"]["ci95"][1],
@@ -1777,12 +1857,15 @@ def check_nc(fails):
                   "Supplementary Note~5": "note:geo",            # note 5
                   "Supplementary Note~6": "note:calibration",    # note 6
                   "Supplementary Note~7": "note:subgroup",       # note 7
+                  "Supplementary Note~8": "note:nulld",          # note 8, 2026-09-27
                   "Supplementary Table~7": "tab:fusion",         # table 7
                   "Supplementary Table~8": "tab:fivecohort",     # table 8
                   "Supplementary Table~9": "tab:geo",            # table 9
                   "Supplementary Table~10": "tab:calibration",   # table 10
                   "Supplementary Table~11": "tab:subgroup",      # table 11
-                  "Supplementary Table~12": "tab:tripod"}        # table 12
+                  "Supplementary Tables~12": "tab:architectures",  # table 12, 2026-09-27
+                  "and~13)": "tab:nulld",                        # table 13, 2026-09-27
+                  "Supplementary Table~14": "tab:tripod"}        # table 14
         # A duplicated KEY cannot be caught by inspecting this dict, because Python collapses it
         # before anything runs: writing "Supplementary Table~7" twice silently drops the first
         # pointer, which is what happened on 2026-09-13. What can be caught is the consequence.
@@ -1865,7 +1948,7 @@ def _si_rows(src, label):
                   r"\\label\{%s\}" % re.escape(label), src, re.S)
     if not m:
         return None
-    body = re.sub(r"\\(toprule|midrule|bottomrule)|\\cmidrule\([^)]*\)\{[^}]*\}", "", m.group(1))
+    body = re.sub(r"\\(toprule|midrule|bottomrule|addlinespace)|\\cmidrule\([^)]*\)\{[^}]*\}", "", m.group(1))
     rows = []
     for r in body.split("\\\\"):
         r = r.strip()
@@ -2005,16 +2088,51 @@ def check_nc_si(fails):
 
     fusj = json.load(open(os.path.join(ROOT, "experiments", "20260913-five-cohort-fusion",
                                        "results", "five-cohort-fusion.json")))["cohorts"]
+    _FI = os.path.join(ROOT, "experiments", "20260927-field-inflation", "analysis-results")
+    _jl = lambda n_: json.load(open(os.path.join(_FI, n_)))
+    fbd, fa = _jl("five-study-extensions-bd.json"), _jl("field-inflation-a.json")["models"]
+    nbc, ng = _jl("inflation-null-blca.json")["constructions"], _jl("inflation-null-geo.json")["constructions"]
+    n5 = _jl("inflation-null-five.json")["constructions"]
     fu_rows = []
+    _fd = fbd["fusions_D"]
     for key, lab in (("blca", "bladder"), ("brca", "breast"), ("coadread", "colorectal"),
                      ("hnsc", "head and neck"), ("stad", "stomach")):
-        v = fusj[key]
-        fu_rows.append([lab, "%.4f" % v["points"]["ModRank"],
-                        "%.4f" % v["points"]["concatenated"],
-                        "%+.4f" % v["ModRank_minus_concatenated"]["mean"],
-                        "%.4f" % v["points"]["stacked"],
-                        "%+.4f" % v["ModRank_minus_stacked"]["mean"]])
-    expect("tab:fusion", fu_rows)
+        v, w = fusj[key], _fd[key]
+        fu_rows.append([lab, "rank average (ModRank)", "%.4f" % v["points"]["ModRank"], "", ""])
+        for nm, pt, d in (("concatenated", v["points"]["concatenated"], v["ModRank_minus_concatenated"]),
+                          ("stacked", v["points"]["stacked"], v["ModRank_minus_stacked"]),
+                          ("simplex weights", w["points"]["simplex"], w["ModRank_minus_simplex"]),
+                          ("stacked with interactions", w["points"]["interaction"], w["ModRank_minus_interaction"]),
+                          ("weights by clinical tertile", w["points"]["gated"], w["ModRank_minus_gated"])):
+            _m = "$0.0000$" if abs(d["mean"]) < 5e-5 else "$%+.4f$" % d["mean"]
+            fu_rows.append(["", nm, "%.4f" % pt, _m, "$[%+.4f, %+.4f]$" % tuple(d["ci95"])])
+    expect("tab:fusion", [[c.replace("$", "") for c in r_] for r_ in fu_rows])
+
+    ar_rows = []
+    for key, lab, pub in (("coattn", "MCAT", "0.598"), ("abmil_wsi_pathways", "ABMIL with pathways", "0.562"),
+                          ("transmil_wsi_pathways", "TransMIL with pathways", "0.630"),
+                          ("deepmisl_wsi_pathways", "DeepMISL with pathways", "0.518")):
+        v = fa[key]
+        ps = v["per_seed_C_alone"]
+        mu = sum(ps) / len(ps)
+        sdv = (sum((x - mu) ** 2 for x in ps) / (len(ps) - 1)) ** 0.5
+        ar_rows.append([lab, "%.4f" % v["C_alone"], "$%.4f \\pm %.4f$" % (mu, sdv), pub,
+                        "$%+.4f$" % v["added_over_weak"], "$%+.4f$" % v["added_over_stage"]])
+    expect("tab:architectures", [[c.replace("$", "") for c in r_] for r_ in ar_rows])
+
+    nd_rows = []
+    for src_, key, lab in ((nbc, "ModRank", "ModRank"), (nbc, "SurvPath", "SurvPath + clinical"),
+                           (nbc, "PIBD", "PIBD + clinical"), (nbc, "coattn", "MCAT + clinical"),
+                           (nbc, "abmil_wsi_pathways", "ABMIL + clinical"),
+                           (nbc, "transmil_wsi_pathways", "TransMIL + clinical"),
+                           (nbc, "deepmisl_wsi_pathways", "DeepMISL + clinical"),
+                           (n5, "blca", "bladder"), (n5, "hnsc", "head and neck"), (n5, "stad", "stomach"),
+                           (ng, "GSE32894", "GSE32894 (Lund)"), (ng, "GSE31684", "GSE31684 (cystectomy)")):
+        v = src_[key]
+        x, q = v["excess_over_no_signal"], v["no_signal_D"]["q025_q975"]
+        nd_rows.append([lab, "$%+.4f$" % v["D"], "$%+.4f$" % v["no_signal_D"]["mean"],
+                        "$[%+.4f, %+.4f]$" % tuple(q), "$%+.4f$" % x["mean"], "$[%+.4f, %+.4f]$" % tuple(x["ci95"])])
+    expect("tab:nulld", [[c.replace("$", "") for c in r_] for r_ in nd_rows])
 
     cal = json.load(open(os.path.join(PH, "calibration-and-decision-curve.json")))
     cal_rows = []

@@ -11,17 +11,18 @@ stage, and half the papers whose text could be read report no clinical baseline 
 the released files. Rebuilding the clinical reference with it raises its concordance from 0.5666 to
 0.6638 on identical cases, above five of the nine published entries, and more than halves the
 apparent added value of three multimodal constructions. Muscle-invasive urothelial carcinoma is
-94.4% one grade level in this cohort, so a grade-based reference separates few patients. The
-inflation replicated in an independent GEO cohort under a protocol fixed before its outcomes were
-analysed.
+94.4% one grade level in this cohort, so a grade-based reference separates few patients. Part of the
+difference in added value is produced by the rank combination itself, since a score carrying no
+information also gains less over stage than over grade under the same rule, so every model is
+measured against that benchmark as well (`analysis/s35_inflation_null.py`).
 
 **A method.** At 359 patients and 113 events an in-sample fit at sixteen parameters reaches 0.7474
 on pure noise, so ModRank spends its events on one penalised Cox model per modality and none on the
 combination, which is an equal-weight rank average. It reaches 0.7212 with 1,049 coefficients
 against two competitors' 25 million, the highest value reported on these folds by point estimate,
-and does not separate from either competitor. Across the benchmark's five studies, neither
-concatenated nor stacked fusion of the same inputs significantly improves on it, and it exceeds the
-corrected clinical reference in three of the five.
+and does not separate from either competitor. Across the benchmark's five studies, none of five
+fitted fusions of the same inputs significantly improves on it, and it exceeds the corrected
+clinical reference in three of the five.
 
 **And one thing this repository reports against itself.** The study's pre-registered decision rule
 used the standard deviation of a paired between-arm difference where a maximum-of-N correction needs
@@ -71,6 +72,16 @@ That script writes `results/confirmatory.json`, whose primary is **0.7260**. The
 split files. Both numbers are real, the difference is the amendment, and
 `experiments/20260818-reporting-dump/run.sh` reproduces the amended value and refuses to write
 anything if it does not equal 0.7212.
+
+## Reproducing to the fourth decimal
+
+Within-fold ranks break exact ties in the order NumPy's default sort returns, which is unspecified
+and depends on the build. The values in the paper were produced with NumPy 1.24 and 2.0 on arm64 and
+NumPy 1.24 on x86-64, which agree; each run directory's `env.txt` records its own. NumPy 1.26 on an
+x86-64 processor with AVX-512 orders ties differently. Under that build values move by up to about
+0.003, and the scripts' known-answer checks, which compare to four decimals, refuse to write rather
+than print a value that does not match. `experiments/20260927-field-inflation/diagnostics/` measures
+the effect: over 1,000 random tie orders the seed-0 ModRank concordance ranges from 0.7203 to 0.7229.
 
 ## Citing
 

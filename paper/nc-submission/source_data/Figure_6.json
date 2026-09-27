@@ -53,35 +53,105 @@
     "ci95": [
      0.0284,
      0.0955
-    ]
+    ],
+    "no_signal_D_mean": 0.0417,
+    "no_signal_D_central95": [
+     0.0289,
+     0.0538
+    ],
+    "excess_over_no_signal": {
+     "point": 0.0193,
+     "mean": 0.0185,
+     "ci95": [
+      0.0022,
+      0.0359
+     ],
+     "p_two_sided": 0.0263
+    }
    },
    "SurvPath + clinical": {
     "D": 0.0417,
     "ci95": [
      0.0196,
      0.0668
-    ]
+    ],
+    "no_signal_D_mean": 0.0288,
+    "no_signal_D_central95": [
+     0.016,
+     0.0413
+    ],
+    "excess_over_no_signal": {
+     "point": 0.0129,
+     "mean": 0.0114,
+     "ci95": [
+      -0.0035,
+      0.027
+     ],
+     "p_two_sided": 0.1373
+    }
    },
    "PIBD + clinical": {
     "D": 0.0496,
     "ci95": [
      0.0238,
      0.0769
-    ]
+    ],
+    "no_signal_D_mean": 0.0287,
+    "no_signal_D_central95": [
+     0.0154,
+     0.0406
+    ],
+    "excess_over_no_signal": {
+     "point": 0.021,
+     "mean": 0.0228,
+     "ci95": [
+      0.0066,
+      0.0393
+     ],
+     "p_two_sided": 0.0033
+    }
    },
    "GSE32894, transcriptome": {
     "D": 0.0581,
     "ci95": [
      0.0175,
      0.0971
-    ]
+    ],
+    "no_signal_D_mean": 0.0183,
+    "no_signal_D_central95": [
+     -0.0069,
+     0.042
+    ],
+    "excess_over_no_signal": {
+     "point": 0.0397,
+     "mean": 0.0409,
+     "ci95": [
+      0.004,
+      0.0775
+     ],
+     "p_two_sided": 0.0317
+    }
    },
    "GSE31684, transcriptome": {
     "D": 0.0253,
     "ci95": [
      -0.018,
      0.0678
-    ]
+    ],
+    "no_signal_D_mean": 0.015,
+    "no_signal_D_central95": [
+     -0.0148,
+     0.0436
+    ],
+    "excess_over_no_signal": {
+     "point": 0.0103,
+     "mean": 0.0007,
+     "ci95": [
+      -0.0325,
+      0.0335
+     ],
+     "p_two_sided": 0.9813
+    }
    }
   },
   "c": {

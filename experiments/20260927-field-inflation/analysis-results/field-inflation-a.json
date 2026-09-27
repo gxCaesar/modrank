@@ -1,0 +1,255 @@
+{
+ "artifact_type": "s33_field_inflation",
+ "phase_of_origin": "post_freeze_2026-09-27",
+ "protocol": "experiments/20260927-field-inflation/protocol.md, section A",
+ "bootstrap": {
+  "replicates": 6000,
+  "unit": "cases",
+  "seed": 20260911
+ },
+ "known_answer_survpath": {
+  "C_alone": 0.6294,
+  "C_weak": 0.5665,
+  "C_stage": 0.6644,
+  "C_M_plus_weak": 0.6335,
+  "C_M_plus_stage": 0.6897,
+  "added_over_weak": 0.067,
+  "added_over_stage": 0.0253,
+  "D": 0.0417,
+  "added_over_weak_boot": {
+   "ci95": [
+    0.0249,
+    0.1085
+   ],
+   "p_two_sided": 0.0017
+  },
+  "added_over_stage_boot": {
+   "ci95": [
+    -0.0139,
+    0.0634
+   ],
+   "p_two_sided": 0.207
+  },
+  "D_boot": {
+   "ci95": [
+    0.0196,
+    0.0668
+   ],
+   "p_two_sided": 0.0
+  }
+ },
+ "models": {
+  "coattn": {
+   "C_alone": 0.562,
+   "C_weak": 0.5665,
+   "C_stage": 0.6644,
+   "C_M_plus_weak": 0.586,
+   "C_M_plus_stage": 0.6521,
+   "added_over_weak": 0.0195,
+   "added_over_stage": -0.0122,
+   "D": 0.0317,
+   "added_over_weak_boot": {
+    "ci95": [
+     -0.0243,
+     0.0634
+    ],
+    "p_two_sided": 0.3753
+   },
+   "added_over_stage_boot": {
+    "ci95": [
+     -0.0573,
+     0.0318
+    ],
+    "p_two_sided": 0.5827
+   },
+   "D_boot": {
+    "ci95": [
+     0.0104,
+     0.054
+    ],
+    "p_two_sided": 0.003
+   },
+   "seeds": [
+    "seed1",
+    "seed2",
+    "seed3",
+    "seed4",
+    "seed5"
+   ],
+   "per_seed_C_alone": [
+    0.5168,
+    0.5295,
+    0.5212,
+    0.553,
+    0.5091
+   ],
+   "D_p_holm": 0.0092
+  },
+  "coattn_motcat": {
+   "status": "not run"
+  },
+  "abmil_wsi_pathways": {
+   "C_alone": 0.593,
+   "C_weak": 0.5665,
+   "C_stage": 0.6644,
+   "C_M_plus_weak": 0.6122,
+   "C_M_plus_stage": 0.6799,
+   "added_over_weak": 0.0457,
+   "added_over_stage": 0.0155,
+   "D": 0.0302,
+   "added_over_weak_boot": {
+    "ci95": [
+     -0.0026,
+     0.0938
+    ],
+    "p_two_sided": 0.0613
+   },
+   "added_over_stage_boot": {
+    "ci95": [
+     -0.0292,
+     0.0597
+    ],
+    "p_two_sided": 0.497
+   },
+   "D_boot": {
+    "ci95": [
+     0.0072,
+     0.0551
+    ],
+    "p_two_sided": 0.01
+   },
+   "seeds": [
+    "seed1",
+    "seed2",
+    "seed3",
+    "seed4",
+    "seed5"
+   ],
+   "per_seed_C_alone": [
+    0.5785,
+    0.5874,
+    0.5597,
+    0.6066,
+    0.5551
+   ],
+   "D_p_holm": 0.02
+  },
+  "transmil_wsi_pathways": {
+   "C_alone": 0.5964,
+   "C_weak": 0.5665,
+   "C_stage": 0.6644,
+   "C_M_plus_weak": 0.6085,
+   "C_M_plus_stage": 0.678,
+   "added_over_weak": 0.042,
+   "added_over_stage": 0.0136,
+   "D": 0.0284,
+   "added_over_weak_boot": {
+    "ci95": [
+     -0.0048,
+     0.0878
+    ],
+    "p_two_sided": 0.0777
+   },
+   "added_over_stage_boot": {
+    "ci95": [
+     -0.0305,
+     0.055
+    ],
+    "p_two_sided": 0.547
+   },
+   "D_boot": {
+    "ci95": [
+     0.0047,
+     0.0542
+    ],
+    "p_two_sided": 0.017
+   },
+   "seeds": [
+    "seed1",
+    "seed2",
+    "seed3",
+    "seed4",
+    "seed5"
+   ],
+   "per_seed_C_alone": [
+    0.5802,
+    0.5931,
+    0.582,
+    0.5629,
+    0.5868
+   ],
+   "D_p_holm": 0.02
+  },
+  "deepmisl_wsi_pathways": {
+   "C_alone": 0.5074,
+   "C_weak": 0.5665,
+   "C_stage": 0.6644,
+   "C_M_plus_weak": 0.5672,
+   "C_M_plus_stage": 0.6311,
+   "added_over_weak": 0.0007,
+   "added_over_stage": -0.0333,
+   "D": 0.034,
+   "added_over_weak_boot": {
+    "ci95": [
+     -0.0465,
+     0.0479
+    ],
+    "p_two_sided": 0.9813
+   },
+   "added_over_stage_boot": {
+    "ci95": [
+     -0.0766,
+     0.0091
+    ],
+    "p_two_sided": 0.1307
+   },
+   "D_boot": {
+    "ci95": [
+     0.0111,
+     0.0574
+    ],
+    "p_two_sided": 0.0023
+   },
+   "seeds": [
+    "seed1",
+    "seed2",
+    "seed3",
+    "seed4",
+    "seed5"
+   ],
+   "per_seed_C_alone": [
+    0.5116,
+    0.5359,
+    0.4977,
+    0.4981,
+    0.5093
+   ],
+   "D_p_holm": 0.0092
+  }
+ },
+ "summary": {
+  "models_scored": 4,
+  "D_positive": [
+   "abmil_wsi_pathways",
+   "coattn",
+   "deepmisl_wsi_pathways",
+   "transmil_wsi_pathways"
+  ],
+  "D_interval_excludes_zero": [
+   "abmil_wsi_pathways",
+   "coattn",
+   "deepmisl_wsi_pathways",
+   "transmil_wsi_pathways"
+  ],
+  "added_over_stage_interval_covers_zero": [
+   "abmil_wsi_pathways",
+   "coattn",
+   "deepmisl_wsi_pathways",
+   "transmil_wsi_pathways"
+  ],
+  "not_run_or_incomplete": [
+   "coattn_motcat"
+  ]
+ },
+ "runtime_seconds": 12.4
+}

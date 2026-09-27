@@ -1,0 +1,9 @@
+B blca      D +0.0441 [0.0113, 0.0779] | over grade +0.1222 | over stage +0.0780  [26 s]
+D blca      ModRank 0.6987 | simplex 0.6940 [-0.0112, 0.0208] | interaction 0.6913 [-0.0147, 0.0301] | gated 0.6732 [-0.0016, 0.0532]  [72 s]
+D brca      ModRank 0.6881 | simplex 0.7185 [-0.0822, 0.0223] | interaction 0.7087 [-0.0659, 0.0277] | gated 0.7010 [-0.0507, 0.0267]  [150 s]
+D coadread  ModRank 0.7122 | simplex 0.6908 [-0.0443, 0.0837] | interaction 0.6872 [-0.0292, 0.0849] | gated 0.7342 [-0.0808, 0.0367]  [179 s]
+B hnsc      D +0.0243 [-0.0162, 0.0648] | over grade +0.0957 | over stage +0.0714  [203 s]
+D hnsc      ModRank 0.6160 | simplex 0.6141 [-0.0202, 0.0246] | interaction 0.6140 [-0.0206, 0.0256] | gated 0.6103 [-0.026, 0.0381]  [253 s]
+B stad      D +0.0307 [-0.0049, 0.0648] | over grade +0.0763 | over stage +0.0456  [271 s]
+D stad      ModRank 0.6293 | simplex 0.6094 [-0.0147, 0.0584] | interaction 0.5784 [-0.0115, 0.1191] | gated 0.6264 [-0.0381, 0.0467]  [307 s]
+KNOWN ANSWER DRIFT, refusing to write: {'blca/ModRank': (0.6987, 0.6992), 'blca/C_age_sex_grade': (0.5639, 0.5658), 'blca/C_ModRank': (0.6987, 0.6992), 'blca/C_age_sex_stage': (0.6207, 0.6218), 'blca/stacked': (0.6936, 0.6932), 'brca/ModRank': (0.6881, 0.6892), 'brca/stacked': (0.717, 0.718), 'coadread/ModRank': (0.7122, 0.7141), 'coadread/stacked': (0.6931, 0.6919), 'hnsc/ModRank': (0.616, 0.6179), 'hnsc/C_ModRank_with_grade': (0.6019, 0.6015), 'hnsc/C_age_sex_grade': (0.5062, 0.5027), 'hnsc/C_ModRank': (0.616, 0.6179), 'hnsc/C_age_sex_stage': (0.5446, 0.545), 'hnsc/stacked': (0.6175, 0.6171), 'stad/ModRank': (0.6293, 0.6311), 'stad/C_ModRank_with_grade': (0.6115, 0.6125), 'stad/C_age_sex_grade': (0.5352, 0.5358), 'stad/C_ModRank': (0.6293, 0.6311), 'stad/C_age_sex_stage': (0.5837, 0.5819), 'stad/stacked': (0.5859, 0.5862)}

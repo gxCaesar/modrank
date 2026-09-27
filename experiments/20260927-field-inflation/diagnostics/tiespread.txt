@@ -1,0 +1,4 @@
+seed0 ModRank (slide+omics+stage clin)   committed 0.7225 | mac-default 0.7225 | stable 0.7220 | midrank 0.7215 | random: min 0.7203 max 0.7229 sd 0.00043 | tied cases 56
+SurvPath + stage                         committed 0.6897 | mac-default 0.6897 | stable 0.6887 | midrank 0.6895 | random: min 0.6881 max 0.6906 sd 0.00043 | tied cases 64
+SurvPath + grade                         committed 0.6335 | mac-default 0.6335 | stable 0.6320 | midrank 0.6324 | random: min 0.6311 max 0.6343 sd 0.00052 | tied cases 62
+PIBD(best val) + stage                   committed 0.6989 | mac-default 0.6989 | stable 0.6985 | midrank 0.6984 | random: min 0.6974 max 0.7002 sd 0.00046 | tied cases 57
