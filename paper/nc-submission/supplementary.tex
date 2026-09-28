@@ -1028,6 +1028,60 @@ added by the amendment and has no earlier value. Five-study rows use that protoc
 \label{tab:amendA2}
 \end{table}
 
+%% ============================================================================ NOTE 11
+\clearpage
+\snote{The search for an independent cohort with slides, expression and survival}\label{note:search}
+
+The slide arm could be tested outside the development cohort only in a cohort that records a
+diagnostic whole-slide image, bulk tumour expression and a timed outcome for the same patients,
+ideally with stage, grade, age and sex, and at least 30 events. We searched for one in September 2026
+under a plan written before the search began, which fixed these requirements, the resources to cover
+and a budget of about 150 queries. A tissue microarray was to be recorded separately from whole
+slides, and a cohort with slides for some patients and expression for others did not qualify. No
+data were downloaded or requested during the search. Supplementary Table~\ref{tab:search} lists what
+was covered and found.
+
+The result describes this search, not every archive. Several portals returned no usable interface
+and were searched only through the public web index, and the records of the 22 expression series
+held in the Gene Expression Omnibus could not be opened in the search session. The earlier
+enumeration had already recorded them as expression cohorts without slides. Of the 33 expression
+cohorts, 31 were screened for slides and two were excluded in advance, the development cohort and
+one controlled study.
+
+One trial cohort holds all three. SWOG S1314 randomised 237 patients with cT2--T4aN0M0 urothelial
+carcinoma to neoadjuvant dose-dense MVAC or gemcitabine--cisplatin before cystectomy, 227 of them
+eligible, with a median follow-up of 53 months~\citep{flaig2021s1314}. A later analysis used 182
+pretreatment H\&E whole-slide images and microarray expression from 180 of these
+patients~\citep{bai2025gmlf}. Its expression data are public, but the slides are held by the trial
+group and released to qualified researchers on request, and outcome data follow the group's data
+request procedure, which requires committee approval and a data use agreement. It would test a
+different setting from the development cohort: every patient received chemotherapy, the stage
+available before treatment is clinical rather than pathologic, and the number of deaths among the
+patients with both slides and expression is not published.
+
+One bladder challenge dataset also holds all three. Its rules bar publishing results obtained with it
+before the organisers' papers appear, and we report nothing from it.
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{5.7cm}>{\raggedright\arraybackslash}p{6.4cm}@{}}
+\toprule
+Resource group & Resources & Finding \\
+\midrule
+Imaging and cancer genomics commons (9) & NCI Imaging Data Commons; The Cancer Imaging Archive; CPTAC and the Proteomic Data Commons; the Genomic Data Commons' non-TCGA projects, HCMI, CGCI and Exceptional Responders; HTAN; the Cancer Digital Slide Archive & No bladder cohort with all three. The TCIA collection list, the Proteomic and Genomic Data Commons project pages and the slide archive could not be queried directly. \\
+Controlled-access archives (8) & EGA; dbGaP; JGA and DDBJ; GSA-Human; KOBIC, CODA, AI Hub and K-CURE (Korea) & EGA holds expression and clinical data for UROMOL, the BRS cohort and four IMvigor trials. The IMvigor record describes digital pathology but distributes no slides. JGA, GSA-Human and three Korean portals could not be searched directly. \\
+Trial data sharing (6) & Vivli; YODA; Project Data Sphere; CSDR; SWOG; the NCI NCTN archive. Searched by name: IMvigor210, 211, 010 and 130, JAVELIN Bladder 100, CheckMate 274 and 275, KEYNOTE-045, 052 and 057, DANUBE, BISCAY, PURE-01 & The IMvigor sponsor package excludes images and forbids linkage with the trials' genomic data. No trial-specific slide release found for the others. SWOG S1314 holds all three on request (text). \\
+General repositories (8) & Zenodo; Figshare; Mendeley Data; Dryad; OSF; Hugging Face; Kaggle; Synapse & None found. Most were searched through the public web index. \\
+Challenges and spatial resources (6) & grand-challenge.org; MICCAI and ISBI challenges; PAIP; HEST-1k; STimage-1K4M & One bladder challenge dataset with all three, under a publication embargo (text). The spatial resources pair images with spatial rather than bulk expression and carry no survival. \\
+Expression cohorts with outcomes (33) & The cohorts of an earlier systematic enumeration across GEO, ArrayExpress, EGA and cBioPortal, including the IMvigor trials, UROMOL and the BRS cohorts & No slide release found for any. \\
+Literature, 2019--2026 & Slide-based models of bladder cancer recurrence, progression, response or survival trained outside TCGA & Four hospital cohorts with slides and an outcome, none with documented bulk expression or a public release; SWOG S1314. \\
+\bottomrule
+\end{tabular}
+\caption{Resources covered by the search for an independent cohort with slides, bulk expression and
+survival in the same patients, September 2026. Counts in parentheses are resources in each group.}
+\label{tab:search}
+\end{table}
+
 %% ============================================================================ TRIPOD+AI
 \clearpage
 \section*{Supplementary Table~\ref{tab:tripod}. TRIPOD+AI checklist}

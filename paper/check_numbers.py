@@ -285,7 +285,7 @@ def main():
     _ntab = 0
     for _doc in SCAN:
         _src = open(_doc).read()
-        for _m in re.finditer(r"\\begin\{tabular\}\{([^}]*)\}(.*?)\\end\{tabular\}", _src, re.S):
+        for _m in re.finditer(r"\\begin\{tabular\}\{((?:[^{}]|\{[^{}]*\})*)\}(.*?)\\end\{tabular\}", _src, re.S):
             _ntab += 1
             _ncol = len(re.findall(r"[lcrp]", re.sub(r"\{[^}]*\}", "", _m.group(1))))
             _body = re.sub(r"\\(toprule|midrule|bottomrule|hline)", "", _m.group(2))
@@ -1755,7 +1755,18 @@ def check_nc(fails):
     _t = re.search(r"\\title\{(.*?)\}\n", raw, re.S).group(1)
     if len(_t.split()) > 15:
         fails.append("NC title is %d words; the journal allows 15" % len(_t.split()))
-    _ab = re.search(r"\\begin\{abstract\}(.*?)\\end\{abstract\}", raw, re.S).group(1)
+    # The Springer Nature class takes the abstract as \\abstract{...} (port of 2026-09-28); the
+    # article build used the environment. Read whichever the source carries, and fail if neither.
+    _abm = re.search(r"\\begin\{abstract\}(.*?)\\end\{abstract\}", raw, re.S)
+    if _abm:
+        _ab = _abm.group(1)
+    else:
+        _i = raw.index("\\abstract{") + len("\\abstract{")
+        _d, _j = 1, _i
+        while _d:
+            _d += {"{": 1, "}": -1}.get(raw[_j], 0) if raw[_j - 1] != "\\" else 0
+            _j += 1
+        _ab = raw[_i:_j - 1]
     _ab = re.sub(r"\\noindent|\\TODO\{[^}]*\}", " ", _ab)
     if len(_ab.split()) > 150:
         fails.append("NC abstract is %d words; the journal allows 150" % len(_ab.split()))
@@ -1807,7 +1818,9 @@ def check_nc(fails):
                   "Supplementary Table~14": "tab:gapext",        # table 14, 2026-09-27
                   "Supplementary Note~10": "note:amendA2",       # note 10, amendment A2
                   "Supplementary Table~15": "tab:amendA2",       # table 15, amendment A2
-                  "Supplementary Table~16": "tab:tripod"}        # table 16
+                  "Supplementary Note~11": "note:search",        # note 11, GATE 1 search, 2026-09-28
+                  "Supplementary Table~16": "tab:search",        # table 16, 2026-09-28
+                  "Supplementary Table~17": "tab:tripod"}        # table 17
         # A duplicated KEY cannot be caught by inspecting this dict, because Python collapses it
         # before anything runs: writing "Supplementary Table~7" twice silently drops the first
         # pointer, which is what happened on 2026-09-13. What can be caught is the consequence.

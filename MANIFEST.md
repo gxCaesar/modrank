@@ -1,6 +1,6 @@
 # Manifest
 
-452 files. Every one of them is listed here, and every file listed here is in the tree; the builder asserts both directions and refuses to write this file otherwise.
+455 files. Every one of them is listed here, and every file listed here is in the tree; the builder asserts both directions and refuses to write this file otherwise.
 
 | directory | files | what it holds |
 |---|---|---|
@@ -9,7 +9,7 @@
 | `experiments/20260817-blca-confirm/` | 29 | the confirmatory run: command, environment, log, code and result files |
 | `experiments/20260818-selection-null/` | 4 | the 200 outcome-permuted runs behind the corrected selection bar, and the encoder swap |
 | `experiments/20260818-reporting-dump/` | 3 | the reporting dump the manuscript's tables read from |
-| `paper/` | 54 | the manuscript sources, the figure builders and their source data, and the number-consistency checker |
+| `paper/` | 57 | the manuscript sources, the figure builders and their source data, and the number-consistency checker |
 | `docs/` | 2 | data card and model card |
 
 ## At the top level

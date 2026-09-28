@@ -7,33 +7,27 @@
 %% EMBARGO. Nothing from the embargoed external cohort may appear here until its permission file
 %% records permission. The external section below carries the public GEO cohorts only.
 
-\documentclass[11pt]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[a4paper, margin=2.4cm]{geometry}
+\documentclass[pdflatex,sn-nature]{sn-jnl}
+%% Springer Nature LaTeX template, CGX house layout (Desktop/6kit/!latex_template/
+%% Springer_Nature_LaTeX_Template_CGXstyle, copied 2026-09-28): 170 x 257 mm text block, lineno
+%% package in the left margin, Nature numbered references (sn-nature.bst, loaded by the class).
+\input{sn-house-layout}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{amsmath}
-\usepackage[numbers,sort&compress]{natbib}
-\usepackage[hidelinks]{hyperref}
 \usepackage{xcolor}
-\usepackage{lineno}
-\linenumbers
-\renewcommand{\baselinestretch}{1.25}
+\raggedbottom
 
 \newcommand{\TODO}[1]{\textcolor{red}{[TODO: #1]}}
 
-\title{Parameter-free multimodal fusion with ModRank and a corrected clinical reference for bladder cancer survival}
-\author{Guanxing Chen\\
-\small City University of Hong Kong (Dongguan), Dongguan, China\\
-\small ORCID 0000-0002-4435-0884 \quad \texttt{guanxing.chen@cityu-dg.edu.cn}}
-\date{}
-
 \begin{document}
-\maketitle
 
-\begin{abstract}
-\noindent Multimodal survival models for bladder cancer are ranked on one public benchmark against a
+\title{Parameter-free multimodal fusion with ModRank and a corrected clinical reference for bladder cancer survival}
+
+\author*[1]{\fnm{Guanxing} \sur{Chen}}\email{guanxing.chen@cityu-dg.edu.cn}
+\affil*[1]{\orgname{City University of Hong Kong (Dongguan)}, \orgaddress{\city{Dongguan}, \country{China}}}
+
+\abstract{Multimodal survival models for bladder cancer are ranked on one public benchmark against a
 clinical reference built from tumour grade, which barely varies here.
 Rebuilding it with pathologic stage raised its concordance from 0.566
 to 0.664, above two of four published models on these folds, and more than halved the added value of
@@ -43,8 +37,10 @@ reported on this benchmark, without separating from two rerun competitors. It ex
 reference in two of four other benchmark studies, and its two-modality form did not exceed stage
 beyond the noise floor in three cohorts without histology. Here we show that clinical references for
 these models need pathologic stage and that, across five studies, none of six fitted fusions
-significantly improves on a combination with nothing to fit.
-\end{abstract}
+significantly improves on a combination with nothing to fit.}
+
+\maketitle
+\linenumbers
 
 \section*{Introduction}
 
@@ -338,8 +334,8 @@ histology.
 
 The benchmark has no held-out bladder cohort, so we tested the reference inflation and the
 combination rule in independent public bladder cohorts under protocols fixed before their outcomes
-were analysed. Public cohorts with survival and bulk
-expression carry no slides, so these tests concern the transcriptome and clinical arms. The recipe was refitted inside each cohort by repeated cross-validation.
+were analysed. No public cohort we found records slides, survival and bulk
+expression for the same patients (Methods), so these tests concern the transcriptome and clinical arms. The recipe was refitted inside each cohort by repeated cross-validation.
 
 In the two cohorts that record grade, the transcriptome again added more over a grade-based reference
 than over a stage-based one. In a Swedish cohort of 224 patients with 25 deaths from the
@@ -598,11 +594,12 @@ uninformative arm dilutes the average. Admitting an arm only when it clears a pe
 not repair this where the transcriptome was weak, and no such screen can supply signal the arms lack.
 
 The study has further limitations. The method was built on one public bladder cohort assembled
-across many hospitals, retrospectively, with an endpoint derived from curated follow-up.
+across many hospitals, retrospectively, with an endpoint derived from curated follow-up, and its
+slide arm has not been tested outside it.
 ModRank ranks a validation fold within itself, and a deployable variant that ranks each patient
 against the training fold reaches 0.7245 against 0.7214, so within-fold ranking does not flatter the
 result. Part of its lead over the published entries belongs to its slide encoder. Given the tile
-features SurvPath consumed, it reaches 0.7004, which is still above every published entry. A
+features SurvPath consumed, it reaches 0.7004, still above every published entry. A
 calibration slope of 0.771 indicates predictions that are too extreme and would be shrunk by
 recalibration in a new setting. Performance by sex and age shows a limit of this cohort. Concordance
 is lower in women than in men, for ModRank (0.6638 against 0.7399) and more so for the clinical arm
@@ -616,8 +613,7 @@ between groups. Inside the white stratum ModRank still exceeds the clinical arm 
 $+0.0594$ ($[+0.0052, +0.1134]$). No measure of socioeconomic position is recorded anywhere in these
 data (Supplementary Note~7 and Supplementary Table~11).
 Deployment would need a digitised diagnostic slide, tumour expression profiling and the pathologic
-stage of the resected specimen, which is available only after surgery. Two further limitations follow
-from the endpoint. Time is measured from initial pathologic diagnosis, although the inputs include
+stage of the resected specimen, which is available only after surgery. Time is measured from initial pathologic diagnosis, although the inputs include
 the stage of the resected specimen, so the model is not yet a risk estimate anchored at the
 postoperative moment when a clinician would use it. A landmark analysis from the date of surgery would
 be needed for that. Disease-specific survival also treats death from other causes as censoring in a
@@ -644,7 +640,7 @@ specimen. The inputs are therefore available only after surgery, so a model buil
 inform adjuvant treatment and follow-up once anchored at the date of surgery (Discussion), and cannot
 inform the decision to give neoadjuvant chemotherapy, which precedes the specimen. The study uses
 public, de-identified data only and required no ethical approval. Reporting follows the TRIPOD+AI
-statement~\citep{collins2024tripodai} (Supplementary Table~16).
+statement~\citep{collins2024tripodai} (Supplementary Table~17).
 
 \subsection*{Folds, representations and estimator}
 
@@ -781,6 +777,18 @@ re-partitions. A variant that admits an arm only when it clears a permutation nu
 fold was defined before any of these cohorts was downloaded, and an amendment added it before the
 results of two of the three cohorts were inspected (Supplementary Note~5).
 
+No public cohort we found records a diagnostic whole-slide image, bulk tumour expression and a timed
+outcome for the same patients. The search, run in September 2026 under a plan written before it
+began, covered 37 imaging, genomic, trial-sharing, general-purpose and challenge repositories, the 33
+bladder expression cohorts with outcomes from an earlier systematic enumeration, and the literature
+from 2019 to 2026 on slide-based models of bladder cancer outcome (Supplementary Note~11 and Supplementary Table~16). Several
+portals could not be searched natively, so the result describes this search rather than every
+archive. It found one challenge dataset whose rules bar publishing results before the organisers'
+papers appear, on which we report nothing, and one trial cohort, SWOG S1314, in which slides and
+expression exist for 180 patients who all received neoadjuvant chemotherapy and whose slides and
+outcomes are released only on request to the trial group~\citep{flaig2021s1314,bai2025gmlf}. The
+slide arm was therefore not evaluated outside the development cohort.
+
 Four further cohorts were assembled for the reference comparison alone, which needs grade, stage and
 an outcome but no expression. They were chosen by a systematic search of the Gene Expression Omnibus,
 ArrayExpress and cBioPortal under a protocol written before any download. Each was admitted by a count,
@@ -815,11 +823,10 @@ GSE13507~\citep{kim2010progression, lee2010e2f1}) and ArrayExpress
 All analysis code, the prespecified protocols with their amendments, the record of every candidate
 scored during development, the confirmatory run, the outcome-permuted selection null and the external
 analyses are publicly available at \url{https://github.com/gxCaesar/modrank} and archived on Zenodo as
-version 1.3.3 (\TODO{version DOI, written when the deposit is published}). All archived versions
+version 1.3.4 (\TODO{version DOI, written when the deposit is published}). All archived versions
 resolve from \url{https://doi.org/10.5281/zenodo.22025756}. The archive includes a script that recomputes the
 reported numbers from the deposited result files rather than reading them from this manuscript.
 
-\bibliographystyle{unsrtnat}
 \bibliography{../references}
 
 \section*{Acknowledgements}

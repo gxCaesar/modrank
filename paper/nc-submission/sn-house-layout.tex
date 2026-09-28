@@ -1,0 +1,53 @@
+%% ---------------------------------------------------------------------------
+%% House layout for Springer Nature / Nature-portfolio submissions.
+%%
+%%   \input{sn-house-layout}        %% immediately after \documentclass
+%%   ... \maketitle ...
+%%   \linenumbers                   %% immediately after \maketitle
+%%
+%% Three settings, each with the measurement that chose it. Delete this file and
+%% its two lines to return to the class's own layout; nothing else depends on it.
+%% ---------------------------------------------------------------------------
+
+%% 1. THE PAGE. The class loads geometry ITSELF, with text={31pc,194.25mm} on A4
+%%    under sn-nature, so a second \usepackage{geometry} errors and the block has
+%%    to be reset with \geometry instead.
+%%
+%%    A4 is 210 by 297 mm, so 170 by 257 leaves 20 mm on every side. Measured
+%%    consequence rather than an aesthetic one: artwork authored at the venue's
+%%    179 mm maximum and inserted at \textwidth is scaled by textwidth/179, which
+%%    the class's own block makes 0.73 and this makes 0.950. A 7 pt label in the
+%%    source therefore renders at about 5.11 pt under the class and 6.65 pt here,
+%%    and 5.11 pt is below every legibility floor a venue states.
+\geometry{textwidth=170mm, textheight=257mm, top=20mm, left=20mm,
+          footskip=12mm, marginparsep=3mm, marginparwidth=8mm,
+          bindingoffset=0mm}
+
+%% 2. THE FOLIO. It is already bottom-centred by the class's \ps@headings and
+%%    needs nothing. **Do not "fix" it with \pagestyle{plain}.** This class's
+%%    plain style is
+%%        \def\@oddfoot{\vbox to 18pt{...\hfil ddd\thepage\hfil}}
+%%    which prints a literal "ddd" before every page number. Checked in
+%%    sn-jnl.cls at line 870; the same bytes ship in the template and in every
+%%    project copy taken from it.
+
+%% 3. LINE NUMBERS. Use the lineno PACKAGE, not the class's own `lineno` option,
+%%    and the reason is measured rather than stylistic.
+%%
+%%    The class option turns on `vruler` with
+%%        \setvruler[12bp][1][1][3][1][1.18\textwidth][26pt][-7pt][0.99\textheight]
+%%    which pads the counter to THREE digits and places it at 1.18\textwidth on
+%%    odd pages. At the block above that lands the numerals at x = 203.0 mm on a
+%%    210 mm page, measured from a compiled test, so a three-digit number clears
+%%    the trim by about 0.7 mm and a fourth digit does not clear it at all. A
+%%    manuscript of any length reaches four digits: the paper this file was
+%%    extracted from runs to line 1500 over 28 pages.
+%%
+%%    The lineno package puts them in the left margin instead, measured at
+%%    x = 13.7 mm against a text block starting at 20 mm, on every page and at
+%%    every digit count. `mathlines` numbers display equations too. It must load
+%%    before hyperref, which is why this file is input right after \documentclass.
+\usepackage[mathlines]{lineno}
+
+%% \linenumbers goes after \maketitle, not here, so the title block stays
+%% unnumbered. Putting it in this file would number the authors and affiliations.
